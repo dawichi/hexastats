@@ -7,7 +7,7 @@ const Home = ({data}) => {
 	const tint = (num: number, type: string) => {
 		const tints = {
 			games:   (x: number) => x > 50 ? 'font-bold p-1' : '',
-			winrate: (x: number) => x > 60 ? 'bg-green-200' : '',
+			winrate: (x: number) => x > 55 ? 'bg-green-200' : '',
 			kda:     (x: number) => x > 2.5 ? 'bg-purple-200 p-1' : '',
 			kills:   (x: number) => x > 10 ? 'bg-red-200 p-1' : '',
 			deaths:  (x: number) => x < 5 ? 'bg-gray-200 p-1' : '',
@@ -23,7 +23,7 @@ const Home = ({data}) => {
 				{data.map((player, index_player) => {
 					console.log(player)
 					return (
-						<div key={index_player} className="col-md-6 col-lg-4">
+						<div key={index_player} className="col-lg-6 col-xl-4">
 							<h2 className="text-2xl">{player.name} ({player.alias})</h2>
 							<Table striped bordered hover responsive>
 								<thead>

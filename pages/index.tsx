@@ -51,7 +51,7 @@ const Index = (props: { data: any[] }) => {
 					
 					return (
 						<>
-							<div key={index_player} className="mx-5">
+							<div key={index_player} className="mx-5 hidden">
 								<h2 className="text-3xl">{player.name}</h2>
 								{/* <div className="relative inline-block text-left">
 									<div>
@@ -143,7 +143,6 @@ const Index = (props: { data: any[] }) => {
 									})}
 								</div>
 							</div>
-							<hr/>
 						</>
 					)
 				})
@@ -165,6 +164,7 @@ export const getStaticProps = async () => {
 	const marcos = await Axios.get(BASE_URL + 'Agazhord')
 	const rodri = await Axios.get(BASE_URL + 'Traketero')
 	const samu = await Axios.get(BASE_URL + 'DryadZero')
+	const diego = await Axios.get(BASE_URL + 'Rhaast West')
 
 	return {
 		props: { data: [
@@ -175,6 +175,7 @@ export const getStaticProps = async () => {
 			{name: 'Marcos', data: marcos.data, alias: 'Agazhord'},
 			{name: 'Rodri', data: rodri.data, alias: 'Traketero'},
 			{name: 'Samu', data: samu.data, alias: 'DryadZero'},
+			{name: 'Diego', data: diego.data, alias: 'Rhaast West'},
 		] },
 	}
 }

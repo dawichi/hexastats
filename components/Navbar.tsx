@@ -3,7 +3,7 @@ import React from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 
 const navigation = [
-	{ name: 'Home', href: '#', current: true },
+	{ name: 'Home', href: '/', current: true },
 	{ name: 'Masteries', href: '#', current: false },
 	{ name: 'KDA', href: '#', current: false },
 	{ name: 'Graphs', href: '#', current: false },
