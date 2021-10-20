@@ -1,21 +1,21 @@
 import Axios from "axios"
 import getIndexOfString from "../utils/getIndexOfString"
 
-const BASE_URL = 'https://euw.op.gg/summoner/userName=Dawichii'
+const BASE_URL = 'https://euw.op.gg/summoner/userName=BloddSword'
 
 const Index = (props: { data: any; }) => {
 	const opgg_string = (props.data)
-	const start = opgg_string.indexOf('MostChampionContent ')
-	const end = opgg_string.indexOf('class="tabItem overview-stats--soloranked"')
-	console.log(opgg_string, start, end)
-	console.log(opgg_string.slice(start, end))
-
-	console.log(getIndexOfString("le", "I learned to play the Ukulele in Lebanon.", false))
+	const champs =	getIndexOfString('<div class="ChampionBox Ranked">', props.data, true)
+	champs.map(x => {
+		const substr = opgg_string.slice(x+60, x+99)
+		console.log(substr.slice(0, getIndexOfString('"', substr, false)[0]))
+	})
 
 	return (
 		<div>
 			<h1>Home</h1>
-			<div id="startpoint"></div>
+			<div id="startpoint">
+			</div>
 		</div>
 	)
 }
