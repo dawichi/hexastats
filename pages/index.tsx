@@ -41,12 +41,21 @@ const Index = (props: { data: any[] }) => {
 								<div className="row">
 									{ champs_indexes.map((x, index_champ) => {
 										// SUB-STRINGS 
-										const substr_name = player.data.slice(x+60, x+99)
-										const substr_img = player.data.slice(x+100, x+420)
+										const substr_name = player.data.slice(x+60, x+90)
+										const substr_img = player.data.slice(x+100, x+300)
+										const substr_cs = player.data.slice(x+450, x+700)
 										const substr_kda = player.data.slice(x+520, x+1050)
-										// Index helpers
+										const substr_winrate = player.data.slice(x+1000, x+1200)
+
+										// index helpers: [image]
 										const idx_img = getIndexOfString('<img src="', substr_img, false)[0]+10
 										const idx_img_end = getIndexOfString('.png', substr_img, false)[0]+4
+										
+										// index helpers: [CS]
+										const idx_cs = getIndexOfString('CS', substr_cs, true)[2]
+										const idx_cs_end = getIndexOfString('(', substr_cs.slice(idx_cs+3, idx_cs+20), false)[0]+2
+
+										// index helpers: [KDA]
 										const idx_kda = getIndexOfString('<span class="KDA">', substr_kda, false)[0]+18
 										const idx_kda_kills = getIndexOfString('<div class="KDAEach">', substr_kda, false)[0]+45
 										const idx_kda_kills_end = getIndexOfString('<', substr_kda.slice(idx_kda_kills, idx_kda_kills+5), false)[0]
@@ -54,7 +63,11 @@ const Index = (props: { data: any[] }) => {
 										const idx_kda_deaths_end = getIndexOfString('<', substr_kda.slice(idx_kda_deaths, idx_kda_deaths+5), false)[0]
 										const idx_kda_assists = getIndexOfString('<span class="Assist">', substr_kda, false)[0]+21
 										const idx_kda_assists_end = getIndexOfString('<', substr_kda.slice(idx_kda_assists, idx_kda_assists+5), false)[0]
-										
+
+										// index helpers: [winrate]
+										const idx_winrate = getIndexOfString('%', substr_winrate, false)[0]-2
+										console.log(substr_winrate.slice(idx_winrate+38, idx_winrate+40))
+
 										if (index_champ > 5) return
 
 										return (
@@ -73,6 +86,9 @@ const Index = (props: { data: any[] }) => {
 														<span>{substr_kda.slice(idx_kda_kills, idx_kda_kills+idx_kda_kills_end)}</span>{' '}/{' '}
 														<span>{substr_kda.slice(idx_kda_deaths, idx_kda_deaths+idx_kda_deaths_end)}</span>{' '}/{' '}
 														<span>{substr_kda.slice(idx_kda_assists, idx_kda_assists+idx_kda_assists_end)}</span>
+														<p>{substr_cs.slice(idx_cs+3, idx_cs + idx_cs_end)}</p>
+														<p>{substr_winrate.slice(idx_winrate, idx_winrate+2)}%</p>
+														<p>{substr_winrate.slice(idx_winrate+38, idx_winrate+40)}</p>
 													</div>
 												</div>
 											</div>
