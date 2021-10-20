@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Axios from "axios"
+import { Context, useContext } from "react"
+import Home from "../components/Home"
 import getIndexOfString from "../utils/getIndexOfString"
 
 const Index = (props: { data: any[] }) => {
@@ -10,11 +12,43 @@ const Index = (props: { data: any[] }) => {
 		return ''
 	}
 
+	// interface player {
+	// 	name: string,
+	// 	alias: string,
+	// 	champs: champs[]
+	// }
+
+	// interface champs {
+	// 	name: string,
+	// 	image: string,
+	// 	games: number,
+	// 	winrate: number,
+	// 	kda: number,
+	// 	kills: number,
+	// 	deaths: number,
+	// 	asissts: number,
+	// 	cs: number,
+	// }
+
+	const context = []
+
+	const pushPlayer = (name: string, alias: string, champs: []) => {
+		context.push({
+			name: name,
+			alias: alias,
+			champs: champs
+		})
+	}
+
 	return (
 		<>
+			<Home data={context} />
 			{
 				props.data.map((player, index_player) => {
 					const champs_indexes =	getIndexOfString('<div class="ChampionBox Ranked">', player.data, true)
+					// Context
+					const champs = []
+					
 					return (
 						<>
 							<div key={index_player} className="mx-5">
@@ -53,7 +87,7 @@ const Index = (props: { data: any[] }) => {
 										
 										// index helpers: [CS]
 										const idx_cs = getIndexOfString('CS', substr_cs, true)[2]
-										const idx_cs_end = getIndexOfString('(', substr_cs.slice(idx_cs+3, idx_cs+20), false)[0]+2
+										const idx_cs_end = getIndexOfString('(', substr_cs.slice(idx_cs+3, idx_cs+20), false)[0]//+2
 
 										// index helpers: [KDA]
 										const idx_kda = getIndexOfString('<span class="KDA">', substr_kda, false)[0]+18
@@ -66,9 +100,22 @@ const Index = (props: { data: any[] }) => {
 
 										// index helpers: [winrate]
 										const idx_winrate = getIndexOfString('%', substr_winrate, false)[0]-2
-										console.log(substr_winrate.slice(idx_winrate+38, idx_winrate+40))
 
-										if (index_champ > 5) return
+										champs.push({
+											name: substr_name.slice(0, getIndexOfString('"', substr_name, false)[0]).replace("&#039;", "'"),
+											image: 'https:' + substr_img.slice(idx_img, idx_img_end),
+											games: substr_winrate.slice(idx_winrate+38, idx_winrate+40),
+											winrate: substr_winrate.slice(idx_winrate, idx_winrate+2),
+											kda: substr_kda.slice(idx_kda, idx_kda+4),
+											kills: substr_kda.slice(idx_kda_kills, idx_kda_kills+idx_kda_kills_end),
+											deaths: substr_kda.slice(idx_kda_deaths, idx_kda_deaths+idx_kda_deaths_end),
+											asissts: substr_kda.slice(idx_kda_assists, idx_kda_assists+idx_kda_assists_end),
+											cs: substr_cs.slice(idx_cs+3, idx_cs + idx_cs_end),
+										})
+
+										if (champs.length == 6) pushPlayer(player.name, player.alias, champs) 
+
+										if (index_champ > 5) return null
 
 										return (
 											<div key={index_champ} className="col-6 col-md-4 col-xl-2">
@@ -121,13 +168,13 @@ export const getStaticProps = async () => {
 
 	return {
 		props: { data: [
-			{name: 'Alex', data: alex.data},
-			{name: 'Bruno', data: bruno.data},
-			{name: 'Cristian', data: cristian.data},
-			{name: 'David', data: david.data},
-			{name: 'Marcos', data: marcos.data},
-			{name: 'Rodri', data: rodri.data},
-			{name: 'Samu', data: samu.data},
+			{name: 'Alex', data: alex.data, alias: 'alexwwe'},
+			{name: 'Bruno', data: bruno.data, alias: 'Brr1'},
+			{name: 'Cristian', data: cristian.data, alias: 'BloddSword'},
+			{name: 'David', data: david.data, alias: 'Dawichii'},
+			{name: 'Marcos', data: marcos.data, alias: 'Agazhord'},
+			{name: 'Rodri', data: rodri.data, alias: 'Traketero'},
+			{name: 'Samu', data: samu.data, alias: 'DryadZero'},
 		] },
 	}
 }

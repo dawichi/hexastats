@@ -31,7 +31,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 	])
 
 	const value = useContext(Context)
-	console.log(value)
 
 	return (
 		<>
