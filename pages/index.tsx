@@ -32,7 +32,7 @@ const Index = (props: { data: any[] }) => {
 
 	const context = []
 
-	const pushPlayer = (name: string, alias: string, champs: []) => {
+	const pushPlayer = (name: string, alias: string, champs: any[]) => {
 		context.push({
 			name: name,
 			alias: alias,
