@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Axios from "axios"
 import getIndexOfString from "../utils/getIndexOfString"
 
@@ -60,7 +61,7 @@ const Index = (props: { data: any[] }) => {
 											<div key={index_champ} className="col-6 col-md-4 col-xl-2">
 												<div className="flex m-2">
 													<div>
-														<img className="w-100" src={'https:' + substr_img.slice(idx_img, idx_img_end)} />
+														<img className="w-100" src={'https:' + substr_img.slice(idx_img, idx_img_end)} alt="champ" />
 														<span>{substr_name.slice(0, getIndexOfString('"', substr_name, false)[0]).replace("&#039;", "'")}</span>
 													</div>
 													<div className="ml-4 text-xl">
