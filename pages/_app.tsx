@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import '../styles/global.scss'
 import 'tailwindcss/tailwind.css'
+import Navbar from '../components/Navbar'
 
 const metaDescription = 'Hexastats - our custom graphs'
 
@@ -20,7 +21,19 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 			</Head>
 
-			<Component {...pageProps} />
+			<header style={{position: 'sticky', top: 0}}>
+				<Navbar />
+			</header>
+
+			<main>
+				<Component {...pageProps} />
+			</main>
+
+			<footer className="bg-gray-800 text-white p-3 mt-20">
+				<div className="container">
+ 					<span>&copy;Hexastats no se hace responsable de ninguna depresión causada por este golpe de realidad.</span>
+				</div>
+			</footer>
 		</>
 	)
 }
