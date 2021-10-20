@@ -6,13 +6,13 @@ const Home = ({data}) => {
 
 	const tint = (num: number, type: string) => {
 		const tints = {
-			games:   (x: number) => x > 50 ? 'bg-red-300 p-1' : '',
+			games:   (x: number) => x > 50 ? 'font-bold p-1' : '',
 			winrate: (x: number) => x > 60 ? 'bg-green-200' : '',
-			kda:     (x: number) => x > 3 ? 'bg-green-200 p-1' : '',
-			kills:   (x: number) => x > 10 ? 'bg-red-300 p-1' : '',
-			deaths:  (x: number) => x < 5 ? 'bg-green-200 p-1' : '',
-			asissts: (x: number) => x > 10 ? 'bg-green-200 p-1' : '',
-			cs:      (x: number) => x > 250 ? 'bg-green-200 p-1' : '',
+			kda:     (x: number) => x > 2.5 ? 'bg-purple-200 p-1' : '',
+			kills:   (x: number) => x > 10 ? 'bg-red-200 p-1' : '',
+			deaths:  (x: number) => x < 5 ? 'bg-gray-200 p-1' : '',
+			asissts: (x: number) => x > 10 ? 'bg-pink-200 p-1' : '',
+			cs:      (x: number) => x > 250 ? 'bg-yellow-200 p-1' : '',
 		}
 		return tints[type]?.(num) ?? ''
 	}
@@ -28,13 +28,13 @@ const Home = ({data}) => {
 							<Table striped bordered hover responsive>
 								<thead>
 									<tr>
-										<th>Champ</th>
-										<th>Games</th>
-										<th>KDA</th>
-										<th>K</th>
-										<th>D</th>
-										<th>A</th>
-										<th>CS</th>
+										<th><span>Champ</span></th>
+										<th><span className="bg-green-300 py-1 px-2">Games</span></th>
+										<th><span className="bg-purple-300 py-1 px-2">KDA</span></th>
+										<th><span className="bg-red-300 py-1 px-2">K</span></th>
+										<th><span className="bg-gray-400 py-1 px-2">D</span></th>
+										<th><span className="bg-pink-300 py-1 px-2">A</span></th>
+										<th><span className="bg-yellow-300 py-1 px-2">CS</span></th>
 									</tr>
 								</thead>
 								<tbody>
