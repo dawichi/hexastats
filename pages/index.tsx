@@ -12,27 +12,27 @@ const Index = (props: { data: any[] }) => {
 		return ''
 	}
 
-	// interface player {
-	// 	name: string,
-	// 	alias: string,
-	// 	champs: champs[]
-	// }
+	interface Player {
+		name: string,
+		alias: string,
+		champs: Champs[]
+	}
 
-	// interface champs {
-	// 	name: string,
-	// 	image: string,
-	// 	games: number,
-	// 	winrate: number,
-	// 	kda: number,
-	// 	kills: number,
-	// 	deaths: number,
-	// 	asissts: number,
-	// 	cs: number,
-	// }
+	interface Champs {
+		name: string,
+		image: string,
+		games: number,
+		winrate: number,
+		kda: number,
+		kills: number,
+		deaths: number,
+		asissts: number,
+		cs: number,
+	}
 
-	const context = []
-
-	const pushPlayer = (name: string, alias: string, champs: any[]) => {
+	const context: Player[] = []
+	
+	const pushPlayer =(name:string , alias:string , champs: any[]) => {
 		context.push({
 			name: name,
 			alias: alias,
@@ -112,7 +112,7 @@ const Index = (props: { data: any[] }) => {
 											asissts: substr_kda.slice(idx_kda_assists, idx_kda_assists+idx_kda_assists_end),
 											cs: substr_cs.slice(idx_cs+3, idx_cs + idx_cs_end),
 										})
-
+										
 										if (champs.length == 6) pushPlayer(player.name, player.alias, champs) 
 
 										if (index_champ > 5) return null
