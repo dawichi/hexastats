@@ -1,17 +1,21 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-
-const navigation = [
-	{ name: 'Home', href: '/', current: true },
-	{ name: 'Masteries', href: '#', current: false },
-	{ name: 'KDA', href: '#', current: false },
-	{ name: 'Graphs', href: '/graphs', current: false },
-]
-
-const classNames = (...classes) => classes.filter(Boolean).join(' ')
+import { useRouter } from 'next/router'
+import { Disclosure } from '@headlessui/react'
 
 export default function Navbar() {
+	
+	const router = useRouter()
+
+	const navigation = [
+		{ name: 'Home', href: '/', current: ('/' == router.route) },
+		{ name: 'Masteries', href: '/masteries', current: ('/masteries' == router.route) },
+		{ name: 'KDA', href: '/trophies', current: ('/trophies' == router.route) },
+		{ name: 'Graphs', href: '/graphs', current: ('/graphs' == router.route) },
+	]
+	
+	const classNames = (...classes) => classes.filter(Boolean).join(' ')
+
 	return (
 		<Disclosure as="nav" className="bg-gray-800">
 			{({ open }) => (

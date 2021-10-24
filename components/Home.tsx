@@ -2,7 +2,7 @@
 import React from 'react'
 import { Table } from 'react-bootstrap'
 
-const Home = ({data}) => {
+export default function Home({data}) {
 
 	const tint = (num: number, type: string) => {
 		const tints = {
@@ -63,5 +63,3 @@ const Home = ({data}) => {
 		</div>
 	)
 }
-
-export default Home
