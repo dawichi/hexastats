@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-sync-scripts */
-import { createContext, useContext } from 'react'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import Navbar from '../components/Navbar'
@@ -8,29 +7,6 @@ import '../styles/global.scss'
 
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-
-	const Context = createContext([
-		{
-			name: 'David',
-			alias: 'Dawichii',
-			champs: [
-				{
-					name: 'Mordekaiser',
-					image: 'https://dasjfasbknasjfb',
-					games: 34,
-					winrate: 65,
-					kda: 1.92,
-					kills: 4.4,
-					deaths: 7.0,
-					asissts: 6.0,
-					cs: 123.4,
-					csmin: 7.4,
-				}
-			]
-		}
-	])
-
-	const value = useContext(Context)
 
 	return (
 		<>
@@ -51,9 +27,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 			</header>
 
 			<main>
-				<Context.Provider value={value}>
-					<Component {...pageProps} />
-				</Context.Provider>
+				<Component {...pageProps} />
 			</main>
 
 			<footer className="bg-gray-800 text-white p-3 mt-20">

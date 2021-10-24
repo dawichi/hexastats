@@ -1,5 +1,3 @@
-import React from 'react'
-
 const getIndexOfString = (searchStr: string, str: string, caseSensitive: boolean) => {
     if (searchStr.length == 0) {
 		return []
