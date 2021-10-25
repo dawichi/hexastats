@@ -1,15 +1,39 @@
 /* eslint-disable @next/next/no-img-element */
+import React, { useState } from 'react'
 import Axios from 'axios'
+import Navbar from '../components/Navbar'
 import Home from '../components/Home'
+import PieChart from '../components/PieChart'
 import processData from '../utils/processData'
 
 export default function Index(props: { data: any[] }) {
 
 	const context = processData(props.data)
+	const [page, setPage] = useState(0)
+
+	const fruits = [
+		{label: "🍊", value: 12},
+		{label: "🍇", value: 9},
+		{label: "🍏", value: 8},
+		{label: "🍌", value: 7},
+		{label: "🍐", value: 6},
+		{label: "🍋", value: 5},
+		{label: "🍎", value: 4},
+		{label: "🍉", value: 3}
+	]
 
 	return (
 		<>
-			<Home data={context} />
+			<header style={{position: 'sticky', top: 0}}>
+				<Navbar page={page} setPage={setPage} />
+			</header>
+
+			<main>
+				<p>page: {page}</p>
+				{ page == 0 && <Home data={context} /> }
+				{ page == 1 && <PieChart data={fruits} outerRadius={150} innerRadius={100} /> }
+				{ page == 2 && <div>holi maestrías</div> }
+			</main>
 		</>
 	)
 }

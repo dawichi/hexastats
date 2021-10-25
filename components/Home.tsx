@@ -21,7 +21,6 @@ export default function Home({data}) {
 		<div className="container py-5">
 			<div className="row">
 				{data.map((player, index_player) => {
-					console.log(player)
 					return (
 						<div key={index_player} className="col-lg-6 col-xl-4">
 							<h2 className="text-2xl">{player.name} ({player.alias})</h2>

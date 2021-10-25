@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-sync-scripts */
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import Navbar from '../components/Navbar'
 import 'tailwindcss/tailwind.css'
 import '../styles/global.scss'
 
@@ -22,13 +21,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 			</Head>
 
-			<header style={{position: 'sticky', top: 0}}>
-				<Navbar />
-			</header>
-
-			<main>
-				<Component {...pageProps} />
-			</main>
+			<Component {...pageProps} />
 
 			<footer className="bg-gray-800 text-white p-3 mt-20">
 				<div className="container">
