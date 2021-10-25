@@ -10,8 +10,6 @@ export default function Navbar({page, setPage}) {
 		{ name: 'Masteries', onClick: () => setPage(2), current: (page==2) },
 	]
 
-	const classNames = (...classes) => classes.filter(Boolean).join(' ')
-
 	return (
 		<Disclosure as="nav" className="bg-gray-800">
 			{({ open }) => (
@@ -36,10 +34,9 @@ export default function Navbar({page, setPage}) {
 											<button
 												key={item.name}
 												onClick={item.onClick}
-												className={classNames(
-													item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-													'px-3 py-2 rounded-md text-sm font-medium'
-												)}
+												className={'px-3 py-2 rounded-md text-sm font-medium ' + 
+													(item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white')
+												}
 												aria-current={item.current ? 'page' : undefined}
 											>{item.name}</button>
 										))}
@@ -55,10 +52,10 @@ export default function Navbar({page, setPage}) {
 					<Disclosure.Panel className="sm:hidden">
 						<div className="px-2 pt-2 pb-3 space-y-1">
 							{navigation.map((item) => (
-								<button key={item.name} onClick={item.onClick} className={classNames(
-										item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-										'block px-3 py-2 rounded-md text-base font-medium'
-									)}
+								<button key={item.name} onClick={item.onClick}
+									className={'block px-3 py-2 rounded-md text-base font-medium ' + 
+										(item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white')
+									}
 									aria-current={item.current ? 'page' : undefined}
 								>{item.name}</button>
 							))}

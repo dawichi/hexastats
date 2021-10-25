@@ -24,7 +24,7 @@ export default function Index(props: { data: any[] }) {
 
 	return (
 		<>
-			<header style={{position: 'sticky', top: 0}}>
+			<header style={{position: 'sticky', top: 0, zIndex: 1}}>
 				<Navbar page={page} setPage={setPage} />
 			</header>
 
