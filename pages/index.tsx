@@ -30,9 +30,21 @@ export default function Index(props: { data: any[] }) {
 
 			<main>
 				<p>page: {page}</p>
-				{ page == 0 && <Home data={context} /> }
-				{ page == 1 && <PieChart data={fruits} outerRadius={150} innerRadius={100} /> }
-				{ page == 2 && <div>holi maestrías</div> }
+				{ page == 0 &&
+					<div className="animate__animated animate__fadeIn">
+						<Home data={context} />
+					</div>
+				}
+				{ page == 1 &&
+					<div className="animate__animated animate__fadeIn">
+						<PieChart data={fruits} outerRadius={150} innerRadius={100} /> 
+					</div>
+				}
+				{ page == 2 &&
+					<div className="animate__animated animate__fadeIn">
+						<div>holi maestrías</div> 
+					</div>
+				}
 			</main>
 		</>
 	)
