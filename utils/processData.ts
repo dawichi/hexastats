@@ -56,7 +56,7 @@ export default function processData(data) {
 				kda: substr_kda.slice(idx_kda, idx_kda+4),
 				kills: substr_kda.slice(idx_kda_kills, idx_kda_kills+idx_kda_kills_end),
 				deaths: substr_kda.slice(idx_kda_deaths, idx_kda_deaths+idx_kda_deaths_end),
-				asissts: substr_kda.slice(idx_kda_assists, idx_kda_assists+idx_kda_assists_end),
+				assists: substr_kda.slice(idx_kda_assists, idx_kda_assists+idx_kda_assists_end),
 				cs: substr_cs.slice(idx_cs+3, idx_cs + idx_cs_end),
 			})
 			

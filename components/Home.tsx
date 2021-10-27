@@ -11,7 +11,7 @@ export default function Home({data}) {
 			kda:     (x: number) => x > 2.5 ? 'bg-purple-200 p-1' : '',
 			kills:   (x: number) => x > 10 ? 'bg-red-200 p-1' : '',
 			deaths:  (x: number) => x < 5 ? 'bg-gray-200 p-1' : '',
-			asissts: (x: number) => x > 10 ? 'bg-pink-200 p-1' : '',
+			assists: (x: number) => x > 10 ? 'bg-pink-200 p-1' : '',
 			cs:      (x: number) => x > 250 ? 'bg-yellow-200 p-1' : '',
 		}
 		return tints[type]?.(num) ?? ''
@@ -48,7 +48,7 @@ export default function Home({data}) {
 												<td><span className={tint(champ.kda, 'kda')}>{champ.kda}</span></td>
 												<td><span className={tint(champ.kills, 'kills')}>{champ.kills}</span></td>
 												<td><span className={tint(champ.deaths, 'deaths')}>{champ.deaths}</span></td>
-												<td><span className={tint(champ.asissts, 'asissts')}>{champ.asissts}</span></td>
+												<td><span className={tint(champ.assists, 'assists')}>{champ.assists}</span></td>
 												<td><span className={tint(champ.cs, 'cs')}>{champ.cs}</span></td>
 											</tr>
 										)
