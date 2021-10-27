@@ -138,7 +138,6 @@ const Graphs = ({data}) => {
 		return icons[rank]
 	}
 
-	
 	{player_names.map(player => trophies[player].sort(function(a, b) {return a - b}))}
 
 	return (
