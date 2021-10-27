@@ -2,9 +2,9 @@
 import React, { useState } from 'react'
 import Axios from 'axios'
 import Navbar from '../components/Navbar'
-import Home from '../slides/Home'
+import Home from '../components/Home'
 import processData from '../utils/processData'
-import Graphs from '../slides/Graphs'
+import Graphs from '../components/Graphs'
 
 export default function Index(props: { data: any[] }) {
 
