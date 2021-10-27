@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import * as d3 from 'd3'
 
-export default function Graphs(props: { data: any; outerRadius: any; innerRadius: any }) {
+export default function PieChart(props: { data: any, outerRadius: number, innerRadius: number, id: number }) {
 	
 	/*	Prints chart based in a object param
 	props = {
@@ -34,18 +34,19 @@ export default function Graphs(props: { data: any; outerRadius: any; innerRadius
 
 	useEffect(() => {
 		drawChart()
-	}, [data])
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [props.data])
 
 	const drawChart = () => {
 		
 		// Remove old svg
-		d3.select('#pie-container')
+		d3.select('#pie-container-' + props.id)
 			.select('svg')
 			.remove();
 
 		// Create new svg
 		const svg = d3
-			.select('#pie-container')
+			.select('#pie-container-' + props.id)
 			.append('svg')
 			.attr('width', width)
 			.attr('height', height)
@@ -80,15 +81,29 @@ export default function Graphs(props: { data: any; outerRadius: any; innerRadius
 			.append('text')
 			.attr('text-anchor', 'middle')
 			.attr('alignment-baseline', 'middle')
-			.text((d: { data: { label: any } }) => d.data.label)
-			.style('fill', '#ffffff')
+			.text((d: { data: { label: string } }) => d.data.label)
+			.style('fill', '#000')
+			.style('font-size', '.8rem')
 			.attr('transform', (d: any) => {
 				const [x, y] = arcGenerator.centroid(d);
 				return `translate(${x}, ${y})`;
 			})
+
+		// Append text values
+		arc
+			.append('text')
+			.attr('text-anchor', 'middle')
+			.attr('alignment-baseline', 'middle')
+			.text((d: { data: { value: string } }) =>  d.data.value)
+			.style('fill', '#000')
+			.style('font-size', '.8rem')
+			.attr('transform', (d: any) => {
+				const [x, y] = arcGenerator.centroid(d);
+				return `translate(${x}, ${y+20})`;
+			})
 	}
 	
 	return (
-		<div id="pie-container" />
+		<div id={`pie-container-${props.id}`} />
 	)
 }
