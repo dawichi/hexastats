@@ -34,13 +34,12 @@ const ChartCard = ({title, data, data_int, id}) => {
 				<div className="m-auto" style={{width: '85%'}}>
 					<div className="row">
 						<div className="col-4">
-							<p>{trophyIcon(1)} {best1}</p>
+							<p><span className="bg-yellow-400 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best1}</p>						</div>
+						<div className="col-4">
+							<p><span className="bg-gray-700 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best2}</p>
 						</div>
 						<div className="col-4">
-							<p>{trophyIcon(2)} {best2}</p>
-						</div>
-						<div className="col-4">
-							<p>{trophyIcon(3)} {best3}</p>
+							<p><span className="bg-yellow-700 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best3}</p>
 						</div>
 					</div>
 				</div>
