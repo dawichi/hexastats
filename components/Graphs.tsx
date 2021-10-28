@@ -1,14 +1,20 @@
 import React from 'react'
+import trophyIcon from '../utils/trophyIcon'
 import ChartCard from './ChartCard'
 
-//─
-//
-//
-//
-//
+// ┌────────────────┐
+// │  GRAPHS PAGE:  │
+// └────────────────┘
+// Process the data with 'process()' function to get the specific
+// stats of each category and pass the filtered information to the <PieChart/> components
 const Graphs = ({data}) => {
 
+	// We'll use the names to show its trophies
+	const player_names = []
+	data.map(player => player_names.push(player.name))
+
 	// Trophies counter for each player
+	// TODO: get the player names from [player_names]
 	const trophies = {
 		Alex: [],
 		Bruno: [],
@@ -19,31 +25,38 @@ const Graphs = ({data}) => {
 		Samu: [],
 		Diego: []
 	}
-	const player_names = []
-	data.map(player => player_names.push(player.name))
 
-
-	const process = (prop: string, float?:boolean, calc_media?: boolean, order_desc?: boolean) => {
-		const array = []
-		const array_int = []
+	const process = (prop: string, float?:boolean, calc_median?: boolean, order_desc?: boolean) => {
+		/* - prop: the type of property to load. Ex: 'games', 'winrate' or 'kills'
+		*  - float?: by default uses parseInt() for data. Optional parseFloat()
+		*  - calc_media?: by default returns total data. Optional returns median.
+		*  - order_desc?: by default returns asc order. Optional desc order (when less points is better). 
+		*/
+		const player_infos = [] // [{label: 'name', value: 5}]
+		const player_values = [] // [5]
 		data.map(player => {
+			// Fills both arrays with data
 			let total = 0
 			player.champs.map(x => total += float ? parseFloat(x[prop]) : parseInt(x[prop]))
-			array.push({label: player.name, value: calc_media ? (total/7).toFixed(2) : total})
-			array_int.push(calc_media ? (total/7).toFixed(2) : total)
+			player_infos.push({label: player.name, value: calc_median ? (total/7).toFixed(2) : total})
+			player_values.push(calc_median ? (total/7).toFixed(2) : total)
 		})
-		array_int.sort(function(a, b) {
+		player_values.sort(function(a, b) {
 			if (order_desc) return a - b
 			else return b - a
 		})
-		array.map(player => {
-			if (player.value == array_int[0]) trophies[player.label].push(1)
-			if (player.value == array_int[1]) trophies[player.label].push(2)
-			if (player.value == array_int[2]) trophies[player.label].push(3)
+		// If the best value matches with a player's value, adds 1º cup (value '1') to his trophies array. Same for 2º and 3º rank.
+		player_infos.map(player => {
+			if (player.value == player_values[0]) trophies[player.label].push(1)
+			if (player.value == player_values[1]) trophies[player.label].push(2)
+			if (player.value == player_values[2]) trophies[player.label].push(3)
 		})
-		return [array, array_int]
+		// returns the data built to use it in <PieChart/> components
+		// the player values is returned too, to allow show cups in the charts also
+		return [player_infos, player_values]
 	}
 
+	// We get our different data throw or process() function
 	const [gamesplayed, gamesplayed_int] = process('games', false, false, false)
 	const [winrates, winrates_int] = process('winrate', true, true, false)
 	const [kda, kda_int] = process('kda', true, true, false)
@@ -52,15 +65,7 @@ const Graphs = ({data}) => {
 	const [assists, assists_int] = process('assists', true, true, false)
 	const [minions, minions_int] = process('cs', true, true, false)
 
-	const trophies_icon = (rank: number) => {
-		const icons = {
-			1: <span className="bg-yellow-400 p-1 rounded text-white mr-1"><i className="bi bi-trophy"></i></span>,
-			2: <span className="bg-gray-700 p-1 rounded text-white mr-1"><i className="bi bi-trophy"></i></span>,
-			3: <span className="bg-yellow-700 p-1 rounded text-white mr-1"><i className="bi bi-trophy"></i></span>
-		}
-		return icons[rank]
-	}
-
+	// Order player's trophies by value (so it shows 1º, 2º and 3º cups in order)
 	{player_names.map(player => trophies[player].sort(function(a, b) {return a - b}))}
 
 	return (
@@ -68,7 +73,7 @@ const Graphs = ({data}) => {
 			<div className="row p-3">
 				{player_names.map((player, i) =>
 					<div className="col-6 col-md-4 col-lg-3" key={i}>
-						<div className="bg-gray-200 p-3 m-2">{player}: {trophies[player].map(x => trophies_icon(x))}</div>
+						<div className="bg-gray-200 p-3 m-2">{player}: {trophies[player].map(x => trophyIcon(x))}</div>
 					</div>
 				)}
 			</div>
