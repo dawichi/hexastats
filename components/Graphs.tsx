@@ -1,9 +1,14 @@
 import React from 'react'
 import ChartCard from './ChartCard'
 
+//─
+//
+//
+//
+//
 const Graphs = ({data}) => {
 
-	// Trophies counter
+	// Trophies counter for each player
 	const trophies = {
 		Alex: [],
 		Bruno: [],
@@ -17,117 +22,35 @@ const Graphs = ({data}) => {
 	const player_names = []
 	data.map(player => player_names.push(player.name))
 
-	// GAMES PLAYED
-	const gamesplayed = []
-	const gamesplayed_int = []
-	data.map(player => {
-		let total_games = 0
-		player.champs.map(x => total_games += parseInt(x.games))
-		gamesplayed.push({label: player.name, value: total_games})
-		gamesplayed_int.push(total_games)
-	})
-	gamesplayed_int.sort(function(a, b) {return b - a})
-	gamesplayed.map(player => {
-		if (player.value == gamesplayed_int[0]) trophies[player.label].push(1)
-		if (player.value == gamesplayed_int[1]) trophies[player.label].push(2)
-		if (player.value == gamesplayed_int[2]) trophies[player.label].push(3)
-	})
 
-	// WINRATE
-	const winrates = []
-	const winrates_int = []
-	data.map(player => {
-		let winrate = 0
-		player.champs.map(x => winrate += parseInt(x.winrate))
-		winrates.push({label: player.name, value: (winrate/7).toFixed(2)})
-		winrates_int.push((winrate/7).toFixed(2))
-	})
-	winrates_int.sort(function(a, b) {return b - a})
-	winrates.map(player => {
-		if (player.value == winrates_int[0]) trophies[player.label].push(1)
-		if (player.value == winrates_int[1]) trophies[player.label].push(2)
-		if (player.value == winrates_int[2]) trophies[player.label].push(3)
-	})
+	const process = (prop: string, float?:boolean, calc_media?: boolean, order_desc?: boolean) => {
+		const array = []
+		const array_int = []
+		data.map(player => {
+			let total = 0
+			player.champs.map(x => total += float ? parseFloat(x[prop]) : parseInt(x[prop]))
+			array.push({label: player.name, value: calc_media ? (total/7).toFixed(2) : total})
+			array_int.push(calc_media ? (total/7).toFixed(2) : total)
+		})
+		array_int.sort(function(a, b) {
+			if (order_desc) return a - b
+			else return b - a
+		})
+		array.map(player => {
+			if (player.value == array_int[0]) trophies[player.label].push(1)
+			if (player.value == array_int[1]) trophies[player.label].push(2)
+			if (player.value == array_int[2]) trophies[player.label].push(3)
+		})
+		return [array, array_int]
+	}
 
-	// KDA
-	const kda = []
-	const kda_int = []
-	data.map(player => {
-		let total_kda = 0
-		player.champs.map(x => total_kda += parseFloat(x.kda))
-		kda.push({label: player.name, value: (total_kda/7).toFixed(2)})
-		kda_int.push((total_kda/7).toFixed(2))
-	})
-	kda_int.sort(function(a, b) {return b - a})
-	kda.map(player => {
-		if (player.value == kda_int[0]) trophies[player.label].push(1)
-		if (player.value == kda_int[1]) trophies[player.label].push(2)
-		if (player.value == kda_int[2]) trophies[player.label].push(3)
-	})
-
-	// KILLS
-	const kills = []
-	const kills_int = []
-	data.map(player => {
-		let total_kills = 0
-		player.champs.map(x => total_kills += parseFloat(x.kills))
-		kills.push({label: player.name, value: (total_kills/7).toFixed(2)})
-		kills_int.push((total_kills/7).toFixed(2))
-	})
-	kills_int.sort(function(a, b) {return b - a})
-	kills.map(player => {
-		if (player.value == kills_int[0]) trophies[player.label].push(1)
-		if (player.value == kills_int[1]) trophies[player.label].push(2)
-		if (player.value == kills_int[2]) trophies[player.label].push(3)
-	})
-
-	// DEATHS
-	const deaths = []
-	const deaths_int = []
-	data.map(player => {
-		let total_deaths = 0
-		player.champs.map(x => total_deaths += parseFloat(x.deaths))
-		deaths.push({label: player.name, value: (total_deaths/7).toFixed(2)})
-		deaths_int.push((total_deaths/7).toFixed(2))
-	})
-	deaths_int.sort(function(a, b) {return a - b})
-	deaths.map(player => {
-		if (player.value == deaths_int[0]) trophies[player.label].push(1)
-		if (player.value == deaths_int[1]) trophies[player.label].push(2)
-		if (player.value == deaths_int[2]) trophies[player.label].push(3)
-	})
-
-	// ASSISTS
-	const assists = []
-	const assists_int = []
-	data.map(player => {
-		let total_assists = 0
-		player.champs.map(x => total_assists += parseFloat(x.assists))
-		assists.push({label: player.name, value: (total_assists/7).toFixed(2)})
-		assists_int.push((total_assists/7).toFixed(2))
-	})
-	assists_int.sort(function(a, b) {return b - a})
-	assists.map(player => {
-		if (player.value == assists_int[0]) trophies[player.label].push(1)
-		if (player.value == assists_int[1]) trophies[player.label].push(2)
-		if (player.value == assists_int[2]) trophies[player.label].push(3)
-	})
-
-	// MINIONS
-	const minions = []
-	const minions_int = []
-	data.map(player => {
-		let total_minions = 0
-		player.champs.map(x => total_minions += parseFloat(x.cs))
-		minions.push({label: player.name, value: (total_minions/7).toFixed(2)})
-		minions_int.push((total_minions/7).toFixed(2))
-	})
-	minions_int.sort(function(a, b) {return b - a})
-	minions.map(player => {
-		if (player.value == minions_int[0]) trophies[player.label].push(1)
-		if (player.value == minions_int[1]) trophies[player.label].push(2)
-		if (player.value == minions_int[2]) trophies[player.label].push(3)
-	})
+	const [gamesplayed, gamesplayed_int] = process('games', false, false, false)
+	const [winrates, winrates_int] = process('winrate', true, true, false)
+	const [kda, kda_int] = process('kda', true, true, false)
+	const [kills, kills_int] = process('kills', true, true, false)
+	const [deaths, deaths_int] = process('deaths', true, true, true)
+	const [assists, assists_int] = process('assists', true, true, false)
+	const [minions, minions_int] = process('cs', true, true, false)
 
 	const trophies_icon = (rank: number) => {
 		const icons = {
