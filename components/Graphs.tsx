@@ -1,4 +1,5 @@
 import React from 'react'
+import { Champs, Player } from '../interfaces/interfaces'
 import trophyIcon from '../utils/trophyIcon'
 import ChartCard from './ChartCard'
 
@@ -11,7 +12,7 @@ const Graphs = ({data}) => {
 
 	// We'll use the names to show its trophies
 	const player_names = []
-	data.map(player => player_names.push(player.name))
+	data.map((player: Player) => player_names.push(player.name))
 
 	// Trophies counter for each player
 	// TODO: get the player names from [player_names]
@@ -26,30 +27,30 @@ const Graphs = ({data}) => {
 		Diego: []
 	}
 
-	const process = (prop: string, float?:boolean, calc_median?: boolean, order_desc?: boolean) => {
+	const process = (prop: string, float?:boolean, calc_median?: boolean, sort_desc?: boolean) => {
 		/* - prop: the type of property to load. Ex: 'games', 'winrate' or 'kills'
 		*  - float?: by default uses parseInt() for data. Optional parseFloat()
 		*  - calc_media?: by default returns total data. Optional returns median.
-		*  - order_desc?: by default returns asc order. Optional desc order (when less points is better). 
+		*  - sort_desc?: by default returns asc sort. Optional desc sort (when less points is better). 
 		*/
 		const player_infos = [] // [{label: 'name', value: 5}]
 		const player_values = [] // [5]
-		data.map(player => {
+		data.map((player: Player) => {
 			// Fills both arrays with data
 			let total = 0
-			player.champs.map(x => total += float ? parseFloat(x[prop]) : parseInt(x[prop]))
+			player.champs.map((x: Champs) => total += float ? parseFloat(x[prop]) : parseInt(x[prop]))
 			player_infos.push({label: player.name, value: calc_median ? (total/7).toFixed(2) : total})
 			player_values.push(calc_median ? (total/7).toFixed(2) : total)
 		})
 		player_values.sort(function(a, b) {
-			if (order_desc) return a - b
+			if (sort_desc) return a - b
 			else return b - a
 		})
 		// If the best value matches with a player's value, adds 1º cup (value '1') to his trophies array. Same for 2º and 3º rank.
-		player_infos.map(player => {
-			if (player.value == player_values[0]) trophies[player.label].push(1)
-			if (player.value == player_values[1]) trophies[player.label].push(2)
-			if (player.value == player_values[2]) trophies[player.label].push(3)
+		player_infos.map(player_info => {
+			if (player_info.value == player_values[0]) trophies[player_info.label].push(1)
+			if (player_info.value == player_values[1]) trophies[player_info.label].push(2)
+			if (player_info.value == player_values[2]) trophies[player_info.label].push(3)
 		})
 		// returns the data built to use it in <PieChart/> components
 		// the player values is returned too, to allow show cups in the charts also
@@ -65,7 +66,7 @@ const Graphs = ({data}) => {
 	const [assists, assists_int] = process('assists', true, true, false)
 	const [minions, minions_int] = process('cs', true, true, false)
 
-	// Order player's trophies by value (so it shows 1º, 2º and 3º cups in order)
+	// Sorts player's trophies by value (so it shows 1º, 2º and 3º cups in correct order)
 	{player_names.map(player => trophies[player].sort(function(a, b) {return a - b}))}
 
 	return (

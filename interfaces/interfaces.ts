@@ -15,3 +15,8 @@ export interface Champs {
 	asissts: number,
 	cs: number,
 }
+
+export interface DataForChart {
+	label: string,
+	value: number
+}

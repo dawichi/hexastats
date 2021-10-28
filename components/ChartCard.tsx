@@ -1,17 +1,30 @@
 import React from 'react'
+import { DataForChart } from '../interfaces/interfaces'
+import trophyIcon from '../utils/trophyIcon'
 import PieChart from './PieChart'
 
+
 const ChartCard = ({title, data, data_int, id}) => {
+	// Prints a card with a chart
+	// - title: the 'category' of the data in graph
+	// - data: the data to render in graph [{label: 'name', value: 5}]
+	// - data_int: array of values present in 'data[x].value'. Used to manage 1º, 2º and 3º ranks
+	// - id: necessary to print the charts (they must be linked to a HTML id)
+
+	// Select the best 3 values (first 3 values of a sorted array)
 	let best1 = data_int[0]
 	let best2 = data_int[1]
 	let best3 = data_int[2]
 
-	data.map(x => {
+	// If the value matches with a player's value, then use that player's name (because it's his value)
+	// The probability of 2 players having same value is almost 0. (is a float median) So don't worry.
+	data.map((x: DataForChart) => {
 		if (x.value == best1) best1 = x.label
 		if (x.value == best2) best2 = x.label
 		if (x.value == best3) best3 = x.label
 	})
 
+	// Prints our 3 ranked winners of the {title} category and renders the data with <PieChart/>
 	return (
 		<div className="col-lg-4">
 			<div className="border shadow rounded m-3">
@@ -21,13 +34,13 @@ const ChartCard = ({title, data, data_int, id}) => {
 				<div className="m-auto" style={{width: '85%'}}>
 					<div className="row">
 						<div className="col-4">
-							<p><span className="bg-yellow-400 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best1}</p>
+							<p>{trophyIcon(1)} {best1}</p>
 						</div>
 						<div className="col-4">
-							<p><span className="bg-gray-700 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best2}</p>
+							<p>{trophyIcon(2)} {best2}</p>
 						</div>
 						<div className="col-4">
-							<p><span className="bg-yellow-700 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best3}</p>
+							<p>{trophyIcon(3)} {best3}</p>
 						</div>
 					</div>
 				</div>
