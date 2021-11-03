@@ -6,10 +6,11 @@ export default function processData(data) {
 	const context: Player[] = []
 	
 	// Upload context adding the player info
-	const pushPlayer =(name:string , alias:string , champs: any[]) => {
+	const pushPlayer =(name:string , alias:string , image:string, champs: any[]) => {
 		context.push({
 			name: name,
 			alias: alias,
+			image: image,
 			champs: champs
 		})
 	}
@@ -18,6 +19,16 @@ export default function processData(data) {
 	// the desired info of that player and stores the result with pushPlayer()
 	data.map(player => {
 		const champs = []
+
+		// Get profile image
+		const profile_pic = getIndexOfString('<div class="ProfileIcon">', player.data, true)[0]
+		const substr_pic = player.data.slice(profile_pic, profile_pic+600)
+		// index helpers: [profile image]
+		const idx_pic = getIndexOfString('<img src="//opgg-static', substr_pic, true)[0]+10
+		const idx_pic_end = getIndexOfString('.jpg', substr_pic, true)[0]+4
+		const summoner_pic = 'http:' + substr_pic.slice(idx_pic, idx_pic_end)
+
+		// Get each champion's data
 		const champs_indexes =	getIndexOfString('<div class="ChampionBox Ranked">', player.data, true)
 		champs_indexes.map(x => {
 			// SUB-STRINGS 
@@ -26,6 +37,7 @@ export default function processData(data) {
 			const substr_cs = player.data.slice(x+450, x+700)
 			const substr_kda = player.data.slice(x+520, x+1050)
 			const substr_winrate = player.data.slice(x+1000, x+1200)
+
 
 			// index helpers: [image]
 			const idx_img = getIndexOfString('<img src="', substr_img, false)[0]+10
@@ -61,7 +73,7 @@ export default function processData(data) {
 			})
 			
 			// Once we got our last champ (7º), we push the player object before continue with the next player 
-			if (champs.length == 7) pushPlayer(player.name, player.alias, champs) 
+			if (champs.length == 7) pushPlayer(player.name, player.alias, summoner_pic, champs) 
 		})
 	})
 

@@ -23,7 +23,10 @@ export default function Home({data}) {
 				{data.map((player, index_player) => {
 					return (
 						<div key={index_player} className="col-lg-6 col-xl-4">
-							<h2 className="text-2xl">{player.name} ({player.alias})</h2>
+							<div className="flex align-items-center">
+								<img className="m-2 w-14 rounded" src={player.image} alt={player.name} />
+								<h2 className="text-2xl">{player.name} ({player.alias})</h2>
+							</div>
 							<Table striped bordered hover responsive>
 								<thead>
 									<tr>

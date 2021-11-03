@@ -1,6 +1,7 @@
 export interface Player {
 	name: string,
 	alias: string,
+	image: string,
 	champs: Champs[]
 }
 
