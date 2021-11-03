@@ -38,7 +38,6 @@ export default function processData(data) {
 			const substr_kda = player.data.slice(x+520, x+1050)
 			const substr_winrate = player.data.slice(x+1000, x+1200)
 
-
 			// index helpers: [image]
 			const idx_img = getIndexOfString('<img src="', substr_img, false)[0]+10
 			const idx_img_end = getIndexOfString('.png', substr_img, false)[0]+4

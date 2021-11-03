@@ -1,6 +1,5 @@
 import React from 'react'
 import { DataForChart } from '../interfaces/interfaces'
-import trophyIcon from '../utils/trophyIcon'
 import PieChart from './PieChart'
 
 
@@ -34,7 +33,8 @@ const ChartCard = ({title, data, data_int, id}) => {
 				<div className="m-auto" style={{width: '85%'}}>
 					<div className="row">
 						<div className="col-4">
-							<p><span className="bg-yellow-400 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best1}</p>						</div>
+							<p><span className="bg-yellow-400 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best1}</p>
+						</div>
 						<div className="col-4">
 							<p><span className="bg-gray-700 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best2}</p>
 						</div>
