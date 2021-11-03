@@ -72,6 +72,7 @@ const Graphs = ({data}) => {
 	const [deaths, deaths_int] = process('deaths', true, true, true)
 	const [assists, assists_int] = process('assists', true, true, false)
 	const [minions, minions_int] = process('cs', true, true, false)
+	const [cs_median, cs_median_int] = process('csmedian', true, true, false)
 
 	return (
 		<>
@@ -84,7 +85,7 @@ const Graphs = ({data}) => {
 									<img className="m-2 w-14 rounded" src={card.image} alt={card.name} />
 									<div className="flex flex-col justify-content-center">
 										<span className="pb-1 text-xl">{card.name}</span>
-										<div>{card.trophies.map((x: number) => trophyIcon(x))}</div>
+										<div className="mr-1">{card.trophies.map((x: number) => trophyIcon(x))}</div>
 									</div>
 								</div>
 							</div>
@@ -100,7 +101,8 @@ const Graphs = ({data}) => {
 					<ChartCard title={'Kills'} data={kills} data_int={kills_int} id={4} />
 					<ChartCard title={'Deaths'} data={deaths} data_int={deaths_int} id={5} />
 					<ChartCard title={'Assists'} data={assists} data_int={assists_int} id={6} />
-					<ChartCard title={'Minions'} data={minions} data_int={minions_int} id={7} />
+					<ChartCard title={'Farm total'} data={minions} data_int={minions_int} id={7} />
+					<ChartCard title={'CS / Min'} data={cs_median} data_int={cs_median_int} id={8} />
 				</div>
 			</div>
 		</>

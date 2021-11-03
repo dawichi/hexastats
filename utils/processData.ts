@@ -69,6 +69,7 @@ export default function processData(data) {
 				deaths: substr_kda.slice(idx_kda_deaths, idx_kda_deaths+idx_kda_deaths_end),
 				assists: substr_kda.slice(idx_kda_assists, idx_kda_assists+idx_kda_assists_end),
 				cs: substr_cs.slice(idx_cs+3, idx_cs + idx_cs_end),
+				csmedian: substr_cs.slice(idx_cs+3, idx_cs+20).slice(idx_cs_end+1, idx_cs_end+4),
 			})
 			
 			// Once we got our last champ (7º), we push the player object before continue with the next player 
