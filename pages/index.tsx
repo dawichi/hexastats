@@ -39,7 +39,6 @@ export default function Index(props: { data: any[] }) {
 }
 
 
-
 export const getStaticProps = async () => {
 	// Fetch data from euw.op.gg with getStaticProps()'s NextJS function
 	const BASE_URL = 'https://euw.op.gg/summoner/userName='
@@ -47,22 +46,36 @@ export const getStaticProps = async () => {
 	const alex = await Axios.get(BASE_URL + 'alexwwe')
 	const bruno = await Axios.get(BASE_URL + 'Brr1')
 	const cristian = await Axios.get(BASE_URL + 'BloddSword')
-	const david = await Axios.get(BASE_URL + 'Dawichii')
+	const dawid = await Axios.get(BASE_URL + 'Dawichii')
 	const marcos = await Axios.get(BASE_URL + 'Agazhord')
 	const rodri = await Axios.get(BASE_URL + 'Traketero')
 	const samu = await Axios.get(BASE_URL + 'DryadZero')
 	const diego = await Axios.get(BASE_URL + 'Rhaast West')
+	const abel = await Axios.get(BASE_URL + 'DelemKi 26')
+	const david = await Axios.get(BASE_URL + 'DAYTRESGP')
+	const jose = await Axios.get(BASE_URL + 'Telejenkem')
+
+	const data = [
+		{name: 'Alex', data: alex.data, alias: 'alexwwe'},
+		{name: 'Bruno', data: bruno.data, alias: 'Brr1'},
+		{name: 'Cristian', data: cristian.data, alias: 'BloddSword'},
+		{name: 'Dawid', data: dawid.data, alias: 'Dawichii'},
+		{name: 'Marcos', data: marcos.data, alias: 'Agazhord'},
+		{name: 'Rodri', data: rodri.data, alias: 'Traketero'},
+		{name: 'Samu', data: samu.data, alias: 'DryadZero'},
+		{name: 'Diego', data: diego.data, alias: 'Rhaast West'},
+		{name: 'Abel', data: abel.data, alias: 'DelemKi 26'},
+		{name: 'David', data: david.data, alias: 'DAYTRESGP'},
+		{name: 'Jose', data: jose.data, alias: 'Telejenkem'},
+	]
+
+	data.sort((A, B) => {
+		if (A.name < B.name) return -1
+		if (A.name > B.name) return 1
+		return 0
+	})
 
 	return {
-		props: { data: [
-			{name: 'Alex', data: alex.data, alias: 'alexwwe'},
-			{name: 'Bruno', data: bruno.data, alias: 'Brr1'},
-			{name: 'Cristian', data: cristian.data, alias: 'BloddSword'},
-			{name: 'David', data: david.data, alias: 'Dawichii'},
-			{name: 'Marcos', data: marcos.data, alias: 'Agazhord'},
-			{name: 'Rodri', data: rodri.data, alias: 'Traketero'},
-			{name: 'Samu', data: samu.data, alias: 'DryadZero'},
-			{name: 'Diego', data: diego.data, alias: 'Rhaast West'},
-		] },
+		props: { data: data},
 	}
 }
