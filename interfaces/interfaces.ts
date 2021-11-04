@@ -15,6 +15,7 @@ export interface Champs {
 	deaths: number,
 	asissts: number,
 	cs: number,
+	csmedian: number,
 }
 
 export interface DataForChart {
