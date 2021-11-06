@@ -22,3 +22,9 @@ export interface DataForChart {
 	label: string,
 	value: number
 }
+
+export interface RankResults {
+	name: string,
+	image: string,
+	trophies: number[]
+}
