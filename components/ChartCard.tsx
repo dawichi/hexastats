@@ -31,16 +31,10 @@ const ChartCard = ({title, data, data_int, id}) => {
 				<hr style={{width: '85%', margin: 'auto'}} />
 				<br/>
 				<div className="m-auto" style={{width: '85%'}}>
-					<div className="row">
-						<div className="col-4">
-							<p><span className="bg-yellow-400 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best1}</p>
-						</div>
-						<div className="col-4">
-							<p><span className="bg-gray-700 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best2}</p>
-						</div>
-						<div className="col-4">
-							<p><span className="bg-yellow-700 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best3}</p>
-						</div>
+					<div className="grid grid-cols-3">
+						<p><span className="bg-yellow-400 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best1}</p>
+						<p><span className="bg-gray-700 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best2}</p>
+						<p><span className="bg-yellow-700 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best3}</p>
 					</div>
 				</div>
 				<PieChart data={data} outerRadius={120} innerRadius={50} id={id} />

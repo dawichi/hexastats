@@ -50,13 +50,13 @@ const Graphs = ({data}) => {
 	return (
 		<>
 			<div className="container-fluid">
-				<div className="row">
+				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
 					{ rank_results.map((card, indx_card) => 
-						<div className="col-sm-6 col-lg-4 col-xl-3 col-xxl-2" key={indx_card}>
+						<div key={indx_card}>
 							<div className="bg-gray-200 p-1 m-2 shadow-sm border">
 								<div className="flex">
 									<img className="m-2 w-14 h-14 rounded" src={card.image} alt={card.name} />
-									<div className="flex flex-col justify-content-center">
+									<div className="flex flex-col">
 										<span className="pb-1 text-xl">{card.name}</span>
 										<div className="mr-1">{card.trophies.map((x: number) => trophyIcon(x))}</div>
 									</div>
@@ -66,8 +66,8 @@ const Graphs = ({data}) => {
 					)}
 				</div>
 			</div>
-			<div className="container">
-				<div className="row">
+			<div className="container m-auto">
+				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
 					{charts.map((x, index) => <ChartCard key={index} id={index+1} title={x.title} data={x.data} data_int={x.data_int} />)}
 				</div>
 			</div>

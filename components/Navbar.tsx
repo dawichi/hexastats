@@ -5,7 +5,7 @@ import { Disclosure } from '@headlessui/react'
 export default function Navbar({page, setPage}) {
 	
 	const navigation = [
-		{ name: 'Home', onClick: () => setPage(0), current: (page==0) },
+		{ name: 'Stats', onClick: () => setPage(0), current: (page==0) },
 		{ name: 'Graphs', onClick: () => setPage(1), current: (page==1) },
 		{ name: 'Masteries', onClick: () => setPage(2), current: (page==2) },
 	]

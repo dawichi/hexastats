@@ -9,7 +9,7 @@ export default function Home({data}) {
 			winrate: (x: number) => x > 55 ? 'bg-green-200' : '',
 			kda:     (x: number) => x > 2.5 ? 'bg-purple-200 p-1' : '',
 			kills:   (x: number) => x > 10 ? 'bg-red-200 p-1' : '',
-			deaths:  (x: number) => x < 5 ? 'bg-gray-200 p-1' : '',
+			deaths:  (x: number) => x < 5 ? 'bg-gray-300 p-1' : '',
 			assists: (x: number) => x > 10 ? 'bg-pink-200 p-1' : '',
 			cs:      (x: number) => x > 250 ? 'bg-yellow-200 p-1' : '',
 		}
@@ -17,7 +17,7 @@ export default function Home({data}) {
 	}
 
 	return (
-		<div className="container m-auto py-16">
+		<div className="container m-auto py-8 lg:py-16">
 			<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
 				{data.map((player, index_player) => {
 					return (
