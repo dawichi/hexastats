@@ -5,13 +5,13 @@ export default function Home({data}) {
 
 	const tint = (num: number, type: string) => {
 		const tints = {
-			games:   (x: number) => x > 50 ? 'font-bold p-1' : '',
-			winrate: (x: number) => x > 55 ? 'bg-green-200' : '',
-			kda:     (x: number) => x > 2.5 ? 'bg-purple-200 p-1' : '',
-			kills:   (x: number) => x > 10 ? 'bg-red-200 p-1' : '',
-			deaths:  (x: number) => x < 5 ? 'bg-gray-300 p-1' : '',
-			assists: (x: number) => x > 10 ? 'bg-pink-200 p-1' : '',
-			cs:      (x: number) => x > 250 ? 'bg-yellow-200 p-1' : '',
+			games:   (x: number) => x >= 50 ? 'font-bold p-1' : '',
+			winrate: (x: number) => x >= 55 ? 'bg-green-200' : '',
+			kda:     (x: number) => x >= 3 ? 'bg-purple-200 p-1' : '',
+			kills:   (x: number) => x >= 10 ? 'bg-red-200 p-1' : '',
+			deaths:  (x: number) => x <= 5 ? 'bg-gray-300 p-1' : '',
+			assists: (x: number) => x >= 10 ? 'bg-pink-200 p-1' : '',
+			cs:      (x: number) => x >= 200 ? 'bg-yellow-200 p-1' : '',
 		}
 		return tints[type]?.(num) ?? ''
 	}

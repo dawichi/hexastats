@@ -28,8 +28,7 @@ export default function PieChart(props: { data: any, outerRadius: number, innerR
 
 	const colorScale = d3     
 		.scaleSequential()      
-		// .interpolator(d3.interpolateCool)      
-		.interpolator(d3.interpolateWarm)      
+		.interpolator(d3.interpolateRainbow)      
 		.domain([0, data.length]);
 
 	useEffect(() => {

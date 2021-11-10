@@ -46,7 +46,7 @@ export const getStaticProps = async () => {
 	const alex = await Axios.get(BASE_URL + 'alexwwe')
 	const bruno = await Axios.get(BASE_URL + 'Brr1')
 	const cristian = await Axios.get(BASE_URL + 'BloddSword')
-	const dawid = await Axios.get(BASE_URL + 'Dawichii')
+	const dawichi = await Axios.get(BASE_URL + 'Dawichii')
 	const marcos = await Axios.get(BASE_URL + 'Agazhord')
 	const rodri = await Axios.get(BASE_URL + 'Traketero')
 	const samu = await Axios.get(BASE_URL + 'DryadZero')
@@ -59,7 +59,7 @@ export const getStaticProps = async () => {
 		{name: 'Alex', data: alex.data, alias: 'alexwwe'},
 		{name: 'Bruno', data: bruno.data, alias: 'Brr1'},
 		{name: 'Cristian', data: cristian.data, alias: 'BloddSword'},
-		{name: 'Dawid', data: dawid.data, alias: 'Dawichii'},
+		{name: 'Dawichi', data: dawichi.data, alias: 'Dawichii'},
 		{name: 'Marcos', data: marcos.data, alias: 'Agazhord'},
 		{name: 'Rodri', data: rodri.data, alias: 'Traketero'},
 		{name: 'Samu', data: samu.data, alias: 'DryadZero'},

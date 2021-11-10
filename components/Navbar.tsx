@@ -44,7 +44,7 @@ export default function Navbar({page, setPage}) {
 								</div>
 							</div>
 							<div className="absolute right-0">
-								<div className="text-white text-2xl">다 위 치</div>
+								<a href="https://github.com/dawichi" target="_blank" className="text-white text-2xl" rel="noreferrer">다 위 치</a>
 							</div>
 						</div>
 					</div>
