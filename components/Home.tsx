@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
-import { Table } from 'react-bootstrap'
 
 export default function Home({data}) {
 
@@ -18,32 +17,32 @@ export default function Home({data}) {
 	}
 
 	return (
-		<div className="container py-5">
-			<div className="row">
+		<div className="container m-auto py-16">
+			<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
 				{data.map((player, index_player) => {
 					return (
-						<div key={index_player} className="col-lg-6 col-xl-4">
-							<div className="flex align-items-center">
+						<div key={index_player} className="flex flex-col">
+							<div className="flex items-center">
 								<img className="m-2 w-14 rounded" src={player.image} alt={player.name} />
 								<h2 className="text-2xl">{player.name} ({player.alias})</h2>
 							</div>
-							<Table striped bordered hover responsive>
+							<table className="table-auto m-3 text-center border bg-gray-100">
 								<thead>
 									<tr>
-										<th><span>Champ</span></th>
-										<th><span className="bg-green-300 py-1 px-2">Games</span></th>
-										<th><span className="bg-purple-300 py-1 px-2">KDA</span></th>
-										<th><span className="bg-red-300 py-1 px-2">K</span></th>
-										<th><span className="bg-gray-400 py-1 px-2">D</span></th>
-										<th><span className="bg-pink-300 py-1 px-2">A</span></th>
-										<th><span className="bg-yellow-300 py-1 px-2">CS</span></th>
+										<th className="py-1 px-2 bg-gray-300"><span>Champ</span></th>
+										<th className="py-1 px-2 bg-green-300"><span>Games</span></th>
+										<th className="py-1 px-2 bg-purple-300"><span>KDA</span></th>
+										<th className="py-1 px-2 bg-red-300"><span>K</span></th>
+										<th className="py-1 px-2 bg-gray-400"><span>D</span></th>
+										<th className="py-1 px-2 bg-pink-300"><span>A</span></th>
+										<th className="py-1 px-2 bg-yellow-300"><span>CS</span></th>
 									</tr>
 								</thead>
 								<tbody>
 									{player.champs.map((champ, index_champ) => {
 										return (
-											<tr key={index_champ}>
-												<td><img src={champ.image} alt="champ image" style={{maxWidth: '60px'}} /></td>
+											<tr key={index_champ} className="border">
+												<td><img src={champ.image} alt="champ image" style={{maxWidth: '60px', margin: 'auto'}} /></td>
 												<td>
 													<span className={tint(champ.games, 'games')}>{champ.games}</span>{' '}
 													(<span className={tint(champ.winrate, 'winrate')}>{champ.winrate}%</span>)
@@ -57,7 +56,7 @@ export default function Home({data}) {
 										)
 									})}
 								</tbody>
-							</Table>
+							</table>
 						</div>
 					)
 				})}
