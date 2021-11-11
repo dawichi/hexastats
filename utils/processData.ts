@@ -1,7 +1,9 @@
 import { Player } from '../interfaces/interfaces'
 import getIndexOfString from './getIndexOfString'
 
+
 export default function processData(data) {
+
 	// Context of the onepage webapp
 	const context: Player[] = []
 	
@@ -15,6 +17,7 @@ export default function processData(data) {
 		})
 	}
 
+
 	// [The logic]: gets the data from pops and destructures it until get 
 	// the desired info of that player and stores the result with pushPlayer()
 	data.map(player => {
@@ -23,14 +26,17 @@ export default function processData(data) {
 		// Get profile image
 		const profile_pic = getIndexOfString('<div class="ProfileIcon">', player.data, true)[0]
 		const substr_pic = player.data.slice(profile_pic, profile_pic+600)
+
 		// index helpers: [profile image]
 		const idx_pic = getIndexOfString('<img src="//opgg-static', substr_pic, true)[0]+10
 		const idx_pic_end = getIndexOfString('.jpg', substr_pic, true)[0]+4
 		const summoner_pic = 'http:' + substr_pic.slice(idx_pic, idx_pic_end)
 
+
 		// Get each champion's data
 		const champs_indexes =	getIndexOfString('<div class="ChampionBox Ranked">', player.data, true)
 		champs_indexes.map(x => {
+
 			// SUB-STRINGS 
 			const substr_name = player.data.slice(x+60, x+90)
 			const substr_img = player.data.slice(x+100, x+300)
@@ -58,18 +64,33 @@ export default function processData(data) {
 			// index helpers: [winrate]
 			const idx_winrate = getIndexOfString('%', substr_winrate, false)[0]-2
 
+			let games: string
+			if (substr_winrate.slice(idx_winrate+39, idx_winrate+40) === ' ')
+				// empty space in 2º position?: number has only 1 digit
+				games = substr_winrate.slice(idx_winrate+38, idx_winrate+39)
+			else if (substr_winrate.slice(idx_winrate+40, idx_winrate+41) === ' ')
+				// empty space in 3º position?: number has 2 digit
+				games = substr_winrate.slice(idx_winrate+38, idx_winrate+40) 
+			else
+				// else: 3 digit
+				games = substr_winrate.slice(idx_winrate+38, idx_winrate+41) 
+
+			let winrate = substr_winrate.slice(idx_winrate-1, idx_winrate) === '\t'
+				? substr_winrate.slice(idx_winrate, idx_winrate+2)
+				: substr_winrate.slice(idx_winrate-1, idx_winrate+2)
+
 			// Once we've isolated every info block, we can build our champ object and push it into [champs]
 			champs.push({
 				name: substr_name.slice(0, getIndexOfString('"', substr_name, false)[0]).replace("&#039;", "'"),
 				image: 'https:' + substr_img.slice(idx_img, idx_img_end),
-				games: substr_winrate.slice(idx_winrate+38, idx_winrate+40),
-				winrate: substr_winrate.slice(idx_winrate, idx_winrate+2),
-				kda: substr_kda.slice(idx_kda, idx_kda+4),
-				kills: substr_kda.slice(idx_kda_kills, idx_kda_kills+idx_kda_kills_end),
-				deaths: substr_kda.slice(idx_kda_deaths, idx_kda_deaths+idx_kda_deaths_end),
-				assists: substr_kda.slice(idx_kda_assists, idx_kda_assists+idx_kda_assists_end),
-				cs: substr_cs.slice(idx_cs+3, idx_cs + idx_cs_end),
-				csmedian: substr_cs.slice(idx_cs+3, idx_cs+20).slice(idx_cs_end+1, idx_cs_end+4),
+				games: parseInt(games),
+				winrate: parseInt(winrate),
+				kda: parseFloat(substr_kda.slice(idx_kda, idx_kda+4)),
+				kills: parseFloat(substr_kda.slice(idx_kda_kills, idx_kda_kills+idx_kda_kills_end)),
+				deaths: parseFloat(substr_kda.slice(idx_kda_deaths, idx_kda_deaths+idx_kda_deaths_end)),
+				assists: parseFloat(substr_kda.slice(idx_kda_assists, idx_kda_assists+idx_kda_assists_end)),
+				cs: parseFloat(substr_cs.slice(idx_cs+3, idx_cs + idx_cs_end)),
+				csmedian: parseFloat(substr_cs.slice(idx_cs+3, idx_cs+20).slice(idx_cs_end+1, idx_cs_end+4)),
 			})
 			
 			// Once we got our last champ (7º), we push the player object before continue with the next player 

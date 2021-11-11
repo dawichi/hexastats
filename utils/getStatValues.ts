@@ -6,20 +6,34 @@ const getStatValues = (data: Player[], rank_results: RankResults[], prop: string
 	*  - calc_media?: by default returns total data. Optional returns median.
 	*  - sort_desc?: by default returns asc sort. Optional desc sort (when less points is better). 
 	*/
+
 	const player_infos = [] // [{label: 'name', value: 5}]
 	const player_values = [] // [5]
-	// Fills both arrays with dataW
+
+	// Fills both arrays with data
 	data.map((player: Player) => {
 		let total = 0
-		player.champs.map((x: Champs) => total += float ? parseFloat(x[prop]) : parseInt(x[prop]))
-		player_infos.push({label: player.name, value: calc_median ? (total/7).toFixed(2) : total})
-		player_values.push(calc_median ? (total/7).toFixed(2) : total)
+		if (prop === 'winrate') {
+			let total_games = 0
+			player.champs.map((x: Champs) => {
+				total_games += x.games
+				total += x.games * x.winrate
+			})
+			player_infos.push({label: player.name, value: (total/total_games).toFixed(2)})
+			player_values.push((total/total_games).toFixed(2))
+		} else {
+			player.champs.map((x: Champs) => total += float ? parseFloat(x[prop]) : parseInt(x[prop]))
+			player_infos.push({label: player.name, value: calc_median ? (total/7).toFixed(2) : total})
+			player_values.push(calc_median ? (total/7).toFixed(2) : total)
+		}
 	})
+
 	// Sorts values, asc or desc
 	player_values.sort(function(a, b) {
 		if (sort_desc) { return a - b }
 		else { return b - a }
 	})
+
 	// If the best value matches with a player's value, adds 1º cup (value '1') to his trophies array. Same for 2º and 3º rank.
 	player_infos.map(player_info => {
 		rank_results.map(card => {
@@ -34,6 +48,7 @@ const getStatValues = (data: Player[], rank_results: RankResults[], prop: string
 			}
 		})
 	})
+
 	// returns the data built to use it in <PieChart/> components
 	// the player values is returned too, to allow show cups in the charts also
 	return [player_infos, player_values]
