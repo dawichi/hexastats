@@ -1,4 +1,4 @@
-import { Player } from '../interfaces/interfaces'
+import { Champs, Player } from '../interfaces/interfaces'
 import getIndexOfString from './getIndexOfString'
 
 
@@ -8,7 +8,7 @@ export default function processData(data) {
 	const context: Player[] = []
 	
 	// Upload context adding the player info
-	const pushPlayer =(name:string , alias:string , image:string, rank_n:number, rank_p: number, champs: any[]) => {
+	const pushPlayer =(name:string , alias:string , image:string, rank_n:string, rank_p: number, champs: Champs[]) => {
 		context.push({
 			name: name,
 			alias: alias,
@@ -21,7 +21,7 @@ export default function processData(data) {
 
 
 	// [The logic]: gets the data from pops and destructures it until get 
-	// the desired info of that player and stores the result with pushPlayer()
+	// the desired : info of that player and stores the result with pushPlayer()
 	data.map(player => {
 		const champs = []
 
@@ -34,7 +34,7 @@ export default function processData(data) {
 		const substr_rank = player.data.slice(idx_rank+34, idx_rank+63)
 
 		const rank_n_digits = getIndexOfString('</', substr_rank, false)[0]
-		const rank_n = substr_rank.slice(0, rank_n_digits)
+		const rank_n = substr_rank.slice(0, rank_n_digits).replace(',',' ').replace(',',' ')
 
 		const rank_p_start = getIndexOfString('(', substr_rank, false)[0]+1
 		const rank_p_end = getIndexOfString('%', substr_rank, false)[0]
@@ -111,8 +111,8 @@ export default function processData(data) {
 					player.name,
 					player.alias,
 					summoner_pic,
-					parseInt(rank_n.replaceAll(',','')),
-					parseFloat(rank_p),
+					rank_n !== "" ? rank_n : '',
+					rank_p !== "" ? parseFloat(rank_p) : 100,
 					champs
 				)
 			}

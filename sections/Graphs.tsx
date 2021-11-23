@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Player } from '../interfaces/interfaces'
 import getStatValues from '../utils/getStatValues'
 import trophyIcon from '../utils/trophyIcon'
-import ChartCard from './ChartCard'
+import ChartCard from '../components/ChartCard'
 
 // ┌────────────────┐
 // │  GRAPHS PAGE:  │

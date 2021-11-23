@@ -7,7 +7,8 @@ export default function Navbar({page, setPage}) {
 	const navigation = [
 		{ name: 'Stats', onClick: () => setPage(0), current: (page==0) },
 		{ name: 'Graphs', onClick: () => setPage(1), current: (page==1) },
-		{ name: 'Masteries', onClick: () => setPage(2), current: (page==2) },
+		{ name: 'Ranking', onClick: () => setPage(2), current: (page==2) },
+		{ name: 'Masteries', onClick: () => setPage(3), current: (page==3) },
 	]
 
 	return (

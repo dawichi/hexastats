@@ -23,7 +23,7 @@ export default function Home({data}) {
 					return (
 						<div key={index_player} className="flex flex-col">
 							<div className="flex items-center">
-								<img className="m-2 w-14 rounded" src={player.image} alt={player.name} />
+								<img className="m-3 w-14 rounded" src={player.image} alt={player.name} />
 								<h2 className="text-2xl">{player.name} ({player.alias})</h2>
 							</div>
 							<table className="table-auto m-3 text-center border bg-gray-100">

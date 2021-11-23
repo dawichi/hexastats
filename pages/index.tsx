@@ -2,9 +2,10 @@
 import React, { useState } from 'react'
 import Axios from 'axios'
 import Navbar from '../components/Navbar'
-import Home from '../components/Home'
 import processData from '../utils/processData'
-import Graphs from '../components/Graphs'
+import Home from '../sections/Home'
+import Graphs from '../sections/Graphs'
+import Ranking from '../sections/Ranking'
 
 export default function Index(props: { data: any[] }) {
 
@@ -30,7 +31,12 @@ export default function Index(props: { data: any[] }) {
 				}
 				{ page == 2 &&
 					<div className="animate__animated animate__fadeIn">
-						<div>holi maestrías</div> 
+						<Ranking data={context}/>
+					</div>
+				}
+				{ page == 3 &&
+					<div className="animate__animated animate__fadeIn">
+						<div>hi</div> 
 					</div>
 				}
 			</main>
