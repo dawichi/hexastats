@@ -8,11 +8,13 @@ export default function processData(data) {
 	const context: Player[] = []
 	
 	// Upload context adding the player info
-	const pushPlayer =(name:string , alias:string , image:string, champs: any[]) => {
+	const pushPlayer =(name:string , alias:string , image:string, rank_n:number, rank_p: number, champs: any[]) => {
 		context.push({
 			name: name,
 			alias: alias,
 			image: image,
+			rank_n: rank_n,
+			rank_p: rank_p,
 			champs: champs
 		})
 	}
@@ -26,12 +28,22 @@ export default function processData(data) {
 		// Get profile image
 		const profile_pic = getIndexOfString('<div class="ProfileIcon">', player.data, true)[0]
 		const substr_pic = player.data.slice(profile_pic, profile_pic+600)
+		
+		// Get Rank
+		const idx_rank = getIndexOfString('Ladder Rank <span class="ranking">', player.data, true)[0]
+		const substr_rank = player.data.slice(idx_rank+34, idx_rank+63)
+
+		const rank_n_digits = getIndexOfString('</', substr_rank, false)[0]
+		const rank_n = substr_rank.slice(0, rank_n_digits)
+
+		const rank_p_start = getIndexOfString('(', substr_rank, false)[0]+1
+		const rank_p_end = getIndexOfString('%', substr_rank, false)[0]
+		const rank_p = substr_rank.slice(rank_p_start, rank_p_end)
 
 		// index helpers: [profile image]
 		const idx_pic = getIndexOfString('<img src="//opgg-static', substr_pic, true)[0]+10
 		const idx_pic_end = getIndexOfString('.jpg', substr_pic, true)[0]+4
 		const summoner_pic = 'http:' + substr_pic.slice(idx_pic, idx_pic_end)
-
 
 		// Get each champion's data
 		const champs_indexes =	getIndexOfString('<div class="ChampionBox Ranked">', player.data, true)
@@ -90,11 +102,20 @@ export default function processData(data) {
 				deaths: parseFloat(substr_kda.slice(idx_kda_deaths, idx_kda_deaths+idx_kda_deaths_end)),
 				assists: parseFloat(substr_kda.slice(idx_kda_assists, idx_kda_assists+idx_kda_assists_end)),
 				cs: parseFloat(substr_cs.slice(idx_cs+3, idx_cs + idx_cs_end)),
-				csmedian: parseFloat(substr_cs.slice(idx_cs+3, idx_cs+20).slice(idx_cs_end+1, idx_cs_end+4)),
+				csmedian: parseFloat(substr_cs.slice(idx_cs+3, idx_cs+20).slice(idx_cs_end+1, idx_cs_end+4))
 			})
 			
 			// Once we got our last champ (7º), we push the player object before continue with the next player 
-			if (champs.length == 7) pushPlayer(player.name, player.alias, summoner_pic, champs) 
+			if (champs.length == 7) {
+				pushPlayer(
+					player.name,
+					player.alias,
+					summoner_pic,
+					parseInt(rank_n.replaceAll(',','')),
+					parseFloat(rank_p),
+					champs
+				)
+			}
 		})
 	})
 

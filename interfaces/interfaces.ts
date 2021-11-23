@@ -2,6 +2,8 @@ export interface Player {
 	name: string,
 	alias: string,
 	image: string,
+	rank_n: number,
+	rank_p: number,
 	champs: Champs[]
 }
 
@@ -15,7 +17,7 @@ export interface Champs {
 	deaths: number,
 	asissts: number,
 	cs: number,
-	csmedian: number,
+	csmedian: number
 }
 
 export interface DataForChart {
