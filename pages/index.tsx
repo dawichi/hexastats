@@ -6,10 +6,11 @@ import processData from '../utils/processData'
 import Home from '../sections/Home'
 import Graphs from '../sections/Graphs'
 import Ranking from '../sections/Ranking'
+import { realName } from '../utils'
 
 export default function Index(props: { data: any[] }) {
 
-	const context = processData(props.data)
+	const data = processData(props.data)
 	const [page, setPage] = useState(0)
 
 	return (
@@ -21,17 +22,17 @@ export default function Index(props: { data: any[] }) {
 			<main>
 				{ page == 0 &&
 					<div className="animate__animated animate__fadeIn">
-						<Home data={context} />
+						<Home data={data} />
 					</div>
 				}
 				{ page == 1 &&
 					<div className="animate__animated animate__fadeIn">
-						<Graphs data={context}/>
+						<Graphs data={data}/>
 					</div>
 				}
 				{ page == 2 &&
 					<div className="animate__animated animate__fadeIn">
-						<Ranking data={context}/>
+						<Ranking data={data}/>
 					</div>
 				}
 				{ page == 3 &&
@@ -49,30 +50,46 @@ export const getStaticProps = async () => {
 	// Fetch data from euw.op.gg with getStaticProps()'s NextJS function
 	const BASE_URL = 'https://euw.op.gg/summoner/userName='
 
-	const alex = await Axios.get(BASE_URL + 'alexwwe')
-	const bruno = await Axios.get(BASE_URL + 'Brr1')
-	const cristian = await Axios.get(BASE_URL + 'BloddSword')
-	const dawichi = await Axios.get(BASE_URL + 'Dawichii')
-	const marcos = await Axios.get(BASE_URL + 'Agazhord')
-	const rodri = await Axios.get(BASE_URL + 'Traketero')
-	const samu = await Axios.get(BASE_URL + 'DryadZero')
-	const diego = await Axios.get(BASE_URL + 'Rhaast West')
-	const abel = await Axios.get(BASE_URL + 'DelemKi 26')
-	const david = await Axios.get(BASE_URL + 'DAYTRESGP')
-	const jose = await Axios.get(BASE_URL + 'Telejenkem')
+	const players = [
+		'alexwwe',
+		'Brr1',
+		'BloddSword',
+		'Dawichii',
+		'Agazhord',
+		'Traketero',
+		'DryadZero',
+		'Rhaast West',
+		'DelemKi 26',
+		'DAYTRESGP',
+		'Telejenkem',
+	]
+
+	// TODO: im fucking unable to factorize this because of async axios delays too much for getStaticProps if I do: // players.forEach( async player => { ... })
+
+	const player0 = await Axios.get(BASE_URL + players[0])
+	const player1 = await Axios.get(BASE_URL + players[1])
+	const player2 = await Axios.get(BASE_URL + players[2])
+	const player3 = await Axios.get(BASE_URL + players[3])
+	const player4 = await Axios.get(BASE_URL + players[4])
+	const player5 = await Axios.get(BASE_URL + players[5])
+	const player6 = await Axios.get(BASE_URL + players[6])
+	const player7 = await Axios.get(BASE_URL + players[7])
+	const player8 = await Axios.get(BASE_URL + players[8])
+	const player9 = await Axios.get(BASE_URL + players[9])
+	const player10 = await Axios.get(BASE_URL + players[10])
 
 	const data = [
-		{name: 'Alex', data: alex.data, alias: 'alexwwe'},
-		{name: 'Bruno', data: bruno.data, alias: 'Brr1'},
-		{name: 'Cristian', data: cristian.data, alias: 'BloddSword'},
-		{name: 'Dawichi', data: dawichi.data, alias: 'Dawichii'},
-		{name: 'Marcos', data: marcos.data, alias: 'Agazhord'},
-		{name: 'Rodri', data: rodri.data, alias: 'Traketero'},
-		{name: 'Samu', data: samu.data, alias: 'DryadZero'},
-		{name: 'Diego', data: diego.data, alias: 'Rhaast West'},
-		{name: 'Abel', data: abel.data, alias: 'DelemKi 26'},
-		{name: 'David', data: david.data, alias: 'DAYTRESGP'},
-		{name: 'Jose', data: jose.data, alias: 'Telejenkem'},
+		{name: realName(players[0]), data: player0.data, alias: players[0]},
+		{name: realName(players[1]), data: player1.data, alias: players[1]},
+		{name: realName(players[2]), data: player2.data, alias: players[2]},
+		{name: realName(players[3]), data: player3.data, alias: players[3]},
+		{name: realName(players[4]), data: player4.data, alias: players[4]},
+		{name: realName(players[5]), data: player5.data, alias: players[5]},
+		{name: realName(players[6]), data: player6.data, alias: players[6]},
+		{name: realName(players[7]), data: player7.data, alias: players[7]},
+		{name: realName(players[8]), data: player8.data, alias: players[8]},
+		{name: realName(players[9]), data: player9.data, alias: players[9]},
+		{name: realName(players[10]), data: player10.data, alias: players[10]},
 	]
 
 	data.sort((A, B) => {
@@ -80,7 +97,6 @@ export const getStaticProps = async () => {
 		if (A.name > B.name) return 1
 		return 0
 	})
-
 	return {
 		props: { data: data},
 	}
