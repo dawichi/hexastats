@@ -28,11 +28,13 @@ export default function Ranking({data}) {
 									<img className="m-2 w-14 h-14 rounded" src={player.image} alt={player.name} />
 									<div className="flex flex-col">
 										<span className="pb-1 text-xl">{player.name}</span>
-										<span className="pb-1l">{player.rank_n ? player.rank_n + 'º' : 'no data ;('}</span>
+										<span className="pb-1">{player.rank_n ? player.rank_n + 'º' : 'no data ;('}</span>
 									</div>
 								</div>
 								<div className="rounded bg-red-300 w-100 text-red-300">
-									<div className="rounded text-center bg-red-600 text-white" style={{width: (100 - player.rank_p) + '%'}}>{(100 - player.rank_p).toFixed(1)} %</div>
+									{ player.rank_n &&
+										<div className="rounded text-center bg-red-600 text-white" style={{width: (100 - player.rank_p) + '%'}}>{(100 - player.rank_p).toFixed(1)} %</div>
+									}
 								</div>
 							</div>
 						)
