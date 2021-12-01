@@ -8,7 +8,7 @@ export default async (req: any, res: any) => {
 
 		const query_profile_img = 'img.ProfileImage'
 		const query_rank = 'div.Rank'
-		const query_champs = 'div.ChampionBox'
+		const query_champs = 'div.MostChampionContent > div.MostChampionContent'
 		
 		try {
 			// 1. fetch the string data
@@ -23,10 +23,12 @@ export default async (req: any, res: any) => {
 			const rank = $(query_rank).text().replace(/\t|\n|Ladder Rank /g, '')
 			const rank_idx_start = getIndexOfString('(', rank, false)[0]
 			const rank_idx_end = getIndexOfString('%', rank, false)[0]
-			const champs = $(query_champs).map((index, champ) => {
+			let champs
+			$(query_champs).get().map((champ, index) => {
 				if (index === 0) {
-					return $(champ).text()
+					champs = champ.children.map(x => champs += x.toString())
 				}
+				console.log(champ.children)
 			})
 
 

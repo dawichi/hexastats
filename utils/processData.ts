@@ -2,7 +2,7 @@ import { Champs, Player } from '../interfaces/interfaces'
 import getIndexOfString from './getIndexOfString'
 
 
-export default function processData(data) {
+export default function processData(data: any) {
 
 	// Context of the onepage webapp
 	const context: Player[] = []
@@ -19,10 +19,9 @@ export default function processData(data) {
 		})
 	}
 
-
 	// [The logic]: gets the data from pops and destructures it until get 
 	// the desired : info of that player and stores the result with pushPlayer()
-	data.map(player => {
+	data.map((player: any, index: number) => {
 		const champs = []
 
 		// Get profile image
@@ -104,9 +103,9 @@ export default function processData(data) {
 				cs: parseFloat(substr_cs.slice(idx_cs+3, idx_cs + idx_cs_end)),
 				csmedian: parseFloat(substr_cs.slice(idx_cs+3, idx_cs+20).slice(idx_cs_end+1, idx_cs_end+4))
 			})
-			
+
 			// Once we got our last champ (7º), we push the player object before continue with the next player 
-			if (champs.length == 7) {
+			if (champs.length == champs_indexes.length) {
 				pushPlayer(
 					player.name,
 					player.alias,
