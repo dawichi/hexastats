@@ -73,10 +73,10 @@ export const getStaticProps = async () => {
 	const player4 = await Axios.get(BASE_URL + players[4])
 	const player5 = await Axios.get(BASE_URL + players[5])
 	const player6 = await Axios.get(BASE_URL + players[6])
-	const player7 = await Axios.get(BASE_URL + players[7])
+	// const player7 = await Axios.get(BASE_URL + players[7])
 	const player8 = await Axios.get(BASE_URL + players[8])
 	const player9 = await Axios.get(BASE_URL + players[9])
-	const player10 = await Axios.get(BASE_URL + players[10])
+	// const player10 = await Axios.get(BASE_URL + players[10])
 
 	const data = [
 		{name: realName(players[0]), data: player0.data, alias: players[0]},
@@ -86,10 +86,10 @@ export const getStaticProps = async () => {
 		{name: realName(players[4]), data: player4.data, alias: players[4]},
 		{name: realName(players[5]), data: player5.data, alias: players[5]},
 		{name: realName(players[6]), data: player6.data, alias: players[6]},
-		{name: realName(players[7]), data: player7.data, alias: players[7]},
+		// {name: realName(players[7]), data: player7.data, alias: players[7]},
 		{name: realName(players[8]), data: player8.data, alias: players[8]},
 		{name: realName(players[9]), data: player9.data, alias: players[9]},
-		{name: realName(players[10]), data: player10.data, alias: players[10]},
+		// {name: realName(players[10]), data: player10.data, alias: players[10]},
 	]
 
 	data.sort((A, B) => {

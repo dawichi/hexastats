@@ -1,16 +1,16 @@
 const realName = (alias: string) => {
 	const aliases = {
-		alexwwe: 'Alex',
-		brr1: 'Bruno',
-		bloddsword: 'Cristian',
-		dawichii: 'Dawichi',
-		agazhord: 'Marcos',
-		traketero: 'Rodri',
-		dryadzero: 'Samu',
-		'rhaast west': 'Diego',
-		'delemKi 26': 'Abel',
-		daytresgp: 'David',
-		telejenkem: 'Jose',
+		'alexwwe': 'Alex',
+		'Brr1': 'Bruno',
+		'BloddSword': 'Cristian',
+		'Dawichii': 'Dawichi',
+		'Agazhord': 'Marcos',
+		'Traketero': 'Rodri',
+		'DryadZero': 'Samu',
+		'Rhaast West': 'Diego',
+		'DelemKi 26': 'Abel',
+		'DAYTRESGP': 'David',
+		'Telejenkem': 'Jose',
 	}
 	
 	if (aliases[alias] !== undefined)
