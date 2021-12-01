@@ -1,32 +1,55 @@
 import cheerio from 'cheerio'
+import { getIndexOfString, realName } from '../../utils/index'
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req: any, res: any) => {
 	if (req.method === 'POST') {
-		const username = req.body.TWuser
+		const username = req.body.user
 
+		const query_profile_img = 'img.ProfileImage'
+		const query_rank = 'div.Rank'
+		const query_champs = 'div.ChampionBox'
+		
 		try {
-			const response = await fetch(`https://twitter.com/${username}`)
-			const htmlString = await response.text()
-			const $ = cheerio.load(htmlString)
-			const searchContext = `a[href='/${username}/followers']`
-			const followerCountString = $(searchContext)
-				.text()
-			
-			console.log(followerCountString)
+			// 1. fetch the string data
+			const opgg_string = await fetch(`https://euw.op.gg/summoner/userName=${username}`)
+				.then(res => res.text())
 
+			// 2. load it into cheerio
+			const $ = cheerio.load(opgg_string)
+
+			// 3. Make the querys
+			const profile_image = $(query_profile_img).attr("src")
+			const rank = $(query_rank).text().replace(/\t|\n|Ladder Rank /g, '')
+			const rank_idx_start = getIndexOfString('(', rank, false)[0]
+			const rank_idx_end = getIndexOfString('%', rank, false)[0]
+			const champs = $(query_champs).map((index, champ) => {
+				if (index === 0) {
+					return $(champ).text()
+				}
+			})
+
+
+			const data = {
+				name: realName(username),
+				alias: username.replace(/^\w/, (s: string) => s.toUpperCase()),
+				summoner_pic: `https:${profile_image}`,
+				rank_n: parseInt(rank.slice(0, rank_idx_start).replace(/,/g, '').trim()),
+				rank_p: parseFloat(rank.slice(rank_idx_start+1, rank_idx_end)),
+				champs: champs
+			}
+			
 			res.statusCode = 200
 			return res.json({
-				user: username,
-				followerCount: Number(followerCountString),
+				error: '',
+				data: data
 			})
 		} catch (e) {
 			res.statusCode = 404
 			console.log(e)
 			return res.json({
-				user: username,
-				error: `${username} not found. Tip: Double check the spelling.`,
-				followerCount: -1,
+				error: `${username} error: ${e.message}`,
+				data: ''
 			})
 		}
 	}

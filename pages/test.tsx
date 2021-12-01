@@ -1,25 +1,34 @@
-import React from 'react'
+import cheerio from 'cheerio'
+import React, { useEffect, useState } from 'react'
 
 export default function Test () {
-	const [inputValue, setInputValue] = React.useState('')
-	const [userFollowers, setUserFollowers] = React.useState({
+	const [inputValue, setInputValue] = useState('')
+	const [userData, setUserData] = useState({
 		user: '',
-		followerCount: -1,
-		error: ''
+		error: '',
+		data: ''
 	})
+	const [searching, setSearching] = useState(false)
 
-	const handleSubmit = (e) => {
+
+	const handleSubmit = async (e) => {
+
+		setSearching(true)
 		e.preventDefault()
 		fetch('/api/scrapper', {
 			method: 'post',
 			headers: {
 				'content-type': 'application/json',
 			},
-			body: JSON.stringify({ TWuser: inputValue }),
+			body: JSON.stringify({
+				user: inputValue,
+			}),
 		})
 			.then((res) => res.json())
 			.then((userData) => {
-				setUserFollowers(userData)
+				setSearching(false)
+				console.log(userData)
+				setUserData(userData)
 			})
 	}
 	return (
@@ -34,11 +43,13 @@ export default function Test () {
 				</label>
 				<button>Submit</button>
 			</form>
-			{userFollowers.followerCount >= 0 ? (
-				<p>Followers: {userFollowers.followerCount}</p>
-			) : (
-				<p>{userFollowers.error}</p>
-			)}
+			{ searching && <h1 className="bg-blue-400 p-3 m-2 w-40">Buscando ...</h1> }
+			{ userData.data && 
+				<p className="bg-green-400 p-3 m-2 w-40">DONE!</p>
+			}
+			{ userData.error && 
+				<p className="bg-red-400 p-3 m-2 w-40">{userData.error}</p>
+			}
 		</>
 	)
 }
