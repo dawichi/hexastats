@@ -10,29 +10,33 @@ const getStatValues = (data: Player[], rank_results: RankResults[], prop: string
 	const player_infos = [] // [{label: 'name', value: 5}]
 	const player_values = [] // [5]
 
-	// Fills both arrays with data
+	// Fills both arrays with values
 	data.map((player: Player) => {
-		let total = 0
-		if (prop === 'winrate') {
-			let total_games = 0
-			player.champs.map((x: Champs) => {
-				total_games += x.games
-				total += x.games * x.winrate
-			})
-			player_infos.push({label: player.name, value: (total/total_games).toFixed(2)})
-			player_values.push((total/total_games).toFixed(2))
+		let stat = 0
+		let games = 0
+
+		if (prop === 'games') {
+			player.champs.map((x: Champs) => stat += x[prop])
 		} else {
-			player.champs.map((x: Champs) => total += float ? parseFloat(x[prop]) : parseInt(x[prop]))
-			player_infos.push({label: player.name, value: calc_median ? (total/7).toFixed(2) : total})
-			player_values.push(calc_median ? (total/7).toFixed(2) : total)
+			player.champs.map((x: Champs) => {
+				games += x.games
+				stat += x.games * x[prop]
+			})
 		}
+
+		const value = calc_median ? (stat/games).toFixed(2) : stat
+
+		player_infos.push({label: player.name, value: value})
+		player_values.push(value)
 	})
+
 
 	// Sorts values, asc or desc
 	player_values.sort(function(a, b) {
 		if (sort_desc) { return a - b }
 		else { return b - a }
 	})
+
 
 	// If the best value matches with a player's value, adds 1º cup (value '1') to his trophies array. Same for 2º and 3º rank.
 	player_infos.map(player_info => {
