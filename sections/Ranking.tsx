@@ -17,29 +17,29 @@ export default function Ranking({data}) {
 
 	rank_data.sort(function(a, b) {return a.rank_p - b.rank_p})
 	
-	const tint = (percent: number) => {
-		if (percent > 90) return 'indigo'
-		if (percent > 80) return 'blue'
-		if (percent > 65) return 'green'
-		if (percent > 50) return 'yellow'
-		if (percent > 35) return 'gray'
-		if (percent < 35) return 'red'
+	const tint = (percent: number, main: boolean) => {
+		if (percent > 90) return main ? 'bg-indigo-600' : 'bg-indigo-200'
+		if (percent > 80) return main ? 'bg-blue-600' : 'bg-blue-200'
+		if (percent > 65) return main ? 'bg-green-600' : 'bg-green-200'
+		if (percent > 50) return main ? 'bg-yellow-600' : 'bg-yellow-200'
+		if (percent > 35) return main ? 'bg-gray-600' : 'bg-gray-200'
+		if (percent < 35) return main ? 'bg-red-600' : 'bg-red-200'
 	}
 
 	const tints = [
-		{color: 'indigo', top: 'Top 10🔥 % '},
-		{color: 'blue', top: 'Top 20 %'},
-		{color: 'green', top: 'Top 35 %'},
-		{color: 'yellow', top: 'Top 50 %'},
-		{color: 'gray', top: 'Below 50 %'},
-		{color: 'red', top: 'Below 35 %'},
+		{color: 'bg-indigo-400', top: 'Top 10🔥 % '},
+		{color: 'bg-blue-400', top: 'Top 20 %'},
+		{color: 'bg-green-400', top: 'Top 35 %'},
+		{color: 'bg-yellow-400', top: 'Top 50 %'},
+		{color: 'bg-gray-400', top: 'Below 50 %'},
+		{color: 'bg-red-400', top: 'Below 35 %'},
 	]
 
 	return (
 		<>
 			<div className="container-fluid">
 				<div className="flex justify-center pt-4">
-					{tints.map((tint, index) => <span key={index} className={`mx-1 px-3 py-1 rounded bg-${tint.color}-400`}>{tint.top}</span>)}
+					{tints.map((tint, index) => <span key={index} className={`mx-1 px-3 py-1 rounded ${tint.color}`}>{tint.top}</span>)}
 				</div>
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
 					{
@@ -58,8 +58,8 @@ export default function Ranking({data}) {
 										<span>Better than the</span>
 										<span>of average players</span>
 									</div>
-									<div className={`rounded-xl text-white text-sm text-center bg-${tint(100 - player.rank_p)}-200`}>
-										<div className={`rounded-xl bg-${tint(100 - player.rank_p)}-600`} style={{width: (100 - player.rank_p) + '%'}}>{(100 - player.rank_p).toFixed(1)} %</div>
+									<div className={`rounded-xl text-white text-sm text-center ${tint(100 - player.rank_p, false)}`}>
+										<div className={`rounded-xl ${tint(100 - player.rank_p, true)}`} style={{width: (100 - player.rank_p) + '%'}}>{(100 - player.rank_p).toFixed(1)} %</div>
 									</div>
 								</div>
 							)
