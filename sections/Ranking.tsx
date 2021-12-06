@@ -56,7 +56,7 @@ export default function Ranking({data}) {
 									</div>
 									<div className="flex justify-between">
 										<span>Better than the</span>
-										<span>of average players</span>
+										<span>of all players</span>
 									</div>
 									<div className={`rounded-xl text-white text-sm text-center ${tint(100 - player.rank_p, false)}`}>
 										<div className={`rounded-xl ${tint(100 - player.rank_p, true)}`} style={{width: (100 - player.rank_p) + '%'}}>{(100 - player.rank_p).toFixed(1)} %</div>
