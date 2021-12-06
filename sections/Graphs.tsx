@@ -31,7 +31,7 @@ const Graphs = ({data}) => {
 	const [deaths, deaths_int] = getStatValues(data, rank_results, 'deaths', true, true, true)
 	const [assists, assists_int] = getStatValues(data, rank_results, 'assists', true, true, false)
 	const [minions, minions_int] = getStatValues(data, rank_results, 'cs', true, true, false)
-	const [cs_median, cs_median_int] = getStatValues(data, rank_results, 'csmedian', true, true, false)
+	const [csmin, csmin_int] = getStatValues(data, rank_results, 'csmin', true, true, false)
 
 	const charts = [
 		{title: 'Games played', data: gamesplayed, data_int: gamesplayed_int},
@@ -41,7 +41,7 @@ const Graphs = ({data}) => {
 		{title: 'Deaths', data: deaths, data_int: deaths_int},
 		{title: 'Assists', data: assists, data_int: assists_int},
 		{title: 'Farm total', data: minions, data_int: minions_int},
-		{title: 'CS / Min', data: cs_median, data_int: cs_median_int},
+		{title: 'CS / Min', data: csmin, data_int: csmin_int},
 	]
 
 	// Sorts player's trophies by value (so it shows 1º, 2º and 3º cups in correct order)
@@ -66,7 +66,9 @@ const Graphs = ({data}) => {
 					)}
 				</div>
 			</div>
-			<div className="container m-auto">
+			<div className="container mx-auto">
+				<h2 className="text-4xl text-center mt-10 mb-5">Graphs by stat</h2>
+				<hr/>
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
 					{charts.map((x, index) => <ChartCard key={index} id={index+1} title={x.title} data={x.data} data_int={x.data_int} />)}
 				</div>

@@ -17,11 +17,16 @@ export interface Champs {
 	deaths: number,
 	asissts: number,
 	cs: number,
-	csmedian: number
+	csmin: number
 }
 
 export interface DataForChart {
 	label: string,
+	value: number
+}
+
+export interface PlayerStats {
+	key: string,
 	value: number
 }
 

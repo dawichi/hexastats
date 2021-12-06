@@ -13,9 +13,9 @@ const realName = (alias: string) => {
 		'Telejenkem': 'Jose',
 	}
 	
-	if (aliases[alias] !== undefined)
+	if (aliases[alias] !== undefined) {
 		return aliases[alias]
-
+	}
 	return alias
 }
 

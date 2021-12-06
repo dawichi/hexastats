@@ -101,7 +101,7 @@ export default function processData(data: any) {
 				deaths: parseFloat(substr_kda.slice(idx_kda_deaths, idx_kda_deaths+idx_kda_deaths_end)),
 				assists: parseFloat(substr_kda.slice(idx_kda_assists, idx_kda_assists+idx_kda_assists_end)),
 				cs: parseFloat(substr_cs.slice(idx_cs+3, idx_cs + idx_cs_end)),
-				csmedian: parseFloat(substr_cs.slice(idx_cs+3, idx_cs+20).slice(idx_cs_end+1, idx_cs_end+4))
+				csmin: parseFloat(substr_cs.slice(idx_cs+3, idx_cs+20).slice(idx_cs_end+1, idx_cs_end+4))
 			})
 
 			// Once we got our last champ (7º), we push the player object before continue with the next player 
