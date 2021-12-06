@@ -1,6 +1,6 @@
 import { Champs, Player, RankResults } from '../interfaces/interfaces'
 
-const getStatValues = (data: Player[], rank_results: RankResults[], prop: string, float?:boolean, calc_median?: boolean, sort_desc?: boolean) => {
+const getStatValues = (data: Player[], rank_results: RankResults[], prop: string, calc_median?: boolean, sort_desc?: boolean) => {
 	/* - prop: the type of property to load. Ex: 'games', 'winrate' or 'kills'
 	*  - float?: by default uses parseInt() for data. Optional parseFloat()
 	*  - calc_media?: by default returns total data. Optional returns median.

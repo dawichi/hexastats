@@ -25,20 +25,18 @@ const ChartCard = ({title, data, data_int, id}) => {
 
 	// Prints our 3 ranked winners of the {title} category and renders the data with <PieChart/>
 	return (
-		<div className="col-lg-4">
-			<div className="border shadow-lg rounded m-3">
-				<h3 className="text-2xl text-center m-3">{title}</h3>
-				<hr style={{width: '85%', margin: 'auto'}} />
-				<br/>
-				<div className="m-auto" style={{width: '85%'}}>
-					<div className="grid grid-cols-3">
-						<p><span className="bg-yellow-400 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best1}</p>
-						<p><span className="bg-gray-700 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best2}</p>
-						<p><span className="bg-yellow-700 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best3}</p>
-					</div>
+		<div className="border shadow-lg rounded m-3 bg-gray-100 hover:shadow-2xl">
+			<h3 className="text-2xl text-center m-3">{title}</h3>
+			<hr style={{width: '85%', margin: 'auto'}} />
+			<br/>
+			<div className="m-auto" style={{width: '85%'}}>
+				<div className="grid grid-cols-3">
+					<p><span className="bg-yellow-400 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best1}</p>
+					<p><span className="bg-gray-700 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best2}</p>
+					<p><span className="bg-yellow-700 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best3}</p>
 				</div>
-				<PieChart data={data} outerRadius={120} innerRadius={50} id={id} />
 			</div>
+			<PieChart data={data} outerRadius={120} innerRadius={50} id={id} />
 		</div>
 	)
 }
