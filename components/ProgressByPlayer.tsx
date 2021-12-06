@@ -32,26 +32,26 @@ export default function ProgressOfEachPlayer({data, charts, prop_keys, rank_resu
 		progress_by_player.push(model)
 	})
 
-	const tintProgressBar = (prop: string) => {
+	const tintProgressBar = (prop: string, main: boolean) => {
 		const props = {
-			games: 'bg-green-',
-			winrate: 'bg-blue-',
-			kda: 'bg-purple-',
-			kills: 'bg-red-',
-			deaths: 'bg-gray-',
-			assists: 'bg-pink-',
-			cs: 'bg-yellow-',
-			csmin: 'bg-yellow-',
+			games: main ? 'bg-green-500' : 'bg-green-100',
+			winrate: main ? 'bg-blue-500' : 'bg-blue-100',
+			kda: main ? 'bg-purple-500' : 'bg-purple-100',
+			kills: main ? 'bg-red-500' : 'bg-red-100',
+			deaths: main ? 'bg-gray-500' : 'bg-gray-100',
+			assists: main ? 'bg-pink-500' : 'bg-pink-100',
+			cs: main ? 'bg-yellow-500' : 'bg-yellow-100',
+			csmin: main ? 'bg-yellow-500' : 'bg-yellow-100',
 		}
 		return props[prop]
 	}
 
 	const tintPercent = (percent: number) => {
-		if (percent < 50) return 'red'
-		if (percent < 60) return 'gray'
-		if (percent < 70) return 'indigo'
-		if (percent < 80) return 'blue'
-		if (percent > 80) return 'green'
+		if (percent < 50) return 'bg-red-300'
+		if (percent < 60) return 'bg-gray-300'
+		if (percent < 70) return 'bg-indigo-300'
+		if (percent < 80) return 'bg-blue-300'
+		if (percent > 80) return 'bg-green-300'
 	}
 
 	return (
@@ -68,7 +68,7 @@ export default function ProgressOfEachPlayer({data, charts, prop_keys, rank_resu
 						<div className="flex items-center">
 							<img className="w-14 h-14 rounded" src={model.image} alt={model.player} />
 							<h3 className="text-2xl mx-4">{model.player}</h3>
-							<span className={`rounded px-1 text-lg bg-${tintPercent(total/6)}-300`}>{(total/6).toFixed(1) + '%'}</span>
+							<span className={`rounded px-1 text-lg ${tintPercent(total/6)}`}>{(total/6).toFixed(1) + '%'}</span>
 						</div>
 						<hr style={{width: '85%', margin: '10px'}} />
 							<div className="grid grid-cols-2">
@@ -79,9 +79,9 @@ export default function ProgressOfEachPlayer({data, charts, prop_keys, rank_resu
 									return (
 										<div key={index_prop} className="p-1">
 											<p>{propTitle(prop)}</p>
-											<div className={'rounded text-red-200 ' + tintProgressBar(prop) + '100'}>
+											<div className={'rounded text-white text-sm text-center ' + tintProgressBar(prop, false)}>
 												<div
-													className={'rounded text-white text-sm text-center ' + tintProgressBar(prop) + '500' }
+													className={'rounded ' + tintProgressBar(prop, true)}
 													style={{width: ((model[prop]*100)/top_stats[prop]) + '%'}}
 												>{((model[prop]*100)/top_stats[prop]).toFixed(0) + '%'}</div>
 											</div>
