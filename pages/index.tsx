@@ -62,6 +62,7 @@ export const getStaticProps = async () => {
 		'DelemKi 26',
 		'DAYTRESGP',
 		'Telejenkem',
+		'Ruzou'
 	]
 
 	// TODO: im fucking unable to factorize this because of async axios delays too much for getStaticProps if I do: // players.forEach( async player => { ... })
@@ -77,6 +78,7 @@ export const getStaticProps = async () => {
 	const player8 = await Axios.get(BASE_URL + players[8])
 	const player9 = await Axios.get(BASE_URL + players[9])
 	// const player10 = await Axios.get(BASE_URL + players[10])
+	const player11 = await Axios.get(BASE_URL + players[11])
 
 	const data = [
 		{name: realName(players[0]), data: player0.data, alias: players[0]},
@@ -90,6 +92,7 @@ export const getStaticProps = async () => {
 		{name: realName(players[8]), data: player8.data, alias: players[8]},
 		{name: realName(players[9]), data: player9.data, alias: players[9]},
 		// {name: realName(players[10]), data: player10.data, alias: players[10]},
+		{name: realName(players[11]), data: player11.data, alias: players[11]},
 	]
 
 	data.sort((A, B) => {
