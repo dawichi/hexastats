@@ -3,7 +3,7 @@ import React from 'react'
 import { Player } from '../interfaces/interfaces'
 
 // ┌────────────────┐
-// │  RANKING PAGE:  │
+// │ RANKING PAGE:  │
 // └────────────────┘
 // 
 export default function Ranking({data}) {

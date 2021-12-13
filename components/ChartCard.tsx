@@ -1,14 +1,14 @@
 import React from 'react'
 import { DataForChart } from '../interfaces/interfaces'
-import PieChart from './PieChart'
+import { PieChart } from '.'
+ 
 
-
+// Prints a card with a chart
+// - title: the 'category' of the data in graph
+// - data: the data to render in graph [{label: 'name', value: 5}]
+// - data_int: array of values present in 'data[x].value'. Used to manage 1º, 2º and 3º ranks
+// - id: necessary to print the charts (they must be linked to a HTML id)
 const ChartCard = ({title, data, data_int, id}) => {
-	// Prints a card with a chart
-	// - title: the 'category' of the data in graph
-	// - data: the data to render in graph [{label: 'name', value: 5}]
-	// - data_int: array of values present in 'data[x].value'. Used to manage 1º, 2º and 3º ranks
-	// - id: necessary to print the charts (they must be linked to a HTML id)
 
 	// Select the best 3 values (first 3 values of a sorted array)
 	let best1 = data_int[0]

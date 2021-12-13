@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
-import { Player } from '../interfaces/interfaces'
+import { Chart, Player } from '../interfaces/interfaces'
 import { ChartCard , ProgressByPlayer } from '../components'
 import { getStatValues, trophyIcon, statTitle } from '../utils'
 
@@ -21,7 +21,8 @@ const Graphs = ({data}) => {
 		})
 	})
 
-	const charts = []
+	const charts: Chart[] = []
+	// TODO: get props available dynamically
 	const prop_keys = ['games','winrate','kda','kills','deaths','assists','cs','csmin']
 
 	prop_keys.forEach(prop => {

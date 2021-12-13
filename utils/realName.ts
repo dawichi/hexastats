@@ -1,4 +1,4 @@
-const realName = (alias: string) => {
+export default function realName (alias: string) {
 	const aliases = {
 		'alexwwe': 'Alex',
 		'Brr1': 'Bruno',
@@ -18,5 +18,3 @@ const realName = (alias: string) => {
 	}
 	return alias
 }
-
-export default realName

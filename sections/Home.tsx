@@ -3,7 +3,7 @@ import React from 'react'
 import { Champ, Player } from '../interfaces/interfaces'
 
 // ┌────────────────┐
-// │  HOME PAGE:     │
+// │ HOME PAGE:     │
 // └────────────────┘
 // Home page, visualize each player in a table
 // Each row of the table is a champ with his stats

@@ -7,7 +7,7 @@ import { Compare, Graphs, Home, Ranking } from '../sections'
 import { Player } from '../interfaces/interfaces'
 
 // ┌────────────────┐
-// │  INDEX PAGE:    │
+// │  INDEX PAGE:   │
 // └────────────────┘
 // Hexastats is a one-page app
 // To navigate throgh the sections, is used a basic array with the sections available sections[]
@@ -41,6 +41,8 @@ export default function Index(props: { data: any[] }) {
 		</>
 	)
 }
+
+
 
 
 export const getStaticProps = async () => {

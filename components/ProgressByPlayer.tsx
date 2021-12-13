@@ -1,15 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
-import { Player } from '../interfaces/interfaces'
-import statTitle from '../utils/statTitle'
+import { Chart, Player } from '../interfaces/interfaces'
+import { statTitle } from '../utils'
 
 // Progress bar with the stats of one player
 export default function ProgressOfEachPlayer({data, charts, prop_keys}) {
 
 	const top_stats = {}
-	charts.map(x => top_stats[x.key] = x.data_int[0])
+	charts.map((x: Chart) => top_stats[x.key] = x.data_int[0])
 
-	// TODO: end this shit
+	// TODO: end document this
 
 	const progress_by_player = []
 	data.map((player: Player) => {
@@ -19,7 +19,7 @@ export default function ProgressOfEachPlayer({data, charts, prop_keys}) {
 			image: player.image
 		}
 
-		prop_keys.map(prop => {
+		prop_keys.map((prop: string) => {
 			charts.map(x => {
 				if (x.key === prop) {
 					x.data.map(pair => {
