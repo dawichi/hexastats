@@ -2,6 +2,10 @@
 import React from 'react'
 import { Player } from '../interfaces/interfaces'
 
+// ┌────────────────┐
+// │  RANKING PAGE:  │
+// └────────────────┘
+// 
 export default function Ranking({data}) {
 
 	// Model of player data to sort

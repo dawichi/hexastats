@@ -2,13 +2,16 @@
 import React from 'react'
 import { Disclosure } from '@headlessui/react'
 
+// Navbar of the app
 export default function Navbar({page, setPage}) {
 	
+	// Navigation menu, selects each section availble
+	// add new sections here
 	const navigation = [
 		{ name: 'Stats', onClick: () => setPage(0), current: (page==0) },
 		{ name: 'Graphs', onClick: () => setPage(1), current: (page==1) },
 		{ name: 'Ranking', onClick: () => setPage(2), current: (page==2) },
-		{ name: 'Masteries', onClick: () => setPage(3), current: (page==3) },
+		{ name: 'Compare', onClick: () => setPage(3), current: (page==3) },
 	]
 
 	return (
@@ -45,7 +48,7 @@ export default function Navbar({page, setPage}) {
 								</div>
 							</div>
 							<div className="absolute right-0">
-								<a href="https://github.com/dawichi" target="_blank" className="text-white text-2xl" rel="noreferrer">다 위 치</a>
+								<a href="https://github.com/dawichi" target="_blank" className="text-white text-2xl hover:text-gray-200" rel="noreferrer">다 위 치</a>
 							</div>
 						</div>
 					</div>

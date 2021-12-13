@@ -1,8 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
+import { Champ, Player } from '../interfaces/interfaces'
 
-export default function Home({data}) {
-
+// ┌────────────────┐
+// │  HOME PAGE:     │
+// └────────────────┘
+// Home page, visualize each player in a table
+// Each row of the table is a champ with his stats
+const Home = ({data}) => {
+	
+	// Highlights each table cell based on the stat requirements
 	const tint = (num: number, type: string) => {
 		const tints = {
 			games:   (x: number) => x >= 50 ? 'font-bold p-1' : '',
@@ -19,7 +26,8 @@ export default function Home({data}) {
 	return (
 		<div className="container m-auto py-8 lg:py-16">
 			<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-				{data.map((player, index_player) => {
+				{/* For each player, print a table and its table-head */}
+				{data.map((player: Player, index_player) => {
 					return (
 						<div key={index_player} className="flex flex-col">
 							<div className="flex items-center">
@@ -39,7 +47,8 @@ export default function Home({data}) {
 									</tr>
 								</thead>
 								<tbody>
-									{player.champs.map((champ, index_champ) => {
+									{/* For each champ inside a player, print a row with the data */}
+									{player.champs.map((champ: Champ, index_champ) => {
 										return (
 											<tr key={index_champ} className="border">
 												<td><img src={champ.image} alt="champ image" style={{maxWidth: '60px', margin: 'auto'}} /></td>
@@ -64,3 +73,5 @@ export default function Home({data}) {
 		</div>
 	)
 }
+
+export default Home

@@ -4,10 +4,10 @@ export interface Player {
 	image: string,
 	rank_n: string,
 	rank_p: number,
-	champs: Champs[]
+	champs: Champ[]
 }
 
-export interface Champs {
+export interface Champ {
 	name: string,
 	image: string,
 	games: number,
@@ -15,7 +15,7 @@ export interface Champs {
 	kda: number,
 	kills: number,
 	deaths: number,
-	asissts: number,
+	assists: number,
 	cs: number,
 	csmin: number
 }

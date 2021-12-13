@@ -1,9 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import { Player } from '../interfaces/interfaces'
-import propTitle from '../utils/propTitle'
+import statTitle from '../utils/statTitle'
 
-export default function ProgressOfEachPlayer({data, charts, prop_keys, rank_results}) {
+// Progress bar with the stats of one player
+export default function ProgressOfEachPlayer({data, charts, prop_keys}) {
 
 	const top_stats = {}
 	charts.map(x => top_stats[x.key] = x.data_int[0])
@@ -78,7 +79,7 @@ export default function ProgressOfEachPlayer({data, charts, prop_keys, rank_resu
 									}
 									return (
 										<div key={index_prop} className="p-1">
-											<p>{propTitle(prop)}</p>
+											<p>{statTitle(prop)}</p>
 											<div className={'rounded text-white text-sm text-center ' + tintProgressBar(prop, false)}>
 												<div
 													className={'rounded ' + tintProgressBar(prop, true)}
