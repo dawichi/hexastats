@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-sync-scripts */
+import React from 'react'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import 'tailwindcss/tailwind.css'
 import '../styles/global.scss'
-
 
 export default function MyApp({ Component, pageProps }: AppProps) {
 
@@ -21,7 +21,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
 			<Component {...pageProps} />
 
-			<footer className="bg-gray-800 text-white p-3 mt-20">
+			<footer className="bg-zinc-800 text-white p-3">
 				<div className="container m-auto">
  					<span>&copy;Hexastats no se hace responsable de ninguna depresión causada por este golpe de realidad.</span>
 				</div>

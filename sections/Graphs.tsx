@@ -47,7 +47,7 @@ const Graphs = ({data}) => {
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
 					{ rank_results.map((card, indx_card) => 
 						<div key={indx_card}>
-							<div className="bg-gray-100 p-1 m-2 border rounded shadow border hover:shadow-lg">
+							<div className="bg-gray-100 p-1 m-2 mt-5  rounded shadow hover:shadow-lg dark:bg-zinc-800 dark:shadow-zinc-700">
 								<div className="flex">
 									<img className="m-2 w-14 h-14 rounded" src={card.image} alt={card.name} />
 									<div className="flex flex-col">

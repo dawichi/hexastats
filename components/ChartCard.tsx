@@ -25,7 +25,7 @@ const ChartCard = ({title, data, data_int, id}) => {
 
 	// Prints our 3 ranked winners of the {title} category and renders the data with <PieChart/>
 	return (
-		<div className="border shadow-lg rounded m-3 bg-gray-100 hover:shadow-2xl">
+		<div className="border shadow-lg rounded m-3 bg-gray-100 hover:shadow-2xl dark:bg-zinc-800 dark:border-0 dark:shadow-zinc-700">
 			<h3 className="text-2xl text-center m-3">{title}</h3>
 			<hr style={{width: '85%', margin: 'auto'}} />
 			<br/>

@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Disclosure } from '@headlessui/react'
 
 // Navbar of the app
@@ -14,15 +14,41 @@ export default function Navbar({page, setPage}) {
 		{ name: 'Compare', onClick: () => setPage(3), current: (page==3) },
 	]
 
+	// DARK MODE
+	const [activeTheme, setActiveTheme] = useState('light')
+	const inactiveTheme = activeTheme === 'light' ? 'dark' : 'light'
+
+	useEffect(() => {
+		if (localStorage.getItem('theme') === 'dark') {
+			setActiveTheme('dark')
+		}
+		if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+			setActiveTheme('dark')
+		}
+	}, [])
+
+	useEffect(() => {
+		document.body.dataset.theme = activeTheme
+		if (activeTheme === 'light') {
+			localStorage.setItem('theme', 'light')
+			document.documentElement.classList.remove('dark')
+		} else {
+			localStorage.setItem('theme', 'dark')
+			document.documentElement.classList.add('dark')
+		}
+	}, [activeTheme])
+
+	// END DARK MODE
+
 	return (
-		<Disclosure as="nav" className="bg-gray-800">
+		<Disclosure as="nav" className="bg-zinc-800">
 			{({ open }) => (
 				<>
 					<div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
 						<div className="relative flex items-center justify-between h-16">
 							<div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
 								{/* Mobile menu button*/}
-								<Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+								<Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
 									<span className="sr-only">Open main menu</span>
 									{open ? <i className="bi bi-x-lg"></i> : <i className="bi bi-list"></i>}
 								</Disclosure.Button>
@@ -39,7 +65,7 @@ export default function Navbar({page, setPage}) {
 												key={item.name}
 												onClick={item.onClick}
 												className={'px-3 py-2 rounded-md text-sm font-medium ' + 
-													(item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white')
+													(item.current ? 'bg-zinc-900 text-white' : 'text-zinc-300 hover:bg-zinc-700 hover:text-white')
 												}
 												aria-current={item.current ? 'page' : undefined}
 											>{item.name}</button>
@@ -47,8 +73,13 @@ export default function Navbar({page, setPage}) {
 									</div>
 								</div>
 							</div>
-							<div className="absolute right-0">
-								<a href="https://github.com/dawichi" target="_blank" className="text-white text-2xl hover:text-gray-200" rel="noreferrer">다 위 치</a>
+							<div className="absolute right-0 flex">
+								<div className="flex items-center justify-center mr-5 hidden md:block">
+									<a href="https://github.com/dawichi" target="_blank" className="text-white text-2xl" rel="noreferrer">다 위 치</a>
+								</div>
+								<button className="px-3 py-2 rounded-md text-sm font-medium text-white bg-zinc-900 dark:bg-orange-100 dark:text-black" onClick={() => setActiveTheme(inactiveTheme)}>
+									{ activeTheme === 'light' ? <i className="bi bi-moon-fill"></i> : <i className="bi bi-brightness-high-fill"></i> }
+								</button>
 							</div>
 						</div>
 					</div>
@@ -58,7 +89,7 @@ export default function Navbar({page, setPage}) {
 							{navigation.map((item) => (
 								<button key={item.name} onClick={item.onClick}
 									className={'block px-3 py-2 rounded-md text-base font-medium ' + 
-										(item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white')
+										(item.current ? 'bg-zinc-900 text-white' : 'text-zinc-300 hover:bg-zinc-700 hover:text-white')
 									}
 									aria-current={item.current ? 'page' : undefined}
 								>{item.name}</button>

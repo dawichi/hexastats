@@ -1,12 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
-import { Chart, Player } from '../interfaces/interfaces'
+import { Chart, DataForChart, Player } from '../interfaces/interfaces'
 import { statTitle } from '../utils'
 
 // Progress bar with the stats of one player
 export default function ProgressOfEachPlayer({data, charts, prop_keys}) {
 
-	const top_stats = {}
+	// Fills the top stasts for each stat as [key] and each max value as [value]
+	const top_stats = { /*  'kills': 12.5,  */ }
 	charts.map((x: Chart) => top_stats[x.key] = x.data_int[0])
 
 	// TODO: end document this
@@ -20,9 +21,9 @@ export default function ProgressOfEachPlayer({data, charts, prop_keys}) {
 		}
 
 		prop_keys.map((prop: string) => {
-			charts.map(x => {
+			charts.map((x: Chart) => {
 				if (x.key === prop) {
-					x.data.map(pair => {
+					x.data.map((pair: DataForChart) => {
 						if (pair.label === player.name) {
 							model[prop] = pair.value
 						}
@@ -33,26 +34,26 @@ export default function ProgressOfEachPlayer({data, charts, prop_keys}) {
 		progress_by_player.push(model)
 	})
 
-	const tintProgressBar = (prop: string, main: boolean) => {
-		const props = {
-			games: main ? 'bg-green-500' : 'bg-green-100',
-			winrate: main ? 'bg-blue-500' : 'bg-blue-100',
-			kda: main ? 'bg-purple-500' : 'bg-purple-100',
-			kills: main ? 'bg-red-500' : 'bg-red-100',
-			deaths: main ? 'bg-gray-500' : 'bg-gray-100',
-			assists: main ? 'bg-pink-500' : 'bg-pink-100',
-			cs: main ? 'bg-yellow-500' : 'bg-yellow-100',
-			csmin: main ? 'bg-yellow-500' : 'bg-yellow-100',
-		}
-		return props[prop]
+	const tintPercent = (percent: number) => {
+		if (percent < 50) return 'bg-red-300 dark:bg-red-500'
+		if (percent < 60) return 'bg-gray-300 dark:bg-gray-500'
+		if (percent < 70) return 'bg-indigo-300 dark:bg-indigo-500'
+		if (percent < 80) return 'bg-blue-300 dark:bg-blue-500'
+		if (percent > 80) return 'bg-green-300 dark:bg-green-500'
 	}
 
-	const tintPercent = (percent: number) => {
-		if (percent < 50) return 'bg-red-300'
-		if (percent < 60) return 'bg-gray-300'
-		if (percent < 70) return 'bg-indigo-300'
-		if (percent < 80) return 'bg-blue-300'
-		if (percent > 80) return 'bg-green-300'
+	const tintProgressBar = (prop: string, main: boolean) => {
+		const props = {
+			games: main ? 'bg-green-500 dark:bg-green-800' : 'bg-green-100 dark:bg-green-300',
+			winrate: main ? 'bg-blue-500 dark:bg-blue-800' : 'bg-blue-100 dark:bg-blue-300',
+			kda: main ? 'bg-purple-500 dark:bg-purple-800' : 'bg-purple-100 dark:bg-purple-300',
+			kills: main ? 'bg-red-500 dark:bg-red-800' : 'bg-red-100 dark:bg-red-300',
+			deaths: main ? 'bg-gray-500 dark:bg-gray-800' : 'bg-gray-100 dark:bg-gray-300',
+			assists: main ? 'bg-pink-500 dark:bg-pink-800' : 'bg-pink-100 dark:bg-pink-300',
+			cs: main ? 'bg-yellow-500 dark:bg-yellow-800' : 'bg-yellow-100 dark:bg-yellow-300',
+			csmin: main ? 'bg-yellow-500 dark:bg-yellow-700' : 'bg-yellow-100 dark:bg-yellow-300',
+		}
+		return props[prop]
 	}
 
 	return (
@@ -65,7 +66,7 @@ export default function ProgressOfEachPlayer({data, charts, prop_keys}) {
 					}
 				})}
 				return (
-					<div key={index_model} className="border shadow-lg rounded-lg m-3 p-4 bg-gray-100 hover:shadow-xl">
+					<div key={index_model} className="border shadow-lg rounded-lg m-3 p-4 bg-gray-100 hover:shadow-xl dark:bg-zinc-800 dark:border-0 dark:shadow-zinc-700">
 						<div className="flex items-center">
 							<img className="w-14 h-14 rounded" src={model.image} alt={model.player} />
 							<h3 className="text-2xl mx-4">{model.player}</h3>
