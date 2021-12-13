@@ -1,4 +1,4 @@
-const getIndexOfString = (searchStr: string, str: string, caseSensitive: boolean) => {
+export default function getIndexOfString (searchStr: string, str: string, caseSensitive: boolean) {
     if (searchStr.length == 0) {
 		return []
     }
@@ -13,5 +13,3 @@ const getIndexOfString = (searchStr: string, str: string, caseSensitive: boolean
     }
     return indices
 }
-
-export default getIndexOfString

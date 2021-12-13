@@ -1,11 +1,18 @@
-import { Champs, Player, RankResults } from '../interfaces/interfaces'
+import { Champ, Player, RankResults } from '../interfaces/interfaces'
 
-const getStatValues = (data: Player[], rank_results: RankResults[], prop: string, calc_median?: boolean, sort_desc?: boolean) => {
-	/* - prop: the type of property to load. Ex: 'games', 'winrate' or 'kills'
-	*  - float?: by default uses parseInt() for data. Optional parseFloat()
-	*  - calc_media?: by default returns total data. Optional returns median.
-	*  - sort_desc?: by default returns asc sort. Optional desc sort (when less points is better). 
-	*/
+/* - prop: the type of property to load. Ex: 'games', 'winrate' or 'kills'
+*  - float?: by default uses parseInt() for data. Optional parseFloat()
+*  - calc_media?: by default returns total data. Optional returns median.
+*  - sort_desc?: by default returns asc sort. Optional desc sort (when less points is better). 
+*/
+export default function getStatValues (
+	data: Player[], 
+	rank_results: RankResults[],
+	prop: string, 
+	calc_median?: boolean, 
+	sort_desc?: boolean
+	
+) {
 
 	const player_infos = [] // [{label: 'name', value: 5}]
 	const player_values = [] // [5]
@@ -16,9 +23,9 @@ const getStatValues = (data: Player[], rank_results: RankResults[], prop: string
 		let games = 0
 
 		if (prop === 'games') {
-			player.champs.map((x: Champs) => stat += x[prop])
+			player.champs.map((x: Champ) => stat += x[prop])
 		} else {
-			player.champs.map((x: Champs) => {
+			player.champs.map((x: Champ) => {
 				games += x.games
 				stat += x.games * x[prop]
 			})
@@ -57,5 +64,3 @@ const getStatValues = (data: Player[], rank_results: RankResults[], prop: string
 	// the player values is returned too, to allow show cups in the charts also
 	return [player_infos, player_values]
 }
-
-export default getStatValues

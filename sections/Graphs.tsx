@@ -1,11 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useEffect, useState } from 'react'
-import { Player } from '../interfaces/interfaces'
-import getStatValues from '../utils/getStatValues'
-import trophyIcon from '../utils/trophyIcon'
-import ChartCard from '../components/ChartCard'
-import propTitle from '../utils/propTitle'
-import ProgressOfEachPlayer from '../components/ProgressByPlayer'
+import React from 'react'
+import { Chart, Player } from '../interfaces/interfaces'
+import { ChartCard , ProgressByPlayer } from '../components'
+import { getStatValues, trophyIcon, statTitle } from '../utils'
 
 // ┌────────────────┐
 // │  GRAPHS PAGE:  │
@@ -24,7 +21,8 @@ const Graphs = ({data}) => {
 		})
 	})
 
-	const charts = []
+	const charts: Chart[] = []
+	// TODO: get props available dynamically
 	const prop_keys = ['games','winrate','kda','kills','deaths','assists','cs','csmin']
 
 	prop_keys.forEach(prop => {
@@ -34,7 +32,7 @@ const Graphs = ({data}) => {
 
 		charts.push({
 			key: prop,
-			title: propTitle(prop),
+			title: statTitle(prop),
 			data: data_stat,
 			data_int: data_stat_int
 		})
@@ -62,6 +60,8 @@ const Graphs = ({data}) => {
 					)}
 				</div>
 			</div>
+			
+			{/* PIECHART SECTION */}
 			<div className="container mx-auto">
 				<h2 className="text-4xl text-center mt-10 mb-5">Graphs by stat</h2>
 				<hr/>
@@ -70,11 +70,13 @@ const Graphs = ({data}) => {
 				</div>
 			</div>
 			<br/>
+
+			{/* PROGRESSBARS SECTION */}
 			<div className="container mx-auto">
 				<h2 className="text-4xl text-center mt-10 mb-5">Stats of each player</h2>
 				<hr/>
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
-					<ProgressOfEachPlayer data={data} charts={charts} prop_keys={prop_keys} rank_results={rank_results} />
+					<ProgressByPlayer data={data} charts={charts} prop_keys={prop_keys} />
 				</div>
 			</div>
 		</>

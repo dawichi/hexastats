@@ -4,10 +4,10 @@ export interface Player {
 	image: string,
 	rank_n: string,
 	rank_p: number,
-	champs: Champs[]
+	champs: Champ[],
 }
 
-export interface Champs {
+export interface Champ {
 	name: string,
 	image: string,
 	games: number,
@@ -15,23 +15,30 @@ export interface Champs {
 	kda: number,
 	kills: number,
 	deaths: number,
-	asissts: number,
+	assists: number,
 	cs: number,
-	csmin: number
+	csmin: number,
 }
 
 export interface DataForChart {
 	label: string,
-	value: number
+	value: number,
 }
 
 export interface PlayerStats {
 	key: string,
-	value: number
+	value: number,
 }
 
 export interface RankResults {
 	name: string,
 	image: string,
-	trophies: number[]
+	trophies: number[],
+}
+
+export interface Chart {
+	key: string,
+	title: string,
+	data: any, // ;(
+	data_int: any, // ;(
 }

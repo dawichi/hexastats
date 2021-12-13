@@ -2,48 +2,47 @@
 import React, { useState } from 'react'
 import Axios from 'axios'
 import Navbar from '../components/Navbar'
-import processData from '../utils/processData'
-import Home from '../sections/Home'
-import Graphs from '../sections/Graphs'
-import Ranking from '../sections/Ranking'
-import { realName } from '../utils'
+import { realName, processData } from '../utils'
+import { Compare, Graphs, Home, Ranking } from '../sections'
+import { Player } from '../interfaces/interfaces'
 
+// ┌────────────────┐
+// │  INDEX PAGE:   │
+// └────────────────┘
+// Hexastats is a one-page app
+// To navigate throgh the sections, is used a basic array with the sections available sections[]
+// Based on the selected section, each component is showed in the <main> tag of the app
 export default function Index(props: { data: any[] }) {
 
-	const data = processData(props.data)
-	const [page, setPage] = useState(0)
+	// process the props.data to format the output into players_data
+	const players_data: Player[] = processData(props.data)
+	const [currentSection, setCurrentSection] = useState(0)
+
+	// Sections available
+	// If you add a new section, remember modify also the navigation menu to be able to select its index
+	const sections = [
+		<Home key={0} data={players_data} />,
+		<Graphs key={1} data={players_data} />,
+		<Ranking key={2} data={players_data} />,
+		<Compare key={3} data={players_data} />,
+	]
 
 	return (
 		<>
 			<header style={{position: 'sticky', top: 0, zIndex: 1}}>
-				<Navbar page={page} setPage={setPage} />
+				<Navbar page={currentSection} setPage={setCurrentSection} />
 			</header>
 
 			<main>
-				{ page == 0 &&
-					<div className="animate__animated animate__fadeIn">
-						<Home data={data} />
-					</div>
-				}
-				{ page == 1 &&
-					<div className="animate__animated animate__fadeIn">
-						<Graphs data={data}/>
-					</div>
-				}
-				{ page == 2 &&
-					<div className="animate__animated animate__fadeIn">
-						<Ranking data={data}/>
-					</div>
-				}
-				{ page == 3 &&
-					<div className="animate__animated animate__fadeIn">
-						<div>hi</div> 
-					</div>
-				}
+				<div className="animate__animated animate__fadeIn">
+					{ sections[currentSection] }
+				</div>
 			</main>
 		</>
 	)
 }
+
+
 
 
 export const getStaticProps = async () => {

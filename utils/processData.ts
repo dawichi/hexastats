@@ -1,4 +1,4 @@
-import { Champs, Player } from '../interfaces/interfaces'
+import { Champ, Player } from '../interfaces/interfaces'
 import getIndexOfString from './getIndexOfString'
 
 
@@ -8,7 +8,7 @@ export default function processData(data: any) {
 	const context: Player[] = []
 	
 	// Upload context adding the player info
-	const pushPlayer =(name:string , alias:string , image:string, rank_n:string, rank_p: number, champs: Champs[]) => {
+	const pushPlayer =(name:string , alias:string , image:string, rank_n:string, rank_p: number, champs: Champ[]) => {
 		context.push({
 			name: name,
 			alias: alias,
