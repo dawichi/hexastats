@@ -76,7 +76,7 @@ export const getStaticProps = async () => {
 	const player7 = await Axios.get(BASE_URL + players[7])
 	const player8 = await Axios.get(BASE_URL + players[8])
 	const player9 = await Axios.get(BASE_URL + players[9])
-	const player10 = await Axios.get(BASE_URL + players[10])
+	// const player10 = await Axios.get(BASE_URL + players[10])
 	const player11 = await Axios.get(BASE_URL + players[11])
 
 	const data = [
@@ -90,7 +90,7 @@ export const getStaticProps = async () => {
 		{name: realName(players[7]), data: player7.data, alias: players[7]},
 		{name: realName(players[8]), data: player8.data, alias: players[8]},
 		{name: realName(players[9]), data: player9.data, alias: players[9]},
-		{name: realName(players[10]), data: player10.data, alias: players[10]},
+		// {name: realName(players[10]), data: player10.data, alias: players[10]},
 		{name: realName(players[11]), data: player11.data, alias: players[11]},
 	]
 
