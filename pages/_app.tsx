@@ -23,7 +23,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
 			<footer className="bg-zinc-800 text-white p-3">
 				<div className="container m-auto">
- 					<span>&copy;Hexastats no se hace responsable de ninguna depresión causada por este golpe de realidad.</span>
+ 					<span>&copy;<a className='text-indigo-400 font-bold tracking-wider' href='https://github.com/dawichi/hexastats' target='_blank' rel="noreferrer">Hexastats</a> no se hace responsable de ninguna depresión causada por este golpe de realidad.</span>
 				</div>
 			</footer>
 		</>

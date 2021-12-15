@@ -1,6 +1,7 @@
 import React from 'react'
 import { DataForChart } from '../interfaces/interfaces'
 import { PieChart } from '.'
+import { styles } from '../styles/styles.config'
  
 
 // Prints a card with a chart
@@ -25,15 +26,15 @@ const ChartCard = ({title, data, data_int, id}) => {
 
 	// Prints our 3 ranked winners of the {title} category and renders the data with <PieChart/>
 	return (
-		<div className="border shadow-lg rounded m-3 bg-gray-100 hover:shadow-2xl dark:bg-zinc-800 dark:border-0 dark:shadow-zinc-700">
+		<div className={`m-3 ${styles.foreground} ${styles.card}`}>
 			<h3 className="text-2xl text-center m-3">{title}</h3>
 			<hr style={{width: '85%', margin: 'auto'}} />
 			<br/>
 			<div className="m-auto" style={{width: '85%'}}>
 				<div className="grid grid-cols-3">
-					<p><span className="bg-yellow-400 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best1}</p>
-					<p><span className="bg-gray-700 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best2}</p>
-					<p><span className="bg-yellow-700 p-1 rounded text-white"><i className="bi bi-trophy"></i></span> {best3}</p>
+					<p><span className={styles.trophies.first}><i className="bi bi-trophy"></i></span> {best1}</p>
+					<p><span className={styles.trophies.second}><i className="bi bi-trophy"></i></span> {best2}</p>
+					<p><span className={styles.trophies.third}><i className="bi bi-trophy"></i></span> {best3}</p>
 				</div>
 			</div>
 			<PieChart data={data} outerRadius={120} innerRadius={50} id={id} />

@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import { Player } from '../interfaces/interfaces'
+import { styles } from '../styles/styles.config'
 
 // ┌────────────────┐
 // │ RANKING PAGE:  │
@@ -50,7 +51,7 @@ export default function Ranking({data}) {
 						rank_data.map((player: Player, index: number) => {
 							if (!player.rank_n) return
 							return (
-								<div key={index} className="m-3 p-3 border shadow rounded-lg bg-gray-100 dark:bg-zinc-800 hover:shadow-xl">
+								<div key={index} className={`m-3 p-3 ${styles.foreground} ${styles.card}`}>
 									<div className="flex">
 										<img className="m-2 w-14 h-14 rounded" src={player.image} alt={player.name} />
 										<div className="flex flex-col">

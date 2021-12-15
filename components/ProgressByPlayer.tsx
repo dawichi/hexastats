@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import { Chart, DataForChart, Player } from '../interfaces/interfaces'
+import { styles } from '../styles/styles.config'
 import { statTitle } from '../utils'
 
 // Progress bar with the stats of one player
@@ -66,7 +67,7 @@ export default function ProgressOfEachPlayer({data, charts, prop_keys}) {
 					}
 				})}
 				return (
-					<div key={index_model} className="border shadow-lg rounded-lg m-3 p-4 bg-gray-100 hover:shadow-xl dark:bg-zinc-800 dark:border-0 dark:shadow-zinc-700">
+					<div key={index_model} className={`m-3 p-4 ${styles.foreground} ${styles.card}`}>
 						<div className="flex items-center">
 							<img className="w-14 h-14 rounded" src={model.image} alt={model.player} />
 							<h3 className="text-2xl mx-4">{model.player}</h3>

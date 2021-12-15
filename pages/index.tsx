@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar'
 import { realName, processData } from '../utils'
 import { Compare, Graphs, Home, Ranking } from '../sections'
 import { Player } from '../interfaces/interfaces'
+import { styles } from '../styles/styles.config'
 
 // ┌────────────────┐
 // │  INDEX PAGE:   │
@@ -33,7 +34,7 @@ export default function Index(props: { data: any[] }) {
 				<Navbar page={currentSection} setPage={setCurrentSection} />
 			</header>
 
-			<main className="pb-20 bg-orange-50 dark:bg-zinc-900 dark:text-white">
+			<main className={`pb-20 dark:text-white ${styles.background}`}>
 				<div className="animate__animated animate__fadeIn">
 					{ sections[currentSection] }
 				</div>

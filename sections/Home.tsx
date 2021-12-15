@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import { Champ, Player } from '../interfaces/interfaces'
+import { styles } from '../styles/styles.config'
 
 // ┌────────────────┐
 // │ HOME PAGE:     │
@@ -35,7 +36,7 @@ const Home = ({data}) => {
 								<h2 className="text-2xl">{player.name} ({player.alias})</h2>
 							</div>
 
-							<table className="table-auto m-3 text-center border bg-zinc-100 dark:bg-zinc-800">
+							<table className={`table-auto m-3 text-center border dark:border-gray-500 ${styles.foreground}`}>
 								<thead>
 									<tr>
 										<th className="py-1 px-2 bg-zinc-300 dark:bg-zinc-800"><span>Champ</span></th>
@@ -52,7 +53,7 @@ const Home = ({data}) => {
 									{/* For each champ inside a player, print a row with the data */}
 									{player.champs.map((champ: Champ, index_champ) => {
 										return (
-											<tr key={index_champ} className="border">
+											<tr key={index_champ} className="border dark:border-gray-500">
 												<td><img src={champ.image} alt="champ image" style={{maxWidth: '60px', margin: 'auto'}} /></td>
 												<td>
 													<span className={tint(champ.games, 'games')}>{champ.games}</span>{' '}
