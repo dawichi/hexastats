@@ -25,6 +25,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 				<div className="container m-auto">
  					<span>&copy;<a className='text-indigo-400 font-bold tracking-wider' href='https://github.com/dawichi/hexastats' target='_blank' rel="noreferrer">Hexastats</a> no se hace responsable de ninguna depresión causada por este golpe de realidad.</span>
 				</div>
+				<div className="flex items-center justify-center mr-5 hidden md:block">
+					<a href="https://github.com/dawichi" target="_blank" className="text-white text-2xl" rel="noreferrer">다 위 치</a>
+				</div>
 			</footer>
 		</>
 	)

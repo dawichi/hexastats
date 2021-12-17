@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react'
-import { Disclosure } from '@headlessui/react'
+import { Disclosure, Switch } from '@headlessui/react'
 
 // Navbar of the app
 export default function Navbar({page, setPage}) {
@@ -15,28 +15,28 @@ export default function Navbar({page, setPage}) {
 	]
 
 	// DARK MODE
-	const [activeTheme, setActiveTheme] = useState('light')
-	const inactiveTheme = activeTheme === 'light' ? 'dark' : 'light'
+	const [darkMode, setDarkMode] = useState(false)
+	const theme = darkMode ? 'dark' : 'light'
 
 	useEffect(() => {
 		if (localStorage.getItem('theme') === 'dark') {
-			setActiveTheme('dark')
+			setDarkMode(true)
 		}
 		if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-			setActiveTheme('dark')
+			setDarkMode(true)
 		}
 	}, [])
 
 	useEffect(() => {
-		document.body.dataset.theme = activeTheme
-		if (activeTheme === 'light') {
-			localStorage.setItem('theme', 'light')
-			document.documentElement.classList.remove('dark')
-		} else {
+		document.body.dataset.theme = theme
+		if (darkMode) {
 			localStorage.setItem('theme', 'dark')
 			document.documentElement.classList.add('dark')
+		} else {
+			localStorage.setItem('theme', 'light')
+			document.documentElement.classList.remove('dark')
 		}
-	}, [activeTheme])
+	}, [darkMode, theme])
 
 	// END DARK MODE
 
@@ -74,12 +74,12 @@ export default function Navbar({page, setPage}) {
 								</div>
 							</div>
 							<div className="absolute right-0 flex">
-								<div className="flex items-center justify-center mr-5 hidden md:block">
-									<a href="https://github.com/dawichi" target="_blank" className="text-white text-2xl" rel="noreferrer">다 위 치</a>
+								<Toggle darkMode={darkMode} setDarkMode={setDarkMode} />
+								<div className="flex items-center justify-center ml-10 hidden md:block hover:text-violet-500">
+									<a href="https://github.com/dawichi" target="_blank" className="text-2xl" rel="noreferrer">
+										<i className="bi bi-github"></i>
+									</a>
 								</div>
-								<button className="px-3 py-2 rounded-md text-sm font-medium text-white bg-zinc-900 dark:bg-orange-100 dark:text-black" onClick={() => setActiveTheme(inactiveTheme)}>
-									{ activeTheme === 'light' ? <i className="bi bi-moon-fill"></i> : <i className="bi bi-brightness-high-fill"></i> }
-								</button>
 							</div>
 						</div>
 					</div>
@@ -100,5 +100,29 @@ export default function Navbar({page, setPage}) {
 			)}
 		</Disclosure>
 	)
-	
+}
+
+
+// Toggle to switch between dark and light mode
+const Toggle = ({darkMode, setDarkMode}) => {
+
+	return (
+		<Switch
+			checked={darkMode}
+			onChange={setDarkMode}
+			className={'relative inline-flex flex-shrink-0 h-[34px] w-[58px] border-2 dark:border-transparent border-orange-100 rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 bg-orange-50 dark:bg-zinc-900'}
+		>
+			<span className="sr-only">Use setting</span>
+			<span
+				aria-hidden="true"
+				className={`${darkMode ? 'translate-x-6 bg-zinc-700' : 'translate-x-0 bg-orange-200'} pointer-events-none inline-block h-[30px] w-[30px]
+				rounded-full shadow-lg transform ring-0 transition ease-in-out duration-200 flex justify-center items-center`}
+			>
+				{darkMode
+					? <i className="bi bi-moon-fill text-white"></i>
+					: <i className="bi bi-sun-fill text-black"></i>
+				}
+			</span>
+		</Switch>
+	)
 }
