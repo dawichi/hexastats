@@ -57,51 +57,63 @@ export default function ProgressOfEachPlayer({ data, charts, prop_keys }) {
         return props[prop]
     }
 
-    return progress_by_player.map((model, idx_m) => {
-        let total = 0
+    return (
+        <>
+            {progress_by_player.map((model, idx_m) => {
+                let total = 0
 
-        {
-            prop_keys.map((prop: string) => {
-                if (prop !== 'deaths' && prop !== 'cs') {
-                    total += (model[prop] * 100) / top_stats[prop]
-                }
-            })
-        }
-
-        return (
-            <div key={idx_m} className={`m-3 p-4 ${styles.foreground} ${styles.card}`}>
-                <div className='flex items-center'>
-                    <img className='w-14 h-14 rounded' src={model.image} alt={model.player} />
-                    <h3 className='text-2xl mx-4'>{model.player}</h3>
-                    <span className={`rounded px-1 text-lg ${tintPercent(total / 6)}`}>{(total / 6).toFixed(1) + '%'}</span>
-                </div>
-                <hr style={{ width: '85%', margin: '10px' }} />
-                <div className='grid grid-cols-6 items-end text-sm text-center'>
-                    {prop_keys.map((prop: string, idx_p: number) => {
+                {
+                    prop_keys.map((prop: string) => {
                         if (prop !== 'deaths' && prop !== 'cs') {
-                            return (
-                                <div
-                                    key={idx_p}
-                                    className={'m-1 rounded text-white min-h-[150px] grid items-end ' + tintProgressBar(prop, false)}
-                                >
-                                    <div
-                                        className={'rounded ' + tintProgressBar(prop, true)}
-                                        style={{ height: (model[prop] * 150) / top_stats[prop] + 'px' }}
-                                    >
-                                        {((model[prop] * 100) / top_stats[prop]).toFixed(0) + '%'}
-                                    </div>
-                                </div>
-                            )
+                            total += (model[prop] * 100) / top_stats[prop]
                         }
-                    })}
+                    })
+                }
 
-                    {['Games', 'Winrate', 'KDA', 'Kills', 'Assists', 'CS/min'].map((stat, idx) => (
-                        <p key={idx} className='text-center text-sm'>
-                            {stat}
-                        </p>
-                    ))}
-                </div>
-            </div>
-        )
-    })
+                return (
+                    <div key={idx_m} className={`m-3 p-2 ${styles.foreground} ${styles.card}`}>
+                        <div className='grid grid-cols-2'>
+                            <div className='flex items-center'>
+                                <img className='w-14 h-14 rounded' src={model.image} alt={model.player} />
+                                <h3 className='text-2xl mx-4'>{model.player}</h3>
+                            </div>
+                            <div className='flex items-center justify-center'>
+                                <span className={`rounded px-1 text-lg ${tintPercent(total / 6)}`}>{(total / 6).toFixed(1) + '%'}</span>
+                            </div>
+                        </div>
+
+                        <hr style={{ width: '85%', margin: '10px' }} />
+
+                        <div className='grid grid-cols-6 items-end text-sm text-center'>
+                            {prop_keys.map((prop: string, idx_p: number) => {
+                                if (prop !== 'deaths' && prop !== 'cs') {
+                                    return (
+                                        <div
+                                            key={idx_p}
+                                            className={
+                                                'm-1 rounded text-white min-h-[150px] grid items-end ' + tintProgressBar(prop, false)
+                                            }
+                                        >
+                                            <div
+                                                className={'rounded ' + tintProgressBar(prop, true)}
+                                                style={{ height: (model[prop] * 150) / top_stats[prop] + 'px' }}
+                                            >
+                                                {((model[prop] * 100) / top_stats[prop]).toFixed(0) + '%'}
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                            })}
+
+                            {['Games', 'Winrate', 'KDA', 'Kills', 'Assists', 'CS/min'].map((stat, idx) => (
+                                <p key={idx} className='text-center text-sm'>
+                                    {stat}
+                                </p>
+                            ))}
+                        </div>
+                    </div>
+                )
+            })}
+        </>
+    )
 }
