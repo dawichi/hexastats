@@ -1,8 +1,10 @@
-export default function getIndexOfString (searchStr: string, str: string, caseSensitive: boolean) {
+export default function getIndexOfString(searchStr: string, str: string, caseSensitive: boolean) {
     if (searchStr.length == 0) {
-		return []
+        return []
     }
-    var startIndex = 0, index: number, indices = []
+    var startIndex = 0,
+        index: number,
+        indices = []
     if (!caseSensitive) {
         str = str.toLowerCase()
         searchStr = searchStr.toLowerCase()
