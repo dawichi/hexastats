@@ -62,21 +62,14 @@ export default function Ranking({ data }) {
                                         <span className='pb-1 text-xl'>
                                             {index + 1}. {player.name}
                                         </span>
-                                        <span className='pb-1'>
-                                            {player.rank_n ? player.rank_n + 'º' : 'no data ;('}
-                                        </span>
+                                        <span className='pb-1'>{player.rank_n ? player.rank_n + 'º' : 'no data ;('}</span>
                                     </div>
                                 </div>
                                 <div className='flex justify-between'>
                                     <span>Better than the</span>
                                     <span>of all players</span>
                                 </div>
-                                <div
-                                    className={`rounded-xl text-white text-sm text-center ${tint(
-                                        100 - player.rank_p,
-                                        false,
-                                    )}`}
-                                >
+                                <div className={`rounded-xl text-white text-sm text-center ${tint(100 - player.rank_p, false)}`}>
                                     <div
                                         className={`rounded-xl ${tint(100 - player.rank_p, true)}`}
                                         style={{ width: 100 - player.rank_p + '%' }}

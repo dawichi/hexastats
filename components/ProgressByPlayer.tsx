@@ -73,9 +73,7 @@ export default function ProgressOfEachPlayer({ data, charts, prop_keys }) {
                         <div className='flex items-center'>
                             <img className='w-14 h-14 rounded' src={model.image} alt={model.player} />
                             <h3 className='text-2xl mx-4'>{model.player}</h3>
-                            <span className={`rounded px-1 text-lg ${tintPercent(total / 6)}`}>
-                                {(total / 6).toFixed(1) + '%'}
-                            </span>
+                            <span className={`rounded px-1 text-lg ${tintPercent(total / 6)}`}>{(total / 6).toFixed(1) + '%'}</span>
                         </div>
                         <hr style={{ width: '85%', margin: '10px' }} />
                         <div className='grid grid-cols-2'>
@@ -86,11 +84,7 @@ export default function ProgressOfEachPlayer({ data, charts, prop_keys }) {
                                 return (
                                     <div key={index_prop} className='p-1'>
                                         <p>{statTitle(prop)}</p>
-                                        <div
-                                            className={
-                                                'rounded text-white text-sm text-center ' + tintProgressBar(prop, false)
-                                            }
-                                        >
+                                        <div className={'rounded text-white text-sm text-center ' + tintProgressBar(prop, false)}>
                                             <div
                                                 className={'rounded ' + tintProgressBar(prop, true)}
                                                 style={{ width: (model[prop] * 100) / top_stats[prop] + '%' }}

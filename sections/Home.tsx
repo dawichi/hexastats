@@ -70,18 +70,11 @@ const Home = ({ data }) => {
                                         return (
                                             <tr key={index_champ} className='border'>
                                                 <td>
-                                                    <img
-                                                        src={champ.image}
-                                                        alt='champ image'
-                                                        style={{ maxWidth: '60px', margin: 'auto' }}
-                                                    />
+                                                    <img src={champ.image} alt='champ image' style={{ maxWidth: '60px', margin: 'auto' }} />
                                                 </td>
                                                 <td>
                                                     <span className={tint(champ.games, 'games')}>{champ.games}</span> (
-                                                    <span className={tint(champ.winrate, 'winrate')}>
-                                                        {champ.winrate}%
-                                                    </span>
-                                                    )
+                                                    <span className={tint(champ.winrate, 'winrate')}>{champ.winrate}%</span>)
                                                 </td>
                                                 <td>
                                                     <span className={tint(champ.kda, 'kda')}>{champ.kda}</span>
@@ -93,9 +86,7 @@ const Home = ({ data }) => {
                                                     <span className={tint(champ.deaths, 'deaths')}>{champ.deaths}</span>
                                                 </td>
                                                 <td>
-                                                    <span className={tint(champ.assists, 'assists')}>
-                                                        {champ.assists}
-                                                    </span>
+                                                    <span className={tint(champ.assists, 'assists')}>{champ.assists}</span>
                                                 </td>
                                                 <td>
                                                     <span className={tint(champ.csmin, 'csmin')}>{champ.csmin}</span>

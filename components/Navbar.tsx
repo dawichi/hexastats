@@ -2,11 +2,17 @@
 import React, { useEffect, useState } from 'react'
 import { Disclosure, Switch } from '@headlessui/react'
 
+interface link {
+    name: string
+    onClick: any
+    current: boolean
+}
+
 // Navbar of the app
 export default function Navbar({ page, setPage }) {
     // Navigation menu, selects each section availble
     // add new sections here
-    const navigation = [
+    const navigation: link[] = [
         { name: 'Stats', onClick: () => setPage(0), current: page == 0 },
         { name: 'Graphs', onClick: () => setPage(1), current: page == 1 },
         { name: 'Ranking', onClick: () => setPage(2), current: page == 2 },
@@ -59,39 +65,18 @@ export default function Navbar({ page, setPage }) {
                                         src='https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg'
                                         alt='Hexastats'
                                     />
-                                    <h1 className='text-2xl text-white ml-2 hidden lg:block tracking-wider'>
-                                        Hexastats
-                                    </h1>
+                                    <h1 className='text-2xl text-white ml-2 hidden lg:block tracking-wider'>Hexastats</h1>
                                 </div>
                                 <div className='hidden sm:block sm:ml-6'>
                                     <div className='flex space-x-4'>
-                                        {navigation.map(item => (
-                                            <button
-                                                key={item.name}
-                                                onClick={item.onClick}
-                                                className={
-                                                    'px-3 py-2 rounded-md text-sm font-medium ' +
-                                                    (item.current
-                                                        ? 'bg-zinc-900 text-white'
-                                                        : 'text-zinc-300 hover:bg-zinc-700 hover:text-white')
-                                                }
-                                                aria-current={item.current ? 'page' : undefined}
-                                            >
-                                                {item.name}
-                                            </button>
-                                        ))}
+                                        <Links navigation={navigation} mobile={false} />
                                     </div>
                                 </div>
                             </div>
                             <div className='absolute right-0 flex'>
                                 <Toggle darkMode={darkMode} setDarkMode={setDarkMode} />
                                 <div className='flex items-center justify-center ml-10 hidden md:block hover:text-violet-500'>
-                                    <a
-                                        href='https://github.com/dawichi'
-                                        target='_blank'
-                                        className='text-2xl'
-                                        rel='noreferrer'
-                                    >
+                                    <a href='https://github.com/dawichi' target='_blank' className='text-2xl' rel='noreferrer'>
                                         <i className='bi bi-github'></i>
                                     </a>
                                 </div>
@@ -101,21 +86,7 @@ export default function Navbar({ page, setPage }) {
 
                     <Disclosure.Panel className='sm:hidden'>
                         <div className='px-2 pt-2 pb-3 space-y-1'>
-                            {navigation.map(item => (
-                                <button
-                                    key={item.name}
-                                    onClick={item.onClick}
-                                    className={
-                                        'block px-3 py-2 rounded-md text-base font-medium ' +
-                                        (item.current
-                                            ? 'bg-zinc-900 text-white'
-                                            : 'text-zinc-300 hover:bg-zinc-700 hover:text-white')
-                                    }
-                                    aria-current={item.current ? 'page' : undefined}
-                                >
-                                    {item.name}
-                                </button>
-                            ))}
+                            <Links navigation={navigation} mobile={true} />
                         </div>
                     </Disclosure.Panel>
                 </>
@@ -123,6 +94,22 @@ export default function Navbar({ page, setPage }) {
         </Disclosure>
     )
 }
+
+// Links, used both in desktop and mobile view
+const Links = ({ navigation, mobile }) =>
+    navigation.map((item: link) => (
+        <button
+            key={item.name}
+            onClick={item.onClick}
+            className={
+                'block px-3 py-2 rounded-md text-base font-medium ' +
+                (item.current ? 'bg-zinc-900 text-white' : 'text-zinc-300 hover:bg-zinc-700 hover:text-white')
+            }
+            aria-current={item.current ? 'page' : undefined}
+        >
+            {item.name}
+        </button>
+    ))
 
 // Toggle to switch between dark and light mode
 const Toggle = ({ darkMode, setDarkMode }) => {
@@ -142,11 +129,7 @@ const Toggle = ({ darkMode, setDarkMode }) => {
                 } pointer-events-none inline-block h-[30px] w-[30px]
 				rounded-full shadow-lg transform ring-0 transition ease-in-out duration-200 flex justify-center items-center`}
             >
-                {darkMode ? (
-                    <i className='bi bi-moon-fill text-white'></i>
-                ) : (
-                    <i className='bi bi-sun-fill text-black'></i>
-                )}
+                {darkMode ? <i className='bi bi-moon-fill text-white'></i> : <i className='bi bi-sun-fill text-black'></i>}
             </span>
         </Switch>
     )

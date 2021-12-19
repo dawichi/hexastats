@@ -6,14 +6,7 @@ export default function processData(data: any) {
     const context: Player[] = []
 
     // Upload context adding the player info
-    const pushPlayer = (
-        name: string,
-        alias: string,
-        image: string,
-        rank_n: string,
-        rank_p: number,
-        champs: Champ[],
-    ) => {
+    const pushPlayer = (name: string, alias: string, image: string, rank_n: string, rank_p: number, champs: Champ[]) => {
         context.push({
             name: name,
             alias: alias,
@@ -70,23 +63,11 @@ export default function processData(data: any) {
             // index helpers: [KDA]
             const idx_kda = getIndexOfString('<span class="KDA">', substr_kda, false)[0] + 18
             const idx_kda_kills = getIndexOfString('<div class="KDAEach">', substr_kda, false)[0] + 45
-            const idx_kda_kills_end = getIndexOfString(
-                '<',
-                substr_kda.slice(idx_kda_kills, idx_kda_kills + 5),
-                false,
-            )[0]
+            const idx_kda_kills_end = getIndexOfString('<', substr_kda.slice(idx_kda_kills, idx_kda_kills + 5), false)[0]
             const idx_kda_deaths = getIndexOfString('<span class="Death">', substr_kda, false)[0] + 20
-            const idx_kda_deaths_end = getIndexOfString(
-                '<',
-                substr_kda.slice(idx_kda_deaths, idx_kda_deaths + 5),
-                false,
-            )[0]
+            const idx_kda_deaths_end = getIndexOfString('<', substr_kda.slice(idx_kda_deaths, idx_kda_deaths + 5), false)[0]
             const idx_kda_assists = getIndexOfString('<span class="Assist">', substr_kda, false)[0] + 21
-            const idx_kda_assists_end = getIndexOfString(
-                '<',
-                substr_kda.slice(idx_kda_assists, idx_kda_assists + 5),
-                false,
-            )[0]
+            const idx_kda_assists_end = getIndexOfString('<', substr_kda.slice(idx_kda_assists, idx_kda_assists + 5), false)[0]
 
             // index helpers: [winrate]
             const idx_winrate = getIndexOfString('%', substr_winrate, false)[0] - 2
