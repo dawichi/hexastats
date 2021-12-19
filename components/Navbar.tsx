@@ -46,7 +46,7 @@ export default function Navbar({ page, setPage }) {
     // END DARK MODE
 
     return (
-        <Disclosure as='nav' className='bg-zinc-800'>
+        <Disclosure as='nav' className='bg-zinc-800 shadow dark:shadow-zinc-700'>
             {({ open }) => (
                 <>
                     <div className='max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>

@@ -24,27 +24,27 @@ export default function Ranking({ data }) {
     })
 
     const tint = (percent: number, main: boolean) => {
-        if (percent > 90) return main ? 'bg-indigo-600' : 'bg-indigo-200'
-        if (percent > 80) return main ? 'bg-blue-600' : 'bg-blue-200'
-        if (percent > 65) return main ? 'bg-green-600' : 'bg-green-200'
-        if (percent > 50) return main ? 'bg-yellow-600' : 'bg-yellow-200'
-        if (percent > 35) return main ? 'bg-gray-600' : 'bg-gray-200'
-        if (percent < 35) return main ? 'bg-red-600' : 'bg-red-200'
+        if (percent > 90) return main ? 'from-indigo-800 to-indigo-500' : 'bg-indigo-300/50 dark:bg-indigo-700/25'
+        if (percent > 80) return main ? 'from-blue-800 to-blue-500' : 'bg-blue-300/50 dark:bg-blue-700/25'
+        if (percent > 65) return main ? 'from-green-800 to-green-500' : 'bg-green-300/50 dark:bg-green-700/25'
+        if (percent > 50) return main ? 'from-yellow-800 to-yellow-500' : 'bg-yellow-300/50 dark:bg-yellow-700/25'
+        if (percent > 35) return main ? 'from-gray-800 to-gray-500' : 'bg-gray-300/50 dark:bg-gray-700/25'
+        if (percent < 35) return main ? 'from-red-800 to-red-500' : 'bg-red-300/50 dark:bg-red-700/25'
     }
 
     const tints = [
-        { color: 'bg-indigo-400 dark:bg-indigo-500', top: 'Top 10🔥 % ' },
-        { color: 'bg-blue-400 dark:bg-blue-500', top: 'Top 20 %' },
-        { color: 'bg-green-400 dark:bg-green-500', top: 'Top 35 %' },
-        { color: 'bg-yellow-400 dark:bg-yellow-500', top: 'Top 50 %' },
-        { color: 'bg-gray-400 dark:bg-gray-500', top: 'Below 50 %' },
-        { color: 'bg-red-400 dark:bg-red-500', top: 'Below 35 %' },
+        { color: 'bg-indigo-500 dark:bg-indigo-600/75', top: 'Top 10🔥 % ' },
+        { color: 'bg-blue-500 dark:bg-blue-600/75', top: 'Top 20 %' },
+        { color: 'bg-green-500 dark:bg-green-600/75', top: 'Top 35 %' },
+        { color: 'bg-yellow-500 dark:bg-yellow-600/75', top: 'Top 50 %' },
+        { color: 'bg-gray-500 dark:bg-gray-600/75', top: 'Below 50 %' },
+        { color: 'bg-red-500 dark:bg-red-600/75', top: 'Below 35 %' },
     ]
 
     return (
         <>
             <div className='container-fluid min-h-screen'>
-                <div className='flex justify-center pt-4'>
+                <div className='flex justify-center pt-4 text-white'>
                     {tints.map((tint, index) => (
                         <span key={index} className={`mx-1 px-3 py-1 rounded ${tint.color}`}>
                             {tint.top}
@@ -71,7 +71,7 @@ export default function Ranking({ data }) {
                                 </div>
                                 <div className={`rounded-xl text-white text-sm text-center ${tint(100 - player.rank_p, false)}`}>
                                     <div
-                                        className={`rounded-xl ${tint(100 - player.rank_p, true)}`}
+                                        className={`rounded-xl bg-gradient-to-r ${tint(100 - player.rank_p, true)}`}
                                         style={{ width: 100 - player.rank_p + '%' }}
                                     >
                                         {(100 - player.rank_p).toFixed(1)} %

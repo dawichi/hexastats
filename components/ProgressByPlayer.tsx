@@ -45,60 +45,63 @@ export default function ProgressOfEachPlayer({ data, charts, prop_keys }) {
 
     const tintProgressBar = (prop: string, main: boolean) => {
         const props = {
-            games: main ? 'bg-green-500 dark:bg-green-800' : 'bg-green-100 dark:bg-green-300',
-            winrate: main ? 'bg-blue-500 dark:bg-blue-800' : 'bg-blue-100 dark:bg-blue-300',
-            kda: main ? 'bg-purple-500 dark:bg-purple-800' : 'bg-purple-100 dark:bg-purple-300',
-            kills: main ? 'bg-red-500 dark:bg-red-800' : 'bg-red-100 dark:bg-red-300',
-            deaths: main ? 'bg-gray-500 dark:bg-gray-800' : 'bg-gray-100 dark:bg-gray-300',
-            assists: main ? 'bg-pink-500 dark:bg-pink-800' : 'bg-pink-100 dark:bg-pink-300',
-            cs: main ? 'bg-yellow-500 dark:bg-yellow-800' : 'bg-yellow-100 dark:bg-yellow-300',
-            csmin: main ? 'bg-yellow-500 dark:bg-yellow-700' : 'bg-yellow-100 dark:bg-yellow-300',
+            games: main ? 'bg-green-500 dark:bg-green-500/75' : 'bg-green-100 dark:bg-green-900/25',
+            winrate: main ? 'bg-blue-500 dark:bg-blue-500/75' : 'bg-blue-100 dark:bg-blue-900/25',
+            kda: main ? 'bg-purple-500 dark:bg-purple-500/75' : 'bg-purple-100 dark:bg-purple-900/25',
+            kills: main ? 'bg-red-500 dark:bg-red-500/75' : 'bg-red-100 dark:bg-red-900/25',
+            deaths: main ? 'bg-gray-500 dark:bg-gray-500/75' : 'bg-gray-100 dark:bg-gray-900/25',
+            assists: main ? 'bg-pink-500 dark:bg-pink-500/75' : 'bg-pink-100 dark:bg-pink-900/25',
+            cs: main ? 'bg-yellow-500 dark:bg-yellow-500/75' : 'bg-yellow-100 dark:bg-yellow-900/25',
+            csmin: main ? 'bg-yellow-500 dark:bg-yellow-500/75' : 'bg-yellow-100 dark:bg-yellow-900/25',
         }
         return props[prop]
     }
 
-    return (
-        <>
-            {progress_by_player.map((model, index_model) => {
-                let total = 0
-                {
-                    prop_keys.map((prop: string) => {
-                        if (prop !== 'deaths' && prop !== 'cs') {
-                            total += (model[prop] * 100) / top_stats[prop]
-                        }
-                    })
+    return progress_by_player.map((model, idx_m) => {
+        let total = 0
+
+        {
+            prop_keys.map((prop: string) => {
+                if (prop !== 'deaths' && prop !== 'cs') {
+                    total += (model[prop] * 100) / top_stats[prop]
                 }
-                return (
-                    <div key={index_model} className={`m-3 p-4 ${styles.foreground} ${styles.card}`}>
-                        <div className='flex items-center'>
-                            <img className='w-14 h-14 rounded' src={model.image} alt={model.player} />
-                            <h3 className='text-2xl mx-4'>{model.player}</h3>
-                            <span className={`rounded px-1 text-lg ${tintPercent(total / 6)}`}>{(total / 6).toFixed(1) + '%'}</span>
-                        </div>
-                        <hr style={{ width: '85%', margin: '10px' }} />
-                        <div className='grid grid-cols-2'>
-                            {prop_keys.map((prop, index_prop) => {
-                                if (prop === 'deaths' || prop === 'cs') {
-                                    return
-                                }
-                                return (
-                                    <div key={index_prop} className='p-1'>
-                                        <p>{statTitle(prop)}</p>
-                                        <div className={'rounded text-white text-sm text-center ' + tintProgressBar(prop, false)}>
-                                            <div
-                                                className={'rounded ' + tintProgressBar(prop, true)}
-                                                style={{ width: (model[prop] * 100) / top_stats[prop] + '%' }}
-                                            >
-                                                {((model[prop] * 100) / top_stats[prop]).toFixed(0) + '%'}
-                                            </div>
-                                        </div>
+            })
+        }
+
+        return (
+            <div key={idx_m} className={`m-3 p-4 ${styles.foreground} ${styles.card}`}>
+                <div className='flex items-center'>
+                    <img className='w-14 h-14 rounded' src={model.image} alt={model.player} />
+                    <h3 className='text-2xl mx-4'>{model.player}</h3>
+                    <span className={`rounded px-1 text-lg ${tintPercent(total / 6)}`}>{(total / 6).toFixed(1) + '%'}</span>
+                </div>
+                <hr style={{ width: '85%', margin: '10px' }} />
+                <div className='grid grid-cols-6 items-end text-sm text-center'>
+                    {prop_keys.map((prop: string, idx_p: number) => {
+                        if (prop !== 'deaths' && prop !== 'cs') {
+                            return (
+                                <div
+                                    key={idx_p}
+                                    className={'m-1 rounded text-white min-h-[150px] grid items-end ' + tintProgressBar(prop, false)}
+                                >
+                                    <div
+                                        className={'rounded ' + tintProgressBar(prop, true)}
+                                        style={{ height: (model[prop] * 150) / top_stats[prop] + 'px' }}
+                                    >
+                                        {((model[prop] * 100) / top_stats[prop]).toFixed(0) + '%'}
                                     </div>
-                                )
-                            })}
-                        </div>
-                    </div>
-                )
-            })}
-        </>
-    )
+                                </div>
+                            )
+                        }
+                    })}
+
+                    {['Games', 'Winrate', 'KDA', 'Kills', 'Assists', 'CS/min'].map((stat, idx) => (
+                        <p key={idx} className='text-center text-sm'>
+                            {stat}
+                        </p>
+                    ))}
+                </div>
+            </div>
+        )
+    })
 }
