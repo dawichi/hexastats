@@ -1,12 +1,11 @@
-import { Champ, Player } from '../interfaces/interfaces'
 import getIndexOfString from './getIndexOfString'
 
 function processData(data: any) {
     // Context of the onepage webapp
-    const context: Player[] = []
+    const context = []
 
     // Upload context adding the player info
-    const pushPlayer = (name: string, alias: string, image: string, rank_n: number, rank_p: number, champs: Champ[]) => {
+    const pushPlayer = (name: string, alias: string, image: string, rank_n: number, rank_p: number, champs) => {
         context.push({
             name: name,
             alias: alias,
