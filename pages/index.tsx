@@ -16,8 +16,6 @@ export default function Index(props: { data: any[] }) {
     // process the props.data to format the output into players_data
     const [currentSection, setCurrentSection] = useState(0)
 
-    console.log(props.data)
-
     // Sections available
     // If you add a new section, remember modify also the navigation menu to be able to select its index
     const sections = [

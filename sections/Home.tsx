@@ -33,19 +33,21 @@ const Home = ({ data }) => {
         </tr>
     )
 
-	const Rank = ({title, rank, image, lp, win, lose, winrate}) => (
-		<div className='text-center text-sm'>
-			<h3>{title}</h3>
-			<h4>{rank} - {lp}</h4>
-			<img className='m-auto w-14 rounded' src={image} alt={'Rank image'} />
-			<p>
-				<span className='rounded px-1 text-white bg-green-600'>{win}</span>
-				<span>{' - '}</span>
-				<span className='rounded px-1 text-white bg-red-600'>{lose}</span>
-			</p>
-			<p>{winrate}%</p>
-		</div>
-	)
+    const Rank = ({ title, rank, image, lp, win, lose, winrate }) => (
+        <div className='text-center text-sm'>
+            <h3>{title}</h3>
+            <h4>
+                {rank} ({lp})
+            </h4>
+            <img className='m-auto w-14 rounded' src={image} alt={'Rank image'} />
+            <p>
+                <span className='rounded px-1 text-white bg-green-600'>{win}</span>
+                <span>{' - '}</span>
+                <span className='rounded px-1 text-white bg-red-600'>{lose}</span>
+            </p>
+            <p>{winrate}%</p>
+        </div>
+    )
 
     return (
         <div className='container m-auto py-8 lg:py-16'>
@@ -54,34 +56,34 @@ const Home = ({ data }) => {
                 {data.map((player: Player, index_player: number) => (
                     <div key={index_player} className={`flex flex-col ${styles.foreground} ${styles.card}`}>
                         <div className='p-4 flex items-center justify-between'>
-							<div className='relative flex flex-col items-center text-sm text-white'>
-								<img className='m-3 w-14 rounded' src={player.image} alt={player.name} />
-	                            <span className='px-1 absolute bottom-0 bg-zinc-700 border border-yellow-500 rounded-full'>
-									{player.level}
-								</span>
-							</div>
-							<div className='flex flex-col'>
-								<h2 className='text-xl'>{player.name}</h2>
-								<h3>({player.alias})</h3>
-							</div>
-							<Rank
-								title={'Solo/Duo'}
-								rank={player.rank.solo.rank}
-								image={player.rank.solo.image}
-								lp={player.rank.solo.lp}
-								win={player.rank.solo.win}
-								lose={player.rank.solo.lose}
-								winrate={player.rank.solo.winrate}
-							/>
-							<Rank
-								title={'Flex'}
-								rank={player.rank.flex.rank}
-								image={player.rank.flex.image}
-								lp={player.rank.flex.lp}
-								win={player.rank.flex.win}
-								lose={player.rank.flex.lose}
-								winrate={player.rank.flex.winrate}
-							/>
+                            <div className='relative flex flex-col items-center text-sm text-white'>
+                                <img className='m-3 w-14 rounded' src={player.image} alt={player.name} />
+                                <span className='px-1 absolute bottom-0 bg-zinc-700 border border-yellow-500 rounded-full'>
+                                    {player.level}
+                                </span>
+                            </div>
+                            <div className='flex flex-col'>
+                                <h2 className='text-xl'>{player.name}</h2>
+                                <h3>({player.alias})</h3>
+                            </div>
+                            <Rank
+                                title={'Solo/Duo'}
+                                rank={player.rank.solo.rank}
+                                image={player.rank.solo.image}
+                                lp={player.rank.solo.lp}
+                                win={player.rank.solo.win}
+                                lose={player.rank.solo.lose}
+                                winrate={player.rank.solo.winrate}
+                            />
+                            <Rank
+                                title={'Flex'}
+                                rank={player.rank.flex.rank}
+                                image={player.rank.flex.image}
+                                lp={player.rank.flex.lp}
+                                win={player.rank.flex.win}
+                                lose={player.rank.flex.lose}
+                                winrate={player.rank.flex.winrate}
+                            />
                         </div>
 
                         <table className={`table-auto m-3 text-center border dark:border-zinc-500`}>
@@ -109,33 +111,47 @@ const Home = ({ data }) => {
                                                     <div className={`p-4 border border-zinc-400 shadow-xl rounded-lg ${styles.foreground}`}>
                                                         <img src={champ.image} alt='champ image' className='p-1' />
                                                         <table className='text-right'>
-                                                            <TintRow title={'cs'} tint={styles.stat.cs} data={champ.cs} />
-                                                            <TintRow title={'cs/min'} tint={styles.stat.cs} data={champ.csmin} />
-                                                            <TintRow
-                                                                title={<i className='bi bi-currency-exchange'></i>}
-                                                                tint={'text-yellow-500'}
-                                                                data={champ.gold}
-                                                            />
-                                                            <TintRow title={'Max Kills'} tint={styles.stat.kills} data={champ.max_kills} />
-                                                            <TintRow
-                                                                title={'Max Deaths'}
-                                                                tint={styles.stat.deaths}
-                                                                data={champ.max_deaths}
-                                                            />
-                                                            <TintRow
-                                                                title={'Damage'}
-                                                                tint={styles.stat.kills}
-                                                                data={champ.avg_damage_dealt}
-                                                            />
-                                                            <TintRow
-                                                                title={<i className='bi bi-shield-shaded'></i>}
-                                                                tint={'text-green-500'}
-                                                                data={champ.avg_damage_taken}
-                                                            />
-                                                            <TintRow title={'x 2'} tint={styles.stat.assists} data={champ.double_kills} />
-                                                            <TintRow title={'x 3'} tint={styles.stat.games} data={champ.triple_kills} />
-                                                            <TintRow title={'x 4'} tint={styles.stat.winrate} data={champ.quadra_kills} />
-                                                            <TintRow title={'x 5'} tint={styles.stat.kda} data={champ.penta_kills} />
+                                                            <tbody>
+                                                                <TintRow title={'cs'} tint={styles.stat.cs} data={champ.cs} />
+                                                                <TintRow title={'cs/min'} tint={styles.stat.cs} data={champ.csmin} />
+                                                                <TintRow
+                                                                    title={<i className='bi bi-currency-exchange'></i>}
+                                                                    tint={'text-yellow-500'}
+                                                                    data={champ.gold}
+                                                                />
+                                                                <TintRow
+                                                                    title={'Max Kills'}
+                                                                    tint={styles.stat.kills}
+                                                                    data={champ.max_kills}
+                                                                />
+                                                                <TintRow
+                                                                    title={'Max Deaths'}
+                                                                    tint={styles.stat.deaths}
+                                                                    data={champ.max_deaths}
+                                                                />
+                                                                <TintRow
+                                                                    title={'Damage'}
+                                                                    tint={styles.stat.kills}
+                                                                    data={champ.avg_damage_dealt}
+                                                                />
+                                                                <TintRow
+                                                                    title={<i className='bi bi-shield-shaded'></i>}
+                                                                    tint={'text-green-500'}
+                                                                    data={champ.avg_damage_taken}
+                                                                />
+                                                                <TintRow
+                                                                    title={'x 2'}
+                                                                    tint={styles.stat.assists}
+                                                                    data={champ.double_kills}
+                                                                />
+                                                                <TintRow title={'x 3'} tint={styles.stat.games} data={champ.triple_kills} />
+                                                                <TintRow
+                                                                    title={'x 4'}
+                                                                    tint={styles.stat.winrate}
+                                                                    data={champ.quadra_kills}
+                                                                />
+                                                                <TintRow title={'x 5'} tint={styles.stat.kda} data={champ.penta_kills} />
+                                                            </tbody>
                                                         </table>
                                                     </div>
                                                 </Popover.Panel>

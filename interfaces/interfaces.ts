@@ -2,30 +2,29 @@ export interface Player {
     name: string
     alias: string
     image: string
-	level: number
-	rank: {
-		rank_n: number
-		rank_p: number
-		solo: {
-			rank: string
+    level: number
+    rank: {
+        rank_n: number
+        rank_p: number
+        solo: {
+            rank: string
             image: string
-			lp: number
-			win: number
-			lose: number
-			winrate: number
-		}
-		flex: {
-			rank: string
+            lp: number
+            win: number
+            lose: number
+            winrate: number
+        }
+        flex: {
+            rank: string
             image: string
-			lp: number
-			win: number
-			lose: number
-			winrate: number
-		}
-	}
+            lp: number
+            win: number
+            lose: number
+            winrate: number
+        }
+    }
     champs: Champ[]
 }
-
 
 export interface Champ {
     name: string
