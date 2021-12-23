@@ -33,20 +33,58 @@ const Home = ({ data }) => {
         </tr>
     )
 
+	const Rank = ({title, rank, image, lp, win, lose, winrate}) => (
+		<div className='text-center text-sm'>
+			<h3>{title}</h3>
+			<h4>{rank} - {lp}</h4>
+			<img className='m-auto w-14 rounded' src={image} alt={'Rank image'} />
+			<p>
+				<span className='rounded px-1 text-white bg-green-600'>{win}</span>
+				<span>{' - '}</span>
+				<span className='rounded px-1 text-white bg-red-600'>{lose}</span>
+			</p>
+			<p>{winrate}%</p>
+		</div>
+	)
+
     return (
         <div className='container m-auto py-8 lg:py-16'>
-            <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>
+            <div className='grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>
                 {/* For each player, print a table and its table-head */}
                 {data.map((player: Player, index_player: number) => (
-                    <div key={index_player} className='flex flex-col'>
-                        <div className='flex items-center'>
-                            <img className='m-3 w-14 rounded' src={player.image} alt={player.name} />
-                            <h2 className='text-xl'>
-                                {player.name} ({player.alias})
-                            </h2>
+                    <div key={index_player} className={`flex flex-col ${styles.foreground} ${styles.card}`}>
+                        <div className='p-4 flex items-center justify-between'>
+							<div className='relative flex flex-col items-center text-sm text-white'>
+								<img className='m-3 w-14 rounded' src={player.image} alt={player.name} />
+	                            <span className='px-1 absolute bottom-0 bg-zinc-700 border border-yellow-500 rounded-full'>
+									{player.level}
+								</span>
+							</div>
+							<div className='flex flex-col'>
+								<h2 className='text-xl'>{player.name}</h2>
+								<h3>({player.alias})</h3>
+							</div>
+							<Rank
+								title={'Solo/Duo'}
+								rank={player.rank.solo.rank}
+								image={player.rank.solo.image}
+								lp={player.rank.solo.lp}
+								win={player.rank.solo.win}
+								lose={player.rank.solo.lose}
+								winrate={player.rank.solo.winrate}
+							/>
+							<Rank
+								title={'Flex'}
+								rank={player.rank.flex.rank}
+								image={player.rank.flex.image}
+								lp={player.rank.flex.lp}
+								win={player.rank.flex.win}
+								lose={player.rank.flex.lose}
+								winrate={player.rank.flex.winrate}
+							/>
                         </div>
 
-                        <table className={`table-auto m-3 text-center border dark:border-zinc-500 ${styles.foreground}`}>
+                        <table className={`table-auto m-3 text-center border dark:border-zinc-500`}>
                             <thead>
                                 <tr>
                                     <th className='py-1 px-2 bg-zinc-300 dark:bg-zinc-800'>Champ</th>

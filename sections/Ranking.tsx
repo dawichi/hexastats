@@ -11,12 +11,12 @@ export default function Ranking({ data }) {
     // Model of player data to sort
     const rank_data = []
     data.map((player: Player) => {
-        if (player.rank_n != -1) {
+        if (player.rank.rank_n) {
             rank_data.push({
                 name: player.name,
                 image: player.image,
-                rank_n: player.rank_n,
-                rank_p: player.rank_p,
+                rank_n: player.rank.rank_n,
+                rank_p: player.rank.rank_p,
             })
         }
     })
@@ -63,19 +63,19 @@ export default function Ranking({ data }) {
                                         <span className='pb-1 text-xl'>
                                             {index + 1}. {player.name}
                                         </span>
-                                        <span className='pb-1'>{player.rank_n ? player.rank_n + 'º' : 'no data ;('}</span>
+                                        <span className='pb-1'>{player.rank.rank_n ? player.rank.rank_n + 'º' : 'no data ;('}</span>
                                     </div>
                                 </div>
                                 <div className='flex justify-between'>
                                     <span>Better than the</span>
                                     <span>of all players</span>
                                 </div>
-                                <div className={`rounded-xl text-white text-sm text-center ${tint(100 - player.rank_p, false)}`}>
+                                <div className={`rounded-xl text-white text-sm text-center ${tint(100 - player.rank.rank_p, false)}`}>
                                     <div
-                                        className={`rounded-xl bg-gradient-to-r ${tint(100 - player.rank_p, true)}`}
-                                        style={{ width: 100 - player.rank_p + '%' }}
+                                        className={`rounded-xl bg-gradient-to-r ${tint(100 - player.rank.rank_p, true)}`}
+                                        style={{ width: 100 - player.rank.rank_p + '%' }}
                                     >
-                                        {(100 - player.rank_p).toFixed(1)} %
+                                        {(100 - player.rank.rank_p).toFixed(1)} %
                                     </div>
                                 </div>
                             </div>
