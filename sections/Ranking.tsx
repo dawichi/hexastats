@@ -11,12 +11,14 @@ export default function Ranking({ data }) {
     // Model of player data to sort
     const rank_data = []
     data.map((player: Player) => {
-        rank_data.push({
-            name: player.name,
-            image: player.image,
-            rank_n: player.rank_n,
-            rank_p: player.rank_p,
-        })
+		if (player.rank_n != -1) {
+			rank_data.push({
+				name: player.name,
+				image: player.image,
+				rank_n: player.rank_n,
+				rank_p: player.rank_p,
+			})
+		}
     })
 
     rank_data.sort(function (a, b) {
@@ -53,7 +55,6 @@ export default function Ranking({ data }) {
                 </div>
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6'>
                     {rank_data.map((player: Player, index: number) => {
-                        if (!player.rank_n) return
                         return (
                             <div key={index} className={`m-3 p-3 ${styles.foreground} ${styles.card}`}>
                                 <div className='flex'>

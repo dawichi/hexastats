@@ -2,7 +2,7 @@ export interface Player {
     name: string
     alias: string
     image: string
-    rank_n: string
+    rank_n: number
     rank_p: number
     champs: Champ[]
 }

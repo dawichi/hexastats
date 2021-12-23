@@ -1,8 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from 'react'
-import Axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import Navbar from '../components/Navbar'
-import { realName, processData } from '../utils'
 import { Compare, Graphs, Home, Ranking } from '../sections'
 import { Player } from '../interfaces/interfaces'
 import { styles } from '../styles/styles.config'
@@ -15,17 +14,17 @@ import { styles } from '../styles/styles.config'
 // Based on the selected section, each component is showed in the <main> tag of the app
 export default function Index(props: { data: any[] }) {
     // process the props.data to format the output into players_data
-    const players_data: Player[] = processData(props.data)
     const [currentSection, setCurrentSection] = useState(0)
 
+	console.log(props.data)
 
     // Sections available
     // If you add a new section, remember modify also the navigation menu to be able to select its index
     const sections = [
-        <Home key={0} data={players_data} />,
-        <Graphs key={1} data={players_data} />,
-        <Ranking key={2} data={players_data} />,
-        <Compare key={3} data={players_data} />,
+        <Home key={0} data={props.data} />,
+        <Graphs key={1} data={props.data} />,
+        <Ranking key={2} data={props.data} />,
+        <Compare key={3} data={props.data} />,
     ]
 
     return (
@@ -41,10 +40,11 @@ export default function Index(props: { data: any[] }) {
     )
 }
 
+// Fetch data from euw.op.gg with getStaticProps()'s NextJS function
 export const getStaticProps = async () => {
-    // Fetch data from euw.op.gg with getStaticProps()'s NextJS function
-    const BASE_URL = 'https://euw.op.gg/summoner/userName='
+    const backend = 'https://hexastats-flask.vercel.app/?players='
 
+    // whitelist
     const players = [
         'alexwwe',
         'Brr1',
@@ -61,28 +61,22 @@ export const getStaticProps = async () => {
         'TR0I',
     ]
 
-	players.sort(function (a, b) {
-		a = a.toLocaleLowerCase()
-		b = b.toLocaleLowerCase()
-		if (a > b) return 1
-		if (b > a) return -1
-		return 0
-	});
+    // sort players alphabetically
+    players.sort(function (a, b) {
+        a = a.toLocaleLowerCase()
+        b = b.toLocaleLowerCase()
+        if (a > b) return 1
+        if (b > a) return -1
+        return 0
+    })
 
-	
-	const data = []
-
+	const data: Player[] = []
 	for (let idx = 0; idx < players.length; idx++) {
-		let player = await Axios.get(BASE_URL + players[idx])
-		data.push({
-			name: realName(players[idx]),
-			data: player.data,
-			alias: players[idx],
-		})
+		let player_response = await axios.get(backend + players[idx])
+		data.push(player_response.data)
 	}
 
-	return {
-		props: { data: data },
-	}
-
+    return {
+        props: { data: data },
+    }
 }
