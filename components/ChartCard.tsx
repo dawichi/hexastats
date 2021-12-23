@@ -2,6 +2,7 @@ import React from 'react'
 import { DataForChart } from '../interfaces/interfaces'
 import { PieChart } from '.'
 import { styles } from '../styles/styles.config'
+import { trophyIcon } from '../utils'
 
 // Prints a card with a chart
 // - title: the 'category' of the data in graph
@@ -20,15 +21,6 @@ const ChartCard = ({ title, data, data_int, id }) => {
         })
     })
 
-    const styled = (rank: number) => {
-        const podium = {
-            0: styles.trophies.first,
-            1: styles.trophies.second,
-            2: styles.trophies.third,
-        }
-        return podium[rank]
-    }
-
     // Prints our 3 ranked winners of the {title} category and renders the data with <PieChart/>
     return (
         <div className={`m-3 ${styles.foreground} ${styles.card}`}>
@@ -38,12 +30,9 @@ const ChartCard = ({ title, data, data_int, id }) => {
             <div className='m-auto' style={{ width: '85%' }}>
                 <div className='grid grid-cols-3'>
                     {podium.map((best, idx) => (
-                        <p key={idx}>
-                            <span className={styled(idx)}>
-                                <i className='bi bi-trophy'></i>
-                            </span>{' '}
-                            {best}
-                        </p>
+                        <span key={idx}>
+                            {trophyIcon(idx + 1)} {best}
+                        </span>
                     ))}
                 </div>
             </div>

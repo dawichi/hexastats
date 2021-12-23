@@ -16,7 +16,7 @@ export default function Index(props: { data: any[] }) {
     // process the props.data to format the output into players_data
     const [currentSection, setCurrentSection] = useState(0)
 
-	console.log(props.data)
+    console.log(props.data)
 
     // Sections available
     // If you add a new section, remember modify also the navigation menu to be able to select its index
@@ -70,11 +70,11 @@ export const getStaticProps = async () => {
         return 0
     })
 
-	const data: Player[] = []
-	for (let idx = 0; idx < players.length; idx++) {
-		let player_response = await axios.get(backend + players[idx])
-		data.push(player_response.data)
-	}
+    const data: Player[] = []
+    for (let idx = 0; idx < players.length; idx++) {
+        let player_response = await axios.get(backend + players[idx])
+        data.push(player_response.data)
+    }
 
     return {
         props: { data: data },

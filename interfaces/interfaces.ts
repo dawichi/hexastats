@@ -2,6 +2,7 @@ export interface Player {
     name: string
     alias: string
     image: string
+    rank: string
     rank_n: number
     rank_p: number
     champs: Champ[]
@@ -18,6 +19,15 @@ export interface Champ {
     assists: number
     cs: number
     csmin: number
+    gold: number
+    max_kills: number
+    max_deaths: number
+    avg_damage_dealt: number
+    avg_damage_taken: number
+    double_kills: number
+    triple_kills: number
+    quadra_kills: number
+    penta_kills: number
 }
 
 export interface DataForChart {

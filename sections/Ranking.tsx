@@ -11,14 +11,14 @@ export default function Ranking({ data }) {
     // Model of player data to sort
     const rank_data = []
     data.map((player: Player) => {
-		if (player.rank_n != -1) {
-			rank_data.push({
-				name: player.name,
-				image: player.image,
-				rank_n: player.rank_n,
-				rank_p: player.rank_p,
-			})
-		}
+        if (player.rank_n != -1) {
+            rank_data.push({
+                name: player.name,
+                image: player.image,
+                rank_n: player.rank_n,
+                rank_p: player.rank_p,
+            })
+        }
     })
 
     rank_data.sort(function (a, b) {

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
-import { Chart, Player } from '../interfaces/interfaces'
+import { Chart, Player, RankResults } from '../interfaces/interfaces'
 import { ChartCard, ProgressByPlayer } from '../components'
 import { getStatValues, trophyIcon, statTitle } from '../utils'
 import { styles } from '../styles/styles.config'
@@ -12,7 +12,7 @@ import { styles } from '../styles/styles.config'
 // stats of each category and pass the filtered information to the <PieChart/> components
 const Graphs = ({ data }) => {
     // Trophies counter for each player
-    const rank_results = []
+    const rank_results: RankResults[] = []
     data.map((player: Player) => {
         rank_results.push({
             name: player.name,
@@ -56,7 +56,11 @@ const Graphs = ({ data }) => {
                                     <img className='m-2 w-14 h-14 rounded' src={card.image} alt={card.name} />
                                     <div className='flex flex-col'>
                                         <span className='pb-1 text-xl'>{card.name}</span>
-                                        <div className='mr-1'>{card.trophies.map((x: number) => trophyIcon(x))}</div>
+                                        <div className='mr-1'>
+                                            {card.trophies.map((x, idx) => (
+                                                <span key={idx}>{trophyIcon(x)}</span>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
