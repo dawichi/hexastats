@@ -19,7 +19,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 {/* Animate CSS */}
                 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css' />
             </Head>
-			
+
             <header style={{ position: 'sticky', top: 0, zIndex: 1 }}>
                 <Navbar />
             </header>

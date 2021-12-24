@@ -12,7 +12,7 @@ import { styles } from '../styles/styles.config'
 // └────────────────┘
 // Process the data with 'process()' function to get the specific
 // stats of each category and pass the filtered information to the <PieChart/> components
-export default function Graphs(props: { data: any[] }) {
+export default function Graphs(props: { data: Player[] }) {
     // Trophies counter for each player
     const rank_results: RankResults[] = []
     props.data.map((player: Player) => {

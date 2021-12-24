@@ -5,13 +5,14 @@ import { Popover } from '@headlessui/react'
 import { Champ, Player } from '../interfaces/interfaces'
 import { styles } from '../styles/styles.config'
 import { backend, players } from '../config'
+import { Rank } from '../utils'
 
 // ┌────────────────┐
 // │ HOME PAGE:     │
 // └────────────────┘
 // Home page, visualize each player in a table
 // Each row of the table is a champ with his stats
-export default function Home(props: { data: any[] }) {
+export default function Home(props: { data: Player[] }) {
     // Highlights each table cell based on the stat requirements
     const tint = (num: number, type: string) => {
         const tints = {
@@ -33,22 +34,6 @@ export default function Home(props: { data: any[] }) {
             </td>
             <td>{data.toLocaleString('en-US')}</td>
         </tr>
-    )
-
-    const Rank = ({ title, rank, image, lp, win, lose, winrate }) => (
-        <div className='text-center text-sm'>
-            <h3>{title}</h3>
-            <h4>
-                {rank} ({lp})
-            </h4>
-            <img className='m-auto w-14 rounded' src={image} alt={'Rank image'} />
-            <p>
-                <span className='rounded px-1 text-white bg-green-600'>{win}</span>
-                <span>{' - '}</span>
-                <span className='rounded px-1 text-white bg-red-600'>{lose}</span>
-            </p>
-            <p>{winrate}%</p>
-        </div>
     )
 
     return (
