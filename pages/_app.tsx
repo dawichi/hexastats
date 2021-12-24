@@ -19,15 +19,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 {/* Animate CSS */}
                 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css' />
             </Head>
-
+			
             <header style={{ position: 'sticky', top: 0, zIndex: 1 }}>
                 <Navbar />
             </header>
 
             <main className={`pb-20 dark:text-white ${styles.background}`}>
-                <div className='animate__animated animate__fadeIn'>
-                    <Component {...pageProps} />
-                </div>
+                <Component {...pageProps} />
             </main>
 
             <footer className='bg-zinc-800 text-white p-3'>

@@ -48,7 +48,7 @@ export default function Graphs(props: { data: any[] }) {
     )
 
     return (
-        <>
+        <div className='animate__animated animate__fadeIn'>
             <div className='container-fluid'>
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6'>
                     {rank_results.map((card, indx_card) => (
@@ -91,7 +91,7 @@ export default function Graphs(props: { data: any[] }) {
                     <ProgressByPlayer data={props.data} charts={charts} prop_keys={prop_keys} />
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

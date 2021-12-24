@@ -52,7 +52,7 @@ export default function Home(props: { data: any[] }) {
     )
 
     return (
-        <div className='container m-auto py-8 lg:py-16'>
+        <div className='animate__animated animate__fadeIn container m-auto py-8 lg:py-16'>
             <div className='grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>
                 {/* For each player, print a table and its table-head */}
                 {props.data.map((player: Player, index_player: number) => (

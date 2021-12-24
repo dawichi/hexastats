@@ -46,46 +46,44 @@ export default function Ranking(props: { data: any[] }) {
     ]
 
     return (
-        <>
-            <div className='container-fluid min-h-screen'>
-                <div className='flex justify-center pt-4 text-white'>
-                    {tints.map((tint, index) => (
-                        <span key={index} className={`mx-1 px-3 py-1 rounded ${tint.color}`}>
-                            {tint.top}
-                        </span>
-                    ))}
-                </div>
-                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6'>
-                    {rank_data.map((player, index: number) => {
-                        return (
-                            <div key={index} className={`m-3 p-3 ${styles.foreground} ${styles.card}`}>
-                                <div className='flex'>
-                                    <img className='m-2 w-14 h-14 rounded' src={player.image} alt={player.name} />
-                                    <div className='flex flex-col'>
-                                        <span className='pb-1 text-xl'>
-                                            {index + 1}. {player.name}
-                                        </span>
-                                        <span className='pb-1'>{player.rank_n ? player.rank_n + 'º' : 'no data ;('}</span>
-                                    </div>
-                                </div>
-                                <div className='flex justify-between'>
-                                    <span>Better than the</span>
-                                    <span>of all players</span>
-                                </div>
-                                <div className={`rounded-xl text-white text-sm text-center ${tint(100 - player.rank_p, false)}`}>
-                                    <div
-                                        className={`rounded-xl bg-gradient-to-r ${tint(100 - player.rank_p, true)}`}
-                                        style={{ width: 100 - player.rank_p + '%' }}
-                                    >
-                                        {(100 - player.rank_p).toFixed(1)} %
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    })}
-                </div>
-            </div>
-        </>
+		<div className='animate__animated animate__fadeIn container-fluid min-h-screen'>
+			<div className='flex justify-center pt-4 text-white'>
+				{tints.map((tint, index) => (
+					<span key={index} className={`mx-1 px-3 py-1 rounded ${tint.color}`}>
+						{tint.top}
+					</span>
+				))}
+			</div>
+			<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6'>
+				{rank_data.map((player, index: number) => {
+					return (
+						<div key={index} className={`m-3 p-3 ${styles.foreground} ${styles.card}`}>
+							<div className='flex'>
+								<img className='m-2 w-14 h-14 rounded' src={player.image} alt={player.name} />
+								<div className='flex flex-col'>
+									<span className='pb-1 text-xl'>
+										{index + 1}. {player.name}
+									</span>
+									<span className='pb-1'>{player.rank_n ? player.rank_n + 'º' : 'no data ;('}</span>
+								</div>
+							</div>
+							<div className='flex justify-between'>
+								<span>Better than the</span>
+								<span>of all players</span>
+							</div>
+							<div className={`rounded-xl text-white text-sm text-center ${tint(100 - player.rank_p, false)}`}>
+								<div
+									className={`rounded-xl bg-gradient-to-r ${tint(100 - player.rank_p, true)}`}
+									style={{ width: 100 - player.rank_p + '%' }}
+								>
+									{(100 - player.rank_p).toFixed(1)} %
+								</div>
+							</div>
+						</div>
+					)
+				})}
+			</div>
+		</div>
     )
 }
 
