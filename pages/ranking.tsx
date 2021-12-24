@@ -1,16 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
+import axios from 'axios'
 import { Player } from '../interfaces/interfaces'
 import { styles } from '../styles/styles.config'
+import { backend, players } from '../config'
 
 // ┌────────────────┐
 // │ RANKING PAGE:  │
 // └────────────────┘
 //
-export default function Ranking({ data }) {
+export default function Ranking(props: { data: any[] }) {
     // Model of player data to sort
     const rank_data = []
-    data.map((player: Player) => {
+    props.data.map((player: Player) => {
         if (player.rank.rank_n) {
             rank_data.push({
                 name: player.name,
@@ -85,4 +87,17 @@ export default function Ranking({ data }) {
             </div>
         </>
     )
+}
+
+// Fetch data from euw.op.gg with getStaticProps()'s NextJS function
+export const getStaticProps = async () => {
+    const data: Player[] = []
+    for (let idx = 0; idx < players.length; idx++) {
+        let player_response = await axios.get(backend + players[idx])
+        data.push(player_response.data)
+    }
+
+    return {
+        props: { data: data },
+    }
 }

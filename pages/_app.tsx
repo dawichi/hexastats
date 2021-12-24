@@ -2,6 +2,8 @@
 import React from 'react'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+import { Navbar } from '../components'
+import { styles } from '../styles/styles.config'
 import 'tailwindcss/tailwind.css'
 import '../styles/global.scss'
 
@@ -18,7 +20,15 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css' />
             </Head>
 
-            <Component {...pageProps} />
+            <header style={{ position: 'sticky', top: 0, zIndex: 1 }}>
+                <Navbar />
+            </header>
+
+            <main className={`pb-20 dark:text-white ${styles.background}`}>
+                <div className='animate__animated animate__fadeIn'>
+                    <Component {...pageProps} />
+                </div>
+            </main>
 
             <footer className='bg-zinc-800 text-white p-3'>
                 <div className='container m-auto flex justify-between'>

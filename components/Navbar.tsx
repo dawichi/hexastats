@@ -1,22 +1,41 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { Disclosure, Switch } from '@headlessui/react'
 
 interface link {
     name: string
-    onClick: any
+    url: string
     current: boolean
 }
 
 // Navbar of the app
-export default function Navbar({ page, setPage }) {
-    // Navigation menu, selects each section availble
-    // add new sections here
+export default function Navbar() {
+    const router = useRouter()
+
+    // Navigation menu
     const navigation: link[] = [
-        { name: 'Stats', onClick: () => setPage(0), current: page == 0 },
-        { name: 'Graphs', onClick: () => setPage(1), current: page == 1 },
-        { name: 'Ranking', onClick: () => setPage(2), current: page == 2 },
-        { name: 'Compare', onClick: () => setPage(3), current: page == 3 },
+        {
+            name: 'Stats',
+            url: '/',
+            current: router.pathname === '/',
+        },
+        {
+            name: 'Graphs',
+            url: '/graphs',
+            current: router.pathname === '/graphs',
+        },
+        {
+            name: 'Ranking',
+            url: '/ranking',
+            current: router.pathname === '/ranking',
+        },
+        {
+            name: 'Compare',
+            url: '/compare',
+            current: router.pathname === '/compare',
+        },
     ]
 
     // DARK MODE
@@ -69,7 +88,7 @@ export default function Navbar({ page, setPage }) {
                                 </div>
                                 <div className='hidden sm:block sm:ml-6'>
                                     <div className='flex space-x-4'>
-                                        <Links navigation={navigation} mobile={false} />
+                                        <Links navigation={navigation} />
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +105,7 @@ export default function Navbar({ page, setPage }) {
 
                     <Disclosure.Panel className='sm:hidden'>
                         <div className='px-2 pt-2 pb-3 space-y-1'>
-                            <Links navigation={navigation} mobile={true} />
+                            <Links navigation={navigation} />
                         </div>
                     </Disclosure.Panel>
                 </>
@@ -96,20 +115,24 @@ export default function Navbar({ page, setPage }) {
 }
 
 // Links, used both in desktop and mobile view
-const Links = ({ navigation, mobile }) =>
-    navigation.map((item: link) => (
-        <button
-            key={item.name}
-            onClick={item.onClick}
-            className={
-                'block px-3 py-2 rounded-md text-base font-medium ' +
-                (item.current ? 'bg-zinc-900 text-white' : 'text-zinc-300 hover:bg-zinc-700 hover:text-white')
-            }
-            aria-current={item.current ? 'page' : undefined}
-        >
-            {item.name}
-        </button>
-    ))
+const Links = ({ navigation }) => (
+    <>
+        {navigation.map((item: link, idx: number) => (
+            <Link href={item.url} key={idx}>
+                <button
+                    key={item.name}
+                    className={
+                        'block px-3 py-2 rounded-md text-base font-medium ' +
+                        (item.current ? 'bg-zinc-900 text-white' : 'text-zinc-300 hover:bg-zinc-700 hover:text-white')
+                    }
+                    aria-current={item.current ? 'page' : undefined}
+                >
+                    {item.name}
+                </button>
+            </Link>
+        ))}
+    </>
+)
 
 // Toggle to switch between dark and light mode
 const Toggle = ({ darkMode, setDarkMode }) => {

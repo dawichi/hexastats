@@ -1,8 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
-import { Chart, Player, RankResults } from '../interfaces/interfaces'
+import axios from 'axios'
+import { backend, players } from '../config'
 import { ChartCard, ProgressByPlayer } from '../components'
 import { getStatValues, trophyIcon, statTitle } from '../utils'
+import { Chart, Player, RankResults } from '../interfaces/interfaces'
 import { styles } from '../styles/styles.config'
 
 // ┌────────────────┐
@@ -10,10 +12,10 @@ import { styles } from '../styles/styles.config'
 // └────────────────┘
 // Process the data with 'process()' function to get the specific
 // stats of each category and pass the filtered information to the <PieChart/> components
-const Graphs = ({ data }) => {
+export default function Graphs(props: { data: any[] }) {
     // Trophies counter for each player
     const rank_results: RankResults[] = []
-    data.map((player: Player) => {
+    props.data.map((player: Player) => {
         rank_results.push({
             name: player.name,
             image: player.image,
@@ -28,7 +30,7 @@ const Graphs = ({ data }) => {
     prop_keys.forEach(prop => {
         const sort_desc = prop === 'deaths'
         const calc_median = prop !== 'games'
-        const [data_stat, data_stat_int] = getStatValues(data, rank_results, prop, calc_median, sort_desc)
+        const [data_stat, data_stat_int] = getStatValues(props.data, rank_results, prop, calc_median, sort_desc)
 
         charts.push({
             key: prop,
@@ -86,11 +88,22 @@ const Graphs = ({ data }) => {
                 <h2 className='text-4xl text-center mt-10 mb-5'>Stats of each player</h2>
                 <hr />
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4'>
-                    <ProgressByPlayer data={data} charts={charts} prop_keys={prop_keys} />
+                    <ProgressByPlayer data={props.data} charts={charts} prop_keys={prop_keys} />
                 </div>
             </div>
         </>
     )
 }
 
-export default Graphs
+// Fetch data from euw.op.gg with getStaticProps()'s NextJS function
+export const getStaticProps = async () => {
+    const data: Player[] = []
+    for (let idx = 0; idx < players.length; idx++) {
+        let player_response = await axios.get(backend + players[idx])
+        data.push(player_response.data)
+    }
+
+    return {
+        props: { data: data },
+    }
+}
