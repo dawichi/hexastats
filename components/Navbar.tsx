@@ -32,6 +32,11 @@ export default function Navbar() {
             current: router.pathname === '/ranking',
         },
         {
+            name: 'Multi',
+            url: '/multiple',
+            current: router.pathname === '/multiple',
+        },
+        {
             name: 'Compare',
             url: '/compare',
             current: router.pathname === '/compare',
