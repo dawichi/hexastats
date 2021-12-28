@@ -25,9 +25,21 @@ export default function Graphs(props: { data: Player[] }) {
 
     const charts: Chart[] = []
     // TODO: get props available dynamically
-    const prop_keys = ['games', 'winrate', 'kda', 'kills', 'deaths', 'assists', 'cs', 'csmin']
+    const stats: string[] = [
+        'games',
+        'winrate',
+        'kda',
+        'kills',
+        'deaths',
+        'assists',
+        'cs',
+        'csmin',
+        'gold',
+        'avg_damage_dealt',
+        'avg_damage_taken',
+    ]
 
-    prop_keys.forEach(prop => {
+    stats.forEach(prop => {
         const sort_desc = prop === 'deaths'
         const calc_median = prop !== 'games'
         const [data_stat, data_stat_int] = getStatValues(props.data, rank_results, prop, calc_median, sort_desc)
@@ -88,7 +100,7 @@ export default function Graphs(props: { data: Player[] }) {
                 <h2 className='text-4xl text-center mt-10 mb-5'>Stats of each player</h2>
                 <hr />
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4'>
-                    <ProgressByPlayer data={props.data} charts={charts} prop_keys={prop_keys} />
+                    <ProgressByPlayer data={props.data} charts={charts} prop_keys={stats} />
                 </div>
             </div>
         </div>
