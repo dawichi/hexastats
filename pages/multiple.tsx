@@ -22,7 +22,7 @@ export default function Multiple(props: { data: Player[] }) {
 				let games = 0
 				let stat_value = 0
 		
-				player.champs.map((champ, idx) => {
+				player.champs.map((champ) => {
 					games += champ.games
 					stat_value += champ[stat]
 				})
