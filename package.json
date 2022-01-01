@@ -24,7 +24,6 @@
     "devDependencies": {
         "@testing-library/jest-dom": "^5.16.1",
         "@testing-library/react": "^12.1.2",
-        "@types/d3": "^7.1.0",
         "autoprefixer": "^10.3.7",
         "jest": "^27.4.5",
         "postcss": "^8.3.9",

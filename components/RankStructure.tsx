@@ -1,13 +1,13 @@
 import React from 'react'
 
 interface RankStructure {
-	title: string
-	rank: string
-	image: string
-	lp: number
-	win: number
-	lose: number
-	winrate: number
+    title: string
+    rank: string
+    image: string
+    lp: number
+    win: number
+    lose: number
+    winrate: number
 }
 
 const RankStructure = ({ title, rank, image, lp, win, lose, winrate }: RankStructure) => (
