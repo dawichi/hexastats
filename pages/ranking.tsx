@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import axios from 'axios'
-import { Player } from '../interfaces/interfaces'
+import { Player } from '../interfaces/player'
 import { styles } from '../styles/styles.config'
 import { backend, players } from '../config'
 

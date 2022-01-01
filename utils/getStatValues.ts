@@ -1,4 +1,5 @@
-import { Champ, Player, RankResults } from '../interfaces/interfaces'
+import { RankResults } from '../interfaces/interfaces'
+import { Player } from '../interfaces/player'
 
 /* - prop: the type of property to load. Ex: 'games', 'winrate' or 'kills'
  *  - float?: by default uses parseInt() for data. Optional parseFloat()
@@ -21,11 +22,11 @@ export default function getStatValues(
         let games = 0
 
         if (prop === 'games') {
-            player.champs.map((x: Champ) => (stat += x[prop]))
+            player.champs.map(champ => (stat += champ[prop]))
         } else {
-            player.champs.map((x: Champ) => {
-                games += x.games
-                stat += x.games * x[prop]
+            player.champs.map(champ => {
+                games += champ.games
+                stat += champ.games * champ[prop]
             })
         }
 

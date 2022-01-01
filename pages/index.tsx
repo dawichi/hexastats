@@ -2,10 +2,10 @@
 import React from 'react'
 import axios from 'axios'
 import { Popover } from '@headlessui/react'
-import { Champ, Player } from '../interfaces/interfaces'
+import { Player } from '../interfaces/player'
 import { styles } from '../styles/styles.config'
 import { backend, players } from '../config'
-import { Rank } from '../utils'
+import { RankStructure } from '../components'
 
 // ┌────────────────┐
 // │ HOME PAGE:     │
@@ -53,7 +53,7 @@ export default function Home(props: { data: Player[] }) {
                                 <h2 className='text-xl'>{player.name}</h2>
                                 <h3>({player.alias})</h3>
                             </div>
-                            <Rank
+                            <RankStructure
                                 title={'Solo/Duo'}
                                 rank={player.rank.solo.rank}
                                 image={player.rank.solo.image}
@@ -62,7 +62,7 @@ export default function Home(props: { data: Player[] }) {
                                 lose={player.rank.solo.lose}
                                 winrate={player.rank.solo.winrate}
                             />
-                            <Rank
+                            <RankStructure
                                 title={'Flex'}
                                 rank={player.rank.flex.rank}
                                 image={player.rank.flex.image}
@@ -87,7 +87,7 @@ export default function Home(props: { data: Player[] }) {
                             </thead>
                             <tbody>
                                 {/* For each champ inside a player, print a row with the data */}
-                                {player.champs.map((champ: Champ, index_champ) => (
+                                {player.champs.map((champ, index_champ) => (
                                     <tr key={index_champ} className='border dark:border-zinc-500'>
                                         <td>
                                             <Popover className='relative'>
