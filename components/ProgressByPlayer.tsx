@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
-import { Chart, DataForChart, Player } from '../interfaces/interfaces'
+import { Chart, DataForChart } from '../interfaces/interfaces'
+import { Player } from '../interfaces/player'
 import { styles } from '../styles/styles.config'
 import { statTitle } from '../utils'
 

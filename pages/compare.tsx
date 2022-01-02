@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { backend, players } from '../config'
-import { statTitle, Rank, getStats } from '../utils'
-import { Player, PlayerStatsResult } from '../interfaces/interfaces'
+import { statTitle, getStats } from '../utils'
+import { RankStructure } from '../components'
+import { PlayerStatsResult } from '../interfaces/interfaces'
+import { Player } from '../interfaces/player'
 import { styles } from '../styles/styles.config'
 
 // ┌────────────────┐
@@ -26,7 +28,8 @@ export default function Compare(props: { data: Player[] }) {
 
     // styles
     const playerSelected = (idx: number) => {
-        if (idx + 1 === left) return 'bg-blue-400' // left
+        if (idx + 1 === left) return 'bg-blue-400'
+        // left
         else if (idx + 1 === right) return 'bg-red-400' // right
         return 'bg-zinc-100 dark:bg-zinc-800' // unselected
     }
@@ -42,7 +45,7 @@ export default function Compare(props: { data: Player[] }) {
                 <h3>({player.alias})</h3>
             </div>
             <div className='m-2'>
-                <Rank
+                <RankStructure
                     title={'Solo/Duo'}
                     rank={player.rank.solo.rank}
                     image={player.rank.solo.image}
@@ -53,7 +56,7 @@ export default function Compare(props: { data: Player[] }) {
                 />
             </div>
             <div className='m-2'>
-                <Rank
+                <RankStructure
                     title={'Flex'}
                     rank={player.rank.flex.rank}
                     image={player.rank.flex.image}

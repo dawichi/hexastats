@@ -1,34 +1,26 @@
 import React, { useEffect } from 'react'
 import * as d3 from 'd3'
+import { DataForChart } from '../interfaces/interfaces'
 
-export default function PieChart(props: { data: any; outerRadius: number; innerRadius: number; id: number }) {
-    /*	Prints chart based in a object param
-	props = {
-		outerRadius,
-		innedRadius,
-		data
-	}
-	data = [
-		{label: '', value: 1}
-	]
-	*/
-
-    const { data, outerRadius, innerRadius } = props
-
+// ┌────────────────┐
+// │  PieChart:     │
+// └────────────────┘
+// Prints a pie chart based on the info recieved in the props
+export default function PieChart(props: { id: number; innerRadius: number; outerRadius: number; data: DataForChart[] }) {
     const margin = {
         top: 50,
         right: 50,
         bottom: 50,
         left: 50,
     }
-    const width = 2 * outerRadius + margin.left + margin.right
-    const height = 2 * outerRadius + margin.top + margin.bottom
 
-    const colorScale = d3.scaleSequential().interpolator(d3.interpolateRainbow).domain([0, data.length])
+    const width = 2 * props.outerRadius + margin.left + margin.right
+    const height = 2 * props.outerRadius + margin.top + margin.bottom
+
+    const colorScale = d3.scaleSequential().interpolator(d3.interpolateRainbow).domain([0, props.data.length])
 
     useEffect(() => {
         drawChart()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.data])
 
     const drawChart = () => {
@@ -46,14 +38,14 @@ export default function PieChart(props: { data: any; outerRadius: number; innerR
             .append('g')
             .attr('transform', `translate(${width / 2}, ${height / 2})`)
 
-        const arcGenerator = d3.arc().innerRadius(innerRadius).outerRadius(outerRadius)
+        const arcGenerator = d3.arc().innerRadius(props.innerRadius).outerRadius(props.outerRadius)
 
         const pieGenerator = d3
             .pie()
             .padAngle(0)
             .value((d: { value: any }) => d.value)
 
-        const arc = svg.selectAll().data(pieGenerator(data)).enter()
+        const arc = svg.selectAll().data(pieGenerator(props.data)).enter()
 
         // Append sectors
         arc.append('path')

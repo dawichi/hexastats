@@ -1,7 +1,16 @@
 import React from 'react'
 
-// Rank structure
-const Rank = ({ title, rank, image, lp, win, lose, winrate }) => (
+interface RankStructure {
+    title: string
+    rank: string
+    image: string
+    lp: number
+    win: number
+    lose: number
+    winrate: number
+}
+
+const RankStructure = ({ title, rank, image, lp, win, lose, winrate }: RankStructure) => (
     <div className='text-center text-sm'>
         <h3>{title}</h3>
         <h4>
@@ -17,4 +26,4 @@ const Rank = ({ title, rank, image, lp, win, lose, winrate }) => (
     </div>
 )
 
-export default Rank
+export default RankStructure

@@ -1,4 +1,5 @@
-import { Player, PlayerStatsResult } from '../interfaces/interfaces'
+import { Player } from '../interfaces/player'
+import { PlayerStatsResult } from '../interfaces/interfaces'
 
 /*
  *  Returns the stats calculated for that player based on its 7 champs stats
