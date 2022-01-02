@@ -24,7 +24,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 <Navbar />
             </header>
 
-            <main className={`pb-20 dark:text-white ${styles.background}`}>
+            <main className={`pb-20 dark:text-white min-h-screen ${styles.background}`}>
                 <Component {...pageProps} />
             </main>
 

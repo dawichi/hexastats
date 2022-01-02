@@ -52,7 +52,7 @@ export default function Navbar() {
                                     <button className='flex-shrink-0 flex items-center'>
                                         <img
                                             className='block h-8 w-auto'
-                                            src='https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg'
+                                            src='/favicon.svg'
                                             alt='Hexastats'
                                         />
                                         <h1 className='text-2xl text-white ml-2 hidden lg:block tracking-wider'>Hexastats</h1>
