@@ -11,15 +11,11 @@ export const navigation: link[] = [
         url: '/graphs',
     },
     {
-        name: 'Ranking',
-        url: '/ranking',
+        name: 'Compare',
+        url: '/compare',
     },
     {
         name: 'Multi',
         url: '/multiple',
-    },
-    {
-        name: 'Compare',
-        url: '/compare',
     },
 ]
