@@ -15,6 +15,10 @@ export const navigation: link[] = [
         url: '/compare',
     },
     {
+        name: 'Masteries',
+        url: '/masteries',
+    },
+    {
         name: 'Multi',
         url: '/multiple',
     },

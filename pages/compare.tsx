@@ -27,14 +27,14 @@ export default function Compare(props: { data: Player[] }) {
     }
 
     // styles
-    const playerSelected = (idx: number) => { 
-        if (idx + 1 === left) return 'bg-blue-400' // left
+    const playerSelected = (idx: number) => {
+        if (idx + 1 === left) return 'bg-blue-400'
         else if (idx + 1 === right) return 'bg-red-400' // right
         return 'bg-zinc-100 dark:bg-zinc-800' // unselected
     }
 
-	// Sort players by ELO
-	props.data.sort((a,b) => (a.rank.rank_p - b.rank.rank_p))
+    // Sort players by ELO
+    props.data.sort((a, b) => a.rank.rank_p - b.rank.rank_p)
 
     const playerStructure = (player: Player) => (
         <div className='flex items-center justify-center gap-4'>
@@ -77,7 +77,7 @@ export default function Compare(props: { data: Player[] }) {
 
         return (
             <div className='flex justify-end items-end m-1'>
-				{/* TODO: some stat titles missing */}
+                {/* TODO: some stat titles missing */}
                 <span className='mx-2'>{statTitle(title)}</span>
                 <div className='w-96'>
                     <div className='relative h-px text-center text-white'>
@@ -100,6 +100,7 @@ export default function Compare(props: { data: Player[] }) {
         )
     }
 
+    // TODO: Add how much blue and red surface are covered and show it as a percent at the end of the column
     const comparePlayers = (leftPlayer: PlayerStatsResult, rightPlayer: PlayerStatsResult) => (
         <div className='container flex flex-col justify-center items-center mx-auto'>
             <div>
@@ -112,13 +113,13 @@ export default function Compare(props: { data: Player[] }) {
 
     return (
         <div className='animate__animated animate__fadeIn'>
-			<div className='flex justify-center pt-4 text-white'>
-				{tints.map((tint, index) => (
-					<span key={index} className={`mx-1 px-3 py-1 rounded ${tint.color}`}>
-						{tint.top}
-					</span>
-				))}
-			</div>
+            <div className='flex justify-center pt-4 text-white'>
+                {tints.map((tint, index) => (
+                    <span key={index} className={`mx-1 px-3 py-1 rounded ${tint.color}`}>
+                        {tint.top}
+                    </span>
+                ))}
+            </div>
             <div className='container mx-auto p-4'>
                 <div className='grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
                     {props.data.map((player, idx) => (
@@ -135,17 +136,22 @@ export default function Compare(props: { data: Player[] }) {
                                     </span>
                                 </div>
                                 <div className='flex flex-col'>
-                                    <h2 className='text-xl'>{player.name}</h2>
+                                    <h2 className='text-xl'>
+                                        {++idx}. {player.name}
+                                    </h2>
                                     <h3>({player.alias})</h3>
                                 </div>
                             </div>
-							<span className='mt-3'>{player.rank.rank_p.toFixed(1)} %</span>
-							<div className={`rounded-xl h-2 ${tint(100 - player.rank.rank_p, false)}`}>
-								<div
-									className={`rounded-xl h-2 bg-gradient-to-r ${tint(100 - player.rank.rank_p, true)}`}
-									style={{ width: 100 - player.rank.rank_p + '%' }}
-								></div>
-							</div>
+                            <div className='mt-2 flex justify-between'>
+                                <span>{player.rank.rank_n.toLocaleString('es-ES')}º</span>
+                                <span>{player.rank.rank_p.toFixed(1)} %</span>
+                            </div>
+                            <div className={`rounded-xl h-2 ${tint(100 - player.rank.rank_p, false)}`}>
+                                <div
+                                    className={`rounded-xl h-2 bg-gradient-to-r ${tint(100 - player.rank.rank_p, true)}`}
+                                    style={{ width: 100 - player.rank.rank_p + '%' }}
+                                ></div>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -191,25 +197,23 @@ export default function Compare(props: { data: Player[] }) {
     )
 }
 
-
-
 // TODO: this 2 functions, sould be merged in 1 big object
 const tints = [
-	{ color: 'bg-indigo-500 dark:bg-indigo-600/75', top: 'Top 10🔥 % ' },
-	{ color: 'bg-blue-500 dark:bg-blue-600/75', top: 'Top 20 %' },
-	{ color: 'bg-green-500 dark:bg-green-600/75', top: 'Top 35 %' },
-	{ color: 'bg-yellow-500 dark:bg-yellow-600/75', top: 'Top 50 %' },
-	{ color: 'bg-gray-500 dark:bg-gray-600/75', top: 'Below 50 %' },
-	{ color: 'bg-red-500 dark:bg-red-600/75', top: 'Below 35 %' },
+    { color: 'bg-indigo-500 dark:bg-indigo-600/75', top: 'Top 10🔥 % ' },
+    { color: 'bg-blue-500 dark:bg-blue-600/75', top: 'Top 20 %' },
+    { color: 'bg-green-500 dark:bg-green-600/75', top: 'Top 35 %' },
+    { color: 'bg-yellow-500 dark:bg-yellow-600/75', top: 'Top 50 %' },
+    { color: 'bg-gray-500 dark:bg-gray-600/75', top: 'Below 50 %' },
+    { color: 'bg-red-500 dark:bg-red-600/75', top: 'Below 35 %' },
 ]
 
 const tint = (percent: number, main: boolean) => {
-	if (percent > 90) return main ? 'from-indigo-800 to-indigo-500' : 'bg-indigo-300/50 dark:bg-indigo-700/25'
-	if (percent > 80) return main ? 'from-blue-800 to-blue-500' : 'bg-blue-300/50 dark:bg-blue-700/25'
-	if (percent > 65) return main ? 'from-green-800 to-green-500' : 'bg-green-300/50 dark:bg-green-700/25'
-	if (percent > 50) return main ? 'from-yellow-800 to-yellow-500' : 'bg-yellow-300/50 dark:bg-yellow-700/25'
-	if (percent > 35) return main ? 'from-gray-800 to-gray-500' : 'bg-gray-300/50 dark:bg-gray-700/25'
-	if (percent < 35) return main ? 'from-red-800 to-red-500' : 'bg-red-300/50 dark:bg-red-700/25'
+    if (percent > 90) return main ? 'from-indigo-800 to-indigo-500' : 'bg-indigo-300/50 dark:bg-indigo-700/25'
+    if (percent > 80) return main ? 'from-blue-800 to-blue-500' : 'bg-blue-300/50 dark:bg-blue-700/25'
+    if (percent > 65) return main ? 'from-green-800 to-green-500' : 'bg-green-300/50 dark:bg-green-700/25'
+    if (percent > 50) return main ? 'from-yellow-800 to-yellow-500' : 'bg-yellow-300/50 dark:bg-yellow-700/25'
+    if (percent > 35) return main ? 'from-gray-800 to-gray-500' : 'bg-gray-300/50 dark:bg-gray-700/25'
+    if (percent < 35) return main ? 'from-red-800 to-red-500' : 'bg-red-300/50 dark:bg-red-700/25'
 }
 
 // Fetch data from euw.op.gg with getStaticProps()'s NextJS function
