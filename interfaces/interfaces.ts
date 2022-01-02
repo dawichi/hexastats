@@ -41,3 +41,8 @@ export interface Chart {
     data: any // ;(
     data_int: any // ;(
 }
+
+export interface link {
+    name: string
+    url: string
+}

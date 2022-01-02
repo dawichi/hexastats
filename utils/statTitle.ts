@@ -11,8 +11,6 @@ export default function propTitle(prop: string) {
         gold: 'Gold',
         avg_damage_dealt: 'Avg Damage',
         avg_damage_taken: 'Avg Tank',
-
-
     }
 
     if (props[prop] !== undefined) {
