@@ -5,7 +5,8 @@ import { Popover } from '@headlessui/react'
 import { Player } from '../interfaces/player'
 import { styles } from '../styles/styles.config'
 import { backend, players } from '../config'
-import { getStats, Rank } from '../utils'
+import { getStats } from '../utils'
+import { RankStructure } from '../components'
 
 // ┌────────────────┐
 // │ MULTIPLE PAGE: │
