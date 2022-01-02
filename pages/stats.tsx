@@ -2,18 +2,20 @@
 import React from 'react'
 import axios from 'axios'
 import { Popover } from '@headlessui/react'
-import { Player } from '../interfaces/player'
-import { styles } from '../styles/styles.config'
 import { backend, players } from '../configs'
 import { RankStructure } from '../components'
+import { Player } from '../interfaces/player'
+import { styles } from '../styles/styles.config'
 
 // ┌────────────────┐
-// │ HOME PAGE:     │
+// │ STATS PAGE:    │
 // └────────────────┘
-// Home page, visualize each player in a table
+// Visualize each player in a table
 // Each row of the table is a champ with his stats
 export default function Home(props: { data: Player[] }) {
-    // Highlights each table cell based on the stat requirements
+    // ┌────────────────────────────────────────────────────────────
+    // │ Highlights each table cell based on the stat requirements
+    // └────────────────────────────────────────────────────────────
     const tint = (num: number, type: string) => {
         const tints = {
             games: (x: number) => (x >= 50 ? 'bg-green-200 dark:bg-green-700' : ''),
@@ -27,7 +29,10 @@ export default function Home(props: { data: Player[] }) {
         return tints[type]?.(num) ?? ''
     }
 
-    const TintRow = ({ tint, title, data }) => (
+    // ┌──────────────────────────────────
+    // │ Returns a row of a table <tr>
+    // └──────────────────────────────────
+    const TintRow = ({ tint, title, data }: { tint: string; title: any; data: number }) => (
         <tr>
             <td className='p-1'>
                 <span className={tint}>{title}</span>
@@ -53,24 +58,8 @@ export default function Home(props: { data: Player[] }) {
                                 <h2 className='text-xl'>{player.name}</h2>
                                 <h3>({player.alias})</h3>
                             </div>
-                            <RankStructure
-                                title={'Solo/Duo'}
-                                rank={player.rank.solo.rank}
-                                image={player.rank.solo.image}
-                                lp={player.rank.solo.lp}
-                                win={player.rank.solo.win}
-                                lose={player.rank.solo.lose}
-                                winrate={player.rank.solo.winrate}
-                            />
-                            <RankStructure
-                                title={'Flex'}
-                                rank={player.rank.flex.rank}
-                                image={player.rank.flex.image}
-                                lp={player.rank.flex.lp}
-                                win={player.rank.flex.win}
-                                lose={player.rank.flex.lose}
-                                winrate={player.rank.flex.winrate}
-                            />
+                            <RankStructure title={'Solo/Duo'} rankdata={player.rank.solo} />
+                            <RankStructure title={'Flex'} rankdata={player.rank.flex} />
                         </div>
 
                         <table className={`table-auto m-3 text-center border dark:border-zinc-500`}>

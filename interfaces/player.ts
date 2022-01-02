@@ -6,25 +6,20 @@ export interface Player {
     rank: {
         rank_n: number
         rank_p: number
-        solo: {
-            rank: string
-            image: string
-            lp: number
-            win: number
-            lose: number
-            winrate: number
-        }
-        flex: {
-            rank: string
-            image: string
-            lp: number
-            win: number
-            lose: number
-            winrate: number
-        }
+        solo: Rank
+        flex: Rank
     }
     champs: Champ[]
     masteries: Mastery[]
+}
+
+export interface Rank {
+    rank: string
+    image: string
+    lp: number
+    win: number
+    lose: number
+    winrate: number
 }
 
 export interface Champ {

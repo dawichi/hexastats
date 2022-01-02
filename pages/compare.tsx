@@ -35,7 +35,7 @@ export default function Compare(props: { data: Player[] }) {
     }
 
     const rankStructure = (player: Player) => (
-        <div className='flex items-center justify-center'>
+        <div className='flex items-center justify-center gap-4'>
             <div className='relative flex flex-col items-center text-sm text-white'>
                 <img className='m-3 w-14 rounded' src={player.image} alt={player.name} />
                 <span className='px-1 absolute bottom-0 bg-zinc-700 border border-yellow-500 rounded-full'>{player.level}</span>
@@ -44,28 +44,8 @@ export default function Compare(props: { data: Player[] }) {
                 <h2 className='text-xl'>{player.name}</h2>
                 <h3>({player.alias})</h3>
             </div>
-            <div className='m-2'>
-                <RankStructure
-                    title={'Solo/Duo'}
-                    rank={player.rank.solo.rank}
-                    image={player.rank.solo.image}
-                    lp={player.rank.solo.lp}
-                    win={player.rank.solo.win}
-                    lose={player.rank.solo.lose}
-                    winrate={player.rank.solo.winrate}
-                />
-            </div>
-            <div className='m-2'>
-                <RankStructure
-                    title={'Flex'}
-                    rank={player.rank.flex.rank}
-                    image={player.rank.flex.image}
-                    lp={player.rank.flex.lp}
-                    win={player.rank.flex.win}
-                    lose={player.rank.flex.lose}
-                    winrate={player.rank.flex.winrate}
-                />
-            </div>
+            <RankStructure title={'Solo/Duo'} rankdata={player.rank.solo} />
+            <RankStructure title={'Flex'} rankdata={player.rank.flex} />
         </div>
     )
 
