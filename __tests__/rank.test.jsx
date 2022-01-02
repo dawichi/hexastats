@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+// import { render, screen } from '@testing-library/react'
 import statTitle from '../utils/statTitle'
 
 describe('[statTitle.ts]: converts a stat key in its Title (if listed inside the function)', () => {

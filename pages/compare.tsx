@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { backend, players } from '../config'
+import { backend, players } from '../configs'
 import { statTitle, getStats } from '../utils'
 import { RankStructure } from '../components'
 import { PlayerStatsResult } from '../interfaces/interfaces'

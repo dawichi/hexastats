@@ -3,7 +3,7 @@ import React from 'react'
 import axios from 'axios'
 import { Player } from '../interfaces/player'
 import { styles } from '../styles/styles.config'
-import { backend, players } from '../config'
+import { backend, players } from '../configs'
 
 // ┌────────────────┐
 // │ RANKING PAGE:  │
