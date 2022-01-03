@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import axios from 'axios'
-import { backend, players } from '../config'
+import { backend, players } from '../configs'
 import { ChartCard, ProgressByPlayer } from '../components'
 import { getStatValues, trophyIcon, statTitle } from '../utils'
-import { Chart, Player, RankResults } from '../interfaces/interfaces'
+import { Chart, RankResults } from '../interfaces/interfaces'
+import { Player } from '../interfaces/player'
 import { styles } from '../styles/styles.config'
 
 // ┌────────────────┐

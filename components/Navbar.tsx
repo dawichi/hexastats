@@ -3,46 +3,11 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Disclosure, Switch } from '@headlessui/react'
-
-interface link {
-    name: string
-    url: string
-    current: boolean
-}
+import { navigation } from '../configs'
+import { link } from '../interfaces/interfaces'
 
 // Navbar of the app
 export default function Navbar() {
-    const router = useRouter()
-
-    // Navigation menu
-    const navigation: link[] = [
-        {
-            name: 'Stats',
-            url: '/',
-            current: router.pathname === '/',
-        },
-        {
-            name: 'Graphs',
-            url: '/graphs',
-            current: router.pathname === '/graphs',
-        },
-        {
-            name: 'Ranking',
-            url: '/ranking',
-            current: router.pathname === '/ranking',
-        },
-        {
-            name: 'Multi',
-            url: '/multiple',
-            current: router.pathname === '/multiple',
-        },
-        {
-            name: 'Compare',
-            url: '/compare',
-            current: router.pathname === '/compare',
-        },
-    ]
-
     // DARK MODE
     const [darkMode, setDarkMode] = useState(false)
     const theme = darkMode ? 'dark' : 'light'
@@ -83,18 +48,14 @@ export default function Navbar() {
                                 </Disclosure.Button>
                             </div>
                             <div className='flex-1 flex items-center justify-center sm:items-stretch sm:justify-start'>
-                                <div className='flex-shrink-0 flex items-center'>
-                                    <img
-                                        className='block h-8 w-auto'
-                                        src='https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg'
-                                        alt='Hexastats'
-                                    />
-                                    <h1 className='text-2xl text-white ml-2 hidden lg:block tracking-wider'>Hexastats</h1>
-                                </div>
+                                <Link href='/'>
+                                    <button className='flex-shrink-0 flex items-center'>
+                                        <img className='block h-8 w-auto' src='/favicon.svg' alt='Hexastats' />
+                                        <h1 className='text-2xl text-white ml-2 hidden lg:block tracking-wider'>Hexastats</h1>
+                                    </button>
+                                </Link>
                                 <div className='hidden sm:block sm:ml-6'>
-                                    <div className='flex space-x-4'>
-                                        <Links navigation={navigation} />
-                                    </div>
+                                    <div className='flex space-x-4'>{render_links(navigation)}</div>
                                 </div>
                             </div>
                             <div className='absolute right-0 flex'>
@@ -109,9 +70,7 @@ export default function Navbar() {
                     </div>
 
                     <Disclosure.Panel className='sm:hidden'>
-                        <div className='px-2 pt-2 pb-3 space-y-1'>
-                            <Links navigation={navigation} />
-                        </div>
+                        <div className='px-2 pt-2 pb-3 space-y-1'>{render_links(navigation)}</div>
                     </Disclosure.Panel>
                 </>
             )}
@@ -120,24 +79,23 @@ export default function Navbar() {
 }
 
 // Links, used both in desktop and mobile view
-const Links = ({ navigation }) => (
-    <>
-        {navigation.map((item: link, idx: number) => (
-            <Link href={item.url} key={idx}>
-                <button
-                    key={item.name}
-                    className={
-                        'block px-3 py-2 rounded-md text-base font-medium ' +
-                        (item.current ? 'bg-zinc-900 text-white' : 'text-zinc-300 hover:bg-zinc-700 hover:text-white')
-                    }
-                    aria-current={item.current ? 'page' : undefined}
-                >
-                    {item.name}
-                </button>
-            </Link>
-        ))}
-    </>
-)
+const render_links = (navigation: link[]) => {
+    const router = useRouter()
+
+    return navigation.map((item, idx) => (
+        <Link href={item.url} key={idx}>
+            <button
+                key={item.name}
+                className={
+                    'block px-3 py-2 rounded-md text-base font-medium ' +
+                    (router.pathname === item.url ? 'bg-zinc-900 text-white' : 'text-zinc-300 hover:bg-zinc-700 hover:text-white')
+                }
+            >
+                {item.name}
+            </button>
+        </Link>
+    ))
+}
 
 // Toggle to switch between dark and light mode
 const Toggle = ({ darkMode, setDarkMode }) => {
