@@ -17,18 +17,16 @@ export default function Compare(props: { data: Player[] }) {
     const [right, setRight] = useState(0)
 
     // logic when a player card is selected
-	// TODO: try pop-over
+    // TODO: try pop-over
     const handleSelect = (idx: number) => {
-		if (idx + 1 === left){
-			setLeft(0)
-		}
-		else if (idx + 1 === right){
-			setRight(0)
-		}
-		else{
-			if (!left) setLeft(idx + 1)
-        	else if (!right) setRight(idx + 1)
-			else if ((idx+1 != left) && (idx+1 != right)) setRight(idx+1)
+        if (idx + 1 === left) {
+            setLeft(0)
+        } else if (idx + 1 === right) {
+            setRight(0)
+        } else {
+            if (!left) setLeft(idx + 1)
+            else if (!right) setRight(idx + 1)
+            else if (idx + 1 != left && idx + 1 != right) setRight(idx + 1)
         }
     }
 
@@ -49,7 +47,10 @@ export default function Compare(props: { data: Player[] }) {
                 <span className='px-1 absolute bottom-0 bg-zinc-700 border border-yellow-500 rounded-full'>{player.level}</span>
             </div>
             <div className='flex flex-col'>
-                <h2 className='text-xl'>{player.name}{}</h2>
+                <h2 className='text-xl'>
+                    {player.name}
+                    {}
+                </h2>
                 <h3>({player.alias})</h3>
             </div>
             <RankStructure title={'Solo/Duo'} rankdata={player.rank.solo} />
@@ -168,7 +169,7 @@ export default function Compare(props: { data: Player[] }) {
 
             <div className='container mx-auto p-4 grid gap-4 md:grid-cols-2'>
                 {/* If at least 1 player selected ==> show 'clear' button */}
-                { left != 0 || right != 0 ? (
+                {left != 0 || right != 0 ? (
                     <div className='md:col-span-2'>
                         <button
                             className='bg-red-500 rounded text-white shadow py-2 px-3 mx-auto'
