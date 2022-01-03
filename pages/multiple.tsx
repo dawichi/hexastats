@@ -1,12 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import axios from 'axios'
-import { Popover } from '@headlessui/react'
 import { Player } from '../interfaces/player'
-import { styles } from '../styles/styles.config'
 import { backend, players } from '../configs'
-import { getStats } from '../utils'
-import { RankStructure } from '../components'
 
 // ┌────────────────┐
 // │ MULTIPLE PAGE: │
@@ -22,7 +18,7 @@ export default function Multiple(props: { data: Player[] }) {
                 let games = 0
                 let stat_value = 0
 
-                player.champs.map((champ, idx) => {
+                player.champs.map(champ => {
                     games += champ.games
                     stat_value += champ[stat]
                 })

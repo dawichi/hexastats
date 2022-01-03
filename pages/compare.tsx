@@ -17,12 +17,16 @@ export default function Compare(props: { data: Player[] }) {
     const [right, setRight] = useState(0)
 
     // logic when a player card is selected
+    // TODO: try pop-over
     const handleSelect = (idx: number) => {
-        if (!left) setLeft(idx + 1)
-        else if (!right) setRight(idx + 1)
-        else {
-            if (idx + 1 === left) setLeft(0)
-            if (idx + 1 === right) setRight(0)
+        if (idx + 1 === left) {
+            setLeft(0)
+        } else if (idx + 1 === right) {
+            setRight(0)
+        } else {
+            if (!left) setLeft(idx + 1)
+            else if (!right) setRight(idx + 1)
+            else if (idx + 1 != left && idx + 1 != right) setRight(idx + 1)
         }
     }
 
@@ -43,7 +47,10 @@ export default function Compare(props: { data: Player[] }) {
                 <span className='px-1 absolute bottom-0 bg-zinc-700 border border-yellow-500 rounded-full'>{player.level}</span>
             </div>
             <div className='flex flex-col'>
-                <h2 className='text-xl'>{player.name}</h2>
+                <h2 className='text-xl'>
+                    {player.name}
+                    {}
+                </h2>
                 <h3>({player.alias})</h3>
             </div>
             <RankStructure title={'Solo/Duo'} rankdata={player.rank.solo} />
