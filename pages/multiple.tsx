@@ -1,11 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import axios from 'axios'
-import { Popover } from '@headlessui/react'
-import { Champ, Player } from '../interfaces/interfaces'
-import { styles } from '../styles/styles.config'
-import { backend, players } from '../config'
-import { getStats, Rank } from '../utils'
+import { Player } from '../interfaces/player'
+import { backend, players } from '../configs'
 
 // ┌────────────────┐
 // │ MULTIPLE PAGE: │
