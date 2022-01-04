@@ -59,7 +59,7 @@ export default function Graphs(props: { data: Player[] }) {
             return a - b
         }),
     )
-
+	
     return (
         <div className='animate__animated animate__fadeIn'>
             <div className='container-fluid'>

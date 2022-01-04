@@ -31,13 +31,14 @@ export default function Compare(props: { data: Player[] }) {
     }
 
     // styles
-    const playerSelected = (idx: number) => {
+    const tintPlayerSelected = (idx: number) => {
         if (idx + 1 === left) return 'bg-blue-400'
         else if (idx + 1 === right) return 'bg-red-400' // right
         return 'bg-zinc-100 dark:bg-zinc-800' // unselected
     }
 
     // Sort players by ELO
+	props.data.forEach(player => player.rank.rank_p = player.rank.rank_p ? player.rank.rank_p : 100)
     props.data.sort((a, b) => a.rank.rank_p - b.rank.rank_p)
 
     const playerStructure = (player: Player) => (
@@ -81,6 +82,7 @@ export default function Compare(props: { data: Player[] }) {
 
     const progressBar = (l_value: number, r_value: number, title: string, activated: boolean) => {
         const calcWidth = (x: number, y: number) => (100 * x) / (x + y)
+		const reformat = (value: number) => value/1000 < 1 ? value : (value/1000).toFixed(2) + ' k'
 
         return (
             <div className='flex justify-end items-end m-1'>
@@ -88,9 +90,11 @@ export default function Compare(props: { data: Player[] }) {
                 <span className='mx-2'>{statTitle(title)}</span>
                 <div className='w-96'>
                     <div className='relative h-px text-center text-white'>
-                        <div className='absolute left-2 top-0 text-sm'>{l_value}</div>
+                        <div className='absolute left-2 top-0 text-sm'>{reformat(l_value)}</div>
+						<div className='absolute translate-x-20 top-0 text-sm'> {calcWidth(l_value, r_value).toFixed(2)} %</div>
                         <div className='-translate-y-2 text-2xl'>|</div>
-                        <div className='absolute right-2 top-0 text-sm'>{r_value}</div>
+						<div className='-translate-y-8 translate-x-20 top-0 text-sm'> {(100 - calcWidth(l_value, r_value)).toFixed(2)} %</div>
+                        <div className='absolute right-2 top-0 text-sm'>{reformat(r_value)}</div>
                     </div>
                     {activated ? (
                         <div className='bg-red-400 dark:bg-red-400/75 rounded h-5'>
@@ -132,7 +136,7 @@ export default function Compare(props: { data: Player[] }) {
                     {props.data.map((player, idx) => (
                         <div
                             key={idx}
-                            className={`p-2 cursor-pointer ${styles.card} ${playerSelected(idx)}`}
+                            className={`p-2 cursor-pointer ${styles.card} ${tintPlayerSelected(idx)}`}
                             onClick={() => handleSelect(idx)}
                         >
                             <div className='flex items-center justify-around'>
@@ -144,7 +148,7 @@ export default function Compare(props: { data: Player[] }) {
                                 </div>
                                 <div className='flex flex-col'>
                                     <h2 className='text-xl'>
-                                        {++idx}. {player.name}
+                                        {idx + 1}. {player.name}
                                     </h2>
                                     <h3>({player.alias})</h3>
                                 </div>
