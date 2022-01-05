@@ -80,8 +80,8 @@ export default function Compare(props: { data: Player[] }) {
         'penta_kills',
     ]
     var total = 0
-    const progressBar = (l_value: number, r_value: number, title: string, activated: boolean, last: boolean, last_idx: number) => {
-        const calcWidth = (x: number, y: number) => (100 * x) / (x + y)
+    const calcWidth = (x: number, y: number) => (100 * x) / (x + y)
+    const progressBar = (l_value: number, r_value: number, title: string, activated: boolean) => {
         const reformat = (value: number) => (value / 1000 < 1 ? value : (value / 1000).toFixed(2) + ' k')
         if (activated) total += calcWidth(l_value, r_value)
         return (
@@ -109,29 +109,11 @@ export default function Compare(props: { data: Player[] }) {
                     ) : (
                         <div className='bg-zinc-400 dark:bg-zinc-600 rounded h-5'></div>
                     )}
-                    {last ? (
-                        <div className='w-96'>
-                            <div className='relative h-px text-center text-white'>
-                                <div className='absolute translate-x-20 top-0 text-sm'>{(total / last_idx).toFixed(2)} %</div>
-                                <div className='-translate-y-2 text-2xl'>|</div>
-                                <div className='-translate-y-8 translate-x-20 top-0 text-sm'>{(100 - total / last_idx).toFixed(2)} %</div>
-                            </div>
-                            <div className='bg-red-400 dark:bg-red-400/75 rounded h-5'>
-                                <div
-                                    className='bg-blue-500 dark:bg-blue-500/75 rounded-tl rounded-bl h-5'
-                                    style={{ width: `${calcWidth(total / last_idx, 100 - total / last_idx)}%` }}
-                                ></div>
-                            </div>
-                        </div>
-                    ) : (
-                        <></>
-                    )}
                 </div>
             </div>
         )
     }
 
-    // TODO: Add how much blue and red surface are covered and show it as a percent at the end of the column
     return (
         <div className='animate__animated animate__fadeIn'>
             <div className='flex justify-center pt-4 text-white'>
@@ -223,11 +205,28 @@ export default function Compare(props: { data: Player[] }) {
                                     getStats(props.data[right - 1])[stat],
                                     stat,
                                     getStats(props.data[left - 1])[stat] || getStats(props.data[right - 1])[stat],
-                                    idx + 1 === stats.length,
-                                    idx + 1,
                                 )}
                             </div>
                         ))}
+                        <hr></hr>
+                        <div className='flex justify-end items-end m-1'>
+                            <span className='mx-2'> Total </span>
+                            <div className='w-96'>
+                                <div className='relative h-px text-center text-white'>
+                                    <div className='absolute translate-x-20 top-0 text-sm'>{(total / stats.length).toFixed(2)} %</div>
+                                    <div className='-translate-y-2 text-2xl'>|</div>
+                                    <div className='-translate-y-8 translate-x-20 top-0 text-sm'>
+                                        {(100 - total / stats.length).toFixed(2)} %
+                                    </div>
+                                </div>
+                                <div className='bg-red-400 dark:bg-red-400/75 rounded h-5'>
+                                    <div
+                                        className='bg-blue-500 dark:bg-blue-500/75 rounded-tl rounded-bl h-5'
+                                        style={{ width: `${calcWidth(total / stats.length, 100 - total / stats.length)}%` }}
+                                    ></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}
