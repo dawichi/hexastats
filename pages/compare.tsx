@@ -86,7 +86,6 @@ export default function Compare(props: { data: Player[] }) {
         if (activated) total += calcWidth(l_value, r_value)
         return (
             <div className='flex justify-end items-end m-1'>
-                {/* TODO: some stat titles missing */}
                 <span className='mx-2'>{statTitle(title)}</span>
                 <div className='w-96'>
                     <div className='relative h-px text-center text-white'>
