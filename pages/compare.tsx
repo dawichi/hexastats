@@ -38,7 +38,7 @@ export default function Compare(props: { data: Player[] }) {
     }
 
     // Sort players by ELO
-	props.data.forEach(player => player.rank.rank_p = player.rank.rank_p ? player.rank.rank_p : 100)
+    props.data.forEach(player => (player.rank.rank_p = player.rank.rank_p ? player.rank.rank_p : 100))
     props.data.sort((a, b) => a.rank.rank_p - b.rank.rank_p)
 
     const playerStructure = (player: Player) => (
@@ -79,11 +79,11 @@ export default function Compare(props: { data: Player[] }) {
         'quadra_kills',
         'penta_kills',
     ]
-
+    var total = 0
+    const calcWidth = (x: number, y: number) => (100 * x) / (x + y)
     const progressBar = (l_value: number, r_value: number, title: string, activated: boolean) => {
-        const calcWidth = (x: number, y: number) => (100 * x) / (x + y)
-		const reformat = (value: number) => value/1000 < 1 ? value : (value/1000).toFixed(2) + ' k'
-
+        const reformat = (value: number) => (value / 1000 < 1 ? value : (value / 1000).toFixed(2) + ' k')
+        if (activated) total += calcWidth(l_value, r_value)
         return (
             <div className='flex justify-end items-end m-1'>
                 {/* TODO: some stat titles missing */}
@@ -91,9 +91,12 @@ export default function Compare(props: { data: Player[] }) {
                 <div className='w-96'>
                     <div className='relative h-px text-center text-white'>
                         <div className='absolute left-2 top-0 text-sm'>{reformat(l_value)}</div>
-						<div className='absolute translate-x-20 top-0 text-sm'> {calcWidth(l_value, r_value).toFixed(2)} %</div>
+                        <div className='absolute translate-x-20 top-0 text-sm'> {calcWidth(l_value, r_value).toFixed(2)} %</div>
                         <div className='-translate-y-2 text-2xl'>|</div>
-						<div className='-translate-y-8 translate-x-20 top-0 text-sm'> {(100 - calcWidth(l_value, r_value)).toFixed(2)} %</div>
+                        <div className='-translate-y-8 translate-x-20 top-0 text-sm'>
+                            {' '}
+                            {(100 - calcWidth(l_value, r_value)).toFixed(2)} %{' '}
+                        </div>
                         <div className='absolute right-2 top-0 text-sm'>{reformat(r_value)}</div>
                     </div>
                     {activated ? (
@@ -110,17 +113,6 @@ export default function Compare(props: { data: Player[] }) {
             </div>
         )
     }
-
-    // TODO: Add how much blue and red surface are covered and show it as a percent at the end of the column
-    const comparePlayers = (leftPlayer: PlayerStatsResult, rightPlayer: PlayerStatsResult) => (
-        <div className='container flex flex-col justify-center items-center mx-auto'>
-            <div>
-                {stats.map((stat, idx) => (
-                    <div key={idx}>{progressBar(leftPlayer[stat], rightPlayer[stat], stat, leftPlayer[stat] || rightPlayer[stat])}</div>
-                ))}
-            </div>
-        </div>
-    )
 
     return (
         <div className='animate__animated animate__fadeIn'>
@@ -203,7 +195,41 @@ export default function Compare(props: { data: Player[] }) {
             )}
 
             {/* If 2 players selected ==> compare them! */}
-            {left != 0 && right != 0 && comparePlayers(getStats(props.data[left - 1]), getStats(props.data[right - 1]))}
+            {left != 0 && right != 0 && (
+                <div className='container flex flex-col justify-center items-center mx-auto'>
+                    <div>
+                        {stats.map((stat, idx) => (
+                            <div key={idx}>
+                                {progressBar(
+                                    getStats(props.data[left - 1])[stat],
+                                    getStats(props.data[right - 1])[stat],
+                                    stat,
+                                    getStats(props.data[left - 1])[stat] || getStats(props.data[right - 1])[stat],
+                                )}
+                            </div>
+                        ))}
+                        <hr></hr>
+                        <div className='flex justify-end items-end m-1'>
+                            <span className='mx-2'> Total </span>
+                            <div className='w-96'>
+                                <div className='relative h-px text-center text-white'>
+                                    <div className='absolute translate-x-20 top-0 text-sm'>{(total / stats.length).toFixed(2)} %</div>
+                                    <div className='-translate-y-2 text-2xl'>|</div>
+                                    <div className='-translate-y-8 translate-x-20 top-0 text-sm'>
+                                        {(100 - total / stats.length).toFixed(2)} %
+                                    </div>
+                                </div>
+                                <div className='bg-red-400 dark:bg-red-400/75 rounded h-5'>
+                                    <div
+                                        className='bg-blue-500 dark:bg-blue-500/75 rounded-tl rounded-bl h-5'
+                                        style={{ width: `${calcWidth(total / stats.length, 100 - total / stats.length)}%` }}
+                                    ></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

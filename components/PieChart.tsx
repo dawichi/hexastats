@@ -40,7 +40,7 @@ export default function PieChart(props: { id: number; innerRadius: number; outer
 
         const arcGenerator = d3.arc().innerRadius(props.innerRadius).outerRadius(props.outerRadius)
 
-			const reformat = (value: number) => value/1000 < 1 ? value : (value/1000).toFixed(2) + ' k'
+        const reformat = (value: number) => (value / 1000 < 1 ? value : (value / 1000).toFixed(2) + ' k')
 
         const pieGenerator = d3
             .pie()
