@@ -24,6 +24,7 @@ export default function masteries(props: { data: Player[] }) {
                         <div className='ml-5 grid gap-4 grid-cols-7'>
                             {player.masteries.map((mastery, idx_mastery) => (
                                 <div key={idx_mastery} className='border p-3'>
+                                    <img className='m-3 w-14 rounded' src={mastery.image} alt={mastery.name} />
                                     <div>
                                         {mastery.level}. {mastery.name}. <br />({mastery.points})
                                     </div>
