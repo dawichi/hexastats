@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { backend, players } from '../configs'
-import { statTitle, getStats } from '../utils'
+import { statTitle, getStats, parse_k_num } from '../utils'
 import { RankStructure } from '../components'
 import { PlayerStatsResult } from '../interfaces/interfaces'
 import { Player } from '../interfaces/player'
@@ -82,21 +82,20 @@ export default function Compare(props: { data: Player[] }) {
     var total = 0
     const calcWidth = (x: number, y: number) => (100 * x) / (x + y)
     const progressBar = (l_value: number, r_value: number, title: string, activated: boolean) => {
-        const reformat = (value: number) => (value / 1000 < 1 ? value : (value / 1000).toFixed(2) + ' k')
         if (activated) total += calcWidth(l_value, r_value)
         return (
             <div className='flex justify-end items-end m-1'>
                 <span className='mx-2'>{statTitle(title)}</span>
                 <div className='w-96'>
                     <div className='relative h-px text-center text-white'>
-                        <div className='absolute left-2 top-0 text-sm'>{reformat(l_value)}</div>
+                        <div className='absolute left-2 top-0 text-sm'>{parse_k_num(l_value, 2)}</div>
                         <div className='absolute translate-x-20 top-0 text-sm'> {calcWidth(l_value, r_value).toFixed(2)} %</div>
                         <div className='-translate-y-2 text-2xl'>|</div>
                         <div className='-translate-y-8 translate-x-20 top-0 text-sm'>
                             {' '}
                             {(100 - calcWidth(l_value, r_value)).toFixed(2)} %{' '}
                         </div>
-                        <div className='absolute right-2 top-0 text-sm'>{reformat(r_value)}</div>
+                        <div className='absolute right-2 top-0 text-sm'>{parse_k_num(r_value, 2)}</div>
                     </div>
                     {activated ? (
                         <div className='bg-red-400 dark:bg-red-400/75 rounded h-5'>

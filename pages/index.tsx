@@ -15,7 +15,7 @@ export default function Index() {
             </div>
 
             <div className='mt-10 md:w-1/2 mx-auto'>
-                <img src='/programming.svg' className='w-full opacity-80 px-10' />
+                <img src='/images/programming.svg' className='w-full opacity-80 px-10' />
             </div>
         </div>
     )
