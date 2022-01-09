@@ -3,8 +3,8 @@ import axios from 'axios'
 import { backend, players } from '../configs'
 import { Player } from '../interfaces/player'
 import { styles } from '../styles/styles.config'
-import PlayerImg from '../components/PlayerImg'
 import { parse_k_num } from '../utils'
+import { PlayerImg } from '../components'
 
 // ┌────────────────┐
 // │ MASTERIES PAGE:│
@@ -22,7 +22,7 @@ export default function masteries(props: { data: Player[] }) {
                     return (
                         <div key={idx_player} className={`p-2 m-2 ${styles.card} ${styles.foreground} md:grid grid-cols-4`}>
                             <div className='flex items-center'>
-                                <PlayerImg image={player.image} name={player.alias} level={player.level} />
+                                <PlayerImg image={player.image} alias={player.alias} level={player.level} />
                                 <div className='flex flex-col'>
                                     <h2 className='text-xl'>{player.alias}</h2>
                                     <h4>{parse_k_num(total_masteries, 0)}</h4>

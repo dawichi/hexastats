@@ -1,7 +1,7 @@
 import React from 'react'
-import { Rank } from '../interfaces/player'
+import { Rank } from '../../interfaces/player'
 
-const RankStructure = ({ title, rankdata }: { title: string; rankdata: Rank }) => (
+const Rank = ({ title, rankdata }: { title: string; rankdata: Rank }) => (
     <div className='text-center text-sm'>
         <h3>{title}</h3>
         <h4>
@@ -17,4 +17,4 @@ const RankStructure = ({ title, rankdata }: { title: string; rankdata: Rank }) =
     </div>
 )
 
-export default RankStructure
+export default Rank

@@ -2,7 +2,7 @@
 import React from 'react'
 import axios from 'axios'
 import { backend, players } from '../configs'
-import { ChartCard, ProgressByPlayer } from '../components'
+import { AddedPlayers, ChartCard, ListPlayers, ProgressByPlayer } from '../components'
 import { getStatValues, trophyIcon, statTitle } from '../utils'
 import { Chart, RankResults } from '../interfaces/interfaces'
 import { Player } from '../interfaces/player'

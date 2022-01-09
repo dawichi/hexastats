@@ -47,17 +47,9 @@ export default function Home(props: { data: Player[] }) {
                 {/* For each player, print a table and its table-head */}
                 {props.data.map((player: Player, index_player: number) => (
                     <div key={index_player} className={`flex flex-col ${styles.foreground} ${styles.card}`}>
-                        <div className='p-4 flex items-center justify-between'>
-                            <div className='relative flex flex-col items-center text-sm text-white'>
-                                <img className='m-3 w-14 rounded' src={player.image} alt={player.alias} />
-                                <span className='px-1 absolute bottom-0 bg-zinc-700 border border-yellow-500 rounded-full'>
-                                    {player.level}
-                                </span>
-                            </div>
-                            <h2 className='text-xl'>{player.alias}</h2>
-                            <RankStructure title={'Solo/Duo'} rankdata={player.rank.solo} />
-                            <RankStructure title={'Flex'} rankdata={player.rank.flex} />
-                        </div>
+						<div className='p-4'>
+                        	<RankStructure player={player}/>
+						</div>
 
                         <table className={`table-auto m-3 text-center border dark:border-zinc-500`}>
                             <thead>

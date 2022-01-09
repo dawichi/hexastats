@@ -1,7 +1,17 @@
-// Navbar of the app
+// Layout
 export { default as Navbar } from './Navbar'
-// Graphs page components
-export { default as ChartCard } from './ChartCard'
-export { default as PieChart } from './PieChart'
+
+// Graphs
+export { default as ChartCard } from './graphs/ChartCard'
+export { default as PieChart } from './graphs/PieChart'
 export { default as ProgressByPlayer } from './ProgressByPlayer'
-export { default as RankStructure } from './RankStructure'
+
+// Player data visualization
+export { default as Rank } from './playerFront/Rank'
+export { default as PlayerImg } from './playerFront/PlayerImg'
+export { default as RankStructure } from './playerFront/RankStructure'
+
+// Player logic management
+export { default as AddPlayer } from './playerLogic/AddPlayer'
+export { default as AddedPlayers } from './playerLogic/AddedPlayers'
+export { default as ListPlayers } from './playerLogic/ListPlayers'
