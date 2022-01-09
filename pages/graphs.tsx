@@ -15,7 +15,7 @@ import { styles } from '../styles/styles.config'
 export default function Graphs() {
     const { players } = useContext(PlayersContext)
 
-    if (players.length === 0) {
+    if (!players || players.length === 0) {
         return <EmptyPlayers />
     }
 

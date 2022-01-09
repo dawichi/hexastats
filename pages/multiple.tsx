@@ -11,7 +11,7 @@ import { Container, EmptyPlayers } from '../components'
 export default function Multiple() {
     const { players } = useContext(PlayersContext)
 
-    if (players.length === 0) {
+    if (!players || players.length === 0) {
         return <EmptyPlayers />
     }
 
