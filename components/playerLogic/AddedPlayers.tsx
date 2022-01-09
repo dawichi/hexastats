@@ -13,7 +13,7 @@ const AddedPlayers = () => {
         setPlayers(start.concat(end))
     }
 
-    if (!players || players.length === 0) {
+    if (players.length === 0) {
         return <></>
     }
 
@@ -21,7 +21,9 @@ const AddedPlayers = () => {
         <div className='container mx-auto'>
             <h3 className='text-xl my-3'>Added players: </h3>
             <hr />
-            <br />
+            <p className='mt-2 mb-4'>
+                <strong>Great !</strong> &nbsp; Now that you have players added, feel free to explore all the hexastats pages ^^
+            </p>
             <div className='grid grid-cols-4 gap-4'>
                 {players &&
                     players.map((player, idx) => (

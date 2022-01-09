@@ -60,7 +60,7 @@ export default function Navbar() {
                             </div>
                             <div className='absolute right-0 flex'>
                                 <Toggle darkMode={darkMode} setDarkMode={setDarkMode} />
-                                <div className='flex items-center justify-center ml-10 hidden md:block hover:text-violet-500'>
+                                <div className='flex items-center justify-center ml-10 hidden md:block hover:text-indigo-500'>
                                     <a href='https://github.com/dawichi/hexastats' target='_blank' className='text-2xl' rel='noreferrer'>
                                         <i className='bi bi-github'></i>
                                     </a>

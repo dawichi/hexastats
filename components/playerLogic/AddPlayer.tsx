@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Listbox } from '@headlessui/react'
 import useFormInput from '../../hooks/useFormInput'
 import { PlayersContext } from '../../hooks/PlayersContext'
@@ -10,22 +10,27 @@ const AddPlayer = () => {
     const user = useFormInput('')
     const [server, setServer] = useState<number>(0)
 
-    // Helpers for search
+    // Search helpers
     const [searching, setSearching] = useState<boolean>(false)
-    const [error, setError] = useState<string>('')
+    const [error, setError] = useState<boolean>(false)
 
     // Context
     const { players, setPlayers } = useContext(PlayersContext)
 
+    // By default force players to be []
+    useEffect(() => {
+        setPlayers([])
+    }, [])
+
     // Search logic once the button is pressed
     const handleSearch = async () => {
-        setError('')
+        setError(false)
         setSearching(true)
         try {
             const response = await axios.get(backend + user.inputProp.value + '&server=' + servers[server])
-            players ? setPlayers(players.concat(response.data)) : setPlayers([response.data])
+            setPlayers(players.concat(response.data))
         } catch (e) {
-            setError("Sorry, that player doesn't seem to exist ;/ try another one !")
+            setError(true)
         }
         setSearching(false)
         user.reset()
@@ -93,8 +98,11 @@ const AddPlayer = () => {
 
             {error && (
                 <div className='md:w-96 auto border border-indigo-800 py-3 px-6 mx-auto mb-5 rounded shadow' role='alert'>
-                    <strong className='font-bold'>Oh no!</strong>
-                    <span className='block sm:ml-3 sm:inline'>{error}</span>
+                    <strong className='font-bold'>
+                        <i className='bi bi-emoji-frown-fill'></i> Oh no!
+                    </strong>
+                    <p>Sorry, that player doesn't seem to exist.</p>
+                    <p>Is it the correct server ?</p>
                 </div>
             )}
         </div>

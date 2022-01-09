@@ -10,16 +10,15 @@ import { PlayersContext } from '../hooks/PlayersContext'
 // └────────────────┘
 // Visualize each player in a table
 // Each row of the table is a champ with his stats
-export default function masteries() {
-
+export default function Masteries() {
     const { players } = useContext(PlayersContext)
 
-	if (!players || players.length === 0) {
+    if (players.length === 0) {
         return <EmptyPlayers />
     }
-	
+
     return (
-		<Container title={'Masteries'} description={'Your champions with more points'}>
+        <Container title={'Masteries'} description={'Your champions with most points'}>
             <div className='grid gap-4 xl:grid-cols-2'>
                 {players.map((player, idx_player) => {
                     let total_masteries = 0

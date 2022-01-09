@@ -13,10 +13,9 @@ import { styles } from '../styles/styles.config'
 // Process the data with 'process()' function to get the specific
 // stats of each category and pass the filtered information to the <PieChart/> components
 export default function Graphs() {
-
     const { players } = useContext(PlayersContext)
 
-	if (!players || players.length === 0) {
+    if (players.length === 0) {
         return <EmptyPlayers />
     }
 

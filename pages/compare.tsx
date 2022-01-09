@@ -9,10 +9,9 @@ import { PlayersContext } from '../hooks/PlayersContext'
 // └────────────────┘
 // Allows to select 2 players and compares its stats
 export default function Compare() {
-
     const { players } = useContext(PlayersContext)
 
-	if (!players || players.length === 0) {
+    if (players.length === 0) {
         return <EmptyPlayers />
     }
 

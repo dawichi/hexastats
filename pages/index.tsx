@@ -14,15 +14,15 @@ export default function Index() {
                 <hr className='md:w-1/2 mx-auto' />
 
                 <div className='my-6'>
-                    <p>A data visualization tool for League of Legends !</p>
+                    <p>A data visualization webapp for League of Legends !</p>
                     <p>Search players from multiple servers and start comparing them !</p>
                 </div>
 
                 <p>
                     First of all, <br />
-                    add the players you would like to compare here
+                    add the players you would like to compare here <br />
+                    (recommended 3 at least)
                 </p>
-                <p>( Don't worry if you forget anyone, you may add more at any moment )</p>
             </div>
 
             <AddPlayer />
