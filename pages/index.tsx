@@ -1,10 +1,10 @@
 import React from 'react'
-import { AddedPlayers, AddPlayer, ListPlayers } from '../components'
+import { AddedPlayers, AddPlayer } from '../components'
 
 // ┌────────────────┐
 // │ INDEX PAGE:    │
 // └────────────────┘
-// Welcome page, basic landing with a image
+// Welcome page, add new players to the context
 export default function Index() {
 
 
@@ -12,7 +12,6 @@ export default function Index() {
 		<div className='animate__animated animate__fadeIn min-h-screen container m-auto py-8 lg:py-16'>
 			<div className='text-center'>
 
-				<ListPlayers />
 				<h1 className='text-4xl mt-10 mb-5'>Welcome to hexastats</h1>
 
 				<hr className='md:w-1/2 mx-auto' />

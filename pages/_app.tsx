@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import { Navbar } from '../components'
+import { ListPlayers, Navbar } from '../components'
 import { styles } from '../styles/styles.config'
 import { PlayersContext } from '../hooks/PlayersContext'
 import 'tailwindcss/tailwind.css'
@@ -31,6 +31,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
             <main className={`pb-20 dark:text-white min-h-screen ${styles.background}`}>
 				<PlayersContext.Provider value={{ players, setPlayers }}>
+					<ListPlayers />
                		<Component {...pageProps} />
 				</PlayersContext.Provider>
             </main>
