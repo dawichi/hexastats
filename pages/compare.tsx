@@ -1,17 +1,21 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import { backend, players } from '../configs'
+import React, { useContext, useState } from 'react'
 import { statTitle, getStats, parse_k_num } from '../utils'
-import { RankStructure } from '../components'
-import { PlayerStatsResult } from '../interfaces/interfaces'
-import { Player } from '../interfaces/player'
+import { EmptyPlayers, RankStructure } from '../components'
 import { styles } from '../styles/styles.config'
+import { PlayersContext } from '../hooks/PlayersContext'
 
 // ┌────────────────┐
 // │ Compare PAGE:  │
 // └────────────────┘
 // Allows to select 2 players and compares its stats
-export default function Compare(props: { data: Player[] }) {
+export default function Compare() {
+
+    const { players } = useContext(PlayersContext)
+
+	if (!players || players.length === 0) {
+        return <EmptyPlayers />
+    }
+
     // Players selected for compare
     const [left, setLeft] = useState(0)
     const [right, setRight] = useState(0)
@@ -38,8 +42,8 @@ export default function Compare(props: { data: Player[] }) {
     }
 
     // Sort players by ELO
-    props.data.forEach(player => (player.rank.rank_p = player.rank.rank_p ? player.rank.rank_p : 100))
-    props.data.sort((a, b) => a.rank.rank_p - b.rank.rank_p)
+    players.forEach(player => (player.rank.rank_p = player.rank.rank_p ? player.rank.rank_p : 100))
+    players.sort((a, b) => a.rank.rank_p - b.rank.rank_p)
 
     // TODO: get dinamically this
     const stats: string[] = [
@@ -105,7 +109,7 @@ export default function Compare(props: { data: Player[] }) {
             </div>
             <div className='container mx-auto p-4'>
                 <div className='grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
-                    {props.data.map((player, idx) => (
+                    {players.map((player, idx) => (
                         <div
                             key={idx}
                             className={`p-2 cursor-pointer ${styles.card} ${tintPlayerSelected(idx)}`}
@@ -159,8 +163,8 @@ export default function Compare(props: { data: Player[] }) {
                 ) : (
                     ''
                 )}
-                <div className='bg-blue-400/25 rounded shadow'>{left && <RankStructure player={props.data[left - 1]} />}</div>
-                <div className='bg-red-400/25 rounded shadow'>{right && <RankStructure player={props.data[right - 1]} />}</div>
+                <div className='bg-blue-400/25 rounded shadow'>{left && <RankStructure player={players[left - 1]} />}</div>
+                <div className='bg-red-400/25 rounded shadow'>{right && <RankStructure player={players[right - 1]} />}</div>
             </div>
 
             {/* If no players selected in any side ==> alert message explaining */}
@@ -180,10 +184,10 @@ export default function Compare(props: { data: Player[] }) {
                         {stats.map((stat, idx) => (
                             <div key={idx}>
                                 {progressBar(
-                                    getStats(props.data[left - 1])[stat],
-                                    getStats(props.data[right - 1])[stat],
+                                    getStats(players[left - 1])[stat],
+                                    getStats(players[right - 1])[stat],
                                     stat,
-                                    getStats(props.data[left - 1])[stat] || getStats(props.data[right - 1])[stat],
+                                    getStats(players[left - 1])[stat] || getStats(players[right - 1])[stat],
                                 )}
                             </div>
                         ))}
@@ -230,17 +234,4 @@ const tint = (percent: number, main: boolean) => {
     if (percent > 50) return main ? 'from-yellow-800 to-yellow-500' : 'bg-yellow-300/50 dark:bg-yellow-700/25'
     if (percent > 35) return main ? 'from-gray-800 to-gray-500' : 'bg-gray-300/50 dark:bg-gray-700/25'
     if (percent < 35) return main ? 'from-red-800 to-red-500' : 'bg-red-300/50 dark:bg-red-700/25'
-}
-
-// Fetch data from euw.op.gg with getStaticProps()'s NextJS function
-export const getStaticProps = async () => {
-    const data: Player[] = []
-    for (let idx = 0; idx < players.length; idx++) {
-        let player_response = await axios.get(backend + players[idx])
-        data.push(player_response.data)
-    }
-
-    return {
-        props: { data: data },
-    }
 }

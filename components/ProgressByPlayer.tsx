@@ -5,6 +5,8 @@ import { Player } from '../interfaces/player'
 import { styles } from '../styles/styles.config'
 
 // Progress bar with the stats of one player
+
+// UNUSED
 export default function ProgressOfEachPlayer({ data, charts, prop_keys }) {
     // Fills the top stasts for each stat as [key] and each max value as [value]
     const top_stats = {

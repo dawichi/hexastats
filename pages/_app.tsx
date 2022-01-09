@@ -35,10 +35,20 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             </main>
 
             <footer className='bg-zinc-800 text-white p-3'>
-                <div className='container m-auto flex justify-between'>
-                    <span>
-                        &copy;
-                        <a
+                <div className='container m-auto'>
+                    <a
+                        href='https://github.com/dawichi'
+                        target='_blank'
+                        className='text-white hover:text-indigo-400'
+                        rel='noreferrer'
+                    >
+                        다 위 치
+                    </a>
+                    <br/>
+                    <br/>
+					<p>
+						<span>&copy; {new Date().getFullYear().toString()}{' '}</span>
+						<a
                             className='text-indigo-400 font-bold tracking-wider'
                             href='https://github.com/dawichi/hexastats'
                             target='_blank'
@@ -46,16 +56,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                         >
                             Hexastats
                         </a>{' '}
-                        no se hace responsable de ninguna depresión causada por este golpe de realidad.
-                    </span>
-                    <a
-                        href='https://github.com/dawichi'
-                        target='_blank'
-                        className='text-white text-2xl hover:text-indigo-400'
-                        rel='noreferrer'
-                    >
-                        다 위 치
-                    </a>
+						isn’t endorsed by Riot Games and doesn’t reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
+					</p>
                 </div>
             </footer>
         </>

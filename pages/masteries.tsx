@@ -1,23 +1,29 @@
-import React from 'react'
-import axios from 'axios'
-import { backend, players } from '../configs'
-import { Player } from '../interfaces/player'
+import React, { useContext } from 'react'
+import { Mastery } from '../interfaces/player'
 import { styles } from '../styles/styles.config'
 import { parse_k_num } from '../utils'
-import { PlayerImg } from '../components'
+import { Container, EmptyPlayers, PlayerImg } from '../components'
+import { PlayersContext } from '../hooks/PlayersContext'
 
 // ┌────────────────┐
 // │ MASTERIES PAGE:│
 // └────────────────┘
 // Visualize each player in a table
 // Each row of the table is a champ with his stats
-export default function masteries(props: { data: Player[] }) {
+export default function masteries() {
+
+    const { players } = useContext(PlayersContext)
+
+	if (!players || players.length === 0) {
+        return <EmptyPlayers />
+    }
+	
     return (
-        <div className='animate__animated animate__fadeIn container m-auto py-8 lg:py-16'>
+		<Container title={'Masteries'} description={'Your champions with more points'}>
             <div className='grid gap-4 xl:grid-cols-2'>
-                {props.data.map((player, idx_player) => {
+                {players.map((player, idx_player) => {
                     let total_masteries = 0
-                    player.masteries.map((mastery, idx) => (total_masteries += mastery.points))
+                    player.masteries.map((mastery: Mastery) => (total_masteries += mastery.points))
 
                     return (
                         <div key={idx_player} className={`p-2 m-2 ${styles.card} ${styles.foreground} md:grid grid-cols-4`}>
@@ -29,7 +35,7 @@ export default function masteries(props: { data: Player[] }) {
                                 </div>
                             </div>
                             <div className='col-span-3 grid grid-cols-4 sm:grid-cols-7'>
-                                {player.masteries.map((mastery, idx_mastery) => (
+                                {player.masteries.map((mastery: Mastery, idx_mastery: number) => (
                                     <div key={idx_mastery} className='p-2 text-center'>
                                         <span>
                                             {mastery.points > 100000 ? '🔥' : ''}
@@ -50,19 +56,6 @@ export default function masteries(props: { data: Player[] }) {
                     )
                 })}
             </div>
-        </div>
+        </Container>
     )
-}
-
-// Fetch data from euw.op.gg with getStaticProps()'s NextJS function
-export const getStaticProps = async () => {
-    const data: Player[] = []
-    for (let idx = 0; idx < players.length; idx++) {
-        let player_response = await axios.get(backend + players[idx])
-        data.push(player_response.data)
-    }
-
-    return {
-        props: { data: data },
-    }
 }

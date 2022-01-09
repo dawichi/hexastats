@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useContext } from 'react'
-import { ChartCard, ProgressByPlayer } from '../components'
+import { ChartCard, EmptyPlayers } from '../components'
 import { PlayersContext } from '../hooks/PlayersContext'
 import { getStatValues, trophyIcon, statTitle } from '../utils'
 import { Chart, RankResults } from '../interfaces/interfaces'
@@ -13,7 +13,12 @@ import { styles } from '../styles/styles.config'
 // Process the data with 'process()' function to get the specific
 // stats of each category and pass the filtered information to the <PieChart/> components
 export default function Graphs() {
+
     const { players } = useContext(PlayersContext)
+
+	if (!players || players.length === 0) {
+        return <EmptyPlayers />
+    }
 
     // Trophies counter for each player
     const rank_results: RankResults[] = []
@@ -94,16 +99,6 @@ export default function Graphs() {
                     {charts.map((x, index) => (
                         <ChartCard key={index} id={index + 1} title={x.title} data={x.data} data_int={x.data_int} />
                     ))}
-                </div>
-            </div>
-            <br />
-
-            {/* PROGRESSBARS SECTION */}
-            <div className='container mx-auto'>
-                <h2 className='text-4xl text-center mt-10 mb-5'>Stats of each player</h2>
-                <hr />
-                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4'>
-                    <ProgressByPlayer data={players} charts={charts} prop_keys={stats} />
                 </div>
             </div>
         </div>

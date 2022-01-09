@@ -22,7 +22,7 @@ const AddPlayer = () => {
         setError('')
         setSearching(true)
         try {
-            const response = await axios.get(backend + user.inputProp.value)
+            const response = await axios.get(backend + user.inputProp.value + '&server=' + servers[server])
             players ? setPlayers(players.concat(response.data)) : setPlayers([response.data])
         } catch (e) {
             setError("Sorry, that player doesn't seem to exist ;/ try another one !")

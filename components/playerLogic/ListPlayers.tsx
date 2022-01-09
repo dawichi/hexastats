@@ -27,7 +27,7 @@ const ListPlayers = () => {
                 <Link href='/'>
                     <button
                         title='Add more players'
-                        className={`${styles.foreground} ${styles.card} hover:text-green-500 m-1 py-2 px-3 cursor-pointer`}
+                        className={`${styles.foreground} ${styles.card} hover:text-white hover:bg-indigo-600 hover:dark:bg-indigo-600 m-1 py-2 px-3 cursor-pointer`}
                     >
                         <i className='bi bi-person-plus-fill'></i>
                     </button>
