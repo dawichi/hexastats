@@ -39,7 +39,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                     <a
                         href='https://github.com/dawichi'
                         target='_blank'
-                        className='text-white hover:text-indigo-400'
+                        className='text-white hover:text-indigo-400 text-xl'
                         rel='noreferrer'
                     >
                         다 위 치

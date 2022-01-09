@@ -77,7 +77,7 @@ const AddPlayer = () => {
                     placeholder='Player name'
                 />
                 <button
-                    className='p-2 h-12 rounded text-white font-bold tracking-widest bg-indigo-400 col-span-2 shadow'
+                    className='p-2 h-12 rounded text-white font-bold tracking-widest bg-indigo-400 hover:bg-indigo-500 col-span-2 shadow'
                     onClick={handleSearch}
                 >
                     Search
