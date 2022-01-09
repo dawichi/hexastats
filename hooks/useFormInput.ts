@@ -4,7 +4,13 @@ import { useState } from 'react'
 const useFormInput = (initialValue: any) => {
     const [value, setValue] = useState(initialValue)
     const handleChange = (e: { target: { value: any } }) => setValue(e.target.value)
-    return { value, onChange: handleChange }
+    return {
+		inputProp: {
+			value,
+			onChange: handleChange,
+		},
+		reset: () => setValue(''),
+	}
 }
 
 export default useFormInput

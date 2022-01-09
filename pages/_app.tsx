@@ -1,13 +1,18 @@
-/* eslint-disable @next/next/no-sync-scripts */
-import React from 'react'
+import React, { useState } from 'react'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Navbar } from '../components'
 import { styles } from '../styles/styles.config'
+import { PlayersContext } from '../hooks/PlayersContext'
 import 'tailwindcss/tailwind.css'
 import '../styles/global.scss'
 
+
 export default function MyApp({ Component, pageProps }: AppProps) {
+
+	// Context of the app
+	const [players, setPlayers] = useState()
+
     return (
         <>
             <Head>
@@ -25,7 +30,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             </header>
 
             <main className={`pb-20 dark:text-white min-h-screen ${styles.background}`}>
-                <Component {...pageProps} />
+				<PlayersContext.Provider value={{ players, setPlayers }}>
+               		<Component {...pageProps} />
+				</PlayersContext.Provider>
             </main>
 
             <footer className='bg-zinc-800 text-white p-3'>
@@ -45,7 +52,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                     <a
                         href='https://github.com/dawichi'
                         target='_blank'
-                        className='text-white text-2xl hover:text-purple-400'
+                        className='text-white text-2xl hover:text-indigo-400'
                         rel='noreferrer'
                     >
                         다 위 치

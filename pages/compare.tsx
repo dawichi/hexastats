@@ -44,15 +44,11 @@ export default function Compare(props: { data: Player[] }) {
     const playerStructure = (player: Player) => (
         <div className='flex items-center justify-center gap-4'>
             <div className='relative flex flex-col items-center text-sm text-white'>
-                <img className='m-3 w-14 rounded' src={player.image} alt={player.name} />
+                <img className='m-3 w-14 rounded' src={player.image} alt={player.alias} />
                 <span className='px-1 absolute bottom-0 bg-zinc-700 border border-yellow-500 rounded-full'>{player.level}</span>
             </div>
             <div className='flex flex-col'>
-                <h2 className='text-xl'>
-                    {player.name}
-                    {}
-                </h2>
-                <h3>({player.alias})</h3>
+                <h2 className='text-xl'>{player.alias}</h2>
             </div>
             <RankStructure title={'Solo/Duo'} rankdata={player.rank.solo} />
             <RankStructure title={'Flex'} rankdata={player.rank.flex} />
@@ -131,16 +127,13 @@ export default function Compare(props: { data: Player[] }) {
                         >
                             <div className='flex items-center justify-around'>
                                 <div className='relative flex flex-col items-center text-sm text-white'>
-                                    <img className='m-3 w-14 rounded' src={player.image} alt={player.name} />
+                                    <img className='m-3 w-14 rounded' src={player.image} alt={player.alias} />
                                     <span className='px-1 absolute bottom-0 bg-zinc-700 border border-yellow-500 rounded-full'>
                                         {player.level}
                                     </span>
                                 </div>
                                 <div className='flex flex-col'>
-                                    <h2 className='text-xl'>
-                                        {idx + 1}. {player.name}
-                                    </h2>
-                                    <h3>({player.alias})</h3>
+                                    <h2 className='text-xl'>{idx + 1}. {player.alias}</h2>
                                 </div>
                             </div>
                             <div className='mt-2 flex justify-between'>

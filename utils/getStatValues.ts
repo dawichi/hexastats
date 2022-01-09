@@ -32,7 +32,7 @@ export default function getStatValues(
 
         const value = calc_median ? (stat / games).toFixed(2) : stat
 
-        player_infos.push({ label: player.name, value: value })
+        player_infos.push({ label: player.alias, value: value })
         player_values.push(value)
     })
 

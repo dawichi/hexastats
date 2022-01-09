@@ -31,11 +31,8 @@ export default function Multiple(props: { data: Player[] }) {
                     <div key={idx}>
                         <div className='grid grid-cols-2 lg:grid-cols-3'>
                             <div className='flex items-center justify-start'>
-                                <img className='m-2 w-14 rounded' src={player.image} alt={player.name} />
-                                <div>
-                                    <p>{player.name}</p>
-                                    <p>({player.alias})</p>
-                                </div>
+                                <img className='m-2 w-14 rounded' src={player.image} alt={player.alias} />
+                                <p>{player.alias}</p>
                             </div>
                             {result != 0 && (
                                 <div className='lg:col-span-2 flex flex-col justify-center items-start'>

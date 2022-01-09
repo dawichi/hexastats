@@ -1,6 +1,17 @@
 {
-    "name": "nextjs",
+    "name": "hexastats",
     "version": "1.0.0",
+    "license": "GPL-3.0",
+    "description": "Visualize your League of Legends data",
+    "keywords": [
+        "lol",
+        "league of legends",
+        "data visualization"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dawichi/hexastats.git"
+    },
     "private": true,
     "scripts": {
         "dev": "next dev",

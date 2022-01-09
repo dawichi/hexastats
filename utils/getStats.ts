@@ -6,7 +6,7 @@ import { PlayerStatsResult } from '../interfaces/interfaces'
  */
 export default function getStats(player: Player) {
     const result: PlayerStatsResult = {
-        name: player.name,
+        name: player.alias,
         games: 0,
         winrate: 0,
         kda: 0,

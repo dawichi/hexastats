@@ -18,7 +18,7 @@ export default function Graphs(props: { data: Player[] }) {
     const rank_results: RankResults[] = []
     props.data.map((player: Player) => {
         rank_results.push({
-            name: player.name,
+            name: player.alias,
             image: player.image,
             trophies: [],
         })

@@ -1,5 +1,5 @@
 export interface Player {
-    name: string
+    // name: string
     alias: string
     image: string
     level: number

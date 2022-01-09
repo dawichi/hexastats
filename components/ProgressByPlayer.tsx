@@ -3,7 +3,6 @@ import React from 'react'
 import { Chart, DataForChart } from '../interfaces/interfaces'
 import { Player } from '../interfaces/player'
 import { styles } from '../styles/styles.config'
-import { statTitle } from '../utils'
 
 // Progress bar with the stats of one player
 export default function ProgressOfEachPlayer({ data, charts, prop_keys }) {
@@ -18,7 +17,7 @@ export default function ProgressOfEachPlayer({ data, charts, prop_keys }) {
     const progress_by_player = []
     data.map((player: Player) => {
         const model = {
-            player: player.name,
+            player: player.alias,
             image: player.image,
         }
 
@@ -26,7 +25,7 @@ export default function ProgressOfEachPlayer({ data, charts, prop_keys }) {
             charts.map((x: Chart) => {
                 if (x.key === prop) {
                     x.data.map((pair: DataForChart) => {
-                        if (pair.label === player.name) {
+                        if (pair.label === player.alias) {
                             model[prop] = pair.value
                         }
                     })
