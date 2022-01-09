@@ -13,7 +13,7 @@ const AddedPlayers = () => {
         setPlayers(start.concat(end))
     }
 
-    if !players || players.length === 0 {
+    if (!players || players.length === 0) {
         return <></>
     }
 
