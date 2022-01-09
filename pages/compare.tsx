@@ -41,7 +41,6 @@ export default function Compare(props: { data: Player[] }) {
     props.data.forEach(player => (player.rank.rank_p = player.rank.rank_p ? player.rank.rank_p : 100))
     props.data.sort((a, b) => a.rank.rank_p - b.rank.rank_p)
 
-
     // TODO: get dinamically this
     const stats: string[] = [
         'games',
@@ -120,7 +119,9 @@ export default function Compare(props: { data: Player[] }) {
                                     </span>
                                 </div>
                                 <div className='flex flex-col'>
-                                    <h2 className='text-xl'>{idx + 1}. {player.alias}</h2>
+                                    <h2 className='text-xl'>
+                                        {idx + 1}. {player.alias}
+                                    </h2>
                                 </div>
                             </div>
                             <div className='mt-2 flex justify-between'>
@@ -158,8 +159,8 @@ export default function Compare(props: { data: Player[] }) {
                 ) : (
                     ''
                 )}
-                <div className='bg-blue-400/25 rounded shadow'>{ left && <RankStructure player={props.data[left - 1]}/> }</div>
-                <div className='bg-red-400/25 rounded shadow'>{ right && <RankStructure player={props.data[right - 1]}/> }</div>
+                <div className='bg-blue-400/25 rounded shadow'>{left && <RankStructure player={props.data[left - 1]} />}</div>
+                <div className='bg-red-400/25 rounded shadow'>{right && <RankStructure player={props.data[right - 1]} />}</div>
             </div>
 
             {/* If no players selected in any side ==> alert message explaining */}

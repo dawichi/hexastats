@@ -7,11 +7,9 @@ import { PlayersContext } from '../hooks/PlayersContext'
 import 'tailwindcss/tailwind.css'
 import '../styles/global.scss'
 
-
 export default function MyApp({ Component, pageProps }: AppProps) {
-
-	// Context of the app
-	const [players, setPlayers] = useState()
+    // Context of the app
+    const [players, setPlayers] = useState()
 
     return (
         <>
@@ -30,10 +28,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             </header>
 
             <main className={`pb-20 dark:text-white min-h-screen ${styles.background}`}>
-				<PlayersContext.Provider value={{ players, setPlayers }}>
-					<ListPlayers />
-               		<Component {...pageProps} />
-				</PlayersContext.Provider>
+                <PlayersContext.Provider value={{ players, setPlayers }}>
+                    <ListPlayers />
+                    <Component {...pageProps} />
+                </PlayersContext.Provider>
             </main>
 
             <footer className='bg-zinc-800 text-white p-3'>

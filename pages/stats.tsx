@@ -1,9 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-import React from 'react'
-import axios from 'axios'
+import React, { useContext } from 'react'
 import { Popover } from '@headlessui/react'
-import { backend, players } from '../configs'
 import { RankStructure } from '../components'
+import { PlayersContext } from '../hooks/PlayersContext'
 import { Player } from '../interfaces/player'
 import { styles } from '../styles/styles.config'
 
@@ -12,44 +11,18 @@ import { styles } from '../styles/styles.config'
 // └────────────────┘
 // Visualize each player in a table
 // Each row of the table is a champ with his stats
-export default function Home(props: { data: Player[] }) {
-    // ┌────────────────────────────────────────────────────────────
-    // │ Highlights each table cell based on the stat requirements
-    // └────────────────────────────────────────────────────────────
-    const tint = (num: number, type: string) => {
-        const tints = {
-            games: (x: number) => (x >= 50 ? 'bg-green-200 dark:bg-green-700' : ''),
-            winrate: (x: number) => (x >= 55 ? 'bg-sky-200 dark:bg-sky-700' : ''),
-            kda: (x: number) => (x >= 3 ? 'bg-purple-200 dark:bg-purple-700 p-1' : ''),
-            kills: (x: number) => (x >= 10 ? 'bg-red-200 dark:bg-red-700 p-1' : ''),
-            deaths: (x: number) => (x <= 5 ? 'bg-zinc-300 dark:bg-zinc-400 p-1' : ''),
-            assists: (x: number) => (x >= 10 ? 'bg-pink-200 dark:bg-pink-700 p-1' : ''),
-            csmin: (x: number) => (x >= 7 ? 'bg-yellow-200 dark:bg-yellow-700 p-1' : ''),
-        }
-        return tints[type]?.(num) ?? ''
-    }
-
-    // ┌──────────────────────────────────
-    // │ Returns a row of a table <tr>
-    // └──────────────────────────────────
-    const TintRow = ({ tint, title, data }: { tint: string; title: any; data: number }) => (
-        <tr>
-            <td className='p-1'>
-                <span className={tint}>{title}</span>
-            </td>
-            <td>{data.toLocaleString('en-US')}</td>
-        </tr>
-    )
+export default function Home() {
+    const { players } = useContext(PlayersContext)
 
     return (
         <div className='animate__animated animate__fadeIn container m-auto py-8 lg:py-16'>
             <div className='grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>
                 {/* For each player, print a table and its table-head */}
-                {props.data.map((player: Player, index_player: number) => (
+                {players.map((player: Player, index_player: number) => (
                     <div key={index_player} className={`flex flex-col ${styles.foreground} ${styles.card}`}>
-						<div className='p-4'>
-                        	<RankStructure player={player}/>
-						</div>
+                        <div className='p-4'>
+                            <RankStructure player={player} />
+                        </div>
 
                         <table className={`table-auto m-3 text-center border dark:border-zinc-500`}>
                             <thead>
@@ -152,15 +125,30 @@ export default function Home(props: { data: Player[] }) {
     )
 }
 
-// Fetch data from euw.op.gg with getStaticProps()'s NextJS function
-export const getStaticProps = async () => {
-    const data: Player[] = []
-    for (let idx = 0; idx < players.length; idx++) {
-        let player_response = await axios.get(backend + players[idx])
-        data.push(player_response.data)
+// ┌────────────────────────────────────────────────────────────
+// │ Highlights each table cell based on the stat requirements
+// └────────────────────────────────────────────────────────────
+const tint = (num: number, type: string) => {
+    const tints = {
+        games: (x: number) => (x >= 50 ? 'bg-green-200 dark:bg-green-700' : ''),
+        winrate: (x: number) => (x >= 55 ? 'bg-sky-200 dark:bg-sky-700' : ''),
+        kda: (x: number) => (x >= 3 ? 'bg-purple-200 dark:bg-purple-700 p-1' : ''),
+        kills: (x: number) => (x >= 10 ? 'bg-red-200 dark:bg-red-700 p-1' : ''),
+        deaths: (x: number) => (x <= 5 ? 'bg-zinc-300 dark:bg-zinc-400 p-1' : ''),
+        assists: (x: number) => (x >= 10 ? 'bg-pink-200 dark:bg-pink-700 p-1' : ''),
+        csmin: (x: number) => (x >= 7 ? 'bg-yellow-200 dark:bg-yellow-700 p-1' : ''),
     }
-
-    return {
-        props: { data: data },
-    }
+    return tints[type]?.(num) ?? ''
 }
+
+// ┌──────────────────────────────────
+// │ Returns a row of a table <tr>
+// └──────────────────────────────────
+const TintRow = ({ tint, title, data }: { tint: string; title: any; data: number }) => (
+    <tr>
+        <td className='p-1'>
+            <span className={tint}>{title}</span>
+        </td>
+        <td>{data.toLocaleString('en-US')}</td>
+    </tr>
+)
