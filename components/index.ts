@@ -1,6 +1,7 @@
 // Layout
-export { default as Navbar } from './layout/Navbar'
 export { default as Container } from './layout/Container'
+export { default as Footer } from './layout/Footer'
+export { default as Navbar } from './layout/Navbar'
 
 // Graphs
 export { default as ChartCard } from './graphs/ChartCard'
