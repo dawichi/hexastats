@@ -19,9 +19,9 @@ const AddPlayer = () => {
 
     // By default force players to be []
     useEffect(() => {
-		if (players === undefined) {
-			setPlayers([])
-		}
+        if (players === undefined) {
+            setPlayers([])
+        }
     }, [])
 
     // Search logic once the button is pressed
