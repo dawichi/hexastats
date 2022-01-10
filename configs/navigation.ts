@@ -7,19 +7,19 @@ export const navigation: link[] = [
         url: '/stats',
     },
     {
+        name: 'Mastery',
+        url: '/mastery',
+    },
+    {
+        name: 'Multi',
+        url: '/multiple',
+    },
+    {
         name: 'Graphs',
         url: '/graphs',
     },
     {
         name: 'Compare',
         url: '/compare',
-    },
-    {
-        name: 'Masteries',
-        url: '/masteries',
-    },
-    {
-        name: 'Multi',
-        url: '/multiple',
     },
 ]

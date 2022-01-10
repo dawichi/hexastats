@@ -18,7 +18,7 @@ export default function Masteries() {
     }
 
     return (
-        <Container title={'Masteries'} description={'Your champions with most points'}>
+        <Container title={'Mastery'} description={'Your 7 champions with most points'}>
             <div className='grid gap-4 xl:grid-cols-2'>
                 {players.map((player, idx_player) => {
                     let total_masteries = 0
