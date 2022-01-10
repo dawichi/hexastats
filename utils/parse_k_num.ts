@@ -1,6 +1,4 @@
 //	Parses a number like '2_000_000' to '2000 k' or '2 m'
-//
-//
 const parse_k_num = (value: number, number_decimals: number, transform_millions: boolean) => {
     if (!transform_millions) {
         return value / 1000 < 1 ? value : (value / 1000).toFixed(number_decimals) + ' k'

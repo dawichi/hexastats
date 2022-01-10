@@ -42,8 +42,4 @@ describe('[parse_k_num.ts]: parses a long number like "10.000.000" to "10.000k" 
             }
         })
     })
-
-    // test('Decimals', () => {
-
-    // })
 })

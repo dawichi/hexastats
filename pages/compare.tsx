@@ -100,9 +100,9 @@ export default function Compare() {
     return (
         <div className='animate__animated animate__fadeIn'>
             <div className='flex justify-center pt-4 text-white'>
-                {tints.map((tint, index) => (
-                    <span key={index} className={`mx-1 px-3 py-1 rounded ${tint.color}`}>
-                        {tint.top}
+				{sections.map((section, index) => (
+                    <span key={index} className={`mx-1 px-3 py-1 rounded ${section.bannerColor}`}>
+                        {section.title}
                     </span>
                 ))}
             </div>
@@ -131,9 +131,9 @@ export default function Compare() {
                                 <span>{player.rank.rank_n.toLocaleString('es-ES')}º</span>
                                 <span>{player.rank.rank_p.toFixed(1)} %</span>
                             </div>
-                            <div className={`rounded-xl h-2 ${tint(100 - player.rank.rank_p, false)}`}>
+                            <div className={`rounded-xl h-2 ${tint_sections(player.rank.rank_p, false)}`}>
                                 <div
-                                    className={`rounded-xl h-2 bg-gradient-to-r ${tint(100 - player.rank.rank_p, true)}`}
+                                    className={`rounded-xl h-2 bg-gradient-to-r ${tint_sections(player.rank.rank_p, true)}`}
                                     style={{ width: 100 - player.rank.rank_p + '%' }}
                                 ></div>
                             </div>
@@ -216,23 +216,52 @@ export default function Compare() {
     )
 }
 
-// TODO: this 2 functions, sould be merged in 1 big object
-const tints = [
-    { color: 'bg-indigo-500 dark:bg-indigo-600/75', top: 'Top 10🔥 % ' },
-    { color: 'bg-blue-500 dark:bg-blue-600/75', top: 'Top 20 %' },
-    { color: 'bg-green-500 dark:bg-green-600/75', top: 'Top 35 %' },
-    { color: 'bg-yellow-500 dark:bg-yellow-600/75', top: 'Top 50 %' },
-    { color: 'bg-gray-500 dark:bg-gray-600/75', top: 'Below 50 %' },
-    { color: 'bg-red-500 dark:bg-red-600/75', top: 'Below 35 %' },
+const sections = [ 
+	{	
+		title: 'Top 10🔥 % ',
+		percent: 10,
+		bannerColor: 'bg-indigo-500 dark:bg-indigo-600/75',
+		frontColor: 'from-indigo-800 to-indigo-500',
+		backColor: 'bg-indigo-300/50 dark:bg-indigo-700/25',
+	},
+	{	
+		title: 'Top 20 % ',
+		percent: 20,
+		bannerColor: 'bg-blue-500 dark:bg-blue-600/75',
+		frontColor: 'from-blue-800 to-blue-500',
+		backColor: 'bg-blue-300/50 dark:bg-blue-700/25',
+	},
+	{	
+		title: 'Top 35 % ',
+		percent: 35,
+		bannerColor: 'bg-green-500 dark:bg-green-600/75',
+		frontColor: 'from-green-800 to-green-500',
+		backColor: 'bg-green-300/50 dark:bg-green-700/25',
+	},
+	{	
+		title: 'Top 50 % ',
+		percent: 50,
+		bannerColor: 'bg-yellow-500 dark:bg-yellow-600/75',
+		frontColor: 'from-yellow-800 to-yellow-500',
+		backColor: 'bg-yellow-300/50 dark:bg-yellow-700/25',
+	},
+	{	
+		title: 'Below 50 % ',
+		percent: 65,
+		bannerColor: 'bg-gray-500 dark:bg-gray-600/75',
+		frontColor: 'from-gray-800 to-gray-500',
+		backColor: 'bg-gray-300/50 dark:bg-gray-700/25',
+	},
+	{	
+		title: 'Below 35 % ',
+		percent: 100,
+		bannerColor: 'bg-red-500 dark:bg-red-600/75',
+		frontColor: 'from-red-800 to-red-500',
+		backColor: 'bg-red-300/50 dark:bg-red-700/25',
+	}
 ]
 
-const tint = (percent: number, main: boolean) => {
-    if (percent > 90) return main ? 'from-indigo-800 to-indigo-500' : 'bg-indigo-300/50 dark:bg-indigo-700/25'
-    if (percent > 80) return main ? 'from-blue-800 to-blue-500' : 'bg-blue-300/50 dark:bg-blue-700/25'
-    if (percent > 65) return main ? 'from-green-800 to-green-500' : 'bg-green-300/50 dark:bg-green-700/25'
-    if (percent > 50) return main ? 'from-yellow-800 to-yellow-500' : 'bg-yellow-300/50 dark:bg-yellow-700/25'
-    if (percent > 35) return main ? 'from-gray-800 to-gray-500' : 'bg-gray-300/50 dark:bg-gray-700/25'
-    if (percent < 35) return main ? 'from-red-800 to-red-500' : 'bg-red-300/50 dark:bg-red-700/25'
+const tint_sections = (percent: number, front: boolean) =>{
+	const result = sections.find(section => percent<=section.percent)
+	return front ? result.frontColor : result.backColor
 }
-
-const estadisticas = getStats
