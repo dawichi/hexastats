@@ -30,7 +30,7 @@ export default function Masteries() {
                                 <PlayerImg image={player.image} alias={player.alias} level={player.level} />
                                 <div className='flex flex-col'>
                                     <h2 className='text-xl'>{player.alias}</h2>
-                                    <h4>{parse_k_num(total_masteries, 0)}</h4>
+                                    <h4>{parse_k_num(total_masteries, 0, false)}</h4>
                                 </div>
                             </div>
                             <div className='col-span-3 grid grid-cols-4 sm:grid-cols-7'>
@@ -38,7 +38,7 @@ export default function Masteries() {
                                     <div key={idx_mastery} className='p-2 text-center'>
                                         <span>
                                             {mastery.points > 100000 ? '🔥' : ''}
-                                            {parse_k_num(mastery.points, 0)}
+                                            {parse_k_num(mastery.points, 0, true)}
                                         </span>
                                         <div className='relative h-24 flex justify-center'>
                                             <img
