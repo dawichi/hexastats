@@ -1,4 +1,3 @@
-// TODO: check if > 1_000_000 and format it with 'm' at the end
 const parse_k_num = (value: number, number_decimals: number , transform_millions: boolean) => 
 	{
 	if (!transform_millions){
