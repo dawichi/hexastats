@@ -73,14 +73,14 @@ export default function Compare() {
                 <span className='mx-2'>{statTitle(title)}</span>
                 <div className='w-96'>
                     <div className='relative h-px text-center text-white'>
-                        <div className='absolute left-2 top-0 text-sm'>{parse_k_num(l_value, 2)}</div>
+                        <div className='absolute left-2 top-0 text-sm'>{parse_k_num(l_value, 2, true)}</div>
                         <div className='absolute translate-x-20 top-0 text-sm'> {calcWidth(l_value, r_value).toFixed(2)} %</div>
                         <div className='-translate-y-2 text-2xl'>|</div>
                         <div className='-translate-y-8 translate-x-20 top-0 text-sm'>
                             {' '}
                             {(100 - calcWidth(l_value, r_value)).toFixed(2)} %{' '}
                         </div>
-                        <div className='absolute right-2 top-0 text-sm'>{parse_k_num(r_value, 2)}</div>
+                        <div className='absolute right-2 top-0 text-sm'>{parse_k_num(r_value, 2, true)}</div>
                     </div>
                     {activated ? (
                         <div className='bg-red-400 dark:bg-red-400/75 rounded h-5'>
@@ -234,3 +234,5 @@ const tint = (percent: number, main: boolean) => {
     if (percent > 35) return main ? 'from-gray-800 to-gray-500' : 'bg-gray-300/50 dark:bg-gray-700/25'
     if (percent < 35) return main ? 'from-red-800 to-red-500' : 'bg-red-300/50 dark:bg-red-700/25'
 }
+
+const estadisticas = getStats

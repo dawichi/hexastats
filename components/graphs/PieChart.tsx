@@ -71,7 +71,7 @@ export default function PieChart(props: { id: number; innerRadius: number; outer
         arc.append('text')
             .attr('text-anchor', 'middle')
             .attr('alignment-baseline', 'middle')
-            .text((d: { data: { value: string } }) => parse_k_num(parseFloat(d.data.value), 2))
+            .text((d: { data: { value: string } }) => parse_k_num(parseFloat(d.data.value), 2, true))
             .style('fill', '#000')
             .style('font-size', '.8rem')
             .attr('transform', (d: any) => {
