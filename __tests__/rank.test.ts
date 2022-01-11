@@ -8,8 +8,7 @@ describe('[statTitle.ts]: converts a stat key in its Title (if listed inside the
     })
 
     // Non listed keys
-    test('Returns the same [string | number] if not listed as a stat', () => {
+    test('Returns the same string if not listed as a stat', () => {
         expect(statTitle('1234')).toBe('1234')
-        expect(statTitle(1234)).toBe(1234)
     })
 })
