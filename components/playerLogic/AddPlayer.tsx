@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Listbox } from '@headlessui/react'
-import useFormInput from '../../hooks/useFormInput'
-import { PlayersContext } from '../../hooks/PlayersContext'
+import useFormInput from 'hooks/useFormInput'
+import { PlayersContext } from 'hooks/PlayersContext'
 import axios from 'axios'
-import { backend, servers } from '../../configs'
+import { backend, servers } from 'configs'
 
 const AddPlayer = () => {
     // Search params

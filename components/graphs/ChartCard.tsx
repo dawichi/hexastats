@@ -1,8 +1,7 @@
-import React from 'react'
-import { DataForChart } from '../../interfaces/interfaces'
-import { PieChart } from '..'
-import { styles } from '../../styles/styles.config'
-import { trophyIcon } from '../../utils'
+import { DataForChart } from 'interfaces/interfaces'
+import { PieChart } from 'components'
+import { styles } from 'styles/styles.config'
+import { trophyIcon } from 'utils'
 
 // Prints a card with a chart
 // - title: the 'category' of the data in graph

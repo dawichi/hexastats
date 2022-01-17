@@ -1,7 +1,6 @@
-/* eslint-disable @next/next/no-img-element */
-import React, { useContext } from 'react'
-import { PlayersContext } from '../hooks/PlayersContext'
-import { Container, EmptyPlayers } from '../components'
+import { useContext } from 'react'
+import { PlayersContext } from 'hooks/PlayersContext'
+import { Container, EmptyPlayers } from 'components'
 
 // ┌────────────────┐
 // │ MULTIPLE PAGE: │

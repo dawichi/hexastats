@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
-import { Mastery } from '../interfaces/player'
-import { styles } from '../styles/styles.config'
-import { parse_k_num } from '../utils'
-import { Container, EmptyPlayers, PlayerImg } from '../components'
-import { PlayersContext } from '../hooks/PlayersContext'
+import { useContext } from 'react'
+import { Mastery } from 'interfaces/player'
+import { styles } from 'styles/styles.config'
+import { parse_k_num } from 'utils'
+import { Container, EmptyPlayers, PlayerImg } from 'components'
+import { PlayersContext } from 'hooks/PlayersContext'
 
 // ┌────────────────┐
 // │ MASTERIES PAGE:│

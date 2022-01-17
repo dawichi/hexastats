@@ -1,8 +1,8 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { PlayersContext } from '../../hooks/PlayersContext'
-import { styles } from '../../styles/styles.config'
+import { PlayersContext } from 'hooks/PlayersContext'
+import { styles } from 'styles/styles.config'
 
 // Lists a compressed list of players in context
 const ListPlayers = () => {

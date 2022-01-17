@@ -1,10 +1,14 @@
-import React from 'react'
-import { Container } from '../components'
+import { Container } from 'components'
 
 const About = () => {
+	// TODO: Complete about page
     return (
         <Container title={'About us'} description={'Some info about the people behind hexastats ^^'}>
-            Made by League of Legends players, for League of Legends players!
+			<div>
+				Made by League of Legends players, for League of Legends players!
+				
+			</div>
+
         </Container>
     )
 }

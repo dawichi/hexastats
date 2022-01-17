@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
-import { RankStructure } from '..'
-import { PlayersContext } from '../../hooks/PlayersContext'
-import { styles } from '../../styles/styles.config'
+import { useContext } from 'react'
+import { RankStructure } from 'components'
+import { PlayersContext } from 'hooks/PlayersContext'
+import { styles } from 'styles/styles.config'
 
 // Lists a extended view of players added in context, with its rank data
 const AddedPlayers = () => {
@@ -24,7 +24,7 @@ const AddedPlayers = () => {
             <p className='mt-2 mb-4'>
                 <strong>Great !</strong> &nbsp; Now that you have players added, feel free to explore all the hexastats pages ^^
             </p>
-            <div className='grid grid-cols-4 gap-4'>
+            <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
                 {players &&
                     players.map((player, idx) => (
                         <div key={idx} className={`${styles.foreground} ${styles.card} p-4 relative`}>

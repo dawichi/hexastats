@@ -1,6 +1,5 @@
 import Link from 'next/link'
-import React from 'react'
-import { styles } from '../../styles/styles.config'
+import { styles } from 'styles/styles.config'
 
 const EmptyPlayers = () => {
     return (

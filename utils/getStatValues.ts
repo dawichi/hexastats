@@ -1,5 +1,5 @@
-import { PodiumResult } from '../interfaces/interfaces'
-import { Player } from '../interfaces/player'
+import { PodiumResult } from 'interfaces/interfaces'
+import { Player } from 'interfaces/player'
 
 /* - prop: the type of property to load. Ex: 'games', 'winrate' or 'kills'
  *  - float?: by default uses parseInt() for data. Optional parseFloat()

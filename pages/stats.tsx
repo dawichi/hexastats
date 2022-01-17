@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Popover } from '@headlessui/react'
-import { Container, EmptyPlayers, RankStructure } from '../components'
-import { PlayersContext } from '../hooks/PlayersContext'
-import { Player } from '../interfaces/player'
-import { styles } from '../styles/styles.config'
+import { Container, EmptyPlayers, RankStructure } from 'components'
+import { PlayersContext } from 'hooks/PlayersContext'
+import { Player } from 'interfaces/player'
+import { styles } from 'styles/styles.config'
 
 // ┌────────────────┐
 // │ STATS PAGE:    │

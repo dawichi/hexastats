@@ -1,5 +1,4 @@
-import React from 'react'
-import { PlayerImg, Rank } from '..'
+import { PlayerImg, Rank } from 'components'
 
 const RankStructure = ({ player }) => (
     <div className='flex items-center justify-center gap-4'>

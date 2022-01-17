@@ -1,4 +1,4 @@
-import { link } from '../interfaces/interfaces'
+import { link } from 'interfaces/interfaces'
 
 // Navigation menu
 export const navigation: link[] = [

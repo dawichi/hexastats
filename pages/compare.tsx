@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react'
-import { statTitle, getStats, parse_k_num } from '../utils'
-import { EmptyPlayers, RankStructure } from '../components'
-import { styles } from '../styles/styles.config'
-import { PlayersContext } from '../hooks/PlayersContext'
+import { useContext, useState } from 'react'
+import { statTitle, getStats, parse_k_num } from 'utils'
+import { EmptyPlayers, RankStructure } from 'components'
+import { styles } from 'styles/styles.config'
+import { PlayersContext } from 'hooks/PlayersContext'
 
 // ┌────────────────┐
 // │ Compare PAGE:  │

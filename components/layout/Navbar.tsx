@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Disclosure, Switch } from '@headlessui/react'
-import { navigation } from '../../configs'
-import { link } from '../../interfaces/interfaces'
+import { navigation } from 'configs'
+import { link } from 'interfaces/interfaces'
 
 // Navbar of the app
 export default function Navbar() {

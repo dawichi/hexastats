@@ -1,8 +1,6 @@
-/* eslint-disable @next/next/no-img-element */
-import React from 'react'
-import { Chart, DataForChart } from '../interfaces/interfaces'
-import { Player } from '../interfaces/player'
-import { styles } from '../styles/styles.config'
+import { Chart, DataForChart } from 'interfaces/interfaces'
+import { Player } from 'interfaces/player'
+import { styles } from 'styles/styles.config'
 
 // Progress bar with the stats of one player
 
