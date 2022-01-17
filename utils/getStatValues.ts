@@ -1,4 +1,4 @@
-import { RankResults } from '../interfaces/interfaces'
+import { PodiumResult } from '../interfaces/interfaces'
 import { Player } from '../interfaces/player'
 
 /* - prop: the type of property to load. Ex: 'games', 'winrate' or 'kills'
@@ -8,7 +8,7 @@ import { Player } from '../interfaces/player'
  */
 export default function getStatValues(
     data: Player[],
-    rank_results: RankResults[],
+    rank_results: PodiumResult[],
     prop: string,
     calc_median?: boolean,
     sort_desc?: boolean,

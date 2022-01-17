@@ -29,7 +29,7 @@ export interface PlayerStats {
     value: number
 }
 
-export interface RankResults {
+export interface PodiumResult {
     name: string
     image: string
     trophies: number[]
