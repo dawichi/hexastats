@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Listbox } from '@headlessui/react'
 import useFormInput from 'hooks/useFormInput'
 import { PlayersContext } from 'hooks/PlayersContext'
@@ -18,11 +18,9 @@ const AddPlayer = () => {
     const { players, setPlayers } = useContext(PlayersContext)
 
     // By default force players to be []
-    useEffect(() => {
-        if (players === undefined) {
-            setPlayers([])
-        }
-    }, [])
+	if (players === undefined) {
+		setPlayers([])
+	}
 
     // Search logic once the button is pressed
     const handleSearch = async () => {
@@ -118,7 +116,7 @@ const AddPlayer = () => {
                     <strong className='font-bold'>
                         <i className='bi bi-emoji-frown-fill'></i> Oh no!
                     </strong>
-                    <p>Sorry, that player doesn't seem to exist.</p>
+                    <p>Sorry, that player doesn&apos;t seem to exist.</p>
                     <p>Is it the correct server ?</p>
                 </div>
             )}
