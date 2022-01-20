@@ -1,8 +1,9 @@
 import { useContext, useState } from 'react'
 import { statTitle, getStats, parse_k_num } from 'utils'
-import { EmptyPlayers, RankStructure } from 'components'
+import { EmptyPlayers, PlayerImg, RankStructure } from 'components'
 import { styles } from 'styles/styles.config'
 import { PlayersContext } from 'hooks/PlayersContext'
+import { Player } from 'interfaces/player'
 
 // ┌────────────────┐
 // │ Compare PAGE:  │
@@ -11,13 +12,13 @@ import { PlayersContext } from 'hooks/PlayersContext'
 export default function Compare() {
     const { players } = useContext(PlayersContext)
 
-    if (!players || players.length === 0) {
-        return <EmptyPlayers />
-    }
-
     // Players selected for compare
     const [left, setLeft] = useState(0)
     const [right, setRight] = useState(0)
+
+    if (!players || players.length === 0) {
+        return <EmptyPlayers />
+    }
 
     // logic when a player card is selected
     // TODO: try pop-over
@@ -108,19 +109,14 @@ export default function Compare() {
             </div>
             <div className='container mx-auto p-4'>
                 <div className='grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
-                    {players.map((player, idx) => (
+                    {players.map((player: Player, idx) => (
                         <div
                             key={idx}
                             className={`p-2 cursor-pointer ${styles.card} ${tintPlayerSelected(idx)}`}
                             onClick={() => handleSelect(idx)}
                         >
                             <div className='flex items-center justify-around'>
-                                <div className='relative flex flex-col items-center text-sm text-white'>
-                                    <img className='m-3 w-14 rounded' src={player.image} alt={player.alias} />
-                                    <span className='px-1 absolute bottom-0 bg-zinc-700 border border-yellow-500 rounded-full'>
-                                        {player.level}
-                                    </span>
-                                </div>
+                                <PlayerImg image={player.image} alias={player.alias} level={player.level} />
                                 <div className='flex flex-col'>
                                     <h2 className='text-xl'>
                                         {idx + 1}. {player.alias}

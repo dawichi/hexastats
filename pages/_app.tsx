@@ -10,7 +10,6 @@ import 'styles/global.scss'
 export default function MyApp({ Component, pageProps }: AppProps) {
     // Context of the app
     const [players, setPlayers] = useState()
-
     return (
         <>
             <Head>

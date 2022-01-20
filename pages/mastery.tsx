@@ -4,6 +4,7 @@ import { styles } from 'styles/styles.config'
 import { parse_k_num } from 'utils'
 import { Container, EmptyPlayers, PlayerImg } from 'components'
 import { PlayersContext } from 'hooks/PlayersContext'
+import Image from 'next/image'
 
 // ┌────────────────┐
 // │ MASTERIES PAGE:│
@@ -19,7 +20,7 @@ export default function Masteries() {
 
     return (
         <Container title={'Mastery'} description={'Your 7 champions with most points'}>
-            <div className='grid gap-4 xl:grid-cols-2'>
+            <div className='grid gap-4 2xl:grid-cols-2'>
                 {players.map((player, idx_player) => {
                     let total_masteries = 0
                     player.masteries.map((mastery: Mastery) => (total_masteries += mastery.points))
@@ -41,12 +42,20 @@ export default function Masteries() {
                                             {parse_k_num(mastery.points, 0, true)}
                                         </span>
                                         <div className='relative h-24 flex justify-center'>
-                                            <img
-                                                className='w-14 rounded absolute t-0 r-0'
-                                                src={'/images/mastery_' + mastery.level + '.png'}
-                                                alt={mastery.name}
-                                            />
-                                            <img className='w-14 rounded absolute t-0 r-0' src={mastery.image} alt={mastery.name} />
+                                            <div className='absolute t-0 r-0'>
+                                                <div className='relative w-16 h-28 rounded'>
+                                                    <Image
+                                                        src={'/images/mastery_' + mastery.level + '.png'}
+                                                        layout='fill'
+                                                        alt={mastery.name}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className='absolute t-0 r-0'>
+                                                <div className='relative w-16 h-16 rounded'>
+                                                    <Image src={mastery.image} layout='fill' alt={mastery.name} />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 ))}

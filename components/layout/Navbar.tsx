@@ -7,8 +7,7 @@ import { link } from 'interfaces/interfaces'
 
 // Navbar of the app
 export default function Navbar() {
-	
-	const router = useRouter()
+    const router = useRouter()
 
     // DARK MODE
     const [darkMode, setDarkMode] = useState(false)
@@ -82,7 +81,6 @@ export default function Navbar() {
 
 // Links, used both in desktop and mobile view
 const render_links = (navigation: link[], router) => {
-
     return navigation.map((item, idx) => (
         <Link href={item.url} key={idx} passHref>
             <button
