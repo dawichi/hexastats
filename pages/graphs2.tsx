@@ -29,7 +29,7 @@ export default function Graphs2() {
         })
     })
 
-	// Each chartCard
+    // Each chartCard
     const pieCharts: Chart[] = []
 
     // TODO: get props available dynamically

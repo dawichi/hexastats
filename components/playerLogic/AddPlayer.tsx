@@ -38,8 +38,23 @@ const AddPlayer = () => {
         user.reset()
     }
 
+    const loadFriends = async () => {
+        setSearching(true)
+        const p1 = await axios.get(backend + 'Alexwwe')
+        const p2 = await axios.get(backend + 'Agazhord')
+        const p3 = await axios.get(backend + 'Brr1')
+        const p4 = await axios.get(backend + 'Dawichii')
+        const p5 = await axios.get(backend + 'BloddSword')
+        const p6 = await axios.get(backend + 'DryadZero')
+        const p7 = await axios.get(backend + 'Traketero')
+        const p8 = await axios.get(backend + 'TR0I')
+        setPlayers(players.concat([p1.data, p2.data, p3.data, p4.data, p5.data, p6.data, p7.data, p8.data]))
+        setSearching(false)
+    }
+
     return (
         <div>
+            <hr className='md:w-1/2 mx-auto mt-3' onClick={loadFriends} />
             <div className='sm:w-96 p-5 m-auto grid grid-cols-2 gap-4'>
                 <Listbox value={server} onChange={setServer}>
                     <div className='relative select-none cursor-pointer rounded shadow'>

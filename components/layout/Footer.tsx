@@ -30,9 +30,11 @@ const Footer = () => (
                 producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot
                 Games, Inc. League of Legends © Riot Games, Inc.
             </p>
-			<div className='flex items-center justify-center my-5'>
-				<a target='_blank' href="https://www.buymeacoffee.com/dawichi"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=dawichi&button_colour=6366f1&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00"/></a>
-			</div>
+            <div className='flex items-center justify-center my-5'>
+                <a target='_blank' href='https://www.buymeacoffee.com/dawichi'>
+                    <img src='https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=dawichi&button_colour=6366f1&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00' />
+                </a>
+            </div>
         </div>
     </footer>
 )

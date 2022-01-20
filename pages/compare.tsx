@@ -100,7 +100,7 @@ export default function Compare() {
     return (
         <div className='animate__animated animate__fadeIn'>
             <div className='flex justify-center pt-4 text-white'>
-				{sections.map((section, index) => (
+                {sections.map((section, index) => (
                     <span key={index} className={`mx-1 px-3 py-1 rounded ${section.bannerColor}`}>
                         {section.title}
                     </span>
@@ -216,52 +216,52 @@ export default function Compare() {
     )
 }
 
-const sections = [ 
-	{	
-		title: 'Top 10🔥 % ',
-		percent: 10,
-		bannerColor: 'bg-indigo-500 dark:bg-indigo-600/75',
-		frontColor: 'from-indigo-800 to-indigo-500',
-		backColor: 'bg-indigo-300/50 dark:bg-indigo-700/25',
-	},
-	{	
-		title: 'Top 20 % ',
-		percent: 20,
-		bannerColor: 'bg-blue-500 dark:bg-blue-600/75',
-		frontColor: 'from-blue-800 to-blue-500',
-		backColor: 'bg-blue-300/50 dark:bg-blue-700/25',
-	},
-	{	
-		title: 'Top 35 % ',
-		percent: 35,
-		bannerColor: 'bg-green-500 dark:bg-green-600/75',
-		frontColor: 'from-green-800 to-green-500',
-		backColor: 'bg-green-300/50 dark:bg-green-700/25',
-	},
-	{	
-		title: 'Top 50 % ',
-		percent: 50,
-		bannerColor: 'bg-yellow-500 dark:bg-yellow-600/75',
-		frontColor: 'from-yellow-800 to-yellow-500',
-		backColor: 'bg-yellow-300/50 dark:bg-yellow-700/25',
-	},
-	{	
-		title: 'Below 50 % ',
-		percent: 65,
-		bannerColor: 'bg-gray-500 dark:bg-gray-600/75',
-		frontColor: 'from-gray-800 to-gray-500',
-		backColor: 'bg-gray-300/50 dark:bg-gray-700/25',
-	},
-	{	
-		title: 'Below 35 % ',
-		percent: 100,
-		bannerColor: 'bg-red-500 dark:bg-red-600/75',
-		frontColor: 'from-red-800 to-red-500',
-		backColor: 'bg-red-300/50 dark:bg-red-700/25',
-	}
+const sections = [
+    {
+        title: 'Top 10🔥 % ',
+        percent: 10,
+        bannerColor: 'bg-indigo-500 dark:bg-indigo-600/75',
+        frontColor: 'from-indigo-800 to-indigo-500',
+        backColor: 'bg-indigo-300/50 dark:bg-indigo-700/25',
+    },
+    {
+        title: 'Top 20 % ',
+        percent: 20,
+        bannerColor: 'bg-blue-500 dark:bg-blue-600/75',
+        frontColor: 'from-blue-800 to-blue-500',
+        backColor: 'bg-blue-300/50 dark:bg-blue-700/25',
+    },
+    {
+        title: 'Top 35 % ',
+        percent: 35,
+        bannerColor: 'bg-green-500 dark:bg-green-600/75',
+        frontColor: 'from-green-800 to-green-500',
+        backColor: 'bg-green-300/50 dark:bg-green-700/25',
+    },
+    {
+        title: 'Top 50 % ',
+        percent: 50,
+        bannerColor: 'bg-yellow-500 dark:bg-yellow-600/75',
+        frontColor: 'from-yellow-800 to-yellow-500',
+        backColor: 'bg-yellow-300/50 dark:bg-yellow-700/25',
+    },
+    {
+        title: 'Below 50 % ',
+        percent: 65,
+        bannerColor: 'bg-gray-500 dark:bg-gray-600/75',
+        frontColor: 'from-gray-800 to-gray-500',
+        backColor: 'bg-gray-300/50 dark:bg-gray-700/25',
+    },
+    {
+        title: 'Below 35 % ',
+        percent: 100,
+        bannerColor: 'bg-red-500 dark:bg-red-600/75',
+        frontColor: 'from-red-800 to-red-500',
+        backColor: 'bg-red-300/50 dark:bg-red-700/25',
+    },
 ]
 
-const tint_sections = (percent: number, front: boolean) =>{
-	const result = sections.find(section => percent<=section.percent)
-	return front ? result.frontColor : result.backColor
+const tint_sections = (percent: number, front: boolean) => {
+    const result = sections.find(section => percent <= section.percent)
+    return front ? result.frontColor : result.backColor
 }
