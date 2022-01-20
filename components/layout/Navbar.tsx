@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -8,6 +7,9 @@ import { link } from 'interfaces/interfaces'
 
 // Navbar of the app
 export default function Navbar() {
+	
+	const router = useRouter()
+
     // DARK MODE
     const [darkMode, setDarkMode] = useState(false)
     const theme = darkMode ? 'dark' : 'light'
@@ -48,14 +50,14 @@ export default function Navbar() {
                                 </Disclosure.Button>
                             </div>
                             <div className='flex-1 flex items-center justify-center sm:items-stretch sm:justify-start'>
-                                <Link href='/'>
+                                <Link href='/' passHref>
                                     <button className='flex-shrink-0 flex items-center'>
                                         <img className='block h-8 w-auto' src='/favicon.svg' alt='Hexastats' />
                                         <h1 className='text-2xl text-white ml-2 hidden lg:block tracking-wider'>Hexastats</h1>
                                     </button>
                                 </Link>
                                 <div className='hidden sm:block sm:ml-6'>
-                                    <div className='flex space-x-4'>{render_links(navigation)}</div>
+                                    <div className='flex space-x-4'>{render_links(navigation, router)}</div>
                                 </div>
                             </div>
                             <div className='absolute right-0 flex'>
@@ -70,7 +72,7 @@ export default function Navbar() {
                     </div>
 
                     <Disclosure.Panel className='sm:hidden'>
-                        <div className='px-2 pt-2 pb-3 space-y-1'>{render_links(navigation)}</div>
+                        <div className='px-2 pt-2 pb-3 space-y-1'>{render_links(navigation, router)}</div>
                     </Disclosure.Panel>
                 </>
             )}
@@ -79,11 +81,10 @@ export default function Navbar() {
 }
 
 // Links, used both in desktop and mobile view
-const render_links = (navigation: link[]) => {
-    const router = useRouter()
+const render_links = (navigation: link[], router) => {
 
     return navigation.map((item, idx) => (
-        <Link href={item.url} key={idx}>
+        <Link href={item.url} key={idx} passHref>
             <button
                 key={item.name}
                 className={

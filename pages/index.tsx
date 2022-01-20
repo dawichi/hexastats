@@ -1,4 +1,6 @@
 import { AddedPlayers, AddPlayer } from 'components'
+import Image from 'next/image'
+import ImgProgramming from 'public/images/programming.svg'
 
 // ┌────────────────┐
 // │ INDEX PAGE:    │
@@ -28,8 +30,8 @@ export default function Index() {
 
             <AddedPlayers />
 
-            <div className='mt-10 md:w-1/2 mx-auto'>
-                <img src='/images/programming.svg' className='w-full opacity-80 px-10' />
+            <div className='relative mt-10 h-64 md:h-96 w-64 md:w-96 mx-auto opacity-80 px-10'>
+				<Image src={ImgProgramming} layout='fill' alt='Programming'/>
             </div>
         </div>
     )

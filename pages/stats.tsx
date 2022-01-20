@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { useContext } from 'react'
 import { Popover } from '@headlessui/react'
 import { Container, EmptyPlayers, RankStructure } from 'components'
