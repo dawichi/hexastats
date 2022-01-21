@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 import { statTitle, getStats, parse_k_num } from 'utils'
-import { EmptyPlayers, PlayerImg, RankStructure } from 'components'
+import { Container, EmptyPlayers, PlayerImg, RankStructure } from 'components'
 import { styles } from 'styles/styles.config'
 import { PlayersContext } from 'hooks/PlayersContext'
 import { Player } from 'interfaces/player'
@@ -65,6 +65,7 @@ export default function Compare() {
         'quadra_kills',
         'penta_kills',
     ]
+    //TODO: convert var to useState
     var total = 0
     const calcWidth = (x: number, y: number) => (100 * x) / (x + y)
     const progressBar = (l_value: number, r_value: number, title: string, activated: boolean) => {
@@ -98,9 +99,9 @@ export default function Compare() {
         )
     }
 
-	// TODO: Use <Container> to wrap the content (See other pages)
+	// TODO: HECHO Use <Container> to wrap the content (See other pages)
     return (
-        <div className='animate__animated animate__fadeIn'>
+    <Container title={'Compare'} description={'Select two players to compare stats'}>
             <div className='flex justify-center pt-4 text-white'>
                 {sections.map((section, index) => (
                     <span key={index} className={`mx-1 px-3 py-1 rounded ${section.bannerColor}`}>
@@ -159,8 +160,12 @@ export default function Compare() {
                 ) : (
                     ''
                 )}
-                <div className='bg-blue-400/25 rounded shadow'>{left && <RankStructure player={players[left - 1]} />}</div>
-                <div className='bg-red-400/25 rounded shadow'>{right && <RankStructure player={players[right - 1]} />}</div>
+                <div className='bg-blue-400/25 rounded shadow'>
+                    {left ? <RankStructure player={players[left - 1]} /> : ''}
+                </div>
+                <div className='bg-red-400/25 rounded shadow'>
+                    {right ? <RankStructure player={players[right - 1]} /> : ''}
+                </div>
             </div>
 
             {/* If no players selected in any side ==> alert message explaining */}
@@ -209,7 +214,8 @@ export default function Compare() {
                     </div>
                 </div>
             )}
-        </div>
+    </Container>
+
     )
 }
 
