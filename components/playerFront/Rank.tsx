@@ -1,4 +1,5 @@
 import { Rank } from 'interfaces/player'
+import Image from 'next/image'
 
 const Rank = ({ title, rankdata }: { title: string; rankdata: Rank }) => (
     <div className='text-center text-sm'>
@@ -6,8 +7,9 @@ const Rank = ({ title, rankdata }: { title: string; rankdata: Rank }) => (
         <h4>
             {rankdata.rank} ({rankdata.lp})
         </h4>
-		{/* TODO: convert to next/image  */}
-        <img className='m-auto w-14 rounded' src={rankdata.image} alt={'Rank image'} />
+		<div className='m-auto w-14 h-14 rounded relative'>
+			<Image layout ='fill'src={rankdata.image} alt={'Rank image'} />
+		</div>
         <p>
             <span className='rounded px-1 text-white bg-green-600'>{rankdata.win}</span>
             <span>{' - '}</span>

@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { PlayersContext } from 'hooks/PlayersContext'
 import { styles } from 'styles/styles.config'
@@ -24,7 +25,7 @@ const ListPlayers = () => {
         <div className='border border-x-0 border-t-0 py-2 flex flex-wrap items-center'>
             <div className='flex flex-col justify-center items-center mr-3'>
                 <span className='px-2'>Add more</span>
-                <Link href='/'>
+                <Link href='/' passHref>
                     <button
                         title='Add more players'
                         className={`${styles.foreground} ${styles.card} hover:text-white hover:bg-indigo-600 hover:dark:bg-indigo-600 m-1 py-2 px-3 cursor-pointer`}
@@ -40,7 +41,9 @@ const ListPlayers = () => {
                         className={`${styles.foreground} rounded shadow-sm m-1 p-2 relative border border-zinc-300 dark:border-zinc-600`}
                     >
                         <div className='flex justify-center items-end'>
-                            <img className='w-12 rounded' src={player.image} alt={player.alias} />
+							<div className='w-12 h-12 rounded overflow-hidden relative'>
+								<Image layout ='fill'src={player.image} alt={player.alias} />
+							</div>
                             <span className='ml-2'>{player.alias}</span>
 
                             <button
