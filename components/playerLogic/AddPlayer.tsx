@@ -36,6 +36,13 @@ const AddPlayer = () => {
         user.reset()
     }
 
+    //Search button by pressing enter
+    const handleKeyPress = (event) => {
+        if (event.charCode == 13){
+            handleSearch()
+        }
+
+    }
     const loadFriends = async () => {
         setSearching(true)
         const p2 = await axios.get(backend + 'Agazhord')
@@ -91,6 +98,7 @@ const AddPlayer = () => {
                     </div>
                 </Listbox>
                 <input
+                    onKeyPress={(event) => handleKeyPress(event)}
                     className='bg-white dark:bg-zinc-800 p-2 w-full h-12 rounded shadow outline-0 focus:ring-4 ring-indigo-400'
                     type='text'
                     {...user.inputProp}
