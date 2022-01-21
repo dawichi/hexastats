@@ -18,6 +18,12 @@ export default function Masteries() {
         return <EmptyPlayers />
     }
 
+	/* TODO: Order players by total mastery. Instead of players.map(), make:
+			ordered_players = players.sort
+		and then:
+			ordered_players.map( // etc... )
+	*/
+
     return (
         <Container title={'Mastery'} description={'Your 7 champions with most points'}>
             <div className='grid gap-4 2xl:grid-cols-2'>

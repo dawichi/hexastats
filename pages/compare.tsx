@@ -98,6 +98,7 @@ export default function Compare() {
         )
     }
 
+	// TODO: Use <Container> to wrap the content (See other pages)
     return (
         <div className='animate__animated animate__fadeIn'>
             <div className='flex justify-center pt-4 text-white'>

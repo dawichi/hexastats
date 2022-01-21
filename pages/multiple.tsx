@@ -34,11 +34,14 @@ export default function Multiple() {
                     <div key={idx}>
                         <div className='grid grid-cols-2 lg:grid-cols-3'>
                             <div className='flex items-center justify-start'>
+								{/* TODO: use next/image */}
                                 <img className='m-2 w-14 rounded' src={player.image} alt={player.alias} />
                                 <p>{player.alias}</p>
                             </div>
                             {result != 0 && (
                                 <div className='lg:col-span-2 flex flex-col justify-center items-start'>
+									{/* TODO: show another span at the right with the total */}
+									{/* Example: 0.27 by game                  36 total */}
                                     <span>{result} &nbsp; &nbsp; by game</span>
                                     <div className='h-3 rounded w-full bg-zinc-400/50'>
                                         <div className='h-3 rounded bg-red-200' style={{ width: width + '%' }}></div>

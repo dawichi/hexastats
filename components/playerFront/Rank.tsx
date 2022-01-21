@@ -6,6 +6,7 @@ const Rank = ({ title, rankdata }: { title: string; rankdata: Rank }) => (
         <h4>
             {rankdata.rank} ({rankdata.lp})
         </h4>
+		{/* TODO: convert to next/image  */}
         <img className='m-auto w-14 rounded' src={rankdata.image} alt={'Rank image'} />
         <p>
             <span className='rounded px-1 text-white bg-green-600'>{rankdata.win}</span>
