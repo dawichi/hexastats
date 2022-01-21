@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 const Footer = () => (
     <footer className='bg-zinc-800 text-white p-3'>
@@ -32,7 +33,9 @@ const Footer = () => (
             </p>
             <div className='flex items-center justify-center my-5'>
                 <a target='_blank' href='https://www.buymeacoffee.com/dawichi' rel='noreferrer'>
-                    <img src='https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=dawichi&button_colour=6366f1&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00' />
+					<div className='w-64 h-24 relative'>
+						<Image layout='fill' src='https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=dawichi&button_colour=6366f1&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00' alt='Coffee' />
+					</div>
                 </a>
             </div>
         </div>
