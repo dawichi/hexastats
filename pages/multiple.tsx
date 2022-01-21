@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import { PlayersContext } from 'hooks/PlayersContext'
 import { Container, EmptyPlayers } from 'components'
+import Image from 'next/image'
 
 // ┌────────────────┐
 // │ MULTIPLE PAGE: │
@@ -33,9 +34,10 @@ export default function Multiple() {
                 return (
                     <div key={idx}>
                         <div className='grid grid-cols-2 lg:grid-cols-3'>
-                            <div className='flex items-center justify-start'>
-								{/* TODO: use next/image */}
-                                <img className='m-2 w-14 rounded' src={player.image} alt={player.alias} />
+                            <div className='flex items-center justify-start '>
+								<div className='m-2 w-14 rounded h-14 relative'>
+									<Image src={player.image} alt={player.alias} layout='fill'/>
+								</div>
                                 <p>{player.alias}</p>
                             </div>
                             {result != 0 && (
