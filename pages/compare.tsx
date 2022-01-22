@@ -111,7 +111,6 @@ export default function Compare() {
         )
     }
 
-	// TODO: HECHO Use <Container> to wrap the content (See other pages)
     return (
     <Container title={'Compare'} description={'Select two players to compare stats'}>
             <div className='flex justify-center pt-4 text-white'>
