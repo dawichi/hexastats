@@ -73,29 +73,41 @@ export default function Compare() {
         return (
             <div className='flex justify-end items-end m-1'>
                 <span className='mx-2'>{statTitle(title)}</span>
-                <div className='w-96'>
-                    <div className='relative h-px text-center text-white'>
-                        <div className='absolute left-2 top-0 text-sm'>{parse_k_num(l_value, 2, true)}</div>
-                        <div className='absolute translate-x-20 top-0 text-sm'> {calcWidth(l_value, r_value).toFixed(2)} %</div>
-                        <div className='-translate-y-2 text-2xl'>|</div>
-                        <div className='-translate-y-8 translate-x-20 top-0 text-sm'>
-                            {' '}
-                            {(100 - calcWidth(l_value, r_value)).toFixed(2)} %{' '}
-                        </div>
-                        <div className='absolute right-2 top-0 text-sm'>{parse_k_num(r_value, 2, true)}</div>
-                    </div>
-                    {activated ? (
-                        <div className='bg-red-400 dark:bg-red-400/75 rounded h-5'>
-                            <div
-                                className='bg-blue-500 dark:bg-blue-500/75 rounded-tl rounded-bl h-5'
-                                style={{ width: `${calcWidth(l_value, r_value)}%` }}
-                            ></div>
-                        </div>
-                    ) : (
-                        <div className='bg-zinc-400 dark:bg-zinc-600 rounded h-5'></div>
-                    )}
-                </div>
-            </div>
+                {activated ? (
+					<div className='w-96'>
+						<div className='relative h-px text-center text-white'>
+							<div className='absolute left-2 top-0 text-sm'>{parse_k_num(l_value, 2, true)}</div>
+							<div className='absolute translate-x-20 top-0 text-sm'> {calcWidth(l_value, r_value).toFixed(2)} %</div>
+							<div className='-translate-y-2 text-2xl'>|</div>
+							<div className='-translate-y-8 translate-x-20 top-0 text-sm'>
+								{' '}
+								{(100 - calcWidth(l_value, r_value)).toFixed(2)} %{' '}
+							</div>
+							<div className='absolute right-2 top-0 text-sm'>{parse_k_num(r_value, 2, true)}</div>
+						</div>
+						<div className='bg-red-400 dark:bg-red-400/75 rounded h-5'>
+						<div
+							className='bg-blue-500 dark:bg-blue-500/75 rounded-tl rounded-bl h-5'
+							style={{ width: `${calcWidth(l_value, r_value)}%` }}
+						></div>
+						</div>
+					</div>
+				) : (
+					<div className='w-96'>
+						<div className='relative h-px text-center text-white'>
+							<div className='absolute left-2 top-0 text-sm'>{parse_k_num(l_value, 2, true)}</div>
+							<div className='absolute translate-x-20 top-0 text-sm'> 0.00 %</div>
+							<div className='-translate-y-2 text-2xl'>|</div>
+							<div className='-translate-y-8 translate-x-20 top-0 text-sm'>
+								{' '}
+								0.00 %{' '}
+							</div>
+							<div className='absolute right-2 top-0 text-sm'>{parse_k_num(r_value, 2, true)}</div>
+						</div>
+						<div className='bg-zinc-400 dark:bg-zinc-600 rounded h-5'></div>
+					</div>
+				)}
+		</div>      
         )
     }
 
