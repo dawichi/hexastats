@@ -7,6 +7,8 @@ export { default as Navbar } from './layout/Navbar'
 export { default as ChartCard } from './graphs/ChartCard'
 export { default as PieChart } from './graphs/PieChart'
 export { default as ProgressByPlayer } from './ProgressByPlayer'
+export { default as CompareChart } from './graphs/CompareChart'
+
 
 // Player data visualization
 export { default as Rank } from './playerFront/Rank'
