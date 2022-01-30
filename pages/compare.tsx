@@ -191,7 +191,7 @@ export default function Compare() {
 
             {/* If 2 players selected ==> compare them! */}
             {left != 0 && right != 0 && (
-                <div className='container grid gap-4 md:grid-cols-2 mx-auto'>
+                <div className='container grid gap-4 xl:grid-cols-2 mx-auto'>
                     <div className='flex flex-col mx-auto'>
                         {stats.map((stat, idx) => (
                             <div key={idx}>
