@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 import { statTitle, getStats, parse_k_num } from 'utils'
-import { Container, EmptyPlayers, PlayerImg, RankStructure } from 'components'
+import { Container, EmptyPlayers, PlayerImg, RankStructure, CompareChart } from 'components'
 import { styles } from 'styles/styles.config'
 import { PlayersContext } from 'hooks/PlayersContext'
 import { Player } from 'interfaces/player'
@@ -191,8 +191,8 @@ export default function Compare() {
 
             {/* If 2 players selected ==> compare them! */}
             {left != 0 && right != 0 && (
-                <div className='container flex flex-col justify-center items-center mx-auto'>
-                    <div>
+                <div className='container grid gap-4 md:grid-cols-2 mx-auto'>
+                    <div className='flex flex-col mx-auto'>
                         {stats.map((stat, idx) => (
                             <div key={idx}>
                                 {progressBar(
@@ -223,6 +223,7 @@ export default function Compare() {
                             </div>
                         </div>
                     </div>
+					<CompareChart playerA={players[left - 1]} playerB={players[right - 1]} />
                 </div>
             )}
     </Container>
