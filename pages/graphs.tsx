@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { ChartCard, Container, EmptyPlayers } from 'components'
+import { ActivePieChart, ChartCard, Container, EmptyPlayers } from 'components'
 import { PlayersContext } from 'hooks/PlayersContext'
 import { getStatValues, trophyIcon, statTitle } from 'utils'
 import { Chart, PodiumResult } from 'interfaces/interfaces'
@@ -95,6 +95,7 @@ export default function Graphs() {
                     ))}
                 </div>
             </div>
+			<ActivePieChart players={players} title='kda'/>
         </Container>
     )
 }
