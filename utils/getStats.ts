@@ -60,7 +60,8 @@ export default function getStats(player: Player) {
             stat_value += champ.games * champ[stat]
         })
 
-        result[stat] = parseFloat((stat_value / games).toFixed(2))
+		if (!games) result[stat] = 0
+        else result[stat] = parseFloat((stat_value / games).toFixed(2))
     })
 
     return result

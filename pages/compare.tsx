@@ -213,7 +213,7 @@ export default function Compare() {
                                 <div className='bg-red-400 dark:bg-red-400/75 rounded h-5'>
                                     <div
                                         className='bg-blue-500 dark:bg-blue-500/75 rounded-tl rounded-bl h-5'
-                                        style={{ width: `${calcWidth(total / stats[0].length, 100 - total / stats[0].length, true)}%` }}
+                                        style={{ width: `${calcWidth(total / stats[0].length, 100 - total / stats[0].length, false)}%` }}
                                     ></div>
                                 </div>
                             </div>
