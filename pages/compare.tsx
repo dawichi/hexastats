@@ -15,6 +15,7 @@ export default function Compare() {
     // Players selected for compare
     const [left, setLeft] = useState(0)
     const [right, setRight] = useState(0)
+    const [total, setTotal] = useState(0)
 
     if (!players || players.length === 0) {
         return <EmptyPlayers />
@@ -64,49 +65,63 @@ export default function Compare() {
     }
 
     //TODO: refactor function
-    let total = 0
+
     const calcWidth = (x: number, y: number, direction: boolean) => (direction ? (100 * y) / (y + x) : (100 * x) / (x + y))
-    const progressBar = (l_value: number, r_value: number, title: string, activated: boolean) => {
-        const inverse = title == 'deaths'
-        if (activated) total += calcWidth(l_value, r_value, inverse)
+    const ListProgressBar = ({ statGroup }: { statGroup: number }) => {
+        let total_width = 0
         return (
-            <div className='flex justify-end items-end m-1'>
-                <span className='mx-2'>{statTitle(title)}</span>
-                {activated ? (
-                    <div className='w-96'>
-                        <div className='relative h-px text-center text-white'>
-                            <div className='absolute left-2 top-0 text-sm'>{parse_k_num(l_value, 2, true)}</div>
-                            <div className='absolute translate-x-20 top-0 text-sm'>
-                                {' '}
-                                {calcWidth(l_value, r_value, inverse).toFixed(2)} %
+            <>
+                <h2 className='text-center ml-32'> Compared Stats </h2>
+                {stats[statGroup].map((stat: string, idx: number) => {
+                    const l_value = getStats(players[left - 1])[stat]
+                    const r_value = getStats(players[right - 1])[stat]
+                    const activated = getStats(players[left - 1])[stat] || getStats(players[right - 1])[stat]
+                    const inverse = stat == 'deaths'
+                    //if (activated) total_width += calcWidth(l_value, r_value, inverse)
+                    if (activated) setTotal(total + calcWidth(l_value, r_value, inverse))
+                    return (
+                        <div key={idx}>
+                            <div className='flex justify-end items-end m-1'>
+                                <span className='mx-2'>{statTitle(stat)}</span>
+                                {activated ? (
+                                    <div className='w-96'>
+                                        <div className='relative h-px text-center text-white'>
+                                            <div className='absolute left-2 top-0 text-sm'>{parse_k_num(l_value, 2, true)}</div>
+                                            <div className='absolute translate-x-20 top-0 text-sm'>
+                                                {' '}
+                                                {calcWidth(l_value, r_value, inverse).toFixed(2)} %
+                                            </div>
+                                            <div className='-translate-y-2 text-2xl'>|</div>
+                                            <div className='-translate-y-8 translate-x-20 top-0 text-sm'>
+                                                {' '}
+                                                {(100 - calcWidth(l_value, r_value, inverse)).toFixed(2)} %{' '}
+                                            </div>
+                                            <div className='absolute right-2 top-0 text-sm'>{parse_k_num(r_value, 2, true)}</div>
+                                        </div>
+                                        <div className='bg-red-400 dark:bg-red-400/75 rounded h-5'>
+                                            <div
+                                                className='bg-blue-500 dark:bg-blue-500/75 rounded-tl rounded-bl h-5'
+                                                style={{ width: `${calcWidth(l_value, r_value, inverse)}%` }}
+                                            ></div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className='w-96'>
+                                        <div className='relative h-px text-center text-white'>
+                                            <div className='absolute left-2 top-0 text-sm'>{parse_k_num(l_value, 2, true)}</div>
+                                            <div className='absolute translate-x-20 top-0 text-sm'> 0.00 %</div>
+                                            <div className='-translate-y-2 text-2xl'>|</div>
+                                            <div className='-translate-y-8 translate-x-20 top-0 text-sm'> 0.00 % </div>
+                                            <div className='absolute right-2 top-0 text-sm'>{parse_k_num(r_value, 2, true)}</div>
+                                        </div>
+                                        <div className='bg-zinc-400 dark:bg-zinc-600 rounded h-5'></div>
+                                    </div>
+                                )}
                             </div>
-                            <div className='-translate-y-2 text-2xl'>|</div>
-                            <div className='-translate-y-8 translate-x-20 top-0 text-sm'>
-                                {' '}
-                                {(100 - calcWidth(l_value, r_value, inverse)).toFixed(2)} %{' '}
-                            </div>
-                            <div className='absolute right-2 top-0 text-sm'>{parse_k_num(r_value, 2, true)}</div>
                         </div>
-                        <div className='bg-red-400 dark:bg-red-400/75 rounded h-5'>
-                            <div
-                                className='bg-blue-500 dark:bg-blue-500/75 rounded-tl rounded-bl h-5'
-                                style={{ width: `${calcWidth(l_value, r_value, inverse)}%` }}
-                            ></div>
-                        </div>
-                    </div>
-                ) : (
-                    <div className='w-96'>
-                        <div className='relative h-px text-center text-white'>
-                            <div className='absolute left-2 top-0 text-sm'>{parse_k_num(l_value, 2, true)}</div>
-                            <div className='absolute translate-x-20 top-0 text-sm'> 0.00 %</div>
-                            <div className='-translate-y-2 text-2xl'>|</div>
-                            <div className='-translate-y-8 translate-x-20 top-0 text-sm'> 0.00 % </div>
-                            <div className='absolute right-2 top-0 text-sm'>{parse_k_num(r_value, 2, true)}</div>
-                        </div>
-                        <div className='bg-zinc-400 dark:bg-zinc-600 rounded h-5'></div>
-                    </div>
-                )}
-            </div>
+                    )
+                })}
+            </>
         )
     }
 
@@ -188,17 +203,7 @@ export default function Compare() {
             {left != 0 && right != 0 && (
                 <div className='container grid gap-4 xl:grid-cols-2 mx-auto'>
                     <div className='flex flex-col mx-auto'>
-                        <h2 className='text-center ml-32'> Compared Stats </h2>
-                        {stats[0].map((stat, idx) => (
-                            <div key={idx}>
-                                {progressBar(
-                                    getStats(players[left - 1])[stat],
-                                    getStats(players[right - 1])[stat],
-                                    stat,
-                                    getStats(players[left - 1])[stat] || getStats(players[right - 1])[stat],
-                                )}
-                            </div>
-                        ))}
+                        <ListProgressBar statGroup={0} />
                         <hr />
                         <div className='flex justify-end items-end m-1'>
                             <span className='mx-2'> Total </span>
@@ -218,17 +223,7 @@ export default function Compare() {
                                 </div>
                             </div>
                         </div>
-                        <h2 className='text-center ml-32 mt-8'> Additional Stats </h2>
-                        {stats[1].map((stat, idx) => (
-                            <div key={idx}>
-                                {progressBar(
-                                    getStats(players[left - 1])[stat],
-                                    getStats(players[right - 1])[stat],
-                                    stat,
-                                    getStats(players[left - 1])[stat] || getStats(players[right - 1])[stat],
-                                )}
-                            </div>
-                        ))}
+                        <ListProgressBar statGroup={1} />
                     </div>
                     <CompareChart playerA={players[left - 1]} playerB={players[right - 1]} />
                 </div>
