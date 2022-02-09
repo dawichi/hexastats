@@ -73,7 +73,7 @@ export default function Graphs() {
     )
 
     return (
-		<Container {...containerProps}>
+        <Container {...containerProps}>
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6'>
                 {podium.map((card, indx_card) => (
                     <div key={indx_card}>

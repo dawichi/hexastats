@@ -1,5 +1,5 @@
 import { getStats, statTitle } from 'utils'
-import { Radar, RadarChart, PolarGrid, Legend, PolarAngleAxis, PolarRadiusAxis } from 'recharts'
+import { Radar, RadarChart, PolarGrid, Legend, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts'
 
 const CompareChart = ({ playerA, playerB }) => {
     const skills = ['kda', 'csmin', 'avg_damage_dealt', 'avg_damage_taken', 'winrate', 'gold']
@@ -31,15 +31,17 @@ const CompareChart = ({ playerA, playerB }) => {
     const axis_stroke = document.documentElement.classList.contains('dark') ? '#FFF' : '#121212'
 
     return (
-        <div>
+        <div className='flex justify-center items-center'>
             {/* width debe ser el doble de cx para alinear los nombres abajo */}
-            <RadarChart cx={'50%'} cy={'50%'} outerRadius={175} width={750} height={500} data={data}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey='subject' stroke={axis_stroke} />
-                <Radar name={playerA.alias} dataKey='A' stroke='#93c5fd' fill='#93c5fd' fillOpacity={0.5} />
-                <Radar name={playerB.alias} dataKey='B' stroke='#fca5a5' fill='#fca5a5' fillOpacity={0.5} />
-                <Legend />
-            </RadarChart>
+            <ResponsiveContainer height={500} width='100%'>
+                <RadarChart cx={'50%'} cy={'50%'} outerRadius={120} data={data}>
+                    <PolarGrid />
+                    <PolarAngleAxis dataKey='subject' stroke={axis_stroke} />
+                    <Radar name={playerA.alias} dataKey='A' stroke='#93c5fd' fill='#93c5fd' fillOpacity={0.6} />
+                    <Radar name={playerB.alias} dataKey='B' stroke='#fca5a5' fill='#fca5a5' fillOpacity={0.6} />
+                    <Legend />
+                </RadarChart>
+            </ResponsiveContainer>
         </div>
     )
 }
