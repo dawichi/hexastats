@@ -10,7 +10,6 @@ export { default as ActivePieChart } from './graphs/ActivePieChart'
 export { default as ProgressByPlayer } from './ProgressByPlayer'
 export { default as CompareChart } from './graphs/CompareChart'
 
-
 // Player data visualization
 export { default as Rank } from './playerFront/Rank'
 export { default as PlayerImg } from './playerFront/PlayerImg'

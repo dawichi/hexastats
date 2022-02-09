@@ -22,7 +22,6 @@ export default function Multiple() {
                 let games = 0
                 let stat_value = 0
 
-
                 player.champs.map(champ => {
                     games += champ.games
                     stat_value += champ[stat]
@@ -31,22 +30,22 @@ export default function Multiple() {
                 const result = parseFloat((stat_value / games).toFixed(2))
 
                 const width = (result * 100) / 2
-				
+
                 return (
                     <div key={idx}>
                         <div className='grid grid-cols-2 lg:grid-cols-3'>
                             <div className='flex items-center justify-start '>
-								<div className='m-2 w-14 rounded h-14 relative'>
-									<Image src={player.image} alt={player.alias} layout='fill'/>
-								</div>
+                                <div className='m-2 w-14 rounded h-14 relative'>
+                                    <Image src={player.image} alt={player.alias} layout='fill' />
+                                </div>
                                 <p>{player.alias}</p>
                             </div>
                             {result != 0 && (
                                 <div className='lg:col-span-2 flex flex-col justify-center'>
-									<div className='flex justify-between items-center'>
-										<span>{result} &nbsp; &nbsp; by game</span>
-										<span>{stat_value} total</span>
-									</div>
+                                    <div className='flex justify-between items-center'>
+                                        <span>{result} &nbsp; &nbsp; by game</span>
+                                        <span>{stat_value} total</span>
+                                    </div>
                                     <div className='h-3 rounded w-full bg-zinc-400/50'>
                                         <div className='h-3 rounded bg-red-200' style={{ width: width + '%' }}></div>
                                     </div>

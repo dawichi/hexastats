@@ -9,7 +9,7 @@ const Footer = () => (
                     다 위 치
                 </a>
                 <i className='bi bi-suit-diamond-fill mx-5 text-sm'></i>
-                <Link href='/about'passHref>
+                <Link href='/about' passHref>
                     <button className='p-1 hover:text-indigo-400'>About us</button>
                 </Link>
                 <i className='bi bi-suit-diamond-fill mx-5 text-sm'></i>
@@ -33,9 +33,13 @@ const Footer = () => (
             </p>
             <div className='flex items-center justify-center my-5'>
                 <a target='_blank' href='https://www.buymeacoffee.com/dawichi' rel='noreferrer'>
-					<div className='w-64 h-24 relative'>
-						<Image layout='fill' src='https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=dawichi&button_colour=818cf8&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00' alt='Coffee' />
-					</div>
+                    <div className='w-64 h-24 relative'>
+                        <Image
+                            layout='fill'
+                            src='https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=dawichi&button_colour=818cf8&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00'
+                            alt='Coffee'
+                        />
+                    </div>
                 </a>
             </div>
         </div>

@@ -95,7 +95,11 @@ export default function Graphs() {
                     ))}
                 </div>
             </div>
-			<ActivePieChart players={players} title='kda'/>
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3'>
+                {stats.map((stat, index) => (
+                    <ActivePieChart key={index} players={players} title={stat} />
+                ))}
+            </div>
         </Container>
     )
 }

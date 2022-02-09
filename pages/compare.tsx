@@ -45,74 +45,73 @@ export default function Compare() {
     players.forEach(player => (player.rank.rank_p = player.rank.rank_p ? player.rank.rank_p : 100))
     players.sort((a, b) => a.rank.rank_p - b.rank.rank_p)
 
-    // TODO: get dinamically this
-    const stats: string[] = [
-        'games',
-        'winrate',
-        'kda',
-        'kills',
-        'deaths',
-        'assists',
-        'cs',
-        'csmin',
-        'gold',
-        'max_kills',
-        'max_deaths',
-        'avg_damage_dealt',
-        'avg_damage_taken',
-        'double_kills',
-        'triple_kills',
-        'quadra_kills',
-        'penta_kills',
-    ]
-    //TODO: convert var to useState
-    var total = 0
-    const calcWidth = (x: number, y: number) => (100 * x) / (x + y)
+    const stats = {
+        0: [
+            'winrate',
+            'kda',
+            'kills',
+            'deaths',
+            'assists',
+            'cs',
+            'csmin',
+            'gold',
+            'max_kills',
+            'max_deaths',
+            'avg_damage_dealt',
+            'avg_damage_taken',
+        ],
+        1: ['games', 'double_kills', 'triple_kills', 'quadra_kills', 'penta_kills'],
+    }
+
+    //TODO: refactor function
+    let total = 0
+    const calcWidth = (x: number, y: number, direction: boolean) => (direction ? (100 * y) / (y + x) : (100 * x) / (x + y))
     const progressBar = (l_value: number, r_value: number, title: string, activated: boolean) => {
-        if (activated) total += calcWidth(l_value, r_value)
+        const inverse = title == 'deaths'
+        if (activated) total += calcWidth(l_value, r_value, inverse)
         return (
             <div className='flex justify-end items-end m-1'>
                 <span className='mx-2'>{statTitle(title)}</span>
                 {activated ? (
-					<div className='w-96'>
-						<div className='relative h-px text-center text-white'>
-							<div className='absolute left-2 top-0 text-sm'>{parse_k_num(l_value, 2, true)}</div>
-							<div className='absolute translate-x-20 top-0 text-sm'> {calcWidth(l_value, r_value).toFixed(2)} %</div>
-							<div className='-translate-y-2 text-2xl'>|</div>
-							<div className='-translate-y-8 translate-x-20 top-0 text-sm'>
-								{' '}
-								{(100 - calcWidth(l_value, r_value)).toFixed(2)} %{' '}
-							</div>
-							<div className='absolute right-2 top-0 text-sm'>{parse_k_num(r_value, 2, true)}</div>
-						</div>
-						<div className='bg-red-400 dark:bg-red-400/75 rounded h-5'>
-						<div
-							className='bg-blue-500 dark:bg-blue-500/75 rounded-tl rounded-bl h-5'
-							style={{ width: `${calcWidth(l_value, r_value)}%` }}
-						></div>
-						</div>
-					</div>
-				) : (
-					<div className='w-96'>
-						<div className='relative h-px text-center text-white'>
-							<div className='absolute left-2 top-0 text-sm'>{parse_k_num(l_value, 2, true)}</div>
-							<div className='absolute translate-x-20 top-0 text-sm'> 0.00 %</div>
-							<div className='-translate-y-2 text-2xl'>|</div>
-							<div className='-translate-y-8 translate-x-20 top-0 text-sm'>
-								{' '}
-								0.00 %{' '}
-							</div>
-							<div className='absolute right-2 top-0 text-sm'>{parse_k_num(r_value, 2, true)}</div>
-						</div>
-						<div className='bg-zinc-400 dark:bg-zinc-600 rounded h-5'></div>
-					</div>
-				)}
-		</div>      
+                    <div className='w-96'>
+                        <div className='relative h-px text-center text-white'>
+                            <div className='absolute left-2 top-0 text-sm'>{parse_k_num(l_value, 2, true)}</div>
+                            <div className='absolute translate-x-20 top-0 text-sm'>
+                                {' '}
+                                {calcWidth(l_value, r_value, inverse).toFixed(2)} %
+                            </div>
+                            <div className='-translate-y-2 text-2xl'>|</div>
+                            <div className='-translate-y-8 translate-x-20 top-0 text-sm'>
+                                {' '}
+                                {(100 - calcWidth(l_value, r_value, inverse)).toFixed(2)} %{' '}
+                            </div>
+                            <div className='absolute right-2 top-0 text-sm'>{parse_k_num(r_value, 2, true)}</div>
+                        </div>
+                        <div className='bg-red-400 dark:bg-red-400/75 rounded h-5'>
+                            <div
+                                className='bg-blue-500 dark:bg-blue-500/75 rounded-tl rounded-bl h-5'
+                                style={{ width: `${calcWidth(l_value, r_value, inverse)}%` }}
+                            ></div>
+                        </div>
+                    </div>
+                ) : (
+                    <div className='w-96'>
+                        <div className='relative h-px text-center text-white'>
+                            <div className='absolute left-2 top-0 text-sm'>{parse_k_num(l_value, 2, true)}</div>
+                            <div className='absolute translate-x-20 top-0 text-sm'> 0.00 %</div>
+                            <div className='-translate-y-2 text-2xl'>|</div>
+                            <div className='-translate-y-8 translate-x-20 top-0 text-sm'> 0.00 % </div>
+                            <div className='absolute right-2 top-0 text-sm'>{parse_k_num(r_value, 2, true)}</div>
+                        </div>
+                        <div className='bg-zinc-400 dark:bg-zinc-600 rounded h-5'></div>
+                    </div>
+                )}
+            </div>
         )
     }
 
     return (
-    <Container title={'Compare'} description={'Select two players to compare stats'}>
+        <Container title={'Compare'} description={'Select two players to compare stats'}>
             <div className='flex justify-center pt-4 text-white'>
                 {sections.map((section, index) => (
                     <span key={index} className={`mx-1 px-3 py-1 rounded ${section.bannerColor}`}>
@@ -171,12 +170,8 @@ export default function Compare() {
                 ) : (
                     ''
                 )}
-                <div className='bg-blue-400/25 rounded shadow'>
-                    {left ? <RankStructure player={players[left - 1]} /> : ''}
-                </div>
-                <div className='bg-red-400/25 rounded shadow'>
-                    {right ? <RankStructure player={players[right - 1]} /> : ''}
-                </div>
+                <div className='bg-blue-400/25 rounded shadow'>{left ? <RankStructure player={players[left - 1]} /> : ''}</div>
+                <div className='bg-red-400/25 rounded shadow'>{right ? <RankStructure player={players[right - 1]} /> : ''}</div>
             </div>
 
             {/* If no players selected in any side ==> alert message explaining */}
@@ -193,7 +188,8 @@ export default function Compare() {
             {left != 0 && right != 0 && (
                 <div className='container grid gap-4 xl:grid-cols-2 mx-auto'>
                     <div className='flex flex-col mx-auto'>
-                        {stats.map((stat, idx) => (
+                        <h2 className='text-center ml-32'> Compared Stats </h2>
+                        {stats[0].map((stat, idx) => (
                             <div key={idx}>
                                 {progressBar(
                                     getStats(players[left - 1])[stat],
@@ -203,30 +199,41 @@ export default function Compare() {
                                 )}
                             </div>
                         ))}
-                        <hr></hr>
+                        <hr />
                         <div className='flex justify-end items-end m-1'>
                             <span className='mx-2'> Total </span>
                             <div className='w-96'>
                                 <div className='relative h-px text-center text-white'>
-                                    <div className='absolute translate-x-20 top-0 text-sm'>{(total / stats.length).toFixed(2)} %</div>
+                                    <div className='absolute translate-x-20 top-0 text-sm'>{(total / stats[0].length).toFixed(2)} %</div>
                                     <div className='-translate-y-2 text-2xl'>|</div>
                                     <div className='-translate-y-8 translate-x-20 top-0 text-sm'>
-                                        {(100 - total / stats.length).toFixed(2)} %
+                                        {(100 - total / stats[0].length).toFixed(2)} %
                                     </div>
                                 </div>
                                 <div className='bg-red-400 dark:bg-red-400/75 rounded h-5'>
                                     <div
                                         className='bg-blue-500 dark:bg-blue-500/75 rounded-tl rounded-bl h-5'
-                                        style={{ width: `${calcWidth(total / stats.length, 100 - total / stats.length)}%` }}
+                                        style={{ width: `${calcWidth(total / stats[0].length, 100 - total / stats[0].length, true)}%` }}
                                     ></div>
                                 </div>
                             </div>
                         </div>
+                        <h2 className='text-center ml-32 mt-8'> Additional Stats </h2>
+                        {stats[1].map((stat, idx) => (
+                            <div key={idx}>
+                                {progressBar(
+                                    getStats(players[left - 1])[stat],
+                                    getStats(players[right - 1])[stat],
+                                    stat,
+                                    getStats(players[left - 1])[stat] || getStats(players[right - 1])[stat],
+                                )}
+                            </div>
+                        ))}
                     </div>
-					<CompareChart playerA={players[left - 1]} playerB={players[right - 1]} />
+                    <CompareChart playerA={players[left - 1]} playerB={players[right - 1]} />
                 </div>
             )}
-    </Container>
+        </Container>
     )
 }
 

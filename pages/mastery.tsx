@@ -18,7 +18,7 @@ export default function Masteries() {
         return <EmptyPlayers />
     }
 
-	/* TODO: Order players by total mastery. Instead of players.map(), make:
+    /* TODO: Order players by total mastery. Instead of players.map(), make:
 			ordered_players = players.sort
 		and then:
 			ordered_players.map( // etc... )
