@@ -39,46 +39,46 @@ const renderActiveShape = props => {
             />
             <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={color} fill='none' />
             <circle cx={ex} cy={ey} r={2} fill={color} stroke='none' />
-            <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill='#333'>{`${payload.name} :  ${value}`}</text>
-            <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill='#999'>
+            <text x={ex + (cos >= 0 ? 1 : -1) * 8} y={ey} textAnchor={textAnchor} fill='#333'>{`${payload.name} :  ${value}`}</text>
+            <text x={ex + (cos >= 0 ? 1 : -1) * 8} y={ey} dy={18} textAnchor={textAnchor} fill='#999'>
                 {`${(percent * 100).toFixed(2)}%`}
             </text>
         </g>
     )
 }
 
+export default function ActivePieChart({ players, title }) {
+    const data = []
 
+    const colors = d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), players.length)
 
-export default function ActivePieChart({players, title}) {
-
-	const data = []
-
-	const colors = d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), players.length)
-
-	players.map((player,idx) => data.push({
-		'name': player.alias,
-		'value': getStats(player)[title],
-		'color': colors[idx]
-	}))
+    players.map((player, idx) =>
+        data.push({
+            name: player.alias,
+            value: getStats(player)[title],
+            color: colors[idx],
+        }),
+    )
 
     const [activeIndex, setActiveIndex] = useState(0)
 
     return (
-		<div className='bg-cyan-600'>
-			<h2 className='text-xl'>{statTitle(title)}</h2>
-            <PieChart width={600} height={400}>
+        <div className='bg-cyan-600 m-3'>
+            <h2 className='text-xl text-center mb-3'>{statTitle(title)}</h2>
+            <hr style={{ width: '85%', margin: 'auto' }} />
+            <PieChart width={450} height={300}>
                 <Pie
                     activeIndex={[...players.keys()]}
                     activeShape={renderActiveShape}
                     data={data}
                     cx='50%'
                     cy='50%'
-                    innerRadius={60}
-                    outerRadius={80}
+                    innerRadius={50}
+                    outerRadius={70}
                     dataKey='value'
                     onMouseEnter={(_, idx) => setActiveIndex(idx)}
                 />
             </PieChart>
-		</div>
+        </div>
     )
 }

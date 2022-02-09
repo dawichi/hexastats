@@ -52,9 +52,9 @@ export default function Navbar() {
                             <div className='flex-1 flex items-center justify-center sm:items-stretch sm:justify-start'>
                                 <Link href='/' passHref>
                                     <button className='flex-shrink-0 flex items-center '>
-										 <div className='h-8 w-8 relative'>
-											<Image src='/favicon.svg' alt='Hexastats' layout='fill'/>
-										</div>
+                                        <div className='h-8 w-8 relative'>
+                                            <Image src='/favicon.svg' alt='Hexastats' layout='fill' />
+                                        </div>
                                         <h1 className='text-2xl text-white ml-2 hidden lg:block tracking-wider'>Hexastats</h1>
                                     </button>
                                 </Link>

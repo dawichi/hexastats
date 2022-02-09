@@ -47,15 +47,15 @@ export default function Home() {
                                         <td>
                                             <Popover className='relative'>
                                                 <Popover.Button>
-													<div className='p-1 mt-2 w-10 relative h-10 justify-center'>
-														<Image src={champ.image} alt='champ image' layout='fill'/>
-													</div>
+                                                    <div className='p-1 mt-2 w-10 relative h-10 justify-center'>
+                                                        <Image src={champ.image} alt='champ image' layout='fill' />
+                                                    </div>
                                                 </Popover.Button>
                                                 <Popover.Panel className='absolute z-10 transform translate-x-1/4 -translate-y-1/2 left-1/2 w-64'>
                                                     <div className={`p-4 border border-zinc-400 shadow-xl rounded-lg ${styles.foreground}`}>
-														<div className='p-1 ml-2 w-10 relative h-10'>
-															<Image src={champ.image} alt='champ image' layout='fill'/>
-														</div>
+                                                        <div className='p-1 ml-2 w-10 relative h-10'>
+                                                            <Image src={champ.image} alt='champ image' layout='fill' />
+                                                        </div>
                                                         <table className='text-right'>
                                                             <tbody>
                                                                 <TintRow title={'cs'} tint={styles.stat.cs} data={champ.cs} />

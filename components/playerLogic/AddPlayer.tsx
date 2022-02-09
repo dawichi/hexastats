@@ -18,9 +18,9 @@ const AddPlayer = () => {
     const { players, setPlayers } = useContext(PlayersContext)
 
     // By default force players to be []
-	if (players === undefined) {
-		setPlayers([])
-	}
+    if (players === undefined) {
+        setPlayers([])
+    }
 
     // Search logic once the button is pressed
     const handleSearch = async () => {
@@ -37,11 +37,10 @@ const AddPlayer = () => {
     }
 
     //Search button by pressing enter
-    const handleKeyPress = (event) => {
-        if (event.charCode == 13){
+    const handleKeyPress = event => {
+        if (event.charCode == 13) {
             handleSearch()
         }
-
     }
     const loadFriends = async () => {
         setSearching(true)
@@ -98,7 +97,7 @@ const AddPlayer = () => {
                     </div>
                 </Listbox>
                 <input
-                    onKeyPress={(event) => handleKeyPress(event)}
+                    onKeyPress={event => handleKeyPress(event)}
                     className='bg-white dark:bg-zinc-800 p-2 w-full h-12 rounded shadow outline-0 focus:ring-4 ring-indigo-400'
                     type='text'
                     {...user.inputProp}

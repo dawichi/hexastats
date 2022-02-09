@@ -41,9 +41,9 @@ const ListPlayers = () => {
                         className={`${styles.foreground} rounded shadow-sm m-1 p-2 relative border border-zinc-300 dark:border-zinc-600`}
                     >
                         <div className='flex justify-center items-end'>
-							<div className='w-12 h-12 rounded overflow-hidden relative'>
-								<Image layout ='fill'src={player.image} alt={player.alias} />
-							</div>
+                            <div className='w-12 h-12 rounded overflow-hidden relative'>
+                                <Image layout='fill' src={player.image} alt={player.alias} />
+                            </div>
                             <span className='ml-2'>{player.alias}</span>
 
                             <button
