@@ -12,8 +12,17 @@ import { styles } from 'styles/styles.config'
 export default function Graphs() {
     const { players } = useContext(PlayersContext)
 
+    const containerProps = {
+        title: 'Graphs',
+        description: 'Visualize the data in multiple graph types',
+    }
+
     if (!players || players.length === 0) {
-        return <EmptyPlayers />
+        return (
+            <Container {...containerProps}>
+                <EmptyPlayers />
+            </Container>
+        )
     }
 
     // Trophies counter for each player
@@ -64,7 +73,7 @@ export default function Graphs() {
     )
 
     return (
-        <Container title={'Graphs'} description={'Visualize the data in multiple graph types'}>
+		<Container {...containerProps}>
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6'>
                 {podium.map((card, indx_card) => (
                     <div key={indx_card}>

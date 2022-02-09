@@ -14,18 +14,29 @@ import Image from 'next/image'
 export default function Masteries() {
     const { players } = useContext(PlayersContext)
 
-    if (!players || players.length === 0) {
-        return <EmptyPlayers />
+    const containerProps = {
+        title: 'Mastery',
+        description: 'Your 7 champions with most points',
     }
 
-    /* TODO: Order players by total mastery. Instead of players.map(), make:
+    if (!players || players.length === 0) {
+        return (
+            <Container {...containerProps}>
+                <EmptyPlayers />
+            </Container>
+        )
+    }
+
+    /* TODO: Order players by total mastery.
+	
+		Instead of players.map(), make:
 			ordered_players = players.sort
 		and then:
 			ordered_players.map( // etc... )
 	*/
 
     return (
-        <Container title={'Mastery'} description={'Your 7 champions with most points'}>
+        <Container {...containerProps}>
             <div className='grid gap-4 2xl:grid-cols-2'>
                 {players.map((player, idx_player) => {
                     let total_masteries = 0
@@ -37,7 +48,7 @@ export default function Masteries() {
                                 <PlayerImg image={player.image} alias={player.alias} level={player.level} />
                                 <div className='flex flex-col'>
                                     <h2 className='text-xl'>{player.alias}</h2>
-                                    <h4>{parse_k_num(total_masteries, 0, false)}</h4>
+                                    {total_masteries ? <h4>{parse_k_num(total_masteries, 0, false)}</h4> : <span>No data</span>}
                                 </div>
                             </div>
                             <div className='col-span-3 grid grid-cols-4 sm:grid-cols-7'>

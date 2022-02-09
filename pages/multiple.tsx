@@ -2,6 +2,8 @@ import { useContext } from 'react'
 import { PlayersContext } from 'hooks/PlayersContext'
 import { Container, EmptyPlayers } from 'components'
 import Image from 'next/image'
+import { statTitle } from 'utils'
+import { Champ } from 'interfaces/player'
 
 // ┌────────────────┐
 // │ MULTIPLE PAGE: │
@@ -11,25 +13,40 @@ import Image from 'next/image'
 export default function Multiple() {
     const { players } = useContext(PlayersContext)
 
-    if (!players || players.length === 0) {
-        return <EmptyPlayers />
+    const containerProps = {
+        title: 'Multiple kills',
+        description: 'How likely are you to make a multikill in a game?',
     }
 
-    const structure = (title: string, stat: string) => (
+    if (!players || players.length === 0) {
+        return (
+            <Container {...containerProps}>
+                <EmptyPlayers />
+            </Container>
+        )
+    }
+
+    const MultipleStructure = ({ stat }: { stat: string }) => (
         <div className='p-2'>
-            <h2 className='text-2xl text-center mb-5'>{title}</h2>
+            <h2 className='text-2xl text-center mb-5'>{statTitle(stat)}</h2>
             {players.map((player, idx) => {
                 let games = 0
                 let stat_value = 0
 
-                player.champs.map(champ => {
+                player.champs.map((champ: Champ) => {
                     games += champ.games
                     stat_value += champ[stat]
                 })
 
-                const result = parseFloat((stat_value / games).toFixed(2))
+                const result = games ? parseFloat((stat_value / games).toFixed(2)) : 0
 
-                const width = (result * 100) / 2
+                // Expected maximum for each stat
+                const widths = {
+                    double_kills: 4,
+                    triple_kills: 1.5,
+                    quadra_kills: 0.6,
+                    penta_kills: 0.1,
+                }
 
                 return (
                     <div key={idx}>
@@ -47,7 +64,10 @@ export default function Multiple() {
                                         <span>{stat_value} total</span>
                                     </div>
                                     <div className='h-3 rounded w-full bg-zinc-400/50'>
-                                        <div className='h-3 rounded bg-red-200' style={{ width: width + '%' }}></div>
+                                        <div
+                                            className='h-3 rounded bg-red-200'
+                                            style={{ width: (result * 100) / widths[stat] + '%' }}
+                                        ></div>
                                     </div>
                                 </div>
                             )}
@@ -59,12 +79,12 @@ export default function Multiple() {
     )
 
     return (
-        <Container title={'Multiple kills'} description={'How likely are you to make a multikill in a game?'}>
+        <Container {...containerProps}>
             <div className='grid gap-4 lg:grid-cols-2'>
-                {structure('Doble kills', 'double_kills')}
-                {structure('Triple kills', 'triple_kills')}
-                {structure('Quadra kills', 'quadra_kills')}
-                {structure('Penta kills', 'penta_kills')}
+                <MultipleStructure stat='double_kills' />
+                <MultipleStructure stat='triple_kills' />
+                <MultipleStructure stat='quadra_kills' />
+                <MultipleStructure stat='penta_kills' />
             </div>
         </Container>
     )

@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { KeyboardEvent, useContext, useState } from 'react'
 import { Listbox } from '@headlessui/react'
 import useFormInput from 'hooks/useFormInput'
 import { PlayersContext } from 'hooks/PlayersContext'
@@ -37,22 +37,19 @@ const AddPlayer = () => {
     }
 
     //Search button by pressing enter
-    const handleKeyPress = event => {
-        if (event.charCode == 13) {
-            handleSearch()
-        }
+    const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') handleSearch()
     }
+
     const loadFriends = async () => {
+        const friends = ['Agazhord', 'Alexwwe', 'Brr1', 'BloddSword', 'Dawichii', 'DryadZero', 'Traketero', 'TR0I']
         setSearching(true)
-        const p2 = await axios.get(backend + 'Agazhord')
-        const p1 = await axios.get(backend + 'Alexwwe')
-        const p3 = await axios.get(backend + 'Brr1')
-        const p5 = await axios.get(backend + 'BloddSword')
-        const p4 = await axios.get(backend + 'Dawichii')
-        const p6 = await axios.get(backend + 'DryadZero')
-        const p7 = await axios.get(backend + 'Traketero')
-        const p8 = await axios.get(backend + 'TR0I')
-        setPlayers(players.concat([p1.data, p2.data, p3.data, p4.data, p5.data, p6.data, p7.data, p8.data]))
+        let players_data = []
+        for (let i = 0; i < friends.length; i++) {
+            const player = await axios.get(backend + friends[i])
+            players_data.push(player.data)
+        }
+        setPlayers(players.concat(players_data))
         setSearching(false)
     }
 

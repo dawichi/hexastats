@@ -14,12 +14,21 @@ import Image from 'next/image'
 export default function Home() {
     const { players } = useContext(PlayersContext)
 
+    const containerProps = {
+        title: 'Stats',
+        description: 'Basic stats of your 7 most played champs in rankeds',
+    }
+
     if (!players || players.length === 0) {
-        return <EmptyPlayers />
+        return (
+            <Container {...containerProps}>
+                <EmptyPlayers />
+            </Container>
+        )
     }
 
     return (
-        <Container title={'Stats'} description={'Basic stats of your 7 most played champs in rankeds'}>
+        <Container {...containerProps}>
             <div className='grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>
                 {/* For each player, print a table and its table-head */}
                 {players.map((player: Player, index_player: number) => (

@@ -12,17 +12,25 @@ import { Player } from 'interfaces/player'
 export default function Compare() {
     const { players } = useContext(PlayersContext)
 
+    const containerProps = {
+        title: 'Compare',
+        description: 'Select two players to compare stats',
+    }
+
     // Players selected for compare
     const [left, setLeft] = useState(0)
     const [right, setRight] = useState(0)
     const [total, setTotal] = useState(0)
 
     if (!players || players.length === 0) {
-        return <EmptyPlayers />
+        return (
+            <Container {...containerProps}>
+                <EmptyPlayers />
+            </Container>
+        )
     }
 
-    // logic when a player card is selected
-    // TODO: try pop-over
+    // When a player card is selected
     const handleSelect = (idx: number) => {
         if (idx + 1 === left) {
             setLeft(0)
@@ -35,7 +43,7 @@ export default function Compare() {
         }
     }
 
-    // styles
+    // Styles
     const tintPlayerSelected = (idx: number) => {
         if (idx + 1 === left) return 'bg-blue-400'
         else if (idx + 1 === right) return 'bg-red-400' // right
@@ -64,11 +72,8 @@ export default function Compare() {
         1: ['games', 'double_kills', 'triple_kills', 'quadra_kills', 'penta_kills'],
     }
 
-    //TODO: refactor function
-
     const calcWidth = (x: number, y: number, direction: boolean) => (direction ? (100 * y) / (y + x) : (100 * x) / (x + y))
     const ListProgressBar = ({ statGroup }: { statGroup: number }) => {
-        let total_width = 0
         return (
             <>
                 <h2 className='text-center ml-32'> Compared Stats </h2>

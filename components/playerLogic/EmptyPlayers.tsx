@@ -9,7 +9,7 @@ const EmptyPlayers = () => {
             <p>To visualize their data, add them first !</p>
             <br />
             <p>Go back to Home page</p>
-            <Link href='/'>
+            <Link href='/' passHref>
                 <button
                     title='Add more players'
                     className={`${styles.foreground} ${styles.card} hover:text-white hover:bg-indigo-600 hover:dark:bg-indigo-600 m-1 py-2 px-3 cursor-pointer`}

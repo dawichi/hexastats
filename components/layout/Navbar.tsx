@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { NextRouter, useRouter } from 'next/router'
 import { Disclosure, Switch } from '@headlessui/react'
 import { navigation } from 'configs'
 import { link } from 'interfaces/interfaces'
@@ -59,7 +59,7 @@ export default function Navbar() {
                                     </button>
                                 </Link>
                                 <div className='hidden sm:block sm:ml-6'>
-                                    <div className='flex space-x-4'>{render_links(navigation, router)}</div>
+                                    <div className='flex space-x-4'>{renderLinks(navigation, router)}</div>
                                 </div>
                             </div>
                             <div className='absolute right-0 flex'>
@@ -74,7 +74,7 @@ export default function Navbar() {
                     </div>
 
                     <Disclosure.Panel className='sm:hidden'>
-                        <div className='px-2 pt-2 pb-3 space-y-1'>{render_links(navigation, router)}</div>
+                        <div className='px-2 pt-2 pb-3 space-y-1'>{renderLinks(navigation, router)}</div>
                     </Disclosure.Panel>
                 </>
             )}
@@ -83,7 +83,7 @@ export default function Navbar() {
 }
 
 // Links, used both in desktop and mobile view
-const render_links = (navigation: link[], router) => {
+const renderLinks = (navigation: link[], router: NextRouter) => {
     return navigation.map((item, idx) => (
         <Link href={item.url} key={idx} passHref>
             <button
