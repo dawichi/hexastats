@@ -82,7 +82,7 @@ export default function Compare() {
                     const l_value = getStats(players[left - 1])[stat]
                     const r_value = getStats(players[right - 1])[stat]
                     const activated = getStats(players[left - 1])[stat] || getStats(players[right - 1])[stat]
-                    const inverse = stat == 'deaths'
+                    const inverse = stat == 'deaths' || stat == 'max_deaths'
                     if (activated && !statGroup) total += calcWidth(l_value, r_value, inverse)
                     return (
                         <div key={idx}>
