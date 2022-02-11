@@ -6,7 +6,7 @@ const CompareChart = ({ playerA, playerB }) => {
 
     const data = []
 
-    const division = (a, b) => {
+    const division = (a: number, b: number) => {
         if (a > b) {
             b /= a
             b *= 0.85

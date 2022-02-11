@@ -1,5 +1,5 @@
-export { default as getStatValues } from './getStatValues'
+export { default as getStats } from './getStats'
+export { default as getValuesForPieChart } from './getValuesForPieChart'
 export { default as statTitle } from './statTitle'
 export { default as trophyIcon } from './trophyIcon'
-export { default as getStats } from './getStats'
 export { default as parse_k_num } from './parse_k_num'

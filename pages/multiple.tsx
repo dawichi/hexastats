@@ -65,7 +65,7 @@ export default function Multiple() {
                                     </div>
                                     <div className='h-3 rounded w-full bg-zinc-400/50'>
                                         <div
-                                            className='h-3 rounded bg-red-200'
+                                            className='h-3 rounded bg-indigo-400'
                                             style={{ width: (result * 100) / widths[stat] + '%' }}
                                         ></div>
                                     </div>

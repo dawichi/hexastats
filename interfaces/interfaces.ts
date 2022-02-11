@@ -1,5 +1,6 @@
 export interface PlayerStatsResult {
     name: string
+    image: string
     games: number
     winrate: number
     kda: number
@@ -24,22 +25,19 @@ export interface DataForChart {
     value: number
 }
 
-export interface PlayerStats {
-    key: string
-    value: number
+export interface Chart {
+    stat: string
+    data: DataForChart[]
 }
 
-export interface PodiumResult {
+export interface PlayerTrophies {
     name: string
     image: string
-    trophies: number[]
-}
-
-export interface Chart {
-    key: string
-    title: string
-    data: any // ;(
-    data_int: any // ;(
+    level: number
+    trophies: {
+        category: string
+        result: number
+    }[]
 }
 
 export interface link {

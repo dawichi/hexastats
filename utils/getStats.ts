@@ -7,6 +7,7 @@ import { PlayerStatsResult } from 'interfaces/interfaces'
 export default function getStats(player: Player) {
     const result: PlayerStatsResult = {
         name: player.alias,
+        image: player.image,
         games: 0,
         winrate: 0,
         kda: 0,
@@ -43,7 +44,7 @@ export default function getStats(player: Player) {
     ]
 
     // Calculate the total games of that player
-    player.champs.map((champ, idx) => {
+    player.champs.map(champ => {
         result.games += champ.games
         result.double_kills += champ.double_kills
         result.triple_kills += champ.triple_kills
@@ -51,7 +52,7 @@ export default function getStats(player: Player) {
         result.penta_kills += champ.penta_kills
     })
 
-    stats.map((stat, idx) => {
+    stats.map(stat => {
         let games = 0
         let stat_value = 0
 
