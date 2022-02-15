@@ -79,12 +79,17 @@ export default function Graphs() {
 
         // set 1º, 2º and 3º podium
         const gold = podium.findIndex(x => x.name === stat_values[0].name)
-        const silver = podium.findIndex(x => x.name === stat_values[1].name)
-        const bronze = podium.findIndex(x => x.name === stat_values[2].name)
-
         podium[gold].trophies.push({ category: stat, result: 1 })
-        podium[silver].trophies.push({ category: stat, result: 2 })
-        podium[bronze].trophies.push({ category: stat, result: 3 })
+
+        if (players.length > 1) {
+            const silver = podium.findIndex(x => x.name === stat_values[1].name)
+            podium[silver].trophies.push({ category: stat, result: 2 })
+        }
+
+        if (players.length > 2) {
+            const bronze = podium.findIndex(x => x.name === stat_values[2].name)
+            podium[bronze].trophies.push({ category: stat, result: 3 })
+        }
 
         // push the dataForChart into each chart by stat
         charts.push({
@@ -132,12 +137,16 @@ export default function Graphs() {
                                 <span>
                                     {trophyIcon(1)} {chart.data[0].label}
                                 </span>
-                                <span>
-                                    {trophyIcon(2)} {chart.data[1].label}
-                                </span>
-                                <span>
-                                    {trophyIcon(3)} {chart.data[2].label}
-                                </span>
+                                {players.length > 1 && (
+                                    <span>
+                                        {trophyIcon(2)} {chart.data[1].label}
+                                    </span>
+                                )}
+                                {players.length > 2 && (
+                                    <span>
+                                        {trophyIcon(3)} {chart.data[2].label}
+                                    </span>
+                                )}
                             </div>
                             <PieChart data={chart.data} outerRadius={120} innerRadius={50} id={idx + 1} />
                         </div>

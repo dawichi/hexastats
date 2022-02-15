@@ -27,21 +27,7 @@ export default function getStats(player: Player) {
         penta_kills: 0,
     }
 
-    // TODO: get dinamically this
-    const stats: string[] = [
-        'winrate',
-        'kda',
-        'kills',
-        'deaths',
-        'assists',
-        'cs',
-        'csmin',
-        'gold',
-        'max_kills',
-        'max_deaths',
-        'avg_damage_dealt',
-        'avg_damage_taken',
-    ]
+    const max_stats = ['max_kills', 'max_deaths']
 
     // Calculate the total games of that player
     player.champs.map(champ => {
@@ -50,7 +36,15 @@ export default function getStats(player: Player) {
         result.triple_kills += champ.triple_kills
         result.quadra_kills += champ.quadra_kills
         result.penta_kills += champ.penta_kills
+
+        max_stats.forEach(stat => {
+            if (result[stat] < champ[stat]) {
+                result[stat] = champ[stat]
+            }
+        })
     })
+
+    const stats: string[] = ['winrate', 'kda', 'kills', 'deaths', 'assists', 'cs', 'csmin', 'gold', 'avg_damage_dealt', 'avg_damage_taken']
 
     stats.map(stat => {
         let games = 0
