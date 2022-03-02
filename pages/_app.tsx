@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Footer, ListPlayers, Navbar } from 'components'
@@ -9,7 +9,20 @@ import 'styles/global.scss'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
     // Context of the app
-    const [players, setPlayers] = useState()
+    const [players, setPlayers] = useState([])
+
+    useEffect(() => {
+        // Check if there are players stored in memory
+        const players_stored = localStorage.getItem('players')
+
+        if (players_stored) {
+            setPlayers(JSON.parse(players_stored))
+        } else {
+            // By default, set context to []
+            setPlayers([])
+        }
+    }, [])
+
     return (
         <>
             <Head>

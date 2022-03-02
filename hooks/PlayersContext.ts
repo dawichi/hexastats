@@ -1,7 +1,7 @@
+import { Player } from 'interfaces/player'
 import { createContext } from 'react'
 
-// TODO: why the types in context (<Array<Player>>) doesn't work ._.
 export const PlayersContext = createContext({
-    players: [],
+    players: <Array<Player>>[],
     setPlayers: (context: any) => context,
 })

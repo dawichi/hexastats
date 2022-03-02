@@ -1,10 +1,12 @@
 import { getStats, statTitle } from 'utils'
-import { Radar, RadarChart, PolarGrid, Legend, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts'
+import { Radar, RadarChart, PolarGrid, Legend, PolarAngleAxis, ResponsiveContainer } from 'recharts'
 
+// ┌────────────────┐
+// │  CompareChart: │
+// └────────────────┘
+// Compares 2 players into an Axis graph
 const CompareChart = ({ playerA, playerB }) => {
     const skills = ['kda', 'csmin', 'avg_damage_dealt', 'avg_damage_taken', 'winrate', 'gold']
-
-    const data = []
 
     const division = (a: number, b: number) => {
         if (a > b) {
@@ -19,6 +21,8 @@ const CompareChart = ({ playerA, playerB }) => {
 
         return a
     }
+
+    const data = []
 
     skills.map(skill =>
         data.push({

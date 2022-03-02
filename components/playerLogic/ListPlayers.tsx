@@ -15,6 +15,7 @@ const ListPlayers = () => {
         const start = players.slice(0, player_to_delete)
         const end = players.slice(player_to_delete + 1, players.length)
         setPlayers(start.concat(end))
+        localStorage.setItem('players', JSON.stringify(start.concat(end)))
     }
 
     if (router.pathname === '/') {

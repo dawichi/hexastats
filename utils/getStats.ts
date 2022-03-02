@@ -29,7 +29,7 @@ export default function getStats(player: Player) {
 
     const max_stats = ['max_kills', 'max_deaths']
 
-    // Calculate the total games of that player
+    // Calculate accumulative stats (total)
     player.champs.map(champ => {
         result.games += champ.games
         result.double_kills += champ.double_kills
@@ -44,13 +44,14 @@ export default function getStats(player: Player) {
         })
     })
 
+    // Calculate value based on games played (ex: acc kda / games)
     const stats: string[] = ['winrate', 'kda', 'kills', 'deaths', 'assists', 'cs', 'csmin', 'gold', 'avg_damage_dealt', 'avg_damage_taken']
 
     stats.map(stat => {
         let games = 0
         let stat_value = 0
 
-        player.champs.map((champ, idx) => {
+        player.champs.map(champ => {
             games += champ.games
             stat_value += champ.games * champ[stat]
         })

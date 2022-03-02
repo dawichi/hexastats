@@ -31,7 +31,7 @@ export default function Index() {
             <AddedPlayers />
 
             <div className='relative mt-10 h-64 md:h-96 w-64 md:w-96 mx-auto opacity-80 px-10'>
-                <Image src={ImgProgramming} layout='fill' alt='Programming' />
+                <Image src={ImgProgramming} layout='fill' alt='Programming' priority />
             </div>
         </div>
     )

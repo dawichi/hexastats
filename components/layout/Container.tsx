@@ -1,3 +1,4 @@
+// Common HTML structure for all the /pages/*
 const Container = ({ title, description, children }) => (
     <div className='animate__animated animate__fadeIn'>
         <div className='container mx-auto px-2 py-5'>

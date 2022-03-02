@@ -17,18 +17,15 @@ const AddPlayer = () => {
     // Context
     const { players, setPlayers } = useContext(PlayersContext)
 
-    // By default force players to be []
-    if (players === undefined) {
-        setPlayers([])
-    }
-
     // Search logic once the button is pressed
     const handleSearch = async () => {
         setError(false)
         setSearching(true)
         try {
             const response = await axios.get(backend + user.inputProp.value + '&server=' + servers[server])
-            setPlayers(players.concat(response.data))
+            const newContext = players.concat(response.data)
+            setPlayers(newContext)
+            localStorage.setItem('players', JSON.stringify(newContext))
         } catch (e) {
             setError(true)
         }
