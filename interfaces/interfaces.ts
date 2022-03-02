@@ -25,21 +25,6 @@ export interface DataForChart {
     value: number
 }
 
-export interface Chart {
-    stat: string
-    data: DataForChart[]
-}
-
-export interface PlayerTrophies {
-    name: string
-    image: string
-    level: number
-    trophies: {
-        category: string
-        result: number
-    }[]
-}
-
 export interface link {
     name: string
     url: string

@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { Container, EmptyPlayers, PieChart, PlayerImg } from 'components'
 import { PlayersContext } from 'hooks/PlayersContext'
 import { trophyIcon, statTitle, getStats, getValuesForPieChart } from 'utils'
-import { Chart, PlayerStatsResult, PlayerTrophies } from 'interfaces/interfaces'
+import { DataForChart, PlayerStatsResult } from 'interfaces/interfaces'
 import { styles } from 'styles/styles.config'
 import { Player } from 'interfaces/player'
 
@@ -26,7 +26,16 @@ export default function Graphs() {
         )
     }
 
-    const podium: PlayerTrophies[] = []
+    const podium: {
+        name: string
+        image: string
+        level: number
+        trophies: {
+            category: string
+            result: number
+        }[]
+    }[] = []
+
     const playerStats: PlayerStatsResult[] = []
 
     // Fill both arrays
@@ -56,7 +65,11 @@ export default function Graphs() {
         'avg_damage_taken',
     ]
 
-    const charts: Chart[] = []
+    const charts: {
+        stat: string
+        data: DataForChart[]
+    }[] = []
+
     let stat_values: {
         name: string
         value: number
@@ -100,22 +113,20 @@ export default function Graphs() {
 
     return (
         <Container {...containerProps}>
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6'>
+            <div className='grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6'>
                 {podium.map((podium_card, indx_card) => (
                     <div key={indx_card}>
-                        <div className={`p-1 m-2 mt-5 ${styles.card} ${styles.foreground}`}>
-                            <div className='flex'>
-                                <PlayerImg image={podium_card.image} alias={podium_card.name} level={podium_card.level} />
-                                <div className='flex flex-col'>
-                                    <span className='pb-1 text-xl'>{podium_card.name}</span>
-                                    <div className='mr-1'>
-                                        {podium_card.trophies.map((trophy, idx) => (
-                                            <p key={idx} className='text-sm'>
-                                                {trophyIcon(trophy.result)}
-                                                {statTitle(trophy.category)}
-                                            </p>
-                                        ))}
-                                    </div>
+                        <div className={`p-1 h-full ${styles.card} ${styles.foreground} flex`}>
+                            <PlayerImg image={podium_card.image} alias={podium_card.name} level={podium_card.level} />
+                            <div className='flex flex-col'>
+                                <span className='pb-1 text-xl'>{podium_card.name}</span>
+                                <div className='mr-1'>
+                                    {podium_card.trophies.map((trophy, idx) => (
+                                        <p key={idx} className='text-sm'>
+                                            {trophyIcon(trophy.result)}
+                                            {statTitle(trophy.category)}
+                                        </p>
+                                    ))}
                                 </div>
                             </div>
                         </div>
