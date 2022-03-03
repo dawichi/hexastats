@@ -23,9 +23,8 @@ const AddPlayer = () => {
         setSearching(true)
         try {
             const response = await axios.get(backend + user.inputProp.value + '&server=' + servers[server])
-            const newContext = players.concat(response.data)
-            setPlayers(newContext)
-            localStorage.setItem('players', JSON.stringify(newContext))
+            setPlayers(players.concat(response.data))
+            localStorage.setItem('players', JSON.stringify(players.concat(response.data)))
         } catch (e) {
             setError(true)
         }
@@ -47,6 +46,7 @@ const AddPlayer = () => {
             players_data.push(player.data)
         }
         setPlayers(players.concat(players_data))
+		localStorage.setItem('players', JSON.stringify(players.concat(players_data)))
         setSearching(false)
     }
 
