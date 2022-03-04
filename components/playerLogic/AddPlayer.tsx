@@ -46,7 +46,7 @@ const AddPlayer = () => {
             players_data.push(player.data)
         }
         setPlayers(players.concat(players_data))
-		localStorage.setItem('players', JSON.stringify(players.concat(players_data)))
+        localStorage.setItem('players', JSON.stringify(players.concat(players_data)))
         setSearching(false)
     }
 
