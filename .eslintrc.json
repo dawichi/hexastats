@@ -2,7 +2,6 @@
     "extends": "next/core-web-vitals",
     "rules": {
         "camelcase": "warn",
-        "complexity": ["error", 20],
         "curly": "warn",
         "default-case": "error",
         "eqeqeq": "error",
@@ -21,16 +20,13 @@
         "no-unused-expressions": "error",
         "no-unused-vars": "error",
         "no-use-before-define": "error",
-        "object-property-newline": "error",
         "object-shorthand": "error",
         "arrow-body-style": "error",
-        "arrow-parens": "error",
         "arrow-spacing": "error",
         "prefer-const": "error",
         "prefer-destructuring": "error",
         "prefer-spread": "error",
         "prefer-numeric-literals": "error",
-        "prefer-template": "error",
         "require-await": "error"
     }
 }
