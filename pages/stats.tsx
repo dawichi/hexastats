@@ -27,6 +27,35 @@ export default function Home() {
         )
     }
 
+    // ┌────────────────────────────────────────────────────────────
+    // │ Highlights each table cell based on the stat requirements
+    // └────────────────────────────────────────────────────────────
+    const tint = (num: number, type: string) => {
+        const tints = {
+            games: (x: number) => (x >= 50 ? 'bg-green-200 dark:bg-green-700' : ''),
+            winrate: (x: number) => (x >= 55 ? 'bg-sky-200 dark:bg-sky-700' : ''),
+            kda: (x: number) => (x >= 3 ? 'bg-purple-200 dark:bg-purple-700 p-1' : ''),
+            kills: (x: number) => (x >= 10 ? 'bg-red-200 dark:bg-red-700 p-1' : ''),
+            deaths: (x: number) => (x <= 5 ? 'bg-zinc-300 dark:bg-zinc-400 p-1' : ''),
+            assists: (x: number) => (x >= 10 ? 'bg-pink-200 dark:bg-pink-700 p-1' : ''),
+            csmin: (x: number) => (x >= 7 ? 'bg-yellow-200 dark:bg-yellow-700 p-1' : ''),
+        }
+
+        return tints[type]?.(num) ?? ''
+    }
+
+    // ┌──────────────────────────────────
+    // │ Returns a row of a table <tr>
+    // └──────────────────────────────────
+    const TintRow = ({ tint, title, data }: { tint: string; title: any; data: number }) => (
+        <tr>
+            <td className='p-1'>
+                <span className={tint}>{title}</span>
+            </td>
+            <td>{data.toLocaleString('en-US')}</td>
+        </tr>
+    )
+
     return (
         <Container {...containerProps}>
             <div className='grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>
@@ -141,31 +170,3 @@ export default function Home() {
         </Container>
     )
 }
-
-// ┌────────────────────────────────────────────────────────────
-// │ Highlights each table cell based on the stat requirements
-// └────────────────────────────────────────────────────────────
-const tint = (num: number, type: string) => {
-    const tints = {
-        games: (x: number) => (x >= 50 ? 'bg-green-200 dark:bg-green-700' : ''),
-        winrate: (x: number) => (x >= 55 ? 'bg-sky-200 dark:bg-sky-700' : ''),
-        kda: (x: number) => (x >= 3 ? 'bg-purple-200 dark:bg-purple-700 p-1' : ''),
-        kills: (x: number) => (x >= 10 ? 'bg-red-200 dark:bg-red-700 p-1' : ''),
-        deaths: (x: number) => (x <= 5 ? 'bg-zinc-300 dark:bg-zinc-400 p-1' : ''),
-        assists: (x: number) => (x >= 10 ? 'bg-pink-200 dark:bg-pink-700 p-1' : ''),
-        csmin: (x: number) => (x >= 7 ? 'bg-yellow-200 dark:bg-yellow-700 p-1' : ''),
-    }
-    return tints[type]?.(num) ?? ''
-}
-
-// ┌──────────────────────────────────
-// │ Returns a row of a table <tr>
-// └──────────────────────────────────
-const TintRow = ({ tint, title, data }: { tint: string; title: any; data: number }) => (
-    <tr>
-        <td className='p-1'>
-            <span className={tint}>{title}</span>
-        </td>
-        <td>{data.toLocaleString('en-US')}</td>
-    </tr>
-)

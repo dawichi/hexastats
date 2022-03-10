@@ -86,7 +86,8 @@ export default function Graphs() {
 
         // sort "best values" based on which stat we are comparing
         stat_values.sort((a, b) => {
-            if (stat != 'deaths') return b.value - a.value
+            if (stat !== 'deaths') return b.value - a.value
+
             return a.value - b.value
         })
 
@@ -106,7 +107,7 @@ export default function Graphs() {
 
         // push the dataForChart into each chart by stat
         charts.push({
-            stat: stat,
+            stat,
             data: getValuesForPieChart(playerStats, stat),
         })
     })

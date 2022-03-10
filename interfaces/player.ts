@@ -1,18 +1,3 @@
-export interface Player {
-    // name: string
-    alias: string
-    image: string
-    level: number
-    rank: {
-        rank_n: number
-        rank_p: number
-        solo: Rank
-        flex: Rank
-    }
-    champs: Champ[]
-    masteries: Mastery[]
-}
-
 export interface Rank {
     rank: string
     image: string
@@ -49,4 +34,19 @@ export interface Mastery {
     image: string
     level: number
     points: number
+}
+
+export interface Player {
+    // name: string
+    alias: string
+    image: string
+    level: number
+    rank: {
+        rank_n: number
+        rank_p: number
+        solo: Rank
+        flex: Rank
+    }
+    champs: Champ[]
+    masteries: Mastery[]
 }

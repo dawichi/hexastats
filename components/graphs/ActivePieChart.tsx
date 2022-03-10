@@ -2,11 +2,9 @@
 UNUSED RIGHT NOW
 */
 
-import React from 'react'
 import * as d3 from 'd3'
 import { getStats, statTitle } from 'utils'
-import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts'
-import { useState } from 'react'
+import { PieChart, Pie, Sector } from 'recharts'
 
 const renderActiveShape = props => {
     const RADIAN = Math.PI / 180
@@ -64,7 +62,7 @@ export default function ActivePieChart({ players, title }) {
         }),
     )
 
-    const [activeIndex, setActiveIndex] = useState(0)
+    // const [activeIndex, setActiveIndex] = useState(0)
 
     return (
         <div className='bg-cyan-600 m-3'>
@@ -80,7 +78,7 @@ export default function ActivePieChart({ players, title }) {
                     innerRadius={50}
                     outerRadius={70}
                     dataKey='value'
-                    onMouseEnter={(_, idx) => setActiveIndex(idx)}
+                    // onMouseEnter={(_, idx) => setActiveIndex(idx)}
                 />
             </PieChart>
         </div>

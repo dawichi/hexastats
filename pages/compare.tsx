@@ -5,6 +5,53 @@ import { styles } from 'styles/styles.config'
 import { PlayersContext } from 'hooks/PlayersContext'
 import { Player } from 'interfaces/player'
 
+
+const sections = [
+    {
+        title: 'Top 10🔥 %',
+        percent: 10,
+        bannerColor: 'bg-indigo-500 dark:bg-indigo-600/75',
+        frontColor: 'from-indigo-800 to-indigo-500',
+        backColor: 'bg-indigo-300/50 dark:bg-indigo-700/25',
+    },
+    {
+        title: 'Top 20 %',
+        percent: 20,
+        bannerColor: 'bg-blue-500 dark:bg-blue-600/75',
+        frontColor: 'from-blue-800 to-blue-500',
+        backColor: 'bg-blue-300/50 dark:bg-blue-700/25',
+    },
+    {
+        title: 'Top 35 %',
+        percent: 35,
+        bannerColor: 'bg-green-500 dark:bg-green-600/75',
+        frontColor: 'from-green-800 to-green-500',
+        backColor: 'bg-green-300/50 dark:bg-green-700/25',
+    },
+    {
+        title: 'Top 50 %',
+        percent: 50,
+        bannerColor: 'bg-yellow-500 dark:bg-yellow-600/75',
+        frontColor: 'from-yellow-800 to-yellow-500',
+        backColor: 'bg-yellow-300/50 dark:bg-yellow-700/25',
+    },
+    {
+        title: 'Below 50 %',
+        percent: 65,
+        bannerColor: 'bg-gray-500 dark:bg-gray-600/75',
+        frontColor: 'from-gray-800 to-gray-500',
+        backColor: 'bg-gray-300/50 dark:bg-gray-700/25',
+    },
+    {
+        title: 'Below 35 %',
+        percent: 100,
+        bannerColor: 'bg-red-500 dark:bg-red-600/75',
+        frontColor: 'from-red-800 to-red-500',
+        backColor: 'bg-red-300/50 dark:bg-red-700/25',
+    },
+]
+
+
 // ┌────────────────┐
 // │ Compare PAGE:  │
 // └────────────────┘
@@ -36,17 +83,24 @@ export default function Compare() {
         } else if (idx + 1 === right) {
             setRight(0)
         } else {
-            if (!left) setLeft(idx + 1)
-            else if (!right) setRight(idx + 1)
-            else if (idx + 1 != left && idx + 1 != right) setRight(idx + 1)
+            if (!left) {setLeft(idx + 1)}
+            else if (!right) {setRight(idx + 1)}
+            else if (idx + 1 !== left && idx + 1 !== right) {setRight(idx + 1)}
         }
     }
 
     // Styles
     const tintPlayerSelected = (idx: number) => {
-        if (idx + 1 === left) return 'bg-blue-400'
-        else if (idx + 1 === right) return 'bg-red-400' // right
+        if (idx + 1 === left) {return 'bg-blue-400'}
+        else if (idx + 1 === right) {return 'bg-red-400'} // right
+
         return 'bg-zinc-100 dark:bg-zinc-800' // unselected
+    }
+
+    const tint_sections = (percent: number, front: boolean) => {
+        const result = sections.find(section => percent <= section.percent)
+
+        return front ? result.frontColor : result.backColor
     }
 
     // Sort players by ELO
@@ -75,6 +129,7 @@ export default function Compare() {
 
     const ListProgressBar = ({ statGroup }: { statGroup: number }) => {
         let total = 0
+
         return (
             <>
                 <h2 className={`text-center text-lg ml-32 ${statGroup ? 'mt-10' : 'mt-5'}`}>{statGroup ? 'Other stats' : 'VS'}</h2>
@@ -82,8 +137,9 @@ export default function Compare() {
                     const l_value = getStats(players[left - 1])[stat]
                     const r_value = getStats(players[right - 1])[stat]
                     const activated = getStats(players[left - 1])[stat] || getStats(players[right - 1])[stat]
-                    const inverse = stat == 'deaths' || stat == 'max_deaths'
-                    if (activated && !statGroup) total += calcWidth(l_value, r_value, inverse)
+                    const inverse = stat === 'deaths' || stat === 'max_deaths'
+                    if (activated && !statGroup) {total += calcWidth(l_value, r_value, inverse)}
+
                     return (
                         <div key={idx}>
                             <div className='flex justify-end items-end m-1 text-white text-center'>
@@ -199,7 +255,7 @@ export default function Compare() {
 
             <div className='container mx-auto p-4 grid gap-4 md:grid-cols-2'>
                 {/* If at least 1 player selected ==> show 'clear' button */}
-                {(left != 0 || right != 0) && (
+                {(left !== 0 || right !== 0) && (
                     <div className='md:col-span-2'>
                         <button
                             className='bg-red-500 rounded text-white shadow py-2 px-3 mx-auto'
@@ -227,7 +283,7 @@ export default function Compare() {
             )}
 
             {/* If 2 players selected ==> compare them! */}
-            {left != 0 && right != 0 && (
+            {left !== 0 && right !== 0 && (
                 <div className='container grid gap-4 xl:grid-cols-2 mx-auto text-xs md:text-base'>
                     <div className='flex flex-col mx-auto'>
                         <ListProgressBar statGroup={0} />
@@ -240,52 +296,3 @@ export default function Compare() {
     )
 }
 
-const sections = [
-    {
-        title: 'Top 10🔥 %',
-        percent: 10,
-        bannerColor: 'bg-indigo-500 dark:bg-indigo-600/75',
-        frontColor: 'from-indigo-800 to-indigo-500',
-        backColor: 'bg-indigo-300/50 dark:bg-indigo-700/25',
-    },
-    {
-        title: 'Top 20 %',
-        percent: 20,
-        bannerColor: 'bg-blue-500 dark:bg-blue-600/75',
-        frontColor: 'from-blue-800 to-blue-500',
-        backColor: 'bg-blue-300/50 dark:bg-blue-700/25',
-    },
-    {
-        title: 'Top 35 %',
-        percent: 35,
-        bannerColor: 'bg-green-500 dark:bg-green-600/75',
-        frontColor: 'from-green-800 to-green-500',
-        backColor: 'bg-green-300/50 dark:bg-green-700/25',
-    },
-    {
-        title: 'Top 50 %',
-        percent: 50,
-        bannerColor: 'bg-yellow-500 dark:bg-yellow-600/75',
-        frontColor: 'from-yellow-800 to-yellow-500',
-        backColor: 'bg-yellow-300/50 dark:bg-yellow-700/25',
-    },
-    {
-        title: 'Below 50 %',
-        percent: 65,
-        bannerColor: 'bg-gray-500 dark:bg-gray-600/75',
-        frontColor: 'from-gray-800 to-gray-500',
-        backColor: 'bg-gray-300/50 dark:bg-gray-700/25',
-    },
-    {
-        title: 'Below 35 %',
-        percent: 100,
-        bannerColor: 'bg-red-500 dark:bg-red-600/75',
-        frontColor: 'from-red-800 to-red-500',
-        backColor: 'bg-red-300/50 dark:bg-red-700/25',
-    },
-]
-
-const tint_sections = (percent: number, front: boolean) => {
-    const result = sections.find(section => percent <= section.percent)
-    return front ? result.frontColor : result.backColor
-}

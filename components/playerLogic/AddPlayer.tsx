@@ -40,7 +40,7 @@ const AddPlayer = () => {
     const loadFriends = async () => {
         const friends = ['Agazhord', 'Alexwwe', 'Brr1', 'BloddSword', 'Dawichii', 'DryadZero', 'Traketero', 'TR0I']
         setSearching(true)
-        let players_data = []
+        const players_data = []
         for (let i = 0; i < friends.length; i++) {
             const player = await axios.get(backend + friends[i])
             players_data.push(player.data)

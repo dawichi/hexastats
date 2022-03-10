@@ -36,6 +36,47 @@ export default function Navbar() {
 
     // END DARK MODE
 
+    // Links, used both in desktop and mobile view
+    const RenderLinks = ({ navigation, router }: { navigation: link[]; router: NextRouter }) => (
+        <>
+            {navigation.map((item, idx) => (
+                <Link href={item.url} key={idx} passHref>
+                    <button
+                        key={item.name}
+                        className={
+                            'block px-3 py-2 rounded-md text-base font-medium ' +
+                            (router.pathname === item.url ? 'bg-zinc-900 text-white' : 'text-zinc-300 hover:bg-zinc-700 hover:text-white')
+                        }
+                    >
+                        {item.name}
+                    </button>
+                </Link>
+            ))}
+        </>
+    )
+
+    // Toggle to switch between dark and light mode
+    const Toggle = ({ darkMode, setDarkMode }) => (
+        <Switch
+            checked={darkMode}
+            onChange={setDarkMode}
+            className={
+                'relative inline-flex flex-shrink-0 h-[34px] w-[58px] border-2 dark:border-transparent border-orange-100 rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 bg-orange-50 dark:bg-zinc-900'
+            }
+        >
+            <span className='sr-only'>Use setting</span>
+            <span
+                aria-hidden='true'
+                className={`${
+                    darkMode ? 'translate-x-6 bg-zinc-700' : 'translate-x-0 bg-orange-200'
+                } pointer-events-none inline-block h-[30px] w-[30px]
+				rounded-full shadow-lg transform ring-0 transition ease-in-out duration-200 flex justify-center items-center`}
+            >
+                {darkMode ? <i className='bi bi-moon-fill text-white'></i> : <i className='bi bi-sun-fill text-black'></i>}
+            </span>
+        </Switch>
+    )
+
     return (
         <Disclosure as='nav' className='bg-zinc-800 shadow dark:shadow-zinc-700'>
             {({ open }) => (
@@ -59,7 +100,9 @@ export default function Navbar() {
                                     </button>
                                 </Link>
                                 <div className='hidden sm:block sm:ml-6'>
-                                    <div className='flex space-x-4'>{renderLinks(navigation, router)}</div>
+                                    <div className='flex space-x-4'>
+                                        <RenderLinks navigation={navigation} router={router} />
+                                    </div>
                                 </div>
                             </div>
                             <div className='absolute right-0 flex'>
@@ -74,51 +117,12 @@ export default function Navbar() {
                     </div>
 
                     <Disclosure.Panel className='sm:hidden'>
-                        <div className='px-2 pt-2 pb-3 space-y-1'>{renderLinks(navigation, router)}</div>
+                        <div className='px-2 pt-2 pb-3 space-y-1'>
+                            <RenderLinks navigation={navigation} router={router} />
+                        </div>
                     </Disclosure.Panel>
                 </>
             )}
         </Disclosure>
-    )
-}
-
-// Links, used both in desktop and mobile view
-const renderLinks = (navigation: link[], router: NextRouter) => {
-    return navigation.map((item, idx) => (
-        <Link href={item.url} key={idx} passHref>
-            <button
-                key={item.name}
-                className={
-                    'block px-3 py-2 rounded-md text-base font-medium ' +
-                    (router.pathname === item.url ? 'bg-zinc-900 text-white' : 'text-zinc-300 hover:bg-zinc-700 hover:text-white')
-                }
-            >
-                {item.name}
-            </button>
-        </Link>
-    ))
-}
-
-// Toggle to switch between dark and light mode
-const Toggle = ({ darkMode, setDarkMode }) => {
-    return (
-        <Switch
-            checked={darkMode}
-            onChange={setDarkMode}
-            className={
-                'relative inline-flex flex-shrink-0 h-[34px] w-[58px] border-2 dark:border-transparent border-orange-100 rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 bg-orange-50 dark:bg-zinc-900'
-            }
-        >
-            <span className='sr-only'>Use setting</span>
-            <span
-                aria-hidden='true'
-                className={`${
-                    darkMode ? 'translate-x-6 bg-zinc-700' : 'translate-x-0 bg-orange-200'
-                } pointer-events-none inline-block h-[30px] w-[30px]
-				rounded-full shadow-lg transform ring-0 transition ease-in-out duration-200 flex justify-center items-center`}
-            >
-                {darkMode ? <i className='bi bi-moon-fill text-white'></i> : <i className='bi bi-sun-fill text-black'></i>}
-            </span>
-        </Switch>
     )
 }

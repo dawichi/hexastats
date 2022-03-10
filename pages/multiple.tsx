@@ -57,7 +57,7 @@ export default function Multiple() {
                                 </div>
                                 <p>{player.alias}</p>
                             </div>
-                            {result != 0 && (
+                            {result !== 0 && (
                                 <div className='lg:col-span-2 flex flex-col justify-center'>
                                     <div className='flex justify-between items-center'>
                                         <span>{result} &nbsp; &nbsp; by game</span>

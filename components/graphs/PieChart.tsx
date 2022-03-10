@@ -20,11 +20,7 @@ export default function PieChart(props: { id: number; innerRadius: number; outer
 
     const colorScale = d3.scaleSequential().interpolator(d3.interpolateRainbow).domain([0, props.data.length])
 
-    useEffect(() => {
-        drawChart()
-    }, [props.data])
-
-    const drawChart = () => {
+    const DrawChart = () => {
         // Remove old svg
         d3.select('#pie-container-' + props.id)
             .select('svg')
@@ -64,6 +60,7 @@ export default function PieChart(props: { id: number; innerRadius: number; outer
             .style('font-size', '.8rem')
             .attr('transform', (d: any) => {
                 const [x, y] = arcGenerator.centroid(d)
+
                 return `translate(${x}, ${y})`
             })
 
@@ -76,9 +73,15 @@ export default function PieChart(props: { id: number; innerRadius: number; outer
             .style('font-size', '.8rem')
             .attr('transform', (d: any) => {
                 const [x, y] = arcGenerator.centroid(d)
+
                 return `translate(${x}, ${y + 20})`
             })
+
     }
+	
+    useEffect(() => {
+        DrawChart()
+    }, [])
 
     return <div id={`pie-container-${props.id}`} />
 }
