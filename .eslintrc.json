@@ -18,7 +18,7 @@
         "no-new": "error",
         "padding-line-between-statements": ["error", { "blankLine": "always", "prev": "*", "next": "return" }],
         "no-unused-expressions": "error",
-        "no-unused-vars": "error",
+        "no-unused-vars": "warn",
         "no-use-before-define": "error",
         "object-shorthand": "error",
         "arrow-body-style": "error",
