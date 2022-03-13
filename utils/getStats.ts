@@ -4,7 +4,7 @@ import { PlayerStatsResult } from 'interfaces/interfaces'
 /*
  *  Returns the stats calculated for that player based on its 7 champs stats
  */
-export default function getStats(player: Player) {
+export default function getStats(player: Player): PlayerStatsResult {
     const result: PlayerStatsResult = {
         name: player.alias,
         image: player.image,

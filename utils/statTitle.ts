@@ -1,4 +1,4 @@
-export default function propTitle(prop: string) {
+export default function propTitle(prop: string): string {
     const props = {
         games: 'Games Played',
         winrate: 'Winrate',
@@ -22,5 +22,6 @@ export default function propTitle(prop: string) {
     if (props[prop] !== undefined) {
         return props[prop]
     }
+
     return prop
 }

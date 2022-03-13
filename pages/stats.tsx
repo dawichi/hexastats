@@ -30,7 +30,7 @@ export default function Home() {
     // ┌────────────────────────────────────────────────────────────
     // │ Highlights each table cell based on the stat requirements
     // └────────────────────────────────────────────────────────────
-    const tint = (num: number, type: string) => {
+    const tint = (num: number, type: string): string => {
         const tints = {
             games: (x: number) => (x >= 50 ? 'bg-green-200 dark:bg-green-700' : ''),
             winrate: (x: number) => (x >= 55 ? 'bg-sky-200 dark:bg-sky-700' : ''),

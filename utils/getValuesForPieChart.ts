@@ -1,6 +1,6 @@
 import { DataForChart, PlayerStatsResult } from 'interfaces/interfaces'
 
-export default function getValuesForPieChart(playersData: PlayerStatsResult[], stat: string) {
+export default function getValuesForPieChart(playersData: PlayerStatsResult[], stat: string): DataForChart[] {
     const player_infos: DataForChart[] = [] // [ {label: 'name', value: 5} ]
 
     // Fills it with values
@@ -13,7 +13,8 @@ export default function getValuesForPieChart(playersData: PlayerStatsResult[], s
 
     // Sorts values, asc or desc
     player_infos.sort((a, b) => {
-        if (stat != 'deaths') return b.value - a.value
+        if (stat !== 'deaths') return b.value - a.value
+        
         return a.value - b.value
     })
 

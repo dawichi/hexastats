@@ -1,4 +1,4 @@
-export default function trophyIcon(rank: number) {
+export default function trophyIcon(rank: number): JSX.Element {
     const icons = {
         1: (
             <span className='bg-yellow-400 p-1 rounded text-white mr-1 mb-1 inline-block'>
@@ -16,5 +16,6 @@ export default function trophyIcon(rank: number) {
             </span>
         ),
     }
+
     return icons[rank]
 }
