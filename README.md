@@ -4,7 +4,13 @@
   <img src="https://img.shields.io/badge/made%20with-next%20js-black" /><span> </span><img src="https://img.shields.io/badge/made%20with-typescript-blue" /><span> </span><img src="https://img.shields.io/badge/made%20with-tailwindcss-ff69b4" />
 </div>
 
-[NextJS](https://nextjs.org/) frontend application to visualize data from League of Legends stats.
+<p align="center">Web application to allow players to visualize their data from League of Legends.</p`>
+---
+
+The project is a monorepo consisted in:
+
+* `/frontend`  NextJS app
+* `/backend` Python (flask) API
 
 
 
