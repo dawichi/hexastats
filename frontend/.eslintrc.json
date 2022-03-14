@@ -1,7 +1,7 @@
 {
     "extends": "next/core-web-vitals",
     "rules": {
-        "camelcase": "warn",
+        "camelcase": "off",
         "curly": "warn",
         "default-case": "error",
         "eqeqeq": "error",
