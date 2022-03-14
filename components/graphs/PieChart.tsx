@@ -76,9 +76,8 @@ export default function PieChart(props: { id: number; innerRadius: number; outer
 
                 return `translate(${x}, ${y + 20})`
             })
-
     }
-	
+
     useEffect(() => {
         DrawChart()
     }, [])

@@ -14,7 +14,7 @@ export default function getValuesForPieChart(playersData: PlayerStatsResult[], s
     // Sorts values, asc or desc
     player_infos.sort((a, b) => {
         if (stat !== 'deaths') return b.value - a.value
-        
+
         return a.value - b.value
     })
 

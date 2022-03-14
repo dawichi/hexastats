@@ -5,7 +5,6 @@ import { styles } from 'styles/styles.config'
 import { PlayersContext } from 'hooks/PlayersContext'
 import { Player } from 'interfaces/player'
 
-
 const sections = [
     {
         title: 'Top 10🔥 %',
@@ -51,7 +50,6 @@ const sections = [
     },
 ]
 
-
 // ┌────────────────┐
 // │ Compare PAGE:  │
 // └────────────────┘
@@ -83,16 +81,23 @@ export default function Compare() {
         } else if (idx + 1 === right) {
             setRight(0)
         } else {
-            if (!left) {setLeft(idx + 1)}
-            else if (!right) {setRight(idx + 1)}
-            else if (idx + 1 !== left && idx + 1 !== right) {setRight(idx + 1)}
+            if (!left) {
+                setLeft(idx + 1)
+            } else if (!right) {
+                setRight(idx + 1)
+            } else if (idx + 1 !== left && idx + 1 !== right) {
+                setRight(idx + 1)
+            }
         }
     }
 
     // Styles
     const tintPlayerSelected = (idx: number) => {
-        if (idx + 1 === left) {return 'bg-blue-400'}
-        else if (idx + 1 === right) {return 'bg-red-400'} // right
+        if (idx + 1 === left) {
+            return 'bg-blue-400'
+        } else if (idx + 1 === right) {
+            return 'bg-red-400'
+        } // right
 
         return 'bg-zinc-100 dark:bg-zinc-800' // unselected
     }
@@ -138,7 +143,9 @@ export default function Compare() {
                     const r_value = getStats(players[right - 1])[stat]
                     const activated = getStats(players[left - 1])[stat] || getStats(players[right - 1])[stat]
                     const inverse = stat === 'deaths' || stat === 'max_deaths'
-                    if (activated && !statGroup) {total += calcWidth(l_value, r_value, inverse)}
+                    if (activated && !statGroup) {
+                        total += calcWidth(l_value, r_value, inverse)
+                    }
 
                     return (
                         <div key={idx}>
@@ -295,4 +302,3 @@ export default function Compare() {
         </Container>
     )
 }
-
