@@ -3,5 +3,5 @@ import { createContext } from 'react'
 
 export const PlayersContext = createContext({
     players: <Array<Player>>[],
-    setPlayers: (context: Player[]) => context,
+    setPlayers: (context: any) => context,
 })
