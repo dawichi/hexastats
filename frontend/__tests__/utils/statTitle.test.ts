@@ -1,10 +1,6 @@
-import { statTitle } from '../utils'
+import { statTitle } from 'utils'
 
 describe('[statTitle.ts]: returns a formatted Title', () => {
-    /* Parameters
-        prop:   string - the string to parse
-    */
-
     test('Should return a different string if it is in the props object', () => {
         const mock_prop = 'games'
 

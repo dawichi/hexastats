@@ -1,3 +1,7 @@
+/**
+ * @param rank the position in the podium
+ * @returns the <span></span>, empty or with a trophy to show
+ */
 export default function trophyIcon(rank: number): JSX.Element {
     const icons = {
         1: (
@@ -17,5 +21,5 @@ export default function trophyIcon(rank: number): JSX.Element {
         ),
     }
 
-    return icons[rank]
+    return icons[rank] ?? <span></span>
 }

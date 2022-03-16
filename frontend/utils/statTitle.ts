@@ -1,3 +1,7 @@
+/**
+ * @param prop the key of the prop
+ * @returns the text label for that key
+ */
 export default function propTitle(prop: string): string {
     const props = {
         games: 'Games Played',
@@ -19,9 +23,5 @@ export default function propTitle(prop: string): string {
         penta_kills: '🔥 Pentakills 🔥',
     }
 
-    if (props[prop] !== undefined) {
-        return props[prop]
-    }
-
-    return prop
+    return props[prop] ?? prop
 }

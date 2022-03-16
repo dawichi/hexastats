@@ -1,8 +1,10 @@
 import { Player } from 'interfaces/player'
 import { PlayerStatsResult } from 'interfaces/interfaces'
 
-/*
- *  Returns the stats calculated for that player based on its 7 champs stats
+/**
+ * Returns the stats calculated for that player based on its 7 champs stats
+ * @param player A object with the player structure
+ * @returns A object PlayerStatsResult with the stats calculated
  */
 export default function getStats(player: Player): PlayerStatsResult {
     const result: PlayerStatsResult = {
