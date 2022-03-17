@@ -27,7 +27,7 @@ The data is loaded into React Context object and managed to visualize the stats 
 
 ---
 
-![showcase](https://raw.githubusercontent.com/Dawichi/hexastats/main/frontend/showcase.png)
+![showcase](https://raw.githubusercontent.com/Dawichi/hexastats/main/showcase.png)
 
 
 ![showcase](https://raw.githubusercontent.com/Dawichi/hexastats/main/frontend/public/images/mastery.png)
