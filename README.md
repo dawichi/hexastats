@@ -3,9 +3,9 @@
 <div align="center">
   <img src="https://img.shields.io/badge/made%20with-next%20js-black" /><span> </span><img src="https://img.shields.io/badge/made%20with-typescript-blue" /><span> </span><img src="https://img.shields.io/badge/made%20with-tailwindcss-ff69b4" />
 </div>
-
-<p align="center">Web application to allow players to visualize their data from League of Legends.</p`>
+<p align="center">Web application to allow players to visualize their data from League of Legends.</p>
 ---
+
 
 The project is a monorepo consisted in:
 
@@ -27,11 +27,11 @@ The data is loaded into React Context object and managed to visualize the stats 
 
 ---
 
-![showcase](https://raw.githubusercontent.com/Dawichi/hexastats/main/showcase.png)
+![showcase](https://raw.githubusercontent.com/Dawichi/hexastats/main/frontend/showcase.png)
 
 
-![showcase](https://raw.githubusercontent.com/Dawichi/hexastats/main/public/images/showcase2.png)
+![showcase](https://raw.githubusercontent.com/Dawichi/hexastats/main/frontend/public/images/mastery.png)
 
 
-![showcase](https://raw.githubusercontent.com/Dawichi/hexastats/main/public/images/showcase3.png)
+![showcase](https://raw.githubusercontent.com/Dawichi/hexastats/main/frontend/public/images/compare.png)
 
