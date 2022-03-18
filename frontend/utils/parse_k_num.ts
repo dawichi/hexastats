@@ -3,7 +3,7 @@
  * @param value the number to parse
  * @param number_decimals opt: the number of decimals 
  * @param transform_millions opt: show 7m instead of 7000k
- * @returns 
+ * @returns {string} the string formatted
  */
 export default function parse_k_num(value: number, number_decimals: number = 0, transform_millions: boolean = false): string {
     if (!transform_millions) {

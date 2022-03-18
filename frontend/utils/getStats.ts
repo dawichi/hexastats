@@ -3,8 +3,8 @@ import { PlayerStatsResult } from 'interfaces/interfaces'
 
 /**
  * Returns the stats calculated for that player based on its 7 champs stats
- * @param player A object with the player structure
- * @returns A object PlayerStatsResult with the stats calculated
+ * @param {Player} player object with the player structure
+ * @returns {PlayerStatsResult} Object with the stats calculated
  */
 export default function getStats(player: Player): PlayerStatsResult {
     const result: PlayerStatsResult = {
@@ -58,8 +58,12 @@ export default function getStats(player: Player): PlayerStatsResult {
             stat_value += champ.games * champ[stat]
         })
 
-        if (!games) result[stat] = 0
-        else result[stat] = parseFloat((stat_value / games).toFixed(2))
+        if (!games) {
+            result[stat] = 0
+        }
+        else {
+            result[stat] = parseFloat((stat_value / games).toFixed(2))
+        }
     })
 
     return result

@@ -7,7 +7,7 @@ import { backend, servers } from 'configs'
 
 const AddPlayer = () => {
     // Search params
-    const user = useFormInput('')
+    const user = useFormInput()
     const [server, setServer] = useState<number>(0)
 
     // Search helpers
@@ -32,9 +32,11 @@ const AddPlayer = () => {
         user.reset()
     }
 
-    //Search button by pressing enter
+    // Search button by pressing enter
     const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') handleSearch()
+        if (event.key === 'Enter') {
+            handleSearch()
+        }
     }
 
     const loadFriends = async () => {
