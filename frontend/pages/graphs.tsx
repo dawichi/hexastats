@@ -6,6 +6,9 @@ import { DataForChart, PlayerStatsResult } from 'interfaces/interfaces'
 import { styles } from 'styles/styles.config'
 import { Player } from 'interfaces/player'
 
+// TODO: Collapsed version of trophies
+// TODO: button for collapsed and extended version
+// TODO: only alexwwe: Barchart https://recharts.org/en-US/examples/BarChartWithMultiXAxis
 // ┌────────────────┐
 // │  GRAPHS PAGE:  │
 // └────────────────┘
