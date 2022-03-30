@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const resp = await fetch(url, {
             method: 'GET',
             headers: {
-                'X-Riot-Token': process.env.API_KEY,
+                'X-Riot-Token': riot.apiKey,
             },
         })
 

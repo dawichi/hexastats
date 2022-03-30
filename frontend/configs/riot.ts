@@ -1,10 +1,6 @@
-export const backend = 'https://hexastats-flask.vercel.app/?players='
-
-export const servers = ['euw', 'lan', 'las', 'na', 'kr', 'eune', 'tr', 'oce', 'ru', 'jp', 'br']
-
 const endpoints = {
     summoner: 'summoner/v4/summoners/by-name/',
-    championRotations: 'v3/champion-rotations',
+    championRotations: 'platform/v3/champion-rotations',
     // TODO: endpoints generados por la IA, no se si funcinoan xD
     // match: 'match/',
     // matchlist: 'match/by-puuid/',
@@ -31,10 +27,10 @@ export const riot: {
     endpoints: new Proxy(endpoints, {
         get: (target, prop) => riot.baseUrl + target[prop],
         set: () => {
-            throw new Error('You can\'t modify the riot config')
-        }
+            throw new Error("You can't modify the riot config")
+        },
     }),
     utils: {
-        profileIconUrl: (id: number) => `http://ddragon.leagueoflegends.com/cdn/12.6.1/img/profileicon/${id}.png`
-    }
+        profileIconUrl: (id: number) => `http://ddragon.leagueoflegends.com/cdn/12.6.1/img/profileicon/${id}.png`,
+    },
 }
