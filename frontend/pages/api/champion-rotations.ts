@@ -1,10 +1,11 @@
+import { riot } from 'configs'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const endpoint = process.env.BASE_URL + 'v3/champion-rotations'
+    const url = riot.endpoints.championRotations
 
     try {
-        const resp = await fetch(endpoint, {
+        const resp = await fetch(url, {
             method: 'GET',
             headers: {
                 'X-Riot-Token': process.env.API_KEY,
