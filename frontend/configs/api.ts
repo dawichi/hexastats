@@ -21,6 +21,10 @@ export const riot: {
         summoner: string
         championRotations: string
     }
+    utils: {
+        // eslint-disable-next-line no-unused-vars
+        profileIconUrl: (id: number) => string
+    }
 } = {
     apiKey: process.env.API_KEY,
     baseUrl: 'https://euw1.api.riotgames.com/lol/',
@@ -30,4 +34,7 @@ export const riot: {
             throw new Error('You can\'t modify the riot config')
         }
     }),
+    utils: {
+        profileIconUrl: (id: number) => `http://ddragon.leagueoflegends.com/cdn/12.6.1/img/profileicon/${id}.png`
+    }
 }
