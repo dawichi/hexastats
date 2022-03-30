@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const endpoints = {
     summoner: 'summoner/v4/summoners/by-name/',
     championRotations: 'platform/v3/champion-rotations',
@@ -20,8 +21,9 @@ export const riot: {
 		championMastery: string
     }
     utils: {
-        // eslint-disable-next-line no-unused-vars
-        profileIconUrl: (id: number) => string
+        baseImgUrl: string,
+        profileIconUrl: (id: number) => string,
+        championImageUrl: (id: number) => string,
     }
 } = {
     apiKey: process.env.API_KEY,
@@ -33,6 +35,8 @@ export const riot: {
         },
     }),
     utils: {
-        profileIconUrl: (id: number) => `http://ddragon.leagueoflegends.com/cdn/12.6.1/img/profileicon/${id}.png`,
+        baseImgUrl: 'https://ddragon.leagueoflegends.com/cdn/12.6.1/img/',
+        profileIconUrl: (id: number) => riot.utils.baseImgUrl + `profileicon/${id}.png`,
+        championImageUrl: (id: number) => riot.utils.baseImgUrl + `champion/${id}.png`,
     },
 }
