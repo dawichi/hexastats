@@ -27,9 +27,7 @@ export const riot: {
     endpoints: new Proxy(endpoints, {
         get: (target, prop) => riot.baseUrl + target[prop],
         set: () => {
-            console.error('Cannot modify riot config')
-
-            return true
+            throw new Error('You can\'t modify the riot config')
         }
     }),
 }
