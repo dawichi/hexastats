@@ -18,7 +18,7 @@ const Test = () => {
     useEffect(() => {
         // GET champion masteries
         if (playerData) {
-            fetch('/api/summoner-league/' + playerData.id)
+            fetch('/api/masteries/' + playerData.id)
                 .then(res => res.json())
                 .then(data => setMasteries(data))
 
