@@ -2,7 +2,8 @@
 const endpoints = {
     summoner: 'summoner/v4/summoners/by-name/',
     championRotations: 'platform/v3/champion-rotations',
-    championMastery: 'champion-mastery/v4/champion-masteries/by-summoner/'
+    championMastery: 'champion-mastery/v4/champion-masteries/by-summoner/',
+    summonerLeague: 'league/v4/entries/by-summoner/'
     // TODO: endpoints generados por la IA, no se si funcinoan xD
     // match: 'match/',
     // matchlist: 'match/by-puuid/',
@@ -19,6 +20,7 @@ export const riot: {
         summoner: string
         championRotations: string
 		championMastery: string
+        summonerLeague: string
     }
     utils: {
         cdn: string,

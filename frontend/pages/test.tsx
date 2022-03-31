@@ -1,5 +1,6 @@
 import { riot } from 'configs'
 import React, { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 const Test = () => {
     const [playerData, setPlayerData] = useState<any>()
@@ -17,9 +18,10 @@ const Test = () => {
     useEffect(() => {
         // GET champion masteries
         if (playerData) {
-            fetch('/api/masteries/' + playerData.id)
+            fetch('/api/summoner-league/' + playerData.id)
                 .then(res => res.json())
                 .then(data => setMasteries(data))
+
         }
     }, [playerData])
 
