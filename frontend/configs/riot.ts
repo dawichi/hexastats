@@ -21,7 +21,7 @@ export const riot: {
 		championMastery: string
     }
     utils: {
-        baseImgUrl: string,
+        cdn: string,
         profileIconUrl: (id: number) => string,
         championImageUrl: (id: number) => string,
     }
@@ -35,8 +35,8 @@ export const riot: {
         },
     }),
     utils: {
-        baseImgUrl: 'https://ddragon.leagueoflegends.com/cdn/12.6.1/img/',
-        profileIconUrl: (id: number) => riot.utils.baseImgUrl + `profileicon/${id}.png`,
-        championImageUrl: (id: number) => riot.utils.baseImgUrl + `champion/${id}.png`,
+        cdn: 'https://ddragon.leagueoflegends.com/cdn/12.6.1/',
+        profileIconUrl: (id: number) => riot.utils.cdn + `img/profileicon/${id}.png`,
+        championImageUrl: (id: number) => riot.utils.cdn + `img/champion/${id}.png`,
     },
 }

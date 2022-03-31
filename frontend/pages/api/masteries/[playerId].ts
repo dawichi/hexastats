@@ -1,12 +1,15 @@
 import { riot } from 'configs'
 import { NextApiRequest, NextApiResponse } from 'next'
 
+/**
+ * Retrieves the masteries data for a given player id
+ */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (!req.query.name) {
-        return res.status(403).json({ msg: 'Missing player name' })
+    if (!req.query.playerId) {
+        return res.status(403).json({ msg: 'Missing player ID' })
     }
 
-    const url = riot.endpoints.summoner + req.query.name
+    const url = riot.endpoints.championMastery + req.query.playerId
 
     try {
         const resp = await fetch(url, {
