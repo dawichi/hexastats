@@ -9,7 +9,6 @@ const endpoints = {
     // matchlist: 'match/by-puuid/',
     // league: 'league/',
     // leaguePositions: 'league/positions/by-summoner/',
-    // leagueEntries: 'league/entries/by-summoner/',
     // leagueEntriesByQueue: 'league/entries/by-queue/',
 }
 
@@ -26,6 +25,7 @@ export const riot: {
         cdn: string,
         profileIconUrl: (id: number) => string,
         championImageUrl: (id: number) => string,
+        leagueIconUrl: (league: string) =>string,
     }
 } = {
     apiKey: process.env.API_KEY,
@@ -40,5 +40,6 @@ export const riot: {
         cdn: 'https://ddragon.leagueoflegends.com/cdn/12.6.1/',
         profileIconUrl: (id: number) => riot.utils.cdn + `img/profileicon/${id}.png`,
         championImageUrl: (id: number) => riot.utils.cdn + `img/champion/${id}.png`,
+        leagueIconUrl: (league: string) => riot.utils.cdn
     },
 }
