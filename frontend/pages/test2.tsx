@@ -8,7 +8,7 @@ const Test = () => {
 
     useEffect(() => {
         // GET data from player
-        fetch('/api/summoner/Brr1')
+        fetch('/api/summoner/Alexwwe')
             .then(res => res.json())
             .then(data => setPlayerData(data))
     }, [])
@@ -25,30 +25,25 @@ const Test = () => {
     console.table(playerData)
     console.log(league)
 
+    const Rank = (idx: number) => ({
+        rank: league[idx]?.tier ? `${league[idx]?.tier} ${league[idx]?.rank}` : 'Unranked',
+        image: league[idx]?.tier ? `/images/league-emblems/${league[idx]?.tier}.png` : '/images/league-emblems/Unranked.png',
+        lp: league[idx]?.leaguePoints ?? 0,
+        win: league[idx]?.wins ?? 0,
+        lose: league[idx]?.losses ?? 0,
+        winrate: league[idx]?.wins && league[idx]?.losses ?
+            (league[idx]?.wins/(league[idx]?.wins+league[idx]?.losses) * 100).toFixed(0) : 0,
+    })
     const player = {
         image: riot.utils.profileIconUrl(playerData?.profileIconId),
         alias: playerData?.name,
         level: playerData?.summonerLevel,
         rank: {
-            solo:{
-                rank: league[0]?.tier + ' ' + league[0]?.rank,
-                image: '/images/league-emblems/' + league[0]?.tier + '.png',
-                lp: league[0]?.leaguePoints,
-                win: league[0]?.wins,
-                lose: league[0]?.losses,
-                winrate: (league[0]?.wins/(league[0]?.wins+league[0]?.losses) * 100).toFixed(0),
-
-            },
-            flex:{
-                rank: league[1]?.tier + ' ' + league[1]?.rank,
-                image: '/images/league-emblems/' + league[1]?.tier + '.png',
-                lp: league[1]?.leaguePoints,
-                win: league[1]?.wins,
-                lose: league[1]?.losses,
-                winrate: (league[1]?.wins/(league[1]?.wins+league[1]?.losses) * 100).toFixed(0),
-            }
+            solo: Rank(0),
+            flex: Rank(1),
         }
     }
+    console.log(player)
 
     return (
         <div className='container mx-auto'>
