@@ -1,27 +1,40 @@
-from flask import Flask, Response
+'''Flask module to create the API'''
+from flask import Flask, request
+from get_data import get_data
+
 
 app = Flask(__name__)
 
+# Set headers
 @app.after_request
-def after_request(response):
-    response.headers["Access-Control-Allow-Origin"] = "*" # <- You can change "*" for a domain for example "http://localhost"
-    response.headers["Access-Control-Allow-Credentials"] = "true"
-    response.headers["Access-Control-Allow-Methods"] = "GET"
-    response.headers["Access-Control-Allow-Headers"] = "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
-    return response
-
+def after_request(res):
+    '''Set headers for each request.'''
+    res.headers["Access-Control-Allow-Origin"] = "*" # <- You can set a domain: "http://localhost"
+    res.headers["Access-Control-Allow-Credentials"] = "true"
+    res.headers["Access-Control-Allow-Methods"] = "GET"
+    res.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
+    return res
 
 @app.route('/', methods=['GET'])
-def home():
+def index():
+    '''Default endpoint if no path is specified'''
     error = {
         'code': 400,
+        'data': None,
         'error': 'Missing Summoner Name in path',
     }
     return error,400
 
-@app.route("/<string:summonerName>", methods=['GET'])
-def summoner(summonerName):
-    player = {
-        'name': summonerName
-    }
-    return player,200
+
+@app.route("/<string:summoner_name>", methods=['GET'])
+def summoner(summoner_name):
+    '''
+    Endpoint to get summoner information
+    @param summoner_name: Summoner name to get information about
+    @param region: Specified server to get information from
+    '''
+    server = request.args.get('server')
+    if server is None:
+        server = 'euw'
+
+    return get_data(summoner_name, server)
