@@ -1,6 +1,7 @@
 '''Flask module to create the API'''
 from flask import Flask, request
 from get_data import get_data
+from utils import validate_server
 
 
 app = Flask(__name__)
@@ -33,8 +34,6 @@ def summoner(summoner_name):
     @param summoner_name: Summoner name to get information about
     @param region: Specified server to get information from
     '''
-    server = request.args.get('server')
-    if server is None:
-        server = 'euw'
+    server = validate_server(request.args.get('server'))
 
     return get_data(summoner_name, server)

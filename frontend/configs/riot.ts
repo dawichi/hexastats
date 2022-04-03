@@ -28,7 +28,7 @@ export const riot: {
         leagueIconUrl: (league: string) =>string,
     }
 } = {
-    apiKey: process.env.API_KEY,
+    apiKey: process.env.RIOT_API_KEY,
     baseUrl: 'https://euw1.api.riotgames.com/lol/',
     endpoints: new Proxy(endpoints, {
         get: (target, prop) => riot.baseUrl + target[prop],
