@@ -4,48 +4,43 @@ import os
 import requests
 from dotenv import load_dotenv
 
-load_dotenv()
 
+# Get the API key from the .env file
+load_dotenv()
 riot_token = os.environ.get('RIOT_API_KEY')
 
-# Set headers
+
+# Set headers for the API call
 headers = {
     'X-Riot-Token': riot_token,
 }
 
+
 def summoner(summoner_name, base_url):
-
-    ''' Returns the basic data from a player'''
-
+    '''Get summoner information'''
     url = f'{base_url}/summoner/v4/summoners/by-name/{summoner_name}'
 
-    response = requests.get(url, headers=headers)
+    return requests.get(url, headers=headers).json()
 
-    return response.json()
 
 def summoner_league(summoner_id, base_url):
-
-    ''' Returns the rank data from a player'''
-
+    '''Get summoner league information'''
     url = f'{base_url}/league/v4/entries/by-summoner/{summoner_id}'
 
     resp = requests.get(url, headers=headers).json()
 
+    def rank(i):
+        '''Get rank of summoner'''
+        return {
+            'rank': f"{resp[i]['tier']} {resp[i]['rank']}" if resp[i]['tier'] else 'Unranked',
+            'image': f"/images/league-emblems/{resp[i]['tier']}.png" if resp[i]['tier'] else '/images/league-emblems/Unranked.png',
+            'lp': resp[i]['leaguePoints'],
+            'win': resp[i]['wins'],
+            'lose': resp[i]['losses'],
+            'winrate': int((resp[i]['wins']/(resp[i]['wins']+resp[i]['losses'])) * 100) if resp[i]['wins'] and resp[i]['losses'] else 0 ,
+        }
+
     return {
-        'solo':{
-            'rank': f"{resp[0]['tier']} {resp[0]['rank']}" if resp[0]['tier'] else 'Unranked',
-            'image': f"/images/league-emblems/{resp[0]['tier']}.png" if resp[0]['tier'] else '/images/league-emblems/Unranked.png',
-            'lp': resp[0]['leaguePoints'],
-            'win': resp[0]['wins'],
-            'lose': resp[0]['losses'],
-            'winrate': int((resp[0]['wins']/(resp[0]['wins']+resp[0]['losses'])) * 100) if resp[0]['wins'] and resp[0]['losses'] else 0 ,
-        },
-        'flex':{
-            'rank': f"{resp[1]['tier']} {resp[1]['rank']}" if resp[1]['tier'] else 'Unranked',
-            'image': f"/images/league-emblems/{resp[1]['tier']}.png" if resp[1]['tier'] else '/images/league-emblems/Unranked.png',
-            'lp': resp[1]['leaguePoints'],
-            'win': resp[1]['wins'],
-            'lose': resp[1]['losses'],
-            'winrate': int((resp[1]['wins']/(resp[1]['wins']+resp[1]['losses'])) * 100) if resp[1]['wins'] and resp[1]['losses'] else 0 ,
-        },
+        'solo': rank(0),
+        'flex': rank(1),
     }

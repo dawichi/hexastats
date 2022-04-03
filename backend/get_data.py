@@ -2,6 +2,10 @@
 
 from api import summoner, summoner_league
 
+class ApiError(Exception):
+    '''Custom error class for API errors'''
+
+
 def get_data(summoner_name, server):
     '''
     Function to get data from the RIOT API
@@ -11,25 +15,23 @@ def get_data(summoner_name, server):
     base_url = f'https://{server}.api.riotgames.com/lol'
 
     # 1.Get profile information from the player
-
     summoner_data = summoner(summoner_name, base_url)
-
+    # print(summoner_data)
+    # raise ApiError('Summoner not found')
     # 2.Get league by id
-
     league_data = summoner_league(summoner_data['id'], base_url)
 
     summoner_response = {
         'id': summoner_data['id'],
-        'data':{
-            'name': summoner_data['name'],
-            'level': summoner_data['summonerLevel'],
-            'image': f"https://ddragon.leagueoflegends.com/cdn/12.6.1/img/profileicon/{summoner_data['profileIconId']}.png"
-        },
+        'name': summoner_data['name'],
+        'level': summoner_data['summonerLevel'],
+        'image': f"https://ddragon.leagueoflegends.com/cdn/12.6.1/img/profileicon/{summoner_data['profileIconId']}.png",
         'rank': {
             'solo': league_data['solo'],
             'flex': league_data['flex'],
         }
     }
+
     return {
         'code': 200,
         'data': summoner_response,
