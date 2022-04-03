@@ -1,8 +1,6 @@
 '''Gets the data from the RIOT API'''
 
-import os
-import requests
-from dotenv import load_dotenv
+from api import summoner, summoner_league
 
 def get_data(summoner_name, server):
     '''
@@ -10,20 +8,29 @@ def get_data(summoner_name, server):
     @param summoner_name: Summoner name to get information about
     @param server: Specified server to get information from
     '''
-    base_url = f'https://{server}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{summoner_name}'
+    base_url = f'https://{server}.api.riotgames.com/lol'
 
-    load_dotenv()
+    # 1.Get profile information from the player
 
-    riot_token = os.environ.get('RIOT_API_KEY')
+    summoner_data = summoner(summoner_name, base_url)
 
-    # Set headers
-    headers = {
-        'X-Riot-Token': riot_token,
+    # 2.Get league by id
+
+    league_data = summoner_league(summoner_data['id'], base_url)
+
+    summoner_response = {
+        'id': summoner_data['id'],
+        'data':{
+            'name': summoner_data['name'],
+            'level': summoner_data['summonerLevel'],
+        },
+        'rank': {
+            'solo': league_data['solo'],
+            'flex': league_data['flex'],
+        }
     }
-
-    response = requests.get(base_url, headers=headers)
     return {
         'code': 200,
-        'data': response.json(),
+        'data': summoner_response,
         'error': None,
     }

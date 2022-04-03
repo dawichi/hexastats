@@ -16,14 +16,16 @@ def after_request(res):
     res.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
     return res
 
-@app.route('/', methods=['GET'])
-def index():
-    '''Default endpoint if no path is specified'''
-    error = {
+error = {
         'code': 400,
         'data': None,
         'error': 'Missing Summoner Name in path',
     }
+
+@app.route('/', methods=['GET'])
+def index():
+    '''Default endpoint if no path is specified'''
+
     return error,400
 
 
@@ -34,6 +36,7 @@ def summoner(summoner_name):
     @param summoner_name: Summoner name to get information about
     @param region: Specified server to get information from
     '''
+    if summoner_name == 'favicon.ico':
+        return error, 400
     server = validate_server(request.args.get('server'))
-
     return get_data(summoner_name, server)
