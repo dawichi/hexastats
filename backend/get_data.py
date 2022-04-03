@@ -23,6 +23,7 @@ def get_data(summoner_name, server):
         'data':{
             'name': summoner_data['name'],
             'level': summoner_data['summonerLevel'],
+            'image': f"https://ddragon.leagueoflegends.com/cdn/12.6.1/img/profileicon/{summoner_data['profileIconId']}.png"
         },
         'rank': {
             'solo': league_data['solo'],
