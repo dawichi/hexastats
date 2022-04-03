@@ -1,5 +1,9 @@
 ''' Helper functions '''
 
+class ApiError(Exception):
+    '''Custom error class for API errors'''
+
+
 def validate_server(server):
     '''
     Function to check if the server is valid

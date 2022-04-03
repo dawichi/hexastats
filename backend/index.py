@@ -18,7 +18,7 @@ def after_request(res):
     return res
 
 
-error = {
+default_error = {
     'code': 400,
     'data': None,
     'error': 'Missing Summoner Name in path',
@@ -28,7 +28,7 @@ error = {
 @app.route('/', methods=['GET'])
 def index():
     '''Default endpoint if no path is specified'''
-    return error, 400
+    return default_error, 400
 
 
 @app.route("/<string:summoner_name>", methods=['GET'])
@@ -40,7 +40,7 @@ def summoner(summoner_name):
     '''
     # Exception handling for favicon.ico
     if summoner_name == 'favicon.ico':
-        return error, 400
+        return default_error, 400
 
     # Get region from query string
     server = validate_server(request.args.get('server'))

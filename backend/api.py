@@ -3,6 +3,7 @@
 import os
 import requests
 from dotenv import load_dotenv
+from utils import ApiError
 
 
 # Get the API key from the .env file
@@ -23,11 +24,25 @@ def summoner(summoner_name, base_url):
     return requests.get(url, headers=headers).json()
 
 
-def summoner_league(summoner_id, base_url):
+def league(summoner_id, base_url):
     '''Get summoner league information'''
     url = f'{base_url}/league/v4/entries/by-summoner/{summoner_id}'
 
     resp = requests.get(url, headers=headers).json()
+    if len(resp) == 0:
+        empty = {
+            'rank': 'Unranked',
+            'image': '/images/league-emblems/Unranked.png',
+            'lp': 0,
+            'win': 0,
+            'lose': 0,
+            'winrate': 0,
+        }
+
+        return {
+            'solo': empty,
+            'flex': empty,
+        }
 
     def rank(i):
         '''Get rank of summoner'''
