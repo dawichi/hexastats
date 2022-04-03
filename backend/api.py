@@ -3,7 +3,6 @@
 import os
 import requests
 from dotenv import load_dotenv
-from utils import ApiError
 
 
 # Get the API key from the .env file
@@ -15,7 +14,6 @@ riot_token = os.environ.get('RIOT_API_KEY')
 headers = {
     'X-Riot-Token': riot_token,
 }
-
 
 def summoner(summoner_name, base_url):
     '''Get summoner information'''
@@ -29,20 +27,18 @@ def league(summoner_id, base_url):
     url = f'{base_url}/league/v4/entries/by-summoner/{summoner_id}'
 
     resp = requests.get(url, headers=headers).json()
-    if len(resp) == 0:
-        empty = {
-            'rank': 'Unranked',
-            'image': '/images/league-emblems/Unranked.png',
-            'lp': 0,
-            'win': 0,
-            'lose': 0,
-            'winrate': 0,
-        }
 
-        return {
-            'solo': empty,
-            'flex': empty,
-        }
+    default = {
+        'rank': 'Unranked',
+        'image': '/images/league-emblems/Unranked.png',
+        'lp': 0,
+        'win': 0,
+        'lose': 0,
+        'winrate': 0,
+    }
+
+    def winrate(wins,losses):
+        return  int((wins/(wins+losses)) * 100) if wins and losses else 0
 
     def rank(i):
         '''Get rank of summoner'''
@@ -52,8 +48,27 @@ def league(summoner_id, base_url):
             'lp': resp[i]['leaguePoints'],
             'win': resp[i]['wins'],
             'lose': resp[i]['losses'],
-            'winrate': int((resp[i]['wins']/(resp[i]['wins']+resp[i]['losses'])) * 100) if resp[i]['wins'] and resp[i]['losses'] else 0 ,
+            'winrate': winrate(resp[i]['wins'], resp[i]['losses']) ,
         }
+
+    if len(resp) == 0:
+        return {
+            'solo': default,
+            'flex': default,
+        }
+    if len(resp) == 1:
+        if resp[0]['queueType'] == 'RANKED_SOLO_5x5':
+            return {
+                'solo': rank(0),
+                'flex': default,
+            }
+        return {
+                'solo': default,
+                'flex': rank(0),
+        }
+
+
+    print(resp,len)
 
     return {
         'solo': rank(0),
