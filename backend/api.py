@@ -3,7 +3,6 @@
 import os
 import requests
 from dotenv import load_dotenv
-from utils import champion_name, latest_version
 
 
 # Get the API key from the .env file
@@ -21,6 +20,30 @@ def summoner(summoner_name, base_url):
     url = f'{base_url}/summoner/v4/summoners/by-name/{summoner_name}'
 
     return requests.get(url, headers=headers).json()
+
+
+def latest_version():
+    '''
+    Function to obtain the latest version of the game
+    in order to access the updated data
+    '''
+    versions = 'https://ddragon.leagueoflegends.com/api/versions.json'
+
+    return  requests.get(versions, headers=headers).json()[0]
+
+
+def champion_name(champion_id):
+    '''
+    Function to obtain the champion's name by its Id
+    @param championId: Id of the champion
+    '''
+    champion_url = f'http://ddragon.leagueoflegends.com/cdn/{latest_version()}/data/en_US/champion.json'
+
+    champion_data = requests.get(champion_url, headers=headers).json()['data']
+
+    for key,value in champion_data.items():
+        if value['key'] == str(champion_id):
+            return key
 
 
 def league(summoner_id, base_url):
@@ -72,6 +95,7 @@ def league(summoner_id, base_url):
         'solo': rank(0),
         'flex': rank(1),
     }
+
 
 def mastery(summoner_id, base_url):
     '''Get champions mastery information'''
