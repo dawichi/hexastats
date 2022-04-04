@@ -1,7 +1,7 @@
 '''Gets the data from the RIOT API'''
 
-from api import summoner, league
-from utils import ApiError
+from api import summoner, league, mastery
+from utils import ApiError, latest_version
 
 
 def get_data(summoner_name, server):
@@ -21,14 +21,20 @@ def get_data(summoner_name, server):
     # 2.Get league by id
     league_data = league(summoner_data['id'], base_url)
 
+    # 3.Get masteries by id
+
+    mastery_data = mastery(summoner_data['id'], base_url)
+
+
     summoner_response = {
         'alias': summoner_data['name'],
         'level': summoner_data['summonerLevel'],
-        'image': f"https://ddragon.leagueoflegends.com/cdn/12.6.1/img/profileicon/{summoner_data['profileIconId']}.png",
+        'image': f"https://ddragon.leagueoflegends.com/cdn/{latest_version()}/img/profileicon/{summoner_data['profileIconId']}.png",
         'rank': {
             'solo': league_data['solo'],
             'flex': league_data['flex'],
-        }
+        },
+        'masteries': mastery_data
     }
 
     return {
