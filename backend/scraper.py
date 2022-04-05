@@ -61,7 +61,7 @@ def get_multiple_kills(doc,num):
     except :
         return  0
 
-def build_champs(server, player):
+def build_champs(player, server):
     '''
     Function that organizes the scraping of all the different champions
     '''

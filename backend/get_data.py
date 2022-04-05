@@ -28,7 +28,7 @@ def get_data(summoner_name, server):
 
     # 4.Get champs data
 
-    champs_data = build_champs(summoner_name, server)
+    champs_data = build_champs(summoner_name, 'euw')
 
 
     summoner_response = {
