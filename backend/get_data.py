@@ -1,6 +1,7 @@
 '''Gets the data from the RIOT API'''
 
 from api import summoner, league, mastery, latest_version
+from scraper import build_champs
 from utils import ApiError
 
 
@@ -25,6 +26,10 @@ def get_data(summoner_name, server):
 
     mastery_data = mastery(summoner_data['id'], base_url)
 
+    # 4.Get champs data
+
+    champs_data = build_champs(summoner_name, server)
+
 
     summoner_response = {
         'alias': summoner_data['name'],
@@ -34,7 +39,8 @@ def get_data(summoner_name, server):
             'solo': league_data['solo'],
             'flex': league_data['flex'],
         },
-        'masteries': mastery_data
+        'masteries': mastery_data,
+        'champs':champs_data
     }
 
     return {
