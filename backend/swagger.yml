@@ -1,0 +1,72 @@
+swagger: "2.0"
+info:
+  description: "This is de swagger documentation for hexastats backend"
+  version: "1.0.0"
+  title: "Hexastats"
+host: "hexastats.vercel.app"
+basePath: "/"
+tags:
+- name: "summoner"
+  description: "Get data from a single summoner"
+schemes:
+- "https"
+- "http"
+paths:
+  /summoner/{name}:
+    get:
+      tags:
+      - "summoner"
+      summary: "Get summoner data by name"
+      description: "Returns a summoner object with all the information"
+      operationId: "getSummonerByName"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of the summoner"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: "object"
+            properties:
+              code:
+                type: "number"
+                example: 200
+              data:
+                    $ref: "#/definitions/Summoner"
+              error:
+                type: "string"
+                example: null
+        "400":
+          description: "Invalid status value"
+          schema:
+              $ref: "#/definitions/Error"
+definitions:
+  Error:
+    type: "object"
+    properties:
+      code:
+        type: "number"
+        example: 400
+      data:
+        type: "object"
+        example: null
+      error:
+        type: "string"
+        example: "Missing Summoner Name in path"
+  Summoner:
+    type: "object"
+    properties:
+      alias:
+        type: "string"
+        example: Dawichii
+      image:
+        type: "string"
+        example: https://ddragon.leagueoflegends.com/cdn/12.6.1/img/profileicon/4411.png
+      level:
+        type: "number"
+        example: 235
