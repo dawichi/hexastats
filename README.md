@@ -4,22 +4,36 @@
   <img src="https://img.shields.io/badge/made%20with-next%20js-black" /><span> </span><img src="https://img.shields.io/badge/made%20with-typescript-blue" /><span> </span><img src="https://img.shields.io/badge/made%20with-tailwindcss-ff69b4" />
 </div>
 <p align="center">Web application to allow players to visualize their data from League of Legends.</p>
----
+
 
 
 The project is a monorepo consisted in:
 
-* `/frontend`  NextJS app
-* `/backend` Python (flask) API
+* [`/frontend`](https://github.com/dawichi/hexastats/tree/main/frontend)  NextJS app
+* [`/backend`](https://github.com/dawichi/hexastats/tree/main/backend) Python API (flask)
 
 
 
 #### Description
 
-Using `getStaticProps` function from Next, it caches the JSON data from our backend [Brr1-99/hexastats-flask](https://github.com/Brr1-99/hexastats-flask) (a python flask app).
-The data is loaded into React Context object and managed to visualize the stats through multiple different ways with graphs from [D3.js](https://d3js.org/)
+Hexastats allows you to enter multiple usernames, giving you a fast, visual and interactive way to compare data between players.
 
-* Scheme of the data we can manage right now: [`interface Player { }`](https://github.com/Dawichi/hexastats/blob/main/interfaces/player.ts)
+#### Last features
+
+* Dark mode
+* Players data remains after browser refresh
+* Masteries page
+
+#### Incoming features
+
+* Faster load for players data
+* Integration with League of Legends desktop client
+* Automatic load of player names once you enter in a new game, to give you statics of both teams
+
+#### Technical approach
+When a backend endpoint is called with a username, it loads, packages and serves the information in JSON to the frontend. The data is loaded into React Context object and managed to visualize the stats through multiple different ways with graphs from [D3.js](https://d3js.org/)
+
+For more specific info, browse both [`/frontend`](https://github.com/dawichi/hexastats/tree/main/frontend) and [`/backend`](https://github.com/dawichi/hexastats/tree/main/backend) README.md files.
 
 
 
