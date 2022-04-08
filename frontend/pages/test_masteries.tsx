@@ -20,7 +20,7 @@ export default function Masteries() {
 
     useEffect(() => {
         const fetchData = async (name: string, idx:number) => {
-            const response = await fetch(environment.backendUrl + '/' + name)
+            const response = await fetch(environment.backendUrl + name)
             const data = await response.json()
             data_names[idx] = data.data
             // setPlayers(players.concat(data.data))

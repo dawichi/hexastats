@@ -7,7 +7,7 @@ const Test = () => {
 
     useEffect(() => {
         // GET data from player
-        fetch(environment.backendUrl + '/dawichii')
+        fetch(environment.backendUrl + 'dawichii')
             .then(res => res.json())
             .then(data => setPlayerData(data.data))
     }, [])

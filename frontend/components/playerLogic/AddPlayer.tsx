@@ -3,7 +3,7 @@ import { Listbox } from '@headlessui/react'
 import useFormInput from 'hooks/useFormInput'
 import { PlayersContext } from 'hooks/PlayersContext'
 import axios from 'axios'
-import { backend, servers } from 'configs'
+import { environment, servers } from 'configs'
 
 const AddPlayer = () => {
     // Search params
@@ -22,9 +22,9 @@ const AddPlayer = () => {
         setError(false)
         setSearching(true)
         try {
-            const response = await axios.get(backend + user.inputProp.value + '&server=' + servers[server])
-            setPlayers(players.concat(response.data))
-            localStorage.setItem('players', JSON.stringify(players.concat(response.data)))
+            const { data } = await axios.get(environment.backendUrl + user.inputProp.value + '?server=' + servers[server])
+            setPlayers(players.concat(data.data))
+            localStorage.setItem('players', JSON.stringify(players.concat(data.data)))
         } catch (e) {
             setError(true)
         }
@@ -44,8 +44,8 @@ const AddPlayer = () => {
         setSearching(true)
         const players_data = []
         for (let i = 0; i < friends.length; i++) {
-            const player = await axios.get(backend + friends[i])
-            players_data.push(player.data)
+            const { data } = await axios.get(environment.backendUrl + friends[i])
+            players_data.push(data.data)
         }
         setPlayers(players.concat(players_data))
         localStorage.setItem('players', JSON.stringify(players.concat(players_data)))

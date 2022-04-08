@@ -17,6 +17,6 @@ export const environment = new Proxy(local_conf, {
             return target[key]
         }
 
-        return local_conf.production ? 'https:/backend-hexastats.vercel.app' : 'http://localhost:5000'
+        return local_conf.production ? 'https:/backend-hexastats.vercel.app/' : 'http://localhost:5000/'
     }
 })
