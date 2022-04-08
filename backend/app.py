@@ -1,7 +1,6 @@
 '''Flask module to create the API'''
 from flask import Flask, request
 from get_data import get_data
-from utils import validate_server
 
 
 app = Flask(__name__)
@@ -42,8 +41,10 @@ def summoner(summoner_name):
     if summoner_name == 'favicon.ico':
         return default_error, 400
 
-    # Get region from query string
-    server = validate_server(request.args.get('server'))
+    # Validate the server
+    servers = ['euw1', 'br1', 'eun1', 'jp1','kr', 'la1', 'la2', 'na1', 'oc1', 'ru', 'tr1']
+    server_req = request.args.get('server')
+    server = server_req if server_req in servers else servers[0]
 
     # Get summoner information
     try:

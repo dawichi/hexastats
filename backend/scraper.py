@@ -1,3 +1,4 @@
+''' Some day this will be deleted C: hopefully '''
 import requests
 from bs4 import BeautifulSoup
 

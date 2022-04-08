@@ -2,7 +2,9 @@
 
 from api import summoner, league, mastery, latest_version
 from scraper import build_champs
-from utils import ApiError
+
+class ApiError(Exception):
+    '''Custom error class for API errors'''
 
 
 def get_data(summoner_name, server):
