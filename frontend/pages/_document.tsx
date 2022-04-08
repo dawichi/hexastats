@@ -1,7 +1,7 @@
 import { Html, Head, Main, NextScript } from 'next/document'
 
 // Links to external CSS must be here to avoid some problems during SSR
-export default function Document() {
+export default function Document(): JSX.Element {
     return (
         <Html>
             <Head>
