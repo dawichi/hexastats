@@ -68,7 +68,7 @@ def league(summoner_id, base_url):
         '''Get rank of summoner'''
         return {
             'rank': f"{resp[i]['tier']} {resp[i]['rank']}" if resp[i]['tier'] else 'Unranked',
-            'image': f"/images/league-emblems/{resp[i]['tier']}.png" if resp[i]['tier'] else '/images/league-emblems/Unranked.png',
+            'image': f"/images/league-emblems/{resp[i]['tier'].capitalize()}.png" if resp[i]['tier'] else '/images/league-emblems/Unranked.png',
             'lp': resp[i]['leaguePoints'],
             'win': resp[i]['wins'],
             'lose': resp[i]['losses'],

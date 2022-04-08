@@ -25,11 +25,9 @@ def get_data(summoner_name, server):
     league_data = league(summoner_data['id'], base_url)
 
     # 3.Get masteries by id
-
     mastery_data = mastery(summoner_data['id'], base_url)
 
     # 4.Get champs data
-
     champs_data = build_champs(summoner_name, 'euw')
 
 
