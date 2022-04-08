@@ -5,7 +5,6 @@ import Image from 'next/image'
  * @param image url to the image
  * @param alias name of the player
  * @param level level of the player
- * @returns {JSX.Element} the HTML structure
  */
 const PlayerImg = ({ image, alias = 'playerImg', level = 0 }: { image: string; alias?: string; level?: number }): JSX.Element => (
     <div className='relative flex flex-col items-center text-sm text-white m-3 w-14 h-14 rounded'>
