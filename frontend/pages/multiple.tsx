@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { PlayersContext } from 'hooks/PlayersContext'
-import { Container, EmptyPlayers } from 'components'
+import { Container, EmptyPlayers, PlayerImg } from 'components'
 import Image from 'next/image'
 import { statTitle } from 'utils'
 import { Champ } from 'interfaces/player'
@@ -53,7 +53,7 @@ export default function Multiple() {
                         <div className='grid grid-cols-2 lg:grid-cols-3'>
                             <div className='flex items-center justify-start '>
                                 <div className='m-2 w-14 rounded h-14 relative'>
-                                    <Image src={player.image} alt={player.alias} layout='fill' />
+                                    <PlayerImg image={player.image} alias={player.alias} level={player.level} margin={'m-0'} />
                                 </div>
                                 <p>{player.alias}</p>
                             </div>

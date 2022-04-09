@@ -75,11 +75,14 @@ def league(summoner_id, base_url):
             'winrate': winrate(resp[i]['wins'], resp[i]['losses']) ,
         }
 
+    # Is unranked in both queues
     if len(resp) == 0:
         return {
             'solo': default,
             'flex': default,
         }
+
+    # Is ranked in only one queue
     if len(resp) == 1:
         if resp[0]['queueType'] == 'RANKED_SOLO_5x5':
             return {
@@ -91,9 +94,16 @@ def league(summoner_id, base_url):
                 'flex': rank(0),
         }
 
+    # Is ranked in both queues
+    print(resp)
+    if resp[0]['queueType'] == 'RANKED_SOLO_5x5':
+        return {
+            'solo': rank(0),
+            'flex': rank(1),
+        }
     return {
-        'solo': rank(0),
-        'flex': rank(1),
+        'solo': rank(1),
+        'flex': rank(0),
     }
 
 

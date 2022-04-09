@@ -4,7 +4,7 @@ import Image from 'next/image'
 const Rank = ({ title, rankdata }: { title: string; rankdata: Rank }) => (
     <div className='text-center text-sm'>
         <h3>{title}</h3>
-        <h4>
+        <h4 className='text-xs'>
             {rankdata.rank} ({rankdata.lp})
         </h4>
         <div className='m-auto w-14 h-14 rounded relative'>

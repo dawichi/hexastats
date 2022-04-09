@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import Image from 'next/image'
 
 const Footer = () => (
     <footer className='bg-zinc-800 text-white p-3'>
@@ -33,13 +32,12 @@ const Footer = () => (
             </p>
             <div className='flex items-center justify-center my-5'>
                 <a target='_blank' href='https://www.buymeacoffee.com/dawichi' rel='noreferrer'>
-                    <div className='w-64 h-24 relative'>
-                        <Image
-                            layout='fill'
-                            src='https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=dawichi&button_colour=818cf8&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00'
-                            alt='Coffee'
-                        />
-                    </div>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                        className='w-64 h-24'
+                        src='https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=dawichi&button_colour=818cf8&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00'
+                        alt='Coffee'
+                    />
                 </a>
             </div>
         </div>
