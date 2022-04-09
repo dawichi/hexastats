@@ -7,7 +7,7 @@ const local_conf = {
     *   - true: use the production backend
     *   - false: use the local backend
     */
-    production: false,
+    production: true,
     backendUrl: '',
 }
 
