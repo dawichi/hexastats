@@ -1,6 +1,6 @@
 '''Flask module to create the API'''
 from flask import Flask, request
-from get_data import get_data
+from app.summoner import get_summoner_data
 
 
 app = Flask(__name__)
@@ -48,7 +48,7 @@ def summoner(summoner_name):
 
     # Get summoner information
     try:
-        return get_data(summoner_name, server)
+        return get_summoner_data(summoner_name, server)
     except Exception as err:
         return {
             'code': 400,

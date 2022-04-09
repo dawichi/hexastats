@@ -7,73 +7,26 @@ headers.update({
 	'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36',
 })
 
-def build_champ(
-	name: str,
-	image: str,
-	games: int,
-	winrate: int,
-	kda: int,
-	kills: int,
-	deaths: int,
-	assists: int,
-	cs: int,
-	csmin: int,
-	gold: int,
-	max_kills: int,
-	max_deaths: int,
-	avg_damage_dealt: int,
-	avg_damage_taken: int,
-	double_kills: int,
-	triple_kills: int,
-	quadra_kills: int,
-	penta_kills: int
-	):
-    '''
-    Function that refactorizes the champs' data
-    '''
-    return {
-		'name': name,
-		'image': image,
-		'games': games,
-		'winrate': winrate,
-		'kda': kda,
-		'kills': kills,
-		'deaths': deaths,
-		'assists': assists,
-		'cs': cs,
-		'csmin': csmin,
-		'gold': gold,
-		'max_kills': max_kills,
-		'max_deaths': max_deaths,
-		'avg_damage_dealt': avg_damage_dealt,
-		'avg_damage_taken' : avg_damage_taken,
-		'double_kills' :double_kills,
-		'triple_kills' : triple_kills,
-		'quadra_kills' : quadra_kills,
-		'penta_kills' : penta_kills
-	}
 
-def get_multiple_kills(doc,num):
-    '''
-    Function to factor a specific parameter
-    '''
+def get_multiple_kills(doc, num):
+    '''Function to get the multiple kills'''
     try:
         return int(doc[num+5].text)
-    except :
+    except:
         return  0
 
-def build_champs(player, server):
+def scraper(player, server):
     '''
     Function that organizes the scraping of all the different champions
     '''
     champs = []
     opgg = "https://"+ server + '.op.gg/summoner/userName=' + player
-    result = requests.get(opgg, headers=headers).text
-    document = BeautifulSoup(result, 'html.parser')
+    res_1 = requests.get(opgg, headers=headers).text
+    document = BeautifulSoup(res_1, 'html.parser')
 
     champions = "https://"+ server + ".op.gg/summoner/champions/userName=" + player
-    result2 = requests.get(champions, headers=headers).text
-    document2 = BeautifulSoup(result2, 'html.parser')
+    res_2 = requests.get(champions, headers=headers).text
+    document2 = BeautifulSoup(res_2, 'html.parser')
 
     champs_more_data = document2.find_all('tr')[1:]
 
@@ -94,7 +47,7 @@ def build_champs(player, server):
         deaths = float(champ_data.find('div', class_='detail').text.split('/')[1])
         assists = float(champ_data.find('div', class_='detail').text.split('/')[2])
 
-        cs = float(champ_data.find('div', class_='cs').text.split(' ')[1])
+        cs_total = float(champ_data.find('div', class_='cs').text.split(' ')[1])
         csmin = float(champ_data.find('div', class_='cs').text.split('(')[-1].split(')')[0])
 
         cells = champs_more_data[index].find_all('td', class_='value')
@@ -111,9 +64,28 @@ def build_champs(player, server):
         quadra_kills = get_multiple_kills(cells, 4)
         penta_kills = get_multiple_kills(cells, 5)
 
-        champs.append(build_champ(name=name_champ, image=image_champ, games=games, winrate=winrate,
-        kda=kda, kills=kills, deaths=deaths, assists=assists, cs=cs, csmin=csmin, gold=gold,
-        max_kills=max_kills, max_deaths=max_deaths, avg_damage_dealt=avg_damage_dealt, avg_damage_taken=avg_damage_taken,
-        double_kills=double_kills, triple_kills=triple_kills, quadra_kills=quadra_kills, penta_kills=penta_kills))
+        result = {
+            'name': name_champ,
+            'image': image_champ,
+            'games': games,
+            'winrate': winrate,
+            'kda': kda,
+            'kills': kills,
+            'deaths': deaths,
+            'assists': assists,
+            'cs': cs_total,
+            'csmin': csmin,
+            'gold': gold,
+            'max_kills': max_kills,
+            'max_deaths': max_deaths,
+            'avg_damage_dealt': avg_damage_dealt,
+            'avg_damage_taken' : avg_damage_taken,
+            'double_kills' :double_kills,
+            'triple_kills' : triple_kills,
+            'quadra_kills' : quadra_kills,
+            'penta_kills' : penta_kills
+        }
+
+        champs.append(result)
 
     return champs

@@ -1,13 +1,13 @@
 '''Gets the data from the RIOT API'''
 
-from api import summoner, league, mastery, latest_version
-from scraper import build_champs
+from app.api import summoner, league, mastery, latest_version
+from app.opgg import scraper
 
 class ApiError(Exception):
     '''Custom error class for API errors'''
 
 
-def get_data(summoner_name, server):
+def get_summoner_data(summoner_name, server):
     '''
     Function to get data from the RIOT API
     @param summoner_name: Summoner name to get information about
@@ -28,7 +28,7 @@ def get_data(summoner_name, server):
     mastery_data = mastery(summoner_data['id'], base_url)
 
     # 4.Get champs data
-    champs_data = build_champs(summoner_name, 'euw')
+    champs_data = scraper(summoner_name, 'euw')
 
 
     summoner_response = {
