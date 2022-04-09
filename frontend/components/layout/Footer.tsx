@@ -11,10 +11,6 @@ const Footer = () => (
                 <Link href='/about' passHref>
                     <button className='p-1 hover:text-indigo-400'>About us</button>
                 </Link>
-                <i className='bi bi-suit-diamond-fill mx-5 text-sm'></i>
-                <Link href='/contribute' passHref>
-                    <button className='p-1 hover:text-indigo-400'>Contribute</button>
-                </Link>
             </div>
             <p>
                 <span>&copy; {new Date().getFullYear().toString()} </span>
