@@ -1,6 +1,6 @@
 '''Gets the data from the RIOT API'''
 
-from app.api import summoner, league, mastery, latest_version
+from app.api import summoner, league, mastery, version
 from app.opgg import scraper
 
 class ApiError(Exception):
@@ -34,7 +34,7 @@ def get_summoner_data(summoner_name, server):
     summoner_response = {
         'alias': summoner_data['name'],
         'level': summoner_data['summonerLevel'],
-        'image': f"https://ddragon.leagueoflegends.com/cdn/{latest_version()}/img/profileicon/{summoner_data['profileIconId']}.png",
+        'image': f"https://ddragon.leagueoflegends.com/cdn/{version()}/img/profileicon/{summoner_data['profileIconId']}.png",
         'rank': {
             'rank_n': 0,
             'rank_p': 100,

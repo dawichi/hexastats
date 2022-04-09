@@ -20,10 +20,10 @@ const AddedPlayers = () => {
 
     return (
         <div className='container mx-auto'>
-            <h3 className='text-xl my-3'>Added players: </h3>
+            <h3 className='text-xl my-3'>Players added: </h3>
             <hr />
             <p className='mt-2 mb-4'>
-                <strong>Great !</strong> &nbsp; Now that you have players added, feel free to explore all the hexastats pages ^^
+                <strong>Great !</strong> &nbsp; Now that you have added some players, feel free to explore all the hexastats pages ^^
             </p>
             <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
                 {players &&

@@ -97,7 +97,7 @@ const AddPlayer = () => {
                     className='bg-white dark:bg-zinc-800 p-2 w-full h-12 rounded shadow outline-0 focus:ring-4 ring-indigo-400'
                     type='text'
                     {...user.inputProp}
-                    placeholder='Player name'
+                    placeholder='Summoner name'
                 />
                 <button
                     className='p-2 h-12 rounded text-white font-bold tracking-widest bg-indigo-400 hover:bg-indigo-500 col-span-2 shadow'

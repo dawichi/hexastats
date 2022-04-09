@@ -20,8 +20,7 @@ export default function Index() {
                 </div>
 
                 <p>
-                    First of all, <br />
-                    add the players you would like to compare here <br />
+                    First of all, add the players you would like to compare here <br />
                     (recommended 3 at least)
                 </p>
             </div>

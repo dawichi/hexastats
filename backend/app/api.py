@@ -22,14 +22,10 @@ def summoner(summoner_name, base_url):
     return requests.get(url, headers=headers).json()
 
 
-def latest_version():
-    '''
-    Function to obtain the latest version of the game
-    in order to access the updated data
-    '''
+def version():
+    '''Gets the latest version of the game to access the updated data'''
     versions = 'https://ddragon.leagueoflegends.com/api/versions.json'
-
-    return  requests.get(versions, headers=headers).json()[0]
+    return requests.get(versions, headers=headers).json()[0]
 
 
 def champion_name(champion_id):
@@ -37,13 +33,15 @@ def champion_name(champion_id):
     Function to obtain the champion's name by its Id
     @param championId: Id of the champion
     '''
-    champion_url = f'http://ddragon.leagueoflegends.com/cdn/{latest_version()}/data/en_US/champion.json'
+    champion_url = f'http://ddragon.leagueoflegends.com/cdn/{version()}/data/en_US/champion.json'
 
     champion_data = requests.get(champion_url, headers=headers).json()['data']
 
-    for key,value in champion_data.items():
+    result = ''
+    for key, value in champion_data.items():
         if value['key'] == str(champion_id):
-            return key
+            result = key
+    return result
 
 
 def league(summoner_id, base_url):
@@ -62,7 +60,7 @@ def league(summoner_id, base_url):
     }
 
     def winrate(wins,losses):
-        return  int((wins/(wins+losses)) * 100) if wins and losses else 0
+        return int((wins/(wins+losses)) * 100) if wins and losses else 0
 
     def rank(i):
         '''Get rank of summoner'''
@@ -121,7 +119,7 @@ def mastery(summoner_id, base_url):
 
         masteries.append({
             'name': name,
-            'image': f"http://ddragon.leagueoflegends.com/cdn/{latest_version()}/img/champion/{name}.png",
+            'image': f"http://ddragon.leagueoflegends.com/cdn/{version()}/img/champion/{name}.png",
             'level': resp[i]['championLevel'],
             'points': resp[i]['championPoints']
         })
