@@ -1,22 +1,21 @@
-const local_conf = {
+const envConfig = {
     /*
     *  Local backend config
-    *  IMPORTANT: Don't commit [production: false] to git !!!
     * 
-    *  Use this to decide if you want to use the local backend or the production one
-    *   - true: use the production backend
-    *   - false: use the local backend
+    * If you want to use a local backend (running the /backend/index.py flask server)
+    * just add a .env.local file with the following content:
+    *   LOCAL_API=True
     */
-    production: true,
+    local: process.env.LOCAL_API,
     backendUrl: '',
 }
 
-export const environment = new Proxy(local_conf, {
+export const environment = new Proxy(envConfig, {
     get: (target, key) => {
         if (key === 'production') {
             return target[key]
         }
 
-        return local_conf.production ? 'https://backend-hexastats.vercel.app/' : 'http://localhost:5000/'
+        return envConfig.local ? 'http://localhost:5000/' : 'https://backend-hexastats.vercel.app/'
     }
 })
