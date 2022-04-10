@@ -93,7 +93,6 @@ def league(summoner_id, base_url):
         }
 
     # Is ranked in both queues
-    print(resp)
     if resp[0]['queueType'] == 'RANKED_SOLO_5x5':
         return {
             'solo': rank(0),
