@@ -28,7 +28,7 @@ def get_summoner_data(summoner_name, server):
     mastery_data = mastery(summoner_data['id'], base_url)
 
     # 4.Get champs data
-    champs_data = scraper(summoner_name, 'euw')
+    champs_data = scraper(summoner_name, server)
 
 
     summoner_response = {
