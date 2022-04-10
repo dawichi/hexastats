@@ -62,7 +62,7 @@ export default function Masteries() {
                                             <div className='absolute t-0 r-0'>
                                                 <div className='relative w-16 h-28 rounded'>
                                                     <Image
-                                                        src={'/images/mastery_' + mastery.level + '.png'}
+                                                        src={'/images/mastery/mastery_' + mastery.level + '.png'}
                                                         layout='fill'
                                                         alt={mastery.name}
                                                     />

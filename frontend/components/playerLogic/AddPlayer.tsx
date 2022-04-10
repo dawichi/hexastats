@@ -100,19 +100,20 @@ const AddPlayer = () => {
                     placeholder='Summoner name'
                 />
                 <button
-                    className='p-2 h-12 rounded text-white font-bold tracking-widest bg-indigo-400 hover:bg-indigo-500 col-span-2 shadow'
+                    className={`p-2 h-12 rounded text-white font-bold tracking-widest bg-indigo-400 hover:bg-indigo-500 col-span-2 shadow ${searching ? 'cursor-not-allowed opacity-50' : ''}`}
                     onClick={handleSearch}
                 >
-                    Search
+                    {searching ? (
+                        <div className='flex justify-center items-center'>
+                            <i className='bi bi-arrow-clockwise animate-spin block '></i>
+                            <span className='ml-3'>Loading...</span>
+                        </div>
+                    ):(
+                        'Search'
+                    )}
                 </button>
             </div>
 
-            {searching && (
-                <div className='flex justify-center items-center mb-5'>
-                    <i className='bi bi-arrow-clockwise animate-spin block '></i>
-                    <span className='ml-3'>Loading...</span>
-                </div>
-            )}
 
             {error && (
                 <div className='md:w-96 auto border border-indigo-800 py-3 px-6 mx-auto mb-5 rounded shadow' role='alert'>
