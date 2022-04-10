@@ -4,7 +4,6 @@ const endpoints = {
     championRotations: 'platform/v3/champion-rotations',
     championMastery: 'champion-mastery/v4/champion-masteries/by-summoner/',
     summonerLeague: 'league/v4/entries/by-summoner/'
-    // TODO: endpoints generados por la IA, no se si funcinoan xD
     // match: 'match/',
     // matchlist: 'match/by-puuid/',
     // league: 'league/',

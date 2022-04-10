@@ -2,7 +2,6 @@ export const styles = {
     background: 'bg-orange-50 dark:bg-zinc-900',
     foreground: 'bg-zinc-100 dark:bg-zinc-800',
     card: 'rounded shadow hover:shadow-lg dark:shadow-zinc-700 hover:dark:shadow-indigo-700',
-    // TODO: factorize stat colors like this
     stat: {
         games: 'py-1 px-2 bg-green-300 dark:bg-green-800',
         winrate: 'py-1 px-2 bg-sky-300 dark:bg-sky-800',
