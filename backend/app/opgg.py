@@ -7,6 +7,21 @@ headers.update({
 	'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36',
 })
 
+def validate_opgg_server(server):
+    validate_server = {
+        'euw1' : 'euw',
+        'eune1' : 'eune',
+        'ru' : 'ru',
+        'jp1' : 'jp',
+        'kr' : 'www',
+        'br1' : 'br',
+        'na1' : 'na',
+        'tr1' : 'tr',
+        'oc1' : 'oce',
+        'la1' : 'lan',
+        'la2' : 'las',
+    }
+    return validate_server[server] if server in validate_server else validate_server['euw1']
 
 def get_multiple_kills(doc, num):
     '''Function to get the multiple kills'''
@@ -19,12 +34,15 @@ def scraper(player, server):
     '''
     Function that organizes the scraping of all the different champions
     '''
+
+    opgg_server = validate_opgg_server(server)
+
     champs = []
-    opgg = "https://"+ server + '.op.gg/summoner/userName=' + player
+    opgg = "https://"+ opgg_server + '.op.gg/summoner/userName=' + player
     res_1 = requests.get(opgg, headers=headers).text
     document = BeautifulSoup(res_1, 'html.parser')
 
-    champions = "https://"+ server + ".op.gg/summoner/champions/userName=" + player
+    champions = "https://"+ opgg_server + ".op.gg/summoner/champions/userName=" + player
     res_2 = requests.get(champions, headers=headers).text
     document2 = BeautifulSoup(res_2, 'html.parser')
 

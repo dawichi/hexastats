@@ -42,9 +42,21 @@ def summoner(summoner_name):
         return default_error, 400
 
     # Validate the server
-    servers = ['euw1', 'br1', 'eun1', 'jp1','kr', 'la1', 'la2', 'na1', 'oc1', 'ru', 'tr1']
     server_req = request.args.get('server')
-    server = server_req if server_req in servers else servers[0]
+    validate_server = {
+        'euw' : 'euw1',
+        'eune' : 'eune1',
+        'ru' : 'ru',
+        'jp' : 'jp1',
+        'kr' : 'kr',
+        'br' : 'br1',
+        'na' : 'na1',
+        'tr' : 'tr1',
+        'oce' : 'oc1',
+        'lan' : 'la1',
+        'las' : 'la2',
+    }
+    server = validate_server[server_req] if server_req in validate_server else validate_server['euw']
 
     # Get summoner information
     try:
