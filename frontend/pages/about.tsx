@@ -2,11 +2,24 @@ import { Container } from 'components'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
+interface Contributor {
+    name: string
+    alias: string
+    url: string
+    bio: string | null
+    image: string | null
+    company: string | null
+    location: string | null
+    twitter: string | null
+    followers: number
+    following: number
+    public_repos: number
+}
+
 export default function About() {
-
     const contributors = ['dawichi', 'Brr1-99', 'alexxwe']
-
-    const [contributorsList, setContributorsList] = useState([])
+    
+    const [contributorsList, setContributorsList] = useState<Array<Contributor>>([])
 
     useEffect(() => {
         if (contributorsList.length < contributors.length) {
@@ -42,7 +55,7 @@ export default function About() {
             <div className='absolute bg-indigo-400 left-0 top-0 h-24 w-full rounded-t-lg'></div>
             <span className='absolute top-2 left-2 text-white'>{contributor.company}</span>
             <span className='absolute top-2 right-2 text-white'>
-                <a title='See project' href='https://github.com/dawichi/hexastats' target='_blank' rel='noreferrer'>
+                <a title='See project' href={'https://github.com/' + contributor.alias} target='_blank' rel='noreferrer'>
                     <i className='bi bi-github'></i>
                 </a>
             </span>
