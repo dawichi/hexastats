@@ -1,4 +1,5 @@
-import { Controller, Get, Query } from '@nestjs/common'
+import { lastValueFrom } from 'rxjs'
+import { Controller, Get, Param, Query } from '@nestjs/common'
 import { UsersService } from './users.service'
 import { User } from 'src/interfaces'
 
@@ -7,8 +8,13 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
     @Get()
-    getUsers(@Query() Query): Promise<User[]> {
+    async getUsers(@Query() Query): Promise<User[]> {
         const { limit, offset } = Query
-        return this.usersService.getUsers()
+        return (await lastValueFrom(this.usersService.getUsers())).data
+    }
+
+    @Get('/:id')
+    async getUserbyId(@Param('id') id: number): Promise<User> {
+        return (await lastValueFrom(this.usersService.getUserbyId(id))).data
     }
 }
