@@ -10,4 +10,7 @@ module.exports = {
         // !! WARN !!
         ignoreBuildErrors: true,
     },
+    env: {
+        LOCAL_API: process.env.LOCAL_API
+    }
 }
