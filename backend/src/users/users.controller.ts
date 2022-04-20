@@ -1,4 +1,4 @@
-import { lastValueFrom } from 'rxjs'
+import { lastValueFrom, retry } from 'rxjs'
 import { Controller, Get, Param, Query } from '@nestjs/common'
 import { UsersService } from './users.service'
 import { User } from 'src/interfaces'

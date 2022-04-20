@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common'
 import { UsersModule } from './users/users.module'
+import { SummonersModule } from './summoners/summoners.module'
+import { ConfigModule } from '@nestjs/config'
 
 @Module({
-    imports: [UsersModule],
+    imports: [ConfigModule.forRoot(), UsersModule, SummonersModule],
     controllers: [],
     providers: [],
 })
