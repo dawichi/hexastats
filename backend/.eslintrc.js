@@ -25,5 +25,10 @@ module.exports = {
             },
         ],
         'lines-between-class-members': ['warn', 'always', { exceptAfterSingleLine: true }],
+        'padding-line-between-statements': [
+            'warn',
+            { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
+            { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] },
+        ],
     },
 }

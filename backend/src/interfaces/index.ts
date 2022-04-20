@@ -1,2 +1,6 @@
 export { UserInterface as User } from './user.interface'
 export { SummonerInterface as Summoner } from './summoner.interface'
+export { RankInterface as Rank } from './player.interface'
+export { ChampInterface as Champ } from './player.interface'
+export { MasteryInterface as Mastery } from './player.interface'
+export { PlayerInterface as Player } from './player.interface'
