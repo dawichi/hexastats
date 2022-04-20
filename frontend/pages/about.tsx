@@ -7,18 +7,19 @@ interface Contributor {
     alias: string
     url: string
     bio: string | null
+    blog: string | null
     image: string | null
     company: string | null
     location: string | null
-    twitter: string | null
     followers: number
     following: number
     public_repos: number
+    twitter: string | null
 }
 
 export default function About() {
     const contributors = ['dawichi', 'Brr1-99', 'alexxwe']
-    
+
     const [contributorsList, setContributorsList] = useState<Array<Contributor>>([])
 
     useEffect(() => {
@@ -34,13 +35,14 @@ export default function About() {
                                 alias: data.login,
                                 url: data.html_url,
                                 bio: data.bio ?? '-',
+                                blog: data.blog ?? '-',
                                 image: data.avatar_url,
                                 company: data.company ?? '-',
                                 location: data.location ?? '-',
-                                twitter: data.twitter_username ?? '-',
                                 followers: data.followers,
                                 following: data.following,
                                 public_repos: data.public_repos,
+                                twitter: data.twitter_username ?? '-',
                             }])
                         }
                     })
@@ -50,7 +52,7 @@ export default function About() {
 
     // NOTE: Cards inspired by https://codepen.io/RocktimSaikia/pen/jObbBmR
     // Addapted with tailwindcss
-    const ContributorCard = ({ contributor }) => (
+    const ContributorCard = ({ contributor }: { contributor: Contributor }) => (
         <div className="relative h-96 rounded-lg shadow bg-white dark:bg-zinc-800">
             <div className='absolute bg-indigo-400 left-0 top-0 h-24 w-full rounded-t-lg'></div>
             <span className='absolute top-2 left-2 text-white'>{contributor.company}</span>
@@ -84,7 +86,7 @@ export default function About() {
             {/* Stats */}
             <section className='shadow-md dark:shadow-zinc-700 rounded border-0 border-t-2 border-indigo-400 grid grid-cols-3 mx-8 mt-3 p-3'>
                 <div>
-                    <p className='text-xl'>{contributor.followers}</p>
+                    <p className='text-xl'>{contributor.followers + contributor.following}</p>
                     <p className='text-xs text-zinc-400'>Followers</p>
                 </div>
                 <div>
