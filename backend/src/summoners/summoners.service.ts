@@ -221,7 +221,7 @@ export class SummonersService {
      * @param {string} server The server of the game
      * @returns {Player} The info of the
      */
-    async getGames(puuid: string, server: string, quantity: number, queue: string): Promise<any> {
+    async getGames(puuid: string, server: string, quantity: number, queue: string, champsLimit: number): Promise<any> {
         switch (server) {
             case 'oc1':
             case 'la1':
@@ -240,13 +240,10 @@ export class SummonersService {
         }
         switch (queue) {
             case 'normal':
-                server = '&type=normal'
+                queue = '&type=normal'
                 break
             case 'ranked':
-                server = '&type=ranked'
-                break
-            default:
-                queue = ''
+                queue = '&type=ranked'
                 break
         }
 
@@ -291,6 +288,6 @@ export class SummonersService {
         result.sort((a: any, b: any) => {
             return b.games - a.games
         })
-        return result
+        return result.slice(0, champsLimit)
     }
 }

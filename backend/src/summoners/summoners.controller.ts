@@ -11,7 +11,7 @@ export class SummonersController {
         @Param('server') server: string,
         @Param('summonerName') summonerName: string,
         @Query('champsLimit') champsLimit = 7,
-        @Query('gamesChecked') gamesCheked = 20,
+        @Query('gamesChecked') gamesCheked = 10,
         @Query('masteriesLimit') masteriesLimit = 7,
         @Query('queueType') queueType = '',
     ): Promise<Player> {
@@ -19,7 +19,7 @@ export class SummonersController {
         const summoner_data = await this.summonersService.getSummonerDataByName(summonerName, server)
         const { solo, flex } = await this.summonersService.getRankData(summoner_data.id, server)
         const masteries = await this.summonersService.getMasteries(summoner_data.id, server, masteriesLimit)
-        const champs = await this.summonersService.getGames(summoner_data.puuid, server, gamesCheked, queueType)
+        const champs = await this.summonersService.getGames(summoner_data.puuid, server, gamesCheked, queueType, champsLimit)
 
         return {
             alias: summoner_data.name,
