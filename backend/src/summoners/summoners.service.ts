@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios'
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
-import { Rank, Summoner } from 'src/interfaces'
+import { Champ, Mastery, Rank, Summoner } from 'src/interfaces'
 
 @Injectable()
 export class SummonersService {
@@ -22,7 +22,7 @@ export class SummonersService {
      * ## Get the latest version of the game
      * Riot stores all game versions in an array, so by getting
      * the first one you can get the latest version of the api
-     * @returns {string}
+     * @returns {string} The latest version of the game
      */
     private async getLatestVersion(): Promise<string> {
         const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
@@ -34,7 +34,7 @@ export class SummonersService {
      * ## Get the summoner information (by name)
      * To use other methods, you need to get the summoner id first
      * @param {string} summoner_name Alias of the summoner
-     * @returns {Promise<Summoner>}
+     * @returns {Promise<Summoner>} The summoner information
      */
     async getSummonerDataByName(summoner_name: string): Promise<Summoner> {
         const url = `${this.baseUrl}summoner/v4/summoners/by-name/${summoner_name}`
@@ -47,7 +47,7 @@ export class SummonersService {
      * Riot stores an array with all the chamions, so to get the name
      * you need to get the id and search in the array for that id
      * @param {number} champion_id ID of the champion
-     * @returns {Promise<string>}
+     * @returns {Promise<string>} The name of the champion
      */
     async getChampionName(champion_id: number): Promise<string> {
         const version = await this.getLatestVersion()
@@ -62,9 +62,9 @@ export class SummonersService {
      * Riot returns an array of masteries with all your played champs,
      * so we filter the response to get only the first 7 with most points
      * @param {string} summoner_id ID of the summoner
-     * @returns {Promise<Summoner>}
+     * @returns {Promise<Mastery>} The list of masteries
      */
-    async getMasteries(summoner_id: string): Promise<any[]> {
+    async getMasteries(summoner_id: string): Promise<Mastery[]> {
         const version = await this.getLatestVersion()
         const url = `${this.baseUrl}champion-mastery/v4/champion-masteries/by-summoner/${summoner_id}`
         const all_champions = (await lastValueFrom(this.httpService.get(url, this.headers))).data
@@ -85,7 +85,17 @@ export class SummonersService {
         return masteries
     }
 
-    async getLeague(summoner_id: string): Promise<any> {
+    /**
+     * ## Get the rank information (by summoner_id)
+     * Riot returns an array of 0-2 items with the rank information
+     * it's not ordered (if it's 1, it can be 'solo' or 'flex') so we need to check it
+     * @param {string} summoner_id ID of the summoner
+     * @returns The info of a unique game
+     */
+    async getRankData(summoner_id: string): Promise<{
+        solo: Rank
+        flex: Rank
+    }> {
         const url = `${this.baseUrl}league/v4/entries/by-summoner/${summoner_id}`
         const rank_data: any[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
         const league_default = {
@@ -96,9 +106,8 @@ export class SummonersService {
             lose: 0,
             winrate: 0,
         }
-
         const winrate = (wins: number, losses: number) => (wins && losses ? (wins / (wins + losses)) * 100 : 0)
-        const rank = (i: number): Rank => {
+        const buildRank = (i: number): Rank => {
             return {
                 rank: rank_data[i].tier ? `${rank_data[i].tier} ${rank_data[i].rank}` : 'Unranked',
                 image: rank_data[i].tier ? `${rank_data[i].tier}.png` : 'unranked.png',
@@ -117,37 +126,46 @@ export class SummonersService {
             }
         }
 
-        // Is ranked in only one queue
+        // Is ranked in only one queue: check which one
         if (rank_data.length == 1) {
             return rank_data[0].queueType == 'RANKED_SOLO_5x5'
                 ? {
-                      solo: rank(0),
+                      solo: buildRank(0),
                       flex: league_default,
                   }
                 : {
                       solo: league_default,
-                      flex: rank(0),
+                      flex: buildRank(0),
                   }
         }
 
-        // Is ranked in both queues
+        // Is ranked in both queues: check the order
         if (rank_data[0]['queueType'] == 'RANKED_SOLO_5x5') {
             return {
-                solo: rank(0),
-                flex: rank(1),
+                solo: buildRank(0),
+                flex: buildRank(1),
             }
         }
         return {
-            solo: rank(1),
-            flex: rank(0),
+            solo: buildRank(1),
+            flex: buildRank(0),
         }
     }
 
-    private async getGameInfo(puuid: string, game_id: string, server: string): Promise<any> {
+    /**
+     * ## Get the information of a single game
+     * By using the game id, we can get all the info of a single game
+     * This will be used later to calc the stats by champ
+     * @param {string} puuid The puuid of the summoner
+     * @param {string} game_id The id of the game
+     * @param {string} server The server of the game
+     * @returns {Champ} The info of a unique game
+     */
+    private async getGameInfo(puuid: string, game_id: string, server: string): Promise<Champ> {
         const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/${game_id}`
         const game_data: any = (await lastValueFrom(this.httpService.get(url, this.headers))).data
         const idx: number = game_data.metadata.participants.indexOf(puuid)
-        const data = game_data.info.participants[idx]
+        const data: any = game_data.info.participants[idx]
         const {
             championName,
             assists,
@@ -191,6 +209,14 @@ export class SummonersService {
         }
     }
 
+    /**
+     * ## Get the stats by champ
+     * Loops over last 100 games and gets the stats by champ
+     * Calls each game info individually and calculates the stats by champ
+     * @param {string} puuid The puuid of the summoner
+     * @param {string} server The server of the game
+     * @returns {Player} The info of the
+     */
     async getGames(puuid: string, server: string): Promise<any> {
         switch (server) {
             case 'oc1':
@@ -212,8 +238,9 @@ export class SummonersService {
         const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=10`
         const games_names: any[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
 
-        const avg = (a, b, n) => (a * n + b) / (n + 1)
-        const add_games = (acc, cur) => {
+        // TODO: Externalize (and factorize with arrays) this 2 functions
+        const avg = (a: number, b: number, n: number) => (a * n + b) / (n + 1)
+        const add_games = (acc: any, cur: any) => {
             const games_number = acc.games
 
             acc.games += 1
@@ -236,19 +263,19 @@ export class SummonersService {
             return acc
         }
 
-        const games_info = {}
+        const temp = {}
 
         for (const game of games_names) {
             const info = await this.getGameInfo(puuid, game, server)
             const champ = info['name']
 
-            games_info[champ] = games_info[champ] ? add_games(games_info[champ], info) : info
+            temp[champ] = temp[champ] ? add_games(temp[champ], info) : info
         }
-        const arr = Object.values(games_info)
+        const result = Object.values(temp)
 
-        arr.sort((a: any, b: any) => {
+        result.sort((a: any, b: any) => {
             return b.games - a.games
         })
-        return arr
+        return result
     }
 }
