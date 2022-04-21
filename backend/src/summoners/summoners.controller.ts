@@ -11,11 +11,10 @@ export class SummonersController {
         return await this.summonersService.getChampionName(420)
     }
 
-    @Get('/:server/:id')
-    async getLeague(@Param('id') id: string, @Param('server') server: string): Promise<any> {
-        return await this.summonersService.getGameInfo(
+    @Get('/:server')
+    async getLeague(@Param('server') server: string): Promise<any> {
+        return await this.summonersService.getGames(
             'f8qD2F6teQbeWoomTsCxtZoNoE3bUS45y0ZRlO2YnTGvEPcrAZ1kV3CI1PHaOTeK1FT_qxB6dneSMg',
-            id,
             server,
         )
     }
