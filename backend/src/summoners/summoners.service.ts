@@ -143,7 +143,7 @@ export class SummonersService {
         }
     }
 
-    async getGameInfo(puuid: string, game_id: string, server: string): Promise<any> {
+    private async getGameInfo(puuid: string, game_id: string, server: string): Promise<any> {
         const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/${game_id}`
         const game_data: any = (await lastValueFrom(this.httpService.get(url, this.headers))).data
         const idx: number = game_data.metadata.participants.indexOf(puuid)
@@ -189,5 +189,66 @@ export class SummonersService {
             winrate: win ? 1 : 0,
             //'Damage to champions': dmg_champions,
         }
+    }
+
+    async getGames(puuid: string, server: string): Promise<any> {
+        switch (server) {
+            case 'oc1':
+            case 'la1':
+            case 'la2':
+            case 'br1':
+            case 'na1':
+                server = 'AMERICAS'
+                break
+            case 'jp1':
+            case 'kr':
+                server = 'ASIA'
+                break
+            default:
+                server = 'EUROPE'
+                break
+        }
+
+        const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=10`
+        const games_names: any[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
+
+        const avg = (a, b, n) => (a * n + b) / (n + 1)
+        const add_games = (acc, cur) => {
+            const games_number = acc.games
+
+            acc.games += 1
+            acc.assists = avg(acc.assists, cur.assists, games_number)
+            acc.deaths = avg(acc.deaths, cur.deaths, games_number)
+            acc.kills = avg(acc.kills, cur.kills, games_number)
+            acc.kda = avg(acc.kda, cur.kda, games_number)
+            acc.cs = avg(acc.cs, cur.cs, games_number)
+            acc.csmin = avg(acc.csmin, cur.csmin, games_number)
+            acc.avg_damage_dealt = avg(acc.avg_damage_dealt, cur.avg_damage_dealt, games_number)
+            acc.avg_damage_taken = avg(acc.avg_damage_taken, cur.avg_damage_taken, games_number)
+            acc.double_kills += cur.double_kills
+            acc.triple_kills += cur.triple_kills
+            acc.quadra_kills += cur.quadra_kills
+            acc.penta_kills += cur.penta_kills
+            acc.winrate += cur.winrate
+            acc.max_deaths = cur.max_deaths > acc.max_deaths ? cur.max_deaths : acc.max_deaths
+            acc.max_kills = cur.max_kills > acc.max_kills ? cur.max_kills : acc.max_kills
+
+            return acc
+        }
+
+        const games_info = {}
+
+        for (const game of games_names) {
+            const info = await this.getGameInfo(puuid, game, server)
+            const champ = info['name']
+
+            games_info[champ] = games_info[champ] ? add_games(games_info[champ], info) : info
+        }
+        const arr = Object.values(games_info)
+
+        arr.sort((a: any, b: any) => {
+            return b.games - a.games
+        })
+        return arr
     }
 }
