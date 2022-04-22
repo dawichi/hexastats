@@ -6,16 +6,18 @@ import { Champ, Mastery, Rank, Summoner } from 'src/interfaces'
 
 @Injectable()
 export class SummonersService {
-    baseUrl: string
     apiKey: string
     headers: { headers: { 'X-Riot-Token': string } }
 
     // TODO: handle errors when riot api doen't respond
     // it should return 404, 403, etc... instead of 500
     constructor(private configService: ConfigService, private httpService: HttpService) {
-        this.baseUrl = 'https://euw1.api.riotgames.com/lol/'
         this.apiKey = this.configService.get<string>('RIOT_API_KEY')
         this.headers = { headers: { 'X-Riot-Token': this.apiKey } }
+    }
+
+    private baseUrl(server) {
+        return `https://${server}.api.riotgames.com/lol/`
     }
 
     /**
@@ -24,7 +26,7 @@ export class SummonersService {
      * the first one you can get the latest version of the api
      * @returns {string} The latest version of the game
      */
-    private async getLatestVersion(): Promise<string> {
+    async getLatestVersion(): Promise<string> {
         const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
 
         return (await lastValueFrom(this.httpService.get(url, this.headers))).data[0]
@@ -36,8 +38,8 @@ export class SummonersService {
      * @param {string} summoner_name Alias of the summoner
      * @returns {Promise<Summoner>} The summoner information
      */
-    async getSummonerDataByName(summoner_name: string): Promise<Summoner> {
-        const url = `${this.baseUrl}summoner/v4/summoners/by-name/${summoner_name}`
+    async getSummonerDataByName(summoner_name: string, server: string): Promise<Summoner> {
+        const url = `${this.baseUrl(server)}summoner/v4/summoners/by-name/${summoner_name}`
 
         return (await lastValueFrom(this.httpService.get(url, this.headers))).data
     }
@@ -64,15 +66,14 @@ export class SummonersService {
      * @param {string} summoner_id ID of the summoner
      * @returns {Promise<Mastery>} The list of masteries
      */
-    async getMasteries(summoner_id: string): Promise<Mastery[]> {
+    async getMasteries(summoner_id: string, server: string, quantity: number): Promise<Mastery[]> {
         const version = await this.getLatestVersion()
-        const url = `${this.baseUrl}champion-mastery/v4/champion-masteries/by-summoner/${summoner_id}`
+        const url = `${this.baseUrl(server)}champion-mastery/v4/champion-masteries/by-summoner/${summoner_id}`
         const all_champions = (await lastValueFrom(this.httpService.get(url, this.headers))).data
         // This response cointains all +140 champions, so we filter it
         const masteries = []
-        const num_of_champs_we_want = 7
 
-        for (let i = 0; i < num_of_champs_we_want; i++) {
+        for (let i = 0; i < quantity; i++) {
             const champ_name = await this.getChampionName(all_champions[i].championId)
 
             masteries.push({
@@ -92,11 +93,14 @@ export class SummonersService {
      * @param {string} summoner_id ID of the summoner
      * @returns The info of a unique game
      */
-    async getRankData(summoner_id: string): Promise<{
+    async getRankData(
+        summoner_id: string,
+        server: string,
+    ): Promise<{
         solo: Rank
         flex: Rank
     }> {
-        const url = `${this.baseUrl}league/v4/entries/by-summoner/${summoner_id}`
+        const url = `${this.baseUrl(server)}league/v4/entries/by-summoner/${summoner_id}`
         const rank_data: any[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
         const league_default = {
             rank: 'Unranked',
@@ -188,15 +192,15 @@ export class SummonersService {
             //'time': f'{minutes}:{seconds}',
             name: championName,
             image: `http://ddragon.leagueoflegends.com/cdn/12.7.1/img/champion/${championName}.png`,
-            assists: assists,
-            deaths: deaths,
-            kills: kills,
-            kda: kda,
+            assists,
+            deaths,
+            kills,
+            kda,
             double_kills: doubleKills,
             triple_kills: tripleKills,
             quadra_kills: quadraKills,
             penta_kills: pentaKills,
-            cs: cs,
+            cs,
             csmin: cs_min,
             gold: goldEarned,
             avg_damage_taken: totalDamageTaken,
@@ -217,7 +221,7 @@ export class SummonersService {
      * @param {string} server The server of the game
      * @returns {Player} The info of the
      */
-    async getGames(puuid: string, server: string): Promise<any> {
+    async getGames(puuid: string, server: string, quantity: number, queue: string, champsLimit: number): Promise<any> {
         switch (server) {
             case 'oc1':
             case 'la1':
@@ -234,8 +238,16 @@ export class SummonersService {
                 server = 'EUROPE'
                 break
         }
+        switch (queue) {
+            case 'normal':
+                queue = '&type=normal'
+                break
+            case 'ranked':
+                queue = '&type=ranked'
+                break
+        }
 
-        const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=10`
+        const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=${quantity + queue}`
         const games_names: any[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
 
         // TODO: Externalize (and factorize with arrays) this 2 functions
@@ -276,6 +288,6 @@ export class SummonersService {
         result.sort((a: any, b: any) => {
             return b.games - a.games
         })
-        return result
+        return result.slice(0, champsLimit)
     }
 }
