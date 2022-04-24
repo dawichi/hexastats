@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common'
+import { Controller, Get, Logger, Param, Query } from '@nestjs/common'
 import { Player } from 'src/interfaces'
 import { SummonersService } from './summoners.service'
 
@@ -6,25 +6,41 @@ import { SummonersService } from './summoners.service'
 export class SummonersController {
     constructor(private readonly summonersService: SummonersService) {}
 
+    private readonly logger = new Logger(SummonersController.name)
+
+    /**
+     * ## Get summoner information by summoner name
+     * @param {string} server Server name (e.g. 'euw1')
+     * @param {string} summonerName Summoner name in the game
+     * @param {number} champsLimit Limit of champions to be returned (default: 7)
+     * @param {number} gamesLimit Limit of games to be checked (default: 10)
+     * @param {number} masteriesLimit Limit of masteries to be returned (default: 7)
+     * @param {string} queueType Specify to check only a specific queue ('ranked' or 'normal')
+     * @returns {Promise<Player>} Player object with all the information
+     */
     @Get('/:server/:summonerName')
     async getSummonerByName(
         @Param('server') server: string,
         @Param('summonerName') summonerName: string,
         @Query('champsLimit') champsLimit = 7,
-        @Query('gamesChecked') gamesCheked = 10,
+        @Query('gamesChecked') gamesLimit = 10,
         @Query('masteriesLimit') masteriesLimit = 7,
-        @Query('queueType') queueType = '',
+        @Query('queueType') queueType = 'ranked',
     ): Promise<Player> {
+        this.logger.verbose(`Started a search for: ${summonerName}`)
+
         const version = await this.summonersService.getLatestVersion()
-        const summoner_data = await this.summonersService.getSummonerDataByName(summonerName, server)
-        const { solo, flex } = await this.summonersService.getRankData(summoner_data.id, server)
-        const masteries = await this.summonersService.getMasteries(summoner_data.id, server, masteriesLimit)
-        const champs = await this.summonersService.getGames(summoner_data.puuid, server, gamesCheked, queueType, champsLimit)
+        const summonerData = await this.summonersService.getSummonerDataByName(summonerName, server)
+        const { solo, flex } = await this.summonersService.getRankData(summonerData.id, server)
+        const masteries = await this.summonersService.getMasteries(summonerData.id, server, masteriesLimit)
+        const champs = await this.summonersService.getChampsData(summonerData.puuid, server, gamesLimit, queueType, champsLimit)
+
+        this.logger.verbose('Done!')
 
         return {
-            alias: summoner_data.name,
-            image: `https://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${summoner_data.profileIconId}.png`,
-            level: summoner_data.summonerLevel,
+            alias: summonerData.name,
+            image: `https://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${summonerData.profileIconId}.png`,
+            level: summonerData.summonerLevel,
             rank: {
                 solo,
                 flex,

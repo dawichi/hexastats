@@ -1,22 +1,23 @@
 import { HttpService } from '@nestjs/axios'
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
 import { Champ, Mastery, Rank, Summoner } from 'src/interfaces'
 
 @Injectable()
 export class SummonersService {
-    apiKey: string
-    headers: { headers: { 'X-Riot-Token': string } }
+    readonly apiKey: string
+    readonly headers: { headers: { 'X-Riot-Token': string } }
 
-    // TODO: handle errors when riot api doen't respond
-    // it should return 404, 403, etc... instead of 500
     constructor(private configService: ConfigService, private httpService: HttpService) {
+        // TODO: check if the api key is valid, if not, throw an error and stop the app
         this.apiKey = this.configService.get<string>('RIOT_API_KEY')
         this.headers = { headers: { 'X-Riot-Token': this.apiKey } }
     }
 
-    private baseUrl(server) {
+    private readonly logger = new Logger(SummonersService.name)
+
+    private baseUrl(server: string) {
         return `https://${server}.api.riotgames.com/lol/`
     }
 
@@ -36,9 +37,11 @@ export class SummonersService {
      * ## Get the summoner information (by name)
      * To use other methods, you need to get the summoner id first
      * @param {string} summoner_name Alias of the summoner
+     * @param {string} server Server of the summoner
      * @returns {Promise<Summoner>} The summoner information
      */
     async getSummonerDataByName(summoner_name: string, server: string): Promise<Summoner> {
+        this.logger.verbose('Getting summoner data')
         const url = `${this.baseUrl(server)}summoner/v4/summoners/by-name/${summoner_name}`
 
         return (await lastValueFrom(this.httpService.get(url, this.headers))).data
@@ -64,17 +67,22 @@ export class SummonersService {
      * Riot returns an array of masteries with all your played champs,
      * so we filter the response to get only the first 7 with most points
      * @param {string} summoner_id ID of the summoner
-     * @returns {Promise<Mastery>} The list of masteries
+     * @param {string} server Server of the summoner
+     * @param {string} masteriesLimit Limit of the masteries to return
+     * @returns {Promise<Mastery[]>} The list of biggest masteries
      */
-    async getMasteries(summoner_id: string, server: string, quantity: number): Promise<Mastery[]> {
+    async getMasteries(summoner_id: string, server: string, masteriesLimit: number): Promise<Mastery[]> {
+        this.logger.verbose(`Getting masteries about best ${masteriesLimit} champs`)
         const version = await this.getLatestVersion()
         const url = `${this.baseUrl(server)}champion-mastery/v4/champion-masteries/by-summoner/${summoner_id}`
         const all_champions = (await lastValueFrom(this.httpService.get(url, this.headers))).data
         // This response cointains all +140 champions, so we filter it
         const masteries = []
 
-        for (let i = 0; i < quantity; i++) {
+        for (let i = 0; i < masteriesLimit; i++) {
             const champ_name = await this.getChampionName(all_champions[i].championId)
+
+            this.logger.log(`Mastery: ${champ_name}`)
 
             masteries.push({
                 name: champ_name,
@@ -91,7 +99,8 @@ export class SummonersService {
      * Riot returns an array of 0-2 items with the rank information
      * it's not ordered (if it's 1, it can be 'solo' or 'flex') so we need to check it
      * @param {string} summoner_id ID of the summoner
-     * @returns The info of a unique game
+     * @param {string} server Server of the summoner
+     * @returns The info of solo and flex queues
      */
     async getRankData(
         summoner_id: string,
@@ -100,6 +109,7 @@ export class SummonersService {
         solo: Rank
         flex: Rank
     }> {
+        this.logger.verbose('Getting classification data in ranked queues')
         const url = `${this.baseUrl(server)}league/v4/entries/by-summoner/${summoner_id}`
         const rank_data: any[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
         const league_default = {
@@ -165,7 +175,8 @@ export class SummonersService {
      * @param {string} server The server of the game
      * @returns {Champ} The info of a unique game
      */
-    private async getGameInfo(puuid: string, game_id: string, server: string): Promise<Champ> {
+    private async getSingleGameInfo(puuid: string, game_id: string, server: string): Promise<Champ> {
+        this.logger.log(`Loading game: ${game_id}`)
         const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/${game_id}`
         const game_data: any = (await lastValueFrom(this.httpService.get(url, this.headers))).data
         const idx: number = game_data.metadata.participants.indexOf(puuid)
@@ -218,10 +229,20 @@ export class SummonersService {
      * Loops over last 100 games and gets the stats by champ
      * Calls each game info individually and calculates the stats by champ
      * @param {string} puuid The puuid of the summoner
-     * @param {string} server The server of the game
-     * @returns {Player} The info of the
+     * @param {string} server The server of the player
+     * @param {number} champsLimit The number of champs to return
+     * @param {number} gamesLimit The number of games to analyze
+     * @param {string} queueType Specify to check only a specific queue ('ranked', 'normal', 'all')
+     * @returns {Player} The info of the player
      */
-    async getGames(puuid: string, server: string, quantity: number, queue: string, champsLimit: number): Promise<any> {
+    async getChampsData(puuid: string, server: string, gamesLimit: number, queueType: string, champsLimit: number): Promise<any> {
+        this.logger.verbose(`Getting data from last ${gamesLimit} games`)
+        const queueTypes = {
+            normal: '&type=normal',
+            ranked: '&type=ranked',
+        }
+        const queue = queueTypes[queueType] ?? ''
+
         switch (server) {
             case 'oc1':
             case 'la1':
@@ -238,32 +259,23 @@ export class SummonersService {
                 server = 'EUROPE'
                 break
         }
-        switch (queue) {
-            case 'normal':
-                queue = '&type=normal'
-                break
-            case 'ranked':
-                queue = '&type=ranked'
-                break
-        }
 
-        const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=${quantity + queue}`
+        const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=${gamesLimit + queue}`
         const games_names: any[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
 
         // TODO: Externalize (and factorize with arrays) this 2 functions
-        const avg = (a: number, b: number, n: number) => (a * n + b) / (n + 1)
         const add_games = (acc: any, cur: any) => {
-            const games_number = acc.games
+            const avg = (a: number, b: number, n: number) => (a * n + b) / (n + 1)
 
             acc.games += 1
-            acc.assists = avg(acc.assists, cur.assists, games_number)
-            acc.deaths = avg(acc.deaths, cur.deaths, games_number)
-            acc.kills = avg(acc.kills, cur.kills, games_number)
-            acc.kda = avg(acc.kda, cur.kda, games_number)
-            acc.cs = avg(acc.cs, cur.cs, games_number)
-            acc.csmin = avg(acc.csmin, cur.csmin, games_number)
-            acc.avg_damage_dealt = avg(acc.avg_damage_dealt, cur.avg_damage_dealt, games_number)
-            acc.avg_damage_taken = avg(acc.avg_damage_taken, cur.avg_damage_taken, games_number)
+            acc.assists = avg(acc.assists, cur.assists, acc.games)
+            acc.deaths = avg(acc.deaths, cur.deaths, acc.games)
+            acc.kills = avg(acc.kills, cur.kills, acc.games)
+            acc.kda = avg(acc.kda, cur.kda, acc.games)
+            acc.cs = avg(acc.cs, cur.cs, acc.games)
+            acc.csmin = avg(acc.csmin, cur.csmin, acc.games)
+            acc.avg_damage_dealt = avg(acc.avg_damage_dealt, cur.avg_damage_dealt, acc.games)
+            acc.avg_damage_taken = avg(acc.avg_damage_taken, cur.avg_damage_taken, acc.games)
             acc.double_kills += cur.double_kills
             acc.triple_kills += cur.triple_kills
             acc.quadra_kills += cur.quadra_kills
@@ -278,7 +290,7 @@ export class SummonersService {
         const temp = {}
 
         for (const game of games_names) {
-            const info = await this.getGameInfo(puuid, game, server)
+            const info = await this.getSingleGameInfo(puuid, game, server)
             const champ = info['name']
 
             temp[champ] = temp[champ] ? add_games(temp[champ], info) : info
