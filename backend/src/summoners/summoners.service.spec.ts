@@ -18,4 +18,17 @@ describe('SummonersService', () => {
     it('should be defined', () => {
         expect(service).toBeDefined()
     })
+
+    it('should return summoner data', async () => {
+        const summoner = await service.getSummonerDataByName('test', 'euw1')
+
+        expect(summoner).toHaveProperty('accountId')
+    })
+
+    it('should return the latest version of the game', async () => {
+        const version = await service.getLatestVersion()
+        const versionNumber = version.split('.')
+
+        expect(versionNumber).toHaveLength(3)
+    })
 })
