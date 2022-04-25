@@ -1,11 +1,10 @@
 <h1 align="center">Hexastats</h1>
 
 <div align="center">
-    <img src="https://img.shields.io/badge/made%20with-next%20js-black" />
     <img src="https://img.shields.io/badge/made%20with-typescript-blue" />
-    <img src="https://img.shields.io/badge/made%20with-tailwindcss-ff69b4" />
-    <img src="https://img.shields.io/badge/made%20with-python-blue" />
-    <img src="https://img.shields.io/badge/made%20with-flask-green" />
+    <img src="https://img.shields.io/badge/backend-nest%20js-ea2845" />
+    <img src="https://img.shields.io/badge/frontend-next%20js-black" />
+    <img src="https://img.shields.io/badge/styles-tailwindcss-ff69b4" />
 </div>
 <p align="center">Web application to allow players to visualize their data from League of Legends.</p>
 <p align="center">🎉🎉🎉 Check it on <a href="https://hexastats.vercel.app" target="_blank">hexastats.vercel.app</a> 🎉🎉🎉</p>
@@ -13,14 +12,14 @@
 
 The project is a monorepo consisted in:
 
-* [`/frontend`](https://github.com/dawichi/hexastats/tree/main/frontend)  NextJS app
-* [`/backend`](https://github.com/dawichi/hexastats/tree/main/backend) Python API (flask)
+* [`/frontend`](https://github.com/dawichi/hexastats/tree/main/frontend)  React App (Next JS)
+* [`/backend`](https://github.com/dawichi/hexastats/tree/main/backend) Node JS API (Nest JS)
 
 
 
 ## Description
 
-Hexastats allows you to enter multiple usernames, giving you a fast, visual and interactive way to compare data between players.
+Hexastats is a web app to visualize your stats from League of Legends. It allows you to enter multiple usernames, giving you a fast, visual and interactive way to compare data between players.
 
 ## Last features
 
