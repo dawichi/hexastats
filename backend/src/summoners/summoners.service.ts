@@ -134,7 +134,6 @@ export class SummonersService {
                 winrate: parseInt(winrate(rank_data[i]['wins'], rank_data[i]['losses']).toFixed(0)),
             }
         }
-        const soloFirst = rank_data[0].queueType == 'RANKED_SOLO_5x5'
 
         // Is unranked in both queues
         if (!rank_data.length) {
@@ -143,6 +142,8 @@ export class SummonersService {
                 flex: league_default,
             }
         }
+
+        const soloFirst = rank_data[0].queueType == 'RANKED_SOLO_5x5'
 
         // Is ranked in only one queue: check which one
         if (rank_data.length == 1) {
@@ -249,7 +250,7 @@ export class SummonersService {
 
         server = servers[server] ?? 'EUROPE'
         const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=${gamesLimit + queue}`
-        const games_names: any[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
+        const games_list: string[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
 
         const _addGameData = (acc: any, cur: any) => {
             const avg = (a: number, b: number, n: number) => parseFloat(((a * n + b) / (n + 1)).toFixed(2))
@@ -274,7 +275,7 @@ export class SummonersService {
 
         const temp = {}
 
-        for (const game of games_names) {
+        for (const game of games_list) {
             const info = await this.getSingleGameInfo(puuid, game, server)
             const champ = info['name']
 
