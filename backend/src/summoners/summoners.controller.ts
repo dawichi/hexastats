@@ -13,7 +13,7 @@ export class SummonersController {
      * @param {string} server Server name (e.g. 'euw1')
      * @param {string} summonerName Summoner name in the game
      * @param {number} champsLimit Limit of champions to be returned (default: 7)
-     * @param {number} gamesLimit Limit of games to be checked (default: 10)
+     * @param {number} gamesLimit Limit of games to be checked (default: 50)
      * @param {number} masteriesLimit Limit of masteries to be returned (default: 7)
      * @param {string} queueType Specify to check only a specific queue ('ranked' or 'normal')
      * @returns {Promise<Player>} Player object with all the information
@@ -23,7 +23,7 @@ export class SummonersController {
         @Param('server') server: string,
         @Param('summonerName') summonerName: string,
         @Query('champsLimit') champsLimit = 7,
-        @Query('gamesChecked') gamesLimit = 10,
+        @Query('gamesChecked') gamesLimit = 20,
         @Query('masteriesLimit') masteriesLimit = 7,
         @Query('queueType') queueType = 'ranked',
     ): Promise<Player> {

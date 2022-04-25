@@ -6,18 +6,21 @@ import { Champ, Mastery, Rank, Summoner } from 'src/interfaces'
 
 @Injectable()
 export class SummonersService {
-    readonly apiKey: string
-    readonly headers: { headers: { 'X-Riot-Token': string } }
+    private readonly apiKey: string
+    private readonly headers: { headers: { 'X-Riot-Token': string } }
 
     constructor(private configService: ConfigService, private httpService: HttpService) {
-        // TODO: check if the api key is valid, if not, throw an error and stop the app
         this.apiKey = this.configService.get<string>('RIOT_API_KEY')
         this.headers = { headers: { 'X-Riot-Token': this.apiKey } }
     }
 
-    private readonly logger = new Logger(SummonersService.name)
+    private readonly logger: Logger = new Logger(SummonersService.name)
 
-    private baseUrl(server: string) {
+    /**
+     * @param {string} server Server of the summoner
+     * @returns {string} The base url of the api
+     */
+    private baseUrl(server: string): string {
         return `https://${server}.api.riotgames.com/lol/`
     }
 
@@ -54,7 +57,7 @@ export class SummonersService {
      * @param {number} champion_id ID of the champion
      * @returns {Promise<string>} The name of the champion
      */
-    async getChampionName(champion_id: number): Promise<string> {
+    private async getChampionName(champion_id: number): Promise<string> {
         const version = await this.getLatestVersion()
         const url = `http://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`
         const champion_names = (await lastValueFrom(this.httpService.get(url, this.headers))).data.data
@@ -114,7 +117,7 @@ export class SummonersService {
         const rank_data: any[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
         const league_default = {
             rank: 'Unranked',
-            image: '/images/league-emblems/Unranked.png',
+            image: 'unranked.png',
             lp: 0,
             win: 0,
             lose: 0,
@@ -131,6 +134,7 @@ export class SummonersService {
                 winrate: parseInt(winrate(rank_data[i]['wins'], rank_data[i]['losses']).toFixed(0)),
             }
         }
+        const soloFirst = rank_data[0].queueType == 'RANKED_SOLO_5x5'
 
         // Is unranked in both queues
         if (!rank_data.length) {
@@ -142,27 +146,15 @@ export class SummonersService {
 
         // Is ranked in only one queue: check which one
         if (rank_data.length == 1) {
-            return rank_data[0].queueType == 'RANKED_SOLO_5x5'
-                ? {
-                      solo: buildRank(0),
-                      flex: league_default,
-                  }
-                : {
-                      solo: league_default,
-                      flex: buildRank(0),
-                  }
-        }
-
-        // Is ranked in both queues: check the order
-        if (rank_data[0]['queueType'] == 'RANKED_SOLO_5x5') {
             return {
-                solo: buildRank(0),
-                flex: buildRank(1),
+                solo: soloFirst ? buildRank(0) : league_default,
+                flex: soloFirst ? league_default : buildRank(0),
             }
         }
+        // If not, both have data
         return {
-            solo: buildRank(1),
-            flex: buildRank(0),
+            solo: soloFirst ? buildRank(0) : buildRank(1),
+            flex: soloFirst ? buildRank(1) : buildRank(0),
         }
     }
 
@@ -195,7 +187,7 @@ export class SummonersService {
             totalDamageDealt,
             goldEarned,
         } = data
-        const kda = data.challenges.kda
+        const kda = deaths ? (kills + assists) / deaths : kills + assists
         const cs = data.totalMinionsKilled + data.neutralMinionsKilled
         const cs_min = parseFloat(((60 * cs) / game_data.info.gameDuration).toFixed(1))
 
@@ -237,53 +229,46 @@ export class SummonersService {
      */
     async getChampsData(puuid: string, server: string, gamesLimit: number, queueType: string, champsLimit: number): Promise<any> {
         this.logger.verbose(`Getting data from last ${gamesLimit} games`)
+        // Validate queueType
         const queueTypes = {
             normal: '&type=normal',
             ranked: '&type=ranked',
         }
         const queue = queueTypes[queueType] ?? ''
 
-        switch (server) {
-            case 'oc1':
-            case 'la1':
-            case 'la2':
-            case 'br1':
-            case 'na1':
-                server = 'AMERICAS'
-                break
-            case 'jp1':
-            case 'kr':
-                server = 'ASIA'
-                break
-            default:
-                server = 'EUROPE'
-                break
+        // Validate server
+        const servers = {
+            oc1: 'AMERICAS',
+            la1: 'AMERICAS',
+            la2: 'AMERICAS',
+            br1: 'AMERICAS',
+            na1: 'AMERICAS',
+            jp1: 'ASIA',
+            kr: 'ASIA',
         }
 
+        server = servers[server] ?? 'EUROPE'
         const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=${gamesLimit + queue}`
         const games_names: any[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
 
-        // TODO: Externalize (and factorize with arrays) this 2 functions
-        const add_games = (acc: any, cur: any) => {
-            const avg = (a: number, b: number, n: number) => (a * n + b) / (n + 1)
+        const _addGameData = (acc: any, cur: any) => {
+            const avg = (a: number, b: number, n: number) => parseFloat(((a * n + b) / (n + 1)).toFixed(2))
+
+            const props_increment = ['double_kills', 'triple_kills', 'quadra_kills', 'penta_kills', 'winrate']
+            const props_average = ['kills', 'deaths', 'assists', 'kda', 'cs', 'csmin', 'avg_damage_taken', 'avg_damage_dealt']
+            const props_max = ['max_kills', 'max_deaths']
+
+            for (const prop of props_increment) {
+                acc[prop] += cur[prop]
+            }
+            for (const prop of props_average) {
+                acc[prop] = avg(acc[prop], cur[prop], acc.games)
+            }
+            for (const prop of props_max) {
+                acc[prop] = cur[prop] > acc[prop] ? cur[prop] : acc[prop]
+            }
 
             acc.games += 1
-            acc.assists = avg(acc.assists, cur.assists, acc.games)
-            acc.deaths = avg(acc.deaths, cur.deaths, acc.games)
-            acc.kills = avg(acc.kills, cur.kills, acc.games)
-            acc.kda = avg(acc.kda, cur.kda, acc.games)
-            acc.cs = avg(acc.cs, cur.cs, acc.games)
-            acc.csmin = avg(acc.csmin, cur.csmin, acc.games)
-            acc.avg_damage_dealt = avg(acc.avg_damage_dealt, cur.avg_damage_dealt, acc.games)
-            acc.avg_damage_taken = avg(acc.avg_damage_taken, cur.avg_damage_taken, acc.games)
-            acc.double_kills += cur.double_kills
-            acc.triple_kills += cur.triple_kills
-            acc.quadra_kills += cur.quadra_kills
-            acc.penta_kills += cur.penta_kills
-            acc.winrate += cur.winrate
-            acc.max_deaths = cur.max_deaths > acc.max_deaths ? cur.max_deaths : acc.max_deaths
-            acc.max_kills = cur.max_kills > acc.max_kills ? cur.max_kills : acc.max_kills
-
             return acc
         }
 
@@ -293,7 +278,7 @@ export class SummonersService {
             const info = await this.getSingleGameInfo(puuid, game, server)
             const champ = info['name']
 
-            temp[champ] = temp[champ] ? add_games(temp[champ], info) : info
+            temp[champ] = temp[champ] ? _addGameData(temp[champ], info) : info
         }
         const result = Object.values(temp)
 
