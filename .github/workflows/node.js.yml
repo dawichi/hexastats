@@ -29,6 +29,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm i
     - run: npm run test
+    - run: npm run test:e2e
 
   frontend-test:
     runs-on: ubuntu-latest
