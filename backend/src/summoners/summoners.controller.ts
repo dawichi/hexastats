@@ -1,7 +1,9 @@
 import { Controller, Get, Logger, Param, Query } from '@nestjs/common'
+import { ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Player } from 'src/interfaces'
 import { SummonersService } from './summoners.service'
 
+@ApiTags('summoners')
 @Controller('summoners')
 export class SummonersController {
     constructor(private readonly summonersService: SummonersService) {}
@@ -19,6 +21,11 @@ export class SummonersController {
      * @returns {Promise<Player>} Player object with all the information
      */
     @Get('/:server/:summonerName')
+    @ApiResponse({
+        status: 200,
+        description: 'The summoner was found and the data is correct',
+        type: Player,
+    })
     async getSummonerByName(
         @Param('server') server: string,
         @Param('summonerName') summonerName: string,
