@@ -51,18 +51,22 @@ export class SummonersService {
     }
 
     /**
-     * ## Get the champion name (by id)
+     * ## Get the champion names table (by id)
      * Riot stores an array with all the chamions, so to get the name
      * you need to get the id and search in the array for that id
-     * @param {number} champion_id ID of the champion
-     * @returns {Promise<string>} The name of the champion
+     * @returns {Promise<any>} A object with pairs [id => name] of all champions
      */
-    private async getChampionName(champion_id: number): Promise<string> {
+    private async getChampionNames(): Promise<any> {
         const version = await this.getLatestVersion()
         const url = `http://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`
-        const champion_names = (await lastValueFrom(this.httpService.get(url, this.headers))).data.data
+        const res = (await lastValueFrom(this.httpService.get(url, this.headers))).data.data
+        const champion_names = {}
 
-        return Object.keys(champion_names).find(champion_name => champion_names[champion_name].key == champion_id)
+        Object.keys(res).forEach(champion_name => {
+            champion_names[res[champion_name].key] = res[champion_name].id
+        })
+
+        return champion_names
     }
 
     /**
@@ -78,12 +82,13 @@ export class SummonersService {
         this.logger.verbose(`Getting masteries about best ${masteriesLimit} champs`)
         const version = await this.getLatestVersion()
         const url = `${this.baseUrl(server)}champion-mastery/v4/champion-masteries/by-summoner/${summoner_id}`
+        const champ_names_table = await this.getChampionNames()
         const all_champions = (await lastValueFrom(this.httpService.get(url, this.headers))).data
         // This response cointains all +140 champions, so we filter it
         const masteries = []
 
         for (let i = 0; i < masteriesLimit; i++) {
-            const champ_name = await this.getChampionName(all_champions[i].championId)
+            const champ_name = champ_names_table[all_champions[i].championId]
 
             this.logger.log(`Mastery: ${champ_name}`)
 

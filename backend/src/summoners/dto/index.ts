@@ -1,8 +1,9 @@
 // Player DTOs are used to return the data to the client.
-export { ChampDto } from './player/Champ.dto'
-export { MasteryDto } from './player/Mastery.dto'
-export { RankDto } from './player/Rank.dto'
-export { PlayerDto } from './Player.dto'
+export { Champ as ChampDto } from './player/Champ.dto'
+export { Mastery as MasteryDto } from './player/Mastery.dto'
+export { Rank as RankDto } from './player/Rank.dto'
+export { Player as PlayerDto } from './player/Player.dto'
+export { PlayerBasic as PlayerBasicDto } from './player/PlayerBasic.dto'
 
 // RIOT API DTOs are used to parse the data from the RIOT API.
 export { SummonerDto } from './riot-responses/summoner.dto'

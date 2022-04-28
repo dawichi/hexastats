@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class RankDto {
+export class Rank {
     @ApiProperty({
         description: 'Classification of the player in this queue',
         example: 'GOLD II',
@@ -38,14 +38,14 @@ export class RankDto {
     winrate: number
 }
 
-export class RankStructured {
+export class RankStructure {
     @ApiProperty({
         description: 'Classification in solo queue',
     })
-    solo: RankDto
+    solo: Rank
 
     @ApiProperty({
         description: 'Classification in flex queue',
     })
-    flex: RankDto
+    flex: Rank
 }

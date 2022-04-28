@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class MasteryDto {
+export class Mastery {
     @ApiProperty({
         description: 'Name of the champ',
         example: 'Aatrox',
