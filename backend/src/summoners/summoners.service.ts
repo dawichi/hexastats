@@ -3,7 +3,6 @@ import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
 import { ChampDto, MasteryDto, RankDto, SummonerDto } from 'src/interfaces'
-import { accumulateGameData, serverRegion } from 'src/utils'
 
 @Injectable()
 export class SummonersService {
@@ -227,6 +226,78 @@ export class SummonersService {
     }
 
     /**
+     * ## Accumulates the game information from a champion
+     * To calculate the average information about a champion, we need to accumulate
+     * the data from all the games played with it. So with this function, it modifies the values
+     * depending of it its an incremental value (like number of games played) or an average (like the winrate)
+     * @param {ChampDto} acc Accumulated data object
+     * @param {ChampDto} cur Current data object
+     * @returns {ChampDto} Modified accumulated data object
+     */
+    private accumulateGameData(acc: ChampDto, cur: ChampDto): ChampDto {
+        const avg = (a: number, b: number, n: number) => parseFloat(((a * n + b) / (n + 1)).toFixed(2))
+
+        const props_increment = ['doubleKills', 'tripleKills', 'quadraKills', 'pentaKills', 'winrate']
+        const props_average = [
+            'kills',
+            'deaths',
+            'assists',
+            'kda',
+            'cs',
+            'csmin',
+            'avgDamageTaken',
+            'avgDamageDealt',
+            'visionScore',
+            'timePlayed',
+            'turretKills',
+        ]
+        const props_max = ['maxKills', 'maxDeaths']
+
+        // Incremental props: just add the new value to the accumulated value
+        for (const prop of props_increment) {
+            acc[prop] += cur[prop]
+        }
+
+        // Average props: calculate the average of the accumulated value and the new value
+        for (const prop of props_average) {
+            acc[prop] = avg(acc[prop], cur[prop], acc.games)
+        }
+
+        // Max props: return the bigger value between the accumulated value and the new value
+        for (const prop of props_max) {
+            acc[prop] = cur[prop] > acc[prop] ? cur[prop] : acc[prop]
+        }
+
+        // Don't accumulate games before to don't break averages for loop
+        acc.games += 1
+        return acc
+    }
+
+    /**
+     * ## Server region validator
+     * Depending of the server, the games must be requested to a different region
+     * @param {string} server Server name (e.g. 'euw1')
+     * @returns {string} region name (e.g. 'EUROPE')
+     */
+    private serverRegion(server: string): string {
+        const servers = {
+            oc1: 'AMERICAS',
+            la1: 'AMERICAS',
+            la2: 'AMERICAS',
+            br1: 'AMERICAS',
+            na1: 'AMERICAS',
+            jp1: 'ASIA',
+            kr: 'ASIA',
+            euw1: 'EUROPE',
+            eun1: 'EUROPE',
+            tr1: 'EUROPE',
+            ru: 'EUROPE',
+        }
+
+        return servers[server] ?? 'EUROPE'
+    }
+
+    /**
      * ## Get the stats by champ
      * Loops over last 100 games and gets the stats by champ
      * Calls each game info individually and calculates the stats by champ
@@ -246,7 +317,7 @@ export class SummonersService {
         }
         const queue = queueTypes[queueType] ?? ''
 
-        server = serverRegion(server)
+        server = this.serverRegion(server)
 
         const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=${gamesLimit + queue}`
         const games_list: string[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
@@ -257,7 +328,7 @@ export class SummonersService {
             const info = await this.getSingleGameInfo(puuid, game, server)
             const champ = info['name']
 
-            temp[champ] = temp[champ] ? accumulateGameData(temp[champ], info) : info
+            temp[champ] = temp[champ] ? this.accumulateGameData(temp[champ], info) : info
         }
         const result = Object.values(temp)
 
