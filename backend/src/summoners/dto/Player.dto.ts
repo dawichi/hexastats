@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { ChampDto } from './Champ.dto'
-import { MasteryDto } from './Mastery.dto'
-import { RankStructured } from './Rank.dto'
+import { ChampDto } from './player/Champ.dto'
+import { MasteryDto } from './player/Mastery.dto'
+import { RankStructured } from './player/Rank.dto'
 
 export class PlayerDto {
     @ApiProperty({

@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios'
 import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
-import { ChampDto, MasteryDto, RankDto, SummonerDto } from '../interfaces'
+import { ChampDto, MasteryDto, RankDto, SummonerDto } from './dto'
 
 @Injectable()
 export class SummonersService {

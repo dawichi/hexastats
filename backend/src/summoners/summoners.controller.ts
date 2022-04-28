@@ -1,7 +1,7 @@
 import { Controller, Get, Logger, Param, Query } from '@nestjs/common'
 import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { SummonersService } from './summoners.service'
-import { PlayerDto } from '../interfaces'
+import { PlayerDto } from './dto'
 
 @ApiTags('summoners')
 @Controller('summoners')
