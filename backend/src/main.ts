@@ -19,7 +19,7 @@ async function bootstrap() {
     // Create the swagger documentation
     const swaggerConfig = new DocumentBuilder()
         .setTitle('Hexastats Swagger API')
-        .setDescription('Test the hexastats endpoints. This API is only for testing purposes.')
+        .setDescription('Test the hexastats endpoints.')
         .setVersion('1.0')
         .build()
     const document = SwaggerModule.createDocument(app, swaggerConfig)

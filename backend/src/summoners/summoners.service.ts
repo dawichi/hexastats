@@ -2,7 +2,8 @@ import { HttpService } from '@nestjs/axios'
 import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
-import { Champ, Mastery, Rank, Summoner } from 'src/interfaces'
+import { ChampDto, MasteryDto, RankDto, SummonerDto } from 'src/interfaces'
+import { accumulateGameData, serverRegion } from 'src/utils'
 
 @Injectable()
 export class SummonersService {
@@ -43,7 +44,7 @@ export class SummonersService {
      * @param {string} server Server of the summoner
      * @returns {Promise<Summoner>} The summoner information
      */
-    async getSummonerDataByName(summoner_name: string, server: string): Promise<Summoner> {
+    async getSummonerDataByName(summoner_name: string, server: string): Promise<SummonerDto> {
         this.logger.verbose('Getting summoner data')
         const url = `${this.baseUrl(server)}summoner/v4/summoners/by-name/${summoner_name}`
 
@@ -72,9 +73,9 @@ export class SummonersService {
      * @param {string} summoner_id ID of the summoner
      * @param {string} server Server of the summoner
      * @param {string} masteriesLimit Limit of the masteries to return
-     * @returns {Promise<Mastery[]>} The list of biggest masteries
+     * @returns {Promise<MasteryDto[]>} The list of biggest masteries
      */
-    async getMasteries(summoner_id: string, server: string, masteriesLimit: number): Promise<Mastery[]> {
+    async getMasteries(summoner_id: string, server: string, masteriesLimit: number): Promise<MasteryDto[]> {
         this.logger.verbose(`Getting masteries about best ${masteriesLimit} champs`)
         const version = await this.getLatestVersion()
         const url = `${this.baseUrl(server)}champion-mastery/v4/champion-masteries/by-summoner/${summoner_id}`
@@ -109,8 +110,8 @@ export class SummonersService {
         summoner_id: string,
         server: string,
     ): Promise<{
-        solo: Rank
-        flex: Rank
+        solo: RankDto
+        flex: RankDto
     }> {
         this.logger.verbose('Getting classification data in ranked queues')
         const url = `${this.baseUrl(server)}league/v4/entries/by-summoner/${summoner_id}`
@@ -124,7 +125,7 @@ export class SummonersService {
             winrate: 0,
         }
         const winrate = (wins: number, losses: number) => (wins && losses ? (wins / (wins + losses)) * 100 : 0)
-        const buildRank = (i: number): Rank => {
+        const buildRank = (i: number): RankDto => {
             return {
                 rank: rank_data[i].tier ? `${rank_data[i].tier} ${rank_data[i].rank}` : 'Unranked',
                 image: rank_data[i].tier ? `${rank_data[i].tier}.png` : 'unranked.png',
@@ -166,14 +167,16 @@ export class SummonersService {
      * @param {string} puuid The puuid of the summoner
      * @param {string} game_id The id of the game
      * @param {string} server The server of the game
-     * @returns {Champ} The info of a unique game
+     * @returns {ChampDto} The info of a unique game
      */
-    private async getSingleGameInfo(puuid: string, game_id: string, server: string): Promise<Champ> {
+    private async getSingleGameInfo(puuid: string, game_id: string, server: string): Promise<ChampDto> {
         this.logger.log(`Loading game: ${game_id}`)
         const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/${game_id}`
         const game_data: any = (await lastValueFrom(this.httpService.get(url, this.headers))).data
+
         const idx: number = game_data.metadata.participants.indexOf(puuid)
         const data: any = game_data.info.participants[idx]
+
         const {
             championName,
             assists,
@@ -185,9 +188,13 @@ export class SummonersService {
             pentaKills,
             win,
             totalDamageTaken,
-            totalDamageDealt,
+            totalDamageDealtToChampions,
             goldEarned,
+            visionScore,
+            timePlayed,
+            turretKills,
         } = data
+
         const kda = deaths ? (kills + assists) / deaths : kills + assists
         const cs = data.totalMinionsKilled + data.neutralMinionsKilled
         const cs_min = parseFloat(((60 * cs) / game_data.info.gameDuration).toFixed(1))
@@ -200,20 +207,22 @@ export class SummonersService {
             deaths,
             kills,
             kda,
-            double_kills: doubleKills,
-            triple_kills: tripleKills,
-            quadra_kills: quadraKills,
-            penta_kills: pentaKills,
+            doubleKills,
+            tripleKills,
+            quadraKills,
+            pentaKills,
             cs,
             csmin: cs_min,
             gold: goldEarned,
-            avg_damage_taken: totalDamageTaken,
-            avg_damage_dealt: totalDamageDealt,
+            avgDamageDealt: totalDamageDealtToChampions,
+            avgDamageTaken: totalDamageTaken,
             games: 1,
-            max_kills: kills,
-            max_deaths: deaths,
+            maxKills: kills,
+            maxDeaths: deaths,
             winrate: win ? 1 : 0,
-            //'Damage to champions': dmg_champions,
+            visionScore,
+            timePlayed,
+            turretKills,
         }
     }
 
@@ -237,41 +246,10 @@ export class SummonersService {
         }
         const queue = queueTypes[queueType] ?? ''
 
-        // Validate server
-        const servers = {
-            oc1: 'AMERICAS',
-            la1: 'AMERICAS',
-            la2: 'AMERICAS',
-            br1: 'AMERICAS',
-            na1: 'AMERICAS',
-            jp1: 'ASIA',
-            kr: 'ASIA',
-        }
+        server = serverRegion(server)
 
-        server = servers[server] ?? 'EUROPE'
         const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=${gamesLimit + queue}`
         const games_list: string[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
-
-        const _addGameData = (acc: any, cur: any) => {
-            const avg = (a: number, b: number, n: number) => parseFloat(((a * n + b) / (n + 1)).toFixed(2))
-
-            const props_increment = ['double_kills', 'triple_kills', 'quadra_kills', 'penta_kills', 'winrate']
-            const props_average = ['kills', 'deaths', 'assists', 'kda', 'cs', 'csmin', 'avg_damage_taken', 'avg_damage_dealt']
-            const props_max = ['max_kills', 'max_deaths']
-
-            for (const prop of props_increment) {
-                acc[prop] += cur[prop]
-            }
-            for (const prop of props_average) {
-                acc[prop] = avg(acc[prop], cur[prop], acc.games)
-            }
-            for (const prop of props_max) {
-                acc[prop] = cur[prop] > acc[prop] ? cur[prop] : acc[prop]
-            }
-
-            acc.games += 1
-            return acc
-        }
 
         const temp = {}
 
@@ -279,7 +257,7 @@ export class SummonersService {
             const info = await this.getSingleGameInfo(puuid, game, server)
             const champ = info['name']
 
-            temp[champ] = temp[champ] ? _addGameData(temp[champ], info) : info
+            temp[champ] = temp[champ] ? accumulateGameData(temp[champ], info) : info
         }
         const result = Object.values(temp)
 

@@ -1,6 +1,6 @@
 import { Controller, Get, Logger, Param, Query } from '@nestjs/common'
-import { ApiResponse, ApiTags } from '@nestjs/swagger'
-import { Player } from 'src/interfaces'
+import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { PlayerDto } from 'src/interfaces'
 import { SummonersService } from './summoners.service'
 
 @ApiTags('summoners')
@@ -18,13 +18,17 @@ export class SummonersController {
      * @param {number} gamesLimit Limit of games to be checked (default: 50)
      * @param {number} masteriesLimit Limit of masteries to be returned (default: 7)
      * @param {string} queueType Specify to check only a specific queue ('ranked' or 'normal')
-     * @returns {Promise<Player>} Player object with all the information
+     * @returns {Promise<PlayerDto>} Player object with all the information
      */
     @Get('/:server/:summonerName')
     @ApiResponse({
         status: 200,
         description: 'The summoner was found and the data is correct',
-        type: Player,
+        type: PlayerDto,
+    })
+    @ApiQuery({
+        name: 'server',
+        enum: ['euw1', 'na1', 'eun1', 'kr', 'jp1', 'br1', 'la1', 'la2', 'oc1', 'tr1', 'ru'],
     })
     async getSummonerByName(
         @Param('server') server: string,
@@ -33,7 +37,7 @@ export class SummonersController {
         @Query('gamesChecked') gamesLimit = 20,
         @Query('masteriesLimit') masteriesLimit = 7,
         @Query('queueType') queueType = 'ranked',
-    ): Promise<Player> {
+    ): Promise<PlayerDto> {
         this.logger.verbose(`Started a search for: ${summonerName}`)
 
         const version = await this.summonersService.getLatestVersion()

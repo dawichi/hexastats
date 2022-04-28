@@ -1,4 +1,4 @@
-export interface Summoner {
+export class SummonerDto {
     id: string
     accountId: string
     puuid: string
