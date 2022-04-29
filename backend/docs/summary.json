@@ -1,0 +1,28 @@
+[
+    {
+        "title": "Introduction",
+        "file": "introduction.md"
+    },
+    {
+        "title": "Roadmap",
+        "file": "roadmap/1-why.md",
+        "children": [
+            {
+                "title": "Why Hexastats",
+                "file": "roadmap/1-why.md"
+            },
+            {
+                "title": "Planification",
+                "file": "roadmap/2-planification.md"
+            },
+            {
+                "title": "The product",
+                "file": "roadmap/3-product.md"
+            },
+            {
+                "title": "Future plans",
+                "file": "roadmap/4-future.md"
+            }
+        ]
+    }
+]

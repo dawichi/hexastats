@@ -8,7 +8,8 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "compodoc": "npx @compodoc/compodoc -p tsconfig.json -s",
+    "compodoc": "compodoc -p tsconfig.json --port 9001 --includes docs -w -s",
+    "docs:cov": "compodoc -p tsconfig.json --coverageTest 80",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
