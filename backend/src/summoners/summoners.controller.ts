@@ -1,7 +1,7 @@
 import { Controller, Get, Logger, Param, Query } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { SummonersService } from './summoners.service'
-import { ChampDto, MasteryDto, PlayerBasicDto } from './dto'
+import { ChampDto, MasteryDto, PlayerDto } from './dto'
 import {
     ChampsLimitQuery,
     GamesLimitQuery,
@@ -23,33 +23,26 @@ export class SummonersController {
      * ## Get summoner information by summoner name
      * @param {string} server Server name (e.g. 'euw1')
      * @param {string} summonerName Summoner name in the game
-     * @param {number} masteriesLimit Limit of masteries to be returned (default: 7)
-     * @returns {Promise<PlayerBasicDto>} Player object with all the information
+     * @returns {Promise<PlayerDto>} Player object with all the information
      */
     @Get('/:server/:summonerName')
     @ApiOperation({
-        summary: 'Get player info without champs',
-        description: 'Returns the basic info to be shown as fast as possible in frontend, ignoring the matches step',
+        summary: 'Get player info',
+        description: 'Returns the basic info (summoner data and rankings)',
     })
     @ApiResponse({
         status: 200,
         description: 'The summoner was found and the data is correct',
-        type: PlayerBasicDto,
+        type: PlayerDto,
     })
     @ServerParam()
     @SummonerNameParam()
-    @MasteriesLimitQuery()
-    async getBasicSummoner(
-        @Param('server') server: string,
-        @Param('summonerName') summonerName: string,
-        @Query('masteriesLimit') masteriesLimit = 7,
-    ): Promise<PlayerBasicDto> {
+    async getBasicSummoner(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<PlayerDto> {
         this.logger.verbose(`Started a basic search for: ${summonerName}`)
 
         const version = await this.summonersService.getLatestVersion()
         const summonerData = await this.summonersService.getSummonerDataByName(summonerName, server)
         const { solo, flex } = await this.summonersService.getRankData(summonerData.id, server)
-        const masteries = await this.summonersService.getMasteries(summonerData.id, server, masteriesLimit)
 
         this.logger.verbose('Done!')
 
@@ -61,7 +54,6 @@ export class SummonersController {
                 solo,
                 flex,
             },
-            masteries,
         }
     }
 
@@ -134,7 +126,6 @@ export class SummonersController {
         @Query('queueType') queueType: string,
     ): Promise<ChampDto[]> {
         this.logger.verbose(`Started a complete search for: ${summonerName}`)
-        console.log(champsLimit, gamesLimit, queueType)
 
         const summonerData = await this.summonersService.getSummonerDataByName(summonerName, server)
         const champs = await this.summonersService.getChampsData(summonerData.puuid, server, champsLimit, gamesLimit, offset, queueType)

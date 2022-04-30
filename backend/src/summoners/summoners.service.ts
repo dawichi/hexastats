@@ -168,16 +168,15 @@ export class SummonersService {
     }
 
     /**
-     * ## Get the information of a single game
-     * By using the game id, we can get all the info of a single game
-     * This will be used later to calc the stats by champ
-     * @param {string} puuid The puuid of the summoner
-     * @param {string} game_id The id of the game
-     * @param {string} server The server of the game
-     * @returns {ChampDto} The info of a unique game
+     * ## Formats the data of a game
+     * From the riot game data structure, it formats it to return only
+     * the info we need, following the ChampDto structure
+     * @param {number} gameDuration The duration of the game in seconds
+     * @param {object} data The data of the game
+     * @returns {ChampDto} The info of a unique game formatted
      */
     private async processGameData(
-        { gameDuration }: { gameDuration: number },
+        gameDuration: number,
         {
             championName,
             assists,
@@ -338,7 +337,6 @@ export class SummonersService {
 
         // Accumulate the promises of each game
         const promises: Promise<any>[] = games_list.map((game_id: string) => {
-            this.logger.log(`Loading game: ${game_id}`)
             const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/${game_id}`
 
             return lastValueFrom(this.httpService.get(url, this.headers))
@@ -351,7 +349,11 @@ export class SummonersService {
         for (const game of games) {
             const idx: number = game.data.metadata.participants.indexOf(puuid)
             const data: any = game.data.info.participants[idx]
-            const gameInfo = await this.processGameData(game.data.info, data)
+            const { gameId, gameMode, gameDuration } = game.data.info
+
+            this.logger.log(`Processing game: ${gameId} \t ${gameMode} \t ${data.championName}`)
+
+            const gameInfo = await this.processGameData(gameDuration, data)
             const champName: string = gameInfo.name
 
             temp[champName] = temp[champName] ? this.accumulateGameData(temp[champName], gameInfo) : gameInfo
