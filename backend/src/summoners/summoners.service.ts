@@ -17,6 +17,7 @@ export class SummonersService {
     private readonly logger: Logger = new Logger(SummonersService.name)
 
     /**
+     * ## Get the RIOT base URL based on the server variable
      * @param {string} server Server of the summoner
      * @returns {string} The base url of the api
      */
@@ -54,13 +55,15 @@ export class SummonersService {
      * ## Get the champion names table (by id)
      * Riot stores an array with all the chamions, so to get the name
      * you need to get the id and search in the array for that id
-     * @returns {Promise<any>} A object with pairs [id => name] of all champions
+     * @returns {Promise<{[key: string]: string}>} A object with pairs [id => name] of all champions
      */
-    private async getChampionNames(): Promise<any> {
+    private async getChampionNames(): Promise<{
+        [key: string]: string
+    }> {
         const version = await this.getLatestVersion()
         const url = `http://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`
         const res = (await lastValueFrom(this.httpService.get(url, this.headers))).data.data
-        const champion_names = {}
+        const champion_names: { [key: string]: string } = {}
 
         Object.keys(res).forEach(champion_name => {
             champion_names[res[champion_name].key] = res[champion_name].id
@@ -84,8 +87,8 @@ export class SummonersService {
         const url = `${this.baseUrl(server)}champion-mastery/v4/champion-masteries/by-summoner/${summoner_id}`
         const champ_names_table = await this.getChampionNames()
         const all_champions = (await lastValueFrom(this.httpService.get(url, this.headers))).data
-        // This response cointains all +140 champions, so we filter it
-        const masteries = []
+        // This response cointains all +140 champions, so we take the {masteriesLimit} first ones
+        const masteries: MasteryDto[] = []
 
         for (let i = 0; i < masteriesLimit; i++) {
             const champ_name = champ_names_table[all_champions[i].championId]
@@ -173,15 +176,9 @@ export class SummonersService {
      * @param {string} server The server of the game
      * @returns {ChampDto} The info of a unique game
      */
-    private async getSingleGameInfo(puuid: string, game_id: string, server: string): Promise<ChampDto> {
-        this.logger.log(`Loading game: ${game_id}`)
-        const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/${game_id}`
-        const game_data: any = (await lastValueFrom(this.httpService.get(url, this.headers))).data
-
-        const idx: number = game_data.metadata.participants.indexOf(puuid)
-        const data: any = game_data.info.participants[idx]
-
-        const {
+    private async processGameData(
+        { gameDuration }: { gameDuration: number },
+        {
             championName,
             assists,
             deaths,
@@ -197,11 +194,13 @@ export class SummonersService {
             visionScore,
             timePlayed,
             turretKills,
-        } = data
-
+            totalMinionsKilled,
+            neutralMinionsKilled,
+        }: any,
+    ): Promise<ChampDto> {
         const kda = deaths ? (kills + assists) / deaths : kills + assists
-        const cs = data.totalMinionsKilled + data.neutralMinionsKilled
-        const cs_min = parseFloat(((60 * cs) / game_data.info.gameDuration).toFixed(1))
+        const cs = totalMinionsKilled + neutralMinionsKilled
+        const csmin = parseFloat(((60 * cs) / gameDuration).toFixed(1))
 
         return {
             //'time': f'{minutes}:{seconds}',
@@ -216,7 +215,7 @@ export class SummonersService {
             quadraKills,
             pentaKills,
             cs,
-            csmin: cs_min,
+            csmin,
             gold: goldEarned,
             avgDamageDealt: totalDamageDealtToChampions,
             avgDamageTaken: totalDamageTaken,
@@ -242,6 +241,7 @@ export class SummonersService {
     private accumulateGameData(acc: ChampDto, cur: ChampDto): ChampDto {
         const avg = (a: number, b: number, n: number) => parseFloat(((a * n + b) / (n + 1)).toFixed(2))
 
+        const props_max = ['maxKills', 'maxDeaths']
         const props_increment = ['doubleKills', 'tripleKills', 'quadraKills', 'pentaKills', 'winrate']
         const props_average = [
             'kills',
@@ -250,13 +250,18 @@ export class SummonersService {
             'kda',
             'cs',
             'csmin',
+            'gold',
             'avgDamageTaken',
             'avgDamageDealt',
             'visionScore',
             'timePlayed',
             'turretKills',
         ]
-        const props_max = ['maxKills', 'maxDeaths']
+
+        // Max props: return the bigger value between the accumulated value and the new value
+        for (const prop of props_max) {
+            acc[prop] = cur[prop] > acc[prop] ? cur[prop] : acc[prop]
+        }
 
         // Incremental props: just add the new value to the accumulated value
         for (const prop of props_increment) {
@@ -266,11 +271,6 @@ export class SummonersService {
         // Average props: calculate the average of the accumulated value and the new value
         for (const prop of props_average) {
             acc[prop] = avg(acc[prop], cur[prop], acc.games)
-        }
-
-        // Max props: return the bigger value between the accumulated value and the new value
-        for (const prop of props_max) {
-            acc[prop] = cur[prop] > acc[prop] ? cur[prop] : acc[prop]
         }
 
         // Don't accumulate games before to don't break averages for loop
@@ -285,7 +285,7 @@ export class SummonersService {
      * @returns {string} region name (e.g. 'EUROPE')
      */
     private serverRegion(server: string): string {
-        const servers = {
+        const servers: { [key: string]: string } = {
             oc1: 'AMERICAS',
             la1: 'AMERICAS',
             la2: 'AMERICAS',
@@ -310,36 +310,67 @@ export class SummonersService {
      * @param {string} server The server of the player
      * @param {number} champsLimit The number of champs to return
      * @param {number} gamesLimit The number of games to analyze
+     * @param {number} offset The number of games to skip before starting to analyze
      * @param {string} queueType Specify to check only a specific queue ('ranked', 'normal', 'all')
      * @returns {Player} The info of the player
      */
-    async getChampsData(puuid: string, server: string, gamesLimit: number, queueType: string, champsLimit: number): Promise<any> {
+    async getChampsData(
+        puuid: string,
+        server: string,
+        champsLimit: number,
+        gamesLimit: number,
+        offset: number,
+        queueType: string,
+    ): Promise<any> {
         this.logger.verbose(`Getting data from last ${gamesLimit} games`)
         // Validate queueType
-        const queueTypes = {
+        const queueTypes: { [key: string]: string } = {
             normal: '&type=normal',
             ranked: '&type=ranked',
+            all: '',
         }
-        const queue = queueTypes[queueType] ?? ''
+        const queue = queueTypes[queueType] ?? '&type=normal'
 
         server = this.serverRegion(server)
 
-        const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=${gamesLimit + queue}`
+        const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${offset}&count=${gamesLimit}${queue}`
         const games_list: string[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
 
-        const temp = {}
+        // Accumulate the promises of each game
+        const promises: Promise<any>[] = games_list.map((game_id: string) => {
+            this.logger.log(`Loading game: ${game_id}`)
+            const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/${game_id}`
 
-        for (const game of games_list) {
-            const info = await this.getSingleGameInfo(puuid, game, server)
-            const champ = info['name']
+            return lastValueFrom(this.httpService.get(url, this.headers))
+        })
 
-            temp[champ] = temp[champ] ? this.accumulateGameData(temp[champ], info) : info
+        // Run all the promises in parallel
+        const games = await Promise.all(promises)
+        const temp: { [key: string]: ChampDto } = {}
+
+        for (const game of games) {
+            const idx: number = game.data.metadata.participants.indexOf(puuid)
+            const data: any = game.data.info.participants[idx]
+            const gameInfo = await this.processGameData(game.data.info, data)
+            const champName: string = gameInfo.name
+
+            temp[champName] = temp[champName] ? this.accumulateGameData(temp[champName], gameInfo) : gameInfo
         }
         const result = Object.values(temp)
 
+        // Sort the champs by number of games played
         result.sort((a: any, b: any) => {
             return b.games - a.games
         })
-        return result.slice(0, champsLimit)
+
+        // Slice result is exceeds the limiit
+        if (champsLimit < result.length) {
+            result.length = champsLimit
+        }
+
+        this.logger.verbose(`Got { ${Object.keys(temp).length} } champs from { ${games.length} } games`)
+        this.logger.verbose(`Returning { ${result.length} } champs. Max set to { ${champsLimit} }`)
+
+        return result
     }
 }

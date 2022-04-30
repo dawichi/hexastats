@@ -1,2 +1,2 @@
 export { ServerParam, SummonerNameParam } from './params'
-export { ChampsLimitQuery, GamesLimitQuery, MasteriesLimitQuery, QueueTypeQuery } from './querys'
+export { ChampsLimitQuery, GamesLimitQuery, MasteriesLimitQuery, OffsetQuery, QueueTypeQuery } from './querys'

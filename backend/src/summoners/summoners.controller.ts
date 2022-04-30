@@ -1,8 +1,16 @@
 import { Controller, Get, Logger, Param, Query } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { SummonersService } from './summoners.service'
-import { ChampDto, MasteryDto, PlayerBasicDto, PlayerDto } from './dto'
-import { ChampsLimitQuery, GamesLimitQuery, MasteriesLimitQuery, QueueTypeQuery, ServerParam, SummonerNameParam } from './decorators'
+import { ChampDto, MasteryDto, PlayerBasicDto } from './dto'
+import {
+    ChampsLimitQuery,
+    GamesLimitQuery,
+    MasteriesLimitQuery,
+    OffsetQuery,
+    QueueTypeQuery,
+    ServerParam,
+    SummonerNameParam,
+} from './decorators'
 
 @ApiTags('summoners')
 @Controller('summoners')
@@ -98,63 +106,6 @@ export class SummonersController {
      * @param {string} summonerName Summoner name in the game
      * @param {number} champsLimit Limit of champions to be returned (default: 7)
      * @param {number} gamesLimit Limit of games to be checked (default: 50)
-     * @param {number} masteriesLimit Limit of masteries to be returned (default: 7)
-     * @param {string} queueType Specify to check only a specific queue ('ranked' or 'normal')
-     * @returns {Promise<PlayerDto>} Player object with all the information
-     */
-    @Get('/:server/:summonerName/all')
-    @ApiOperation({
-        summary: 'Get player info',
-        description: 'Returns all the information at a time from a single endopint. Not recommended for production, as it delays +5s',
-    })
-    @ApiResponse({
-        status: 200,
-        description: 'The summoner was found and the data is correct',
-        type: PlayerDto,
-    })
-    @ServerParam()
-    @SummonerNameParam()
-    @MasteriesLimitQuery()
-    @GamesLimitQuery()
-    @ChampsLimitQuery()
-    @QueueTypeQuery()
-    async getAllSummonerData(
-        @Param('server') server: string,
-        @Param('summonerName') summonerName: string,
-        @Query('champsLimit') champsLimit = 7,
-        @Query('gamesChecked') gamesLimit = 20,
-        @Query('masteriesLimit') masteriesLimit = 7,
-        @Query('queueType') queueType = 'ranked',
-    ): Promise<PlayerDto> {
-        this.logger.verbose(`Started a complete search for: ${summonerName}`)
-
-        const version = await this.summonersService.getLatestVersion()
-        const summonerData = await this.summonersService.getSummonerDataByName(summonerName, server)
-        const { solo, flex } = await this.summonersService.getRankData(summonerData.id, server)
-        const masteries = await this.summonersService.getMasteries(summonerData.id, server, masteriesLimit)
-        const champs = await this.summonersService.getChampsData(summonerData.puuid, server, gamesLimit, queueType, champsLimit)
-
-        this.logger.verbose('Done!')
-
-        return {
-            alias: summonerData.name,
-            image: `https://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${summonerData.profileIconId}.png`,
-            level: summonerData.summonerLevel,
-            rank: {
-                solo,
-                flex,
-            },
-            champs,
-            masteries,
-        }
-    }
-
-    /**
-     * ## Get summoner information by summoner name
-     * @param {string} server Server name (e.g. 'euw1')
-     * @param {string} summonerName Summoner name in the game
-     * @param {number} champsLimit Limit of champions to be returned (default: 7)
-     * @param {number} gamesLimit Limit of games to be checked (default: 50)
      * @param {string} queueType Specify to check only a specific queue ('ranked' or 'normal')
      * @returns {Promise<ChampDto[]>} Player object with all the information
      */
@@ -172,18 +123,21 @@ export class SummonersController {
     @SummonerNameParam()
     @GamesLimitQuery()
     @ChampsLimitQuery()
+    @OffsetQuery()
     @QueueTypeQuery()
     async getChampsData(
         @Param('server') server: string,
         @Param('summonerName') summonerName: string,
         @Query('champsLimit') champsLimit = 7,
-        @Query('gamesChecked') gamesLimit = 20,
-        @Query('queueType') queueType = 'ranked',
+        @Query('gamesLimit') gamesLimit = 10,
+        @Query('offset') offset = 0,
+        @Query('queueType') queueType: string,
     ): Promise<ChampDto[]> {
         this.logger.verbose(`Started a complete search for: ${summonerName}`)
+        console.log(champsLimit, gamesLimit, queueType)
 
         const summonerData = await this.summonersService.getSummonerDataByName(summonerName, server)
-        const champs = await this.summonersService.getChampsData(summonerData.puuid, server, gamesLimit, queueType, champsLimit)
+        const champs = await this.summonersService.getChampsData(summonerData.puuid, server, champsLimit, gamesLimit, offset, queueType)
 
         this.logger.verbose('Done!')
 

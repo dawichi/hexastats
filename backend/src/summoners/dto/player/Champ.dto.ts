@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger'
 
 export class Champ {
+    [key: string]: any
+
     @ApiProperty({
         description: 'Name of the champ',
         example: 'Aatrox',

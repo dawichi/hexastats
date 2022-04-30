@@ -18,7 +18,7 @@ export function GamesLimitQuery() {
         ApiQuery({
             name: 'gamesLimit',
             description: 'Limit of last games played to load. Max: 100. A high number (+30) usually implies a lot of load time to respond',
-            example: 20,
+            example: 10,
             type: Number,
             required: false,
         }),
@@ -31,6 +31,18 @@ export function MasteriesLimitQuery() {
             name: 'masteriesLimit',
             description: 'Limit of masteries to be returned',
             example: 7,
+            type: Number,
+            required: false,
+        }),
+    )
+}
+
+export function OffsetQuery() {
+    return applyDecorators(
+        ApiQuery({
+            name: 'offset',
+            description: 'Skip a number of games before starting to analyze',
+            example: 10,
             type: Number,
             required: false,
         }),
