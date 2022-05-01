@@ -90,7 +90,14 @@ export class SummonersService {
         // This response cointains all +140 champions, so we take the {masteriesLimit} first ones
         const masteries: MasteryDto[] = []
 
-        for (let i = 0; i < masteriesLimit; i++) {
+        this.logger.verbose(`Fount ${all_champions.length} masteries`)
+
+        // Slice result if exceeds the limiit
+        if (masteriesLimit < all_champions.length) {
+            all_champions.length = masteriesLimit
+        }
+
+        for (let i = 0; i < all_champions.length; i++) {
             const champ_name = champ_names_table[all_champions[i].championId]
 
             this.logger.log(`Mastery: ${champ_name}`)
@@ -365,7 +372,7 @@ export class SummonersService {
             return b.games - a.games
         })
 
-        // Slice result is exceeds the limiit
+        // Slice result if exceeds the limiit
         if (champsLimit < result.length) {
             result.length = champsLimit
         }

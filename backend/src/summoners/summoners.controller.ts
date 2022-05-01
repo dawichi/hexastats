@@ -61,7 +61,7 @@ export class SummonersController {
      * ## Get masteries of a summoner
      * @param {string} server Server name (e.g. 'euw1')
      * @param {string} summonerName Summoner name in the game
-     * @param {number} masteriesLimit Limit of masteries to be returned (default: 7)
+     * @param {number} masteriesLimit Limit of masteries to be returned (default: 24)
      * @returns {Promise<MasteryDto[]>} Player object with all the information
      */
     @Get('/:server/:summonerName/masteries')
@@ -80,7 +80,7 @@ export class SummonersController {
     async getMasteries(
         @Param('server') server: string,
         @Param('summonerName') summonerName: string,
-        @Query('masteriesLimit') masteriesLimit = 7,
+        @Query('masteriesLimit') masteriesLimit = 24,
     ): Promise<MasteryDto[]> {
         this.logger.verbose(`Started a masteries search for: ${summonerName}`)
 

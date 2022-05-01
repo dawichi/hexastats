@@ -5,7 +5,7 @@ export function ChampsLimitQuery() {
     return applyDecorators(
         ApiQuery({
             name: 'champsLimit',
-            description: 'Limit of champs to be returned',
+            description: 'Limit of champs to be returned. Empty defaults to 7',
             example: 7,
             type: Number,
             required: false,
@@ -17,7 +17,7 @@ export function GamesLimitQuery() {
     return applyDecorators(
         ApiQuery({
             name: 'gamesLimit',
-            description: 'Limit of last games played to load. Max: 100. A high number (+30) usually implies a lot of load time to respond',
+            description: 'Limit of last games played to load. Empty defaults to 10',
             example: 10,
             type: Number,
             required: false,
@@ -29,8 +29,8 @@ export function MasteriesLimitQuery() {
     return applyDecorators(
         ApiQuery({
             name: 'masteriesLimit',
-            description: 'Limit of masteries to be returned',
-            example: 7,
+            description: 'Limit of masteries to be returned. Empty defaults to 24',
+            example: 24,
             type: Number,
             required: false,
         }),
@@ -42,7 +42,7 @@ export function OffsetQuery() {
         ApiQuery({
             name: 'offset',
             description: 'Skip a number of games before starting to analyze',
-            example: 10,
+            example: 0,
             type: Number,
             required: false,
         }),
