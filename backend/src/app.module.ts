@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common'
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
+import { LoggerMiddleware } from './common/middleware/logger.middleware'
 import { SummonersModule } from './summoners/summoners.module'
 import { ConfigModule } from '@nestjs/config'
 
@@ -7,4 +8,8 @@ import { ConfigModule } from '@nestjs/config'
     controllers: [],
     providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(LoggerMiddleware).forRoutes('summoners')
+    }
+}

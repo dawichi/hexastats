@@ -142,7 +142,7 @@ export class SummonersService {
         const buildRank = (i: number): RankDto => {
             return {
                 rank: rank_data[i].tier ? `${rank_data[i].tier} ${rank_data[i].rank}` : 'Unranked',
-                image: rank_data[i].tier ? `${rank_data[i].tier}.png` : 'unranked.png',
+                image: rank_data[i].tier ? `${rank_data[i].tier.toLowerCase()}.png` : 'unranked.png',
                 lp: rank_data[i].leaguePoints,
                 win: rank_data[i].wins,
                 lose: rank_data[i].losses,

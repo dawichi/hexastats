@@ -9,6 +9,8 @@ const logger = new Logger('Init')
 async function bootstrap() {
     const app = await NestFactory.create(AppModule)
 
+    app.enableCors()
+
     // Validate if the API KEY is set
     if (!process.env.RIOT_API_KEY) {
         logger.error('RIOT_API_KEY is not set')
