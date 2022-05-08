@@ -1,6 +1,6 @@
 import { DataForChart, PlayerStatsResult } from 'interfaces/interfaces'
 
-export default function getValuesForPieChart(playersData: PlayerStatsResult[], stat: string): DataForChart[] {
+export const getValuesForPieChart = (playersData: PlayerStatsResult[], stat: string): DataForChart[] => {
     const player_infos: DataForChart[] = [] // [ {label: 'name', value: 5} ]
 
     // Fills it with values
