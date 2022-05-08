@@ -1,8 +1,9 @@
 // Links for navbar
-export { navigation as navigation } from './navigation'
+export { navigation } from './navigation'
 
 // Environment config
-export { environment as environment } from './environment'
+export { environment } from './environment'
 
 // Servers list
-export { servers as servers } from './servers'
+export { servers } from './servers'
+export { validateServer } from './servers'
