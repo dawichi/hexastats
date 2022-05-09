@@ -1,7 +1,7 @@
 import { applyDecorators } from '@nestjs/common'
 import { ApiParam } from '@nestjs/swagger'
 
-export function ServerParam() {
+export function ParamServer() {
     return applyDecorators(
         ApiParam({
             name: 'server',
@@ -11,7 +11,7 @@ export function ServerParam() {
     )
 }
 
-export function SummonerNameParam() {
+export function ParamSummonerName() {
     return applyDecorators(
         ApiParam({
             name: 'summonerName',

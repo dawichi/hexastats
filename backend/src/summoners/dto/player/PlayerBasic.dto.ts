@@ -1,9 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Champ } from './Champ.dto'
-import { Mastery } from './Mastery.dto'
 import { RankStructure } from './Rank.dto'
 
-export class Player {
+export class PlayerBasic {
     @ApiProperty({
         description: 'Summoner name',
         example: 'David',
@@ -26,16 +24,4 @@ export class Player {
         description: 'Rank information',
     })
     rank: RankStructure
-
-    @ApiProperty({
-        description: 'Champions most played',
-        type: [Champ],
-    })
-    games: any[]
-
-    @ApiProperty({
-        description: 'Champs with most mastery points',
-        type: [Mastery],
-    })
-    masteries: Mastery[]
 }

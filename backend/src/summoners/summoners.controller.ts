@@ -1,18 +1,18 @@
 import { Controller, Get, Logger, Param, Query } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { DatabaseService } from '../database/database.service'
 import { SummonersService } from './summoners.service'
-import { ChampDto, MasteryDto, PlayerDto } from './dto'
+import { ChampDto, MasteryDto, PlayerBasicDto, PlayerDto } from './dto'
+import { validateTTL } from '../common/validators'
 import {
-    ChampsLimitQuery,
-    GamesLimitQuery,
-    MasteriesLimitQuery,
-    OffsetQuery,
-    QueueTypeQuery,
-    ServerParam,
-    SummonerNameParam,
+    QueryChampsLimit,
+    QueryGamesLimit,
+    QueryMasteriesLimit,
+    QueryOffset,
+    QueryQueueType,
+    ParamServer,
+    ParamSummonerName,
 } from './decorators'
-import { DatabaseService } from 'src/database/database.service'
-import { validateTTL } from 'src/common/utils'
 
 @ApiTags('summoners')
 @Controller('summoners')
@@ -32,31 +32,44 @@ export class SummonersController {
     @Get('/:server/:summonerName')
     @ApiOperation({
         summary: 'Get player info',
-        description: 'Returns the basic info (summoner data and rankings)',
+        description: 'Returns the complete info (summoner data, rankings, masteries and champs)',
     })
     @ApiResponse({
         status: 200,
         description: 'The summoner was found and the data is correct',
         type: PlayerDto,
     })
-    @ServerParam()
-    @SummonerNameParam()
-    async getBasicSummoner(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<PlayerDto> {
-        this.logger.verbose(`Started a basic search for: ${summonerName}`)
+    @ParamServer()
+    @ParamSummonerName()
+    @QueryGamesLimit()
+    @QueryQueueType()
+    async getSummoner(
+        @Param('server') server: string,
+        @Param('summonerName') summonerName: string,
+        @Query('gamesLimit') gamesLimit = 10,
+        @Query('queueType') queueType: string,
+    ): Promise<PlayerDto> {
+        this.logger.verbose(`Started a complete search for: ${summonerName}`)
 
         const redisData = await this.databaseService.recoverSummonerData(server, summonerName)
 
         if (redisData) {
             const stillValid = validateTTL(redisData.ttl)
+            const numOfGamesStored = redisData.data.games.length
 
             if (stillValid) {
-                return redisData.data
+                if (numOfGamesStored >= gamesLimit) {
+                    return redisData.data
+                }
             }
         }
 
         const version = await this.summonersService.getLatestVersion()
         const summonerData = await this.summonersService.getSummonerDataByName(summonerName, server)
         const { solo, flex } = await this.summonersService.getRankData(summonerData.id, server)
+        const masteries = await this.summonersService.getMasteries(summonerData.id, server, 0)
+        const games = await this.summonersService.getGames(summonerData.id, server, gamesLimit, 0, queueType)
+
         const result = {
             alias: summonerData.name,
             image: `https://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${summonerData.profileIconId}.png`,
@@ -65,11 +78,50 @@ export class SummonersController {
                 solo,
                 flex,
             },
+            games,
+            masteries,
         }
 
         await this.databaseService.saveSummonerData(server, summonerName, result)
         this.logger.verbose('Done!')
         return result
+    }
+
+    /**
+     * ## Get summoner information by summoner name
+     * @param {string} server Server name (e.g. 'euw1')
+     * @param {string} summonerName Summoner name in the game
+     * @returns {Promise<PlayerDto>} Player object with all the information
+     */
+    @Get('/:server/:summonerName/basic')
+    @ApiOperation({
+        summary: 'Get player info without champs',
+        description: 'Returns the basic info (only summoner data and rankings)',
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'The summoner was found and the data is correct',
+        type: PlayerDto,
+    })
+    @ParamServer()
+    @ParamSummonerName()
+    async getBasicSummoner(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<PlayerBasicDto> {
+        this.logger.verbose(`Started a basic search for: ${summonerName}`)
+
+        const version = await this.summonersService.getLatestVersion()
+        const summonerData = await this.summonersService.getSummonerDataByName(summonerName, server)
+        const { solo, flex } = await this.summonersService.getRankData(summonerData.id, server)
+
+        this.logger.verbose('Done!')
+        return {
+            alias: summonerData.name,
+            image: `https://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${summonerData.profileIconId}.png`,
+            level: summonerData.summonerLevel,
+            rank: {
+                solo,
+                flex,
+            },
+        }
     }
 
     /**
@@ -89,9 +141,9 @@ export class SummonersController {
         description: 'The summoner was found and the data is correct',
         type: [MasteryDto],
     })
-    @ServerParam()
-    @SummonerNameParam()
-    @MasteriesLimitQuery()
+    @ParamServer()
+    @ParamSummonerName()
+    @QueryMasteriesLimit()
     async getMasteries(
         @Param('server') server: string,
         @Param('summonerName') summonerName: string,
@@ -118,7 +170,7 @@ export class SummonersController {
      */
     @Get('/:server/:summonerName/champs')
     @ApiOperation({
-        summary: 'Get champs info',
+        summary: 'Get champs',
         description: 'Returns the champs information from a summoner. Loads the last X games and returns the stats calculated',
     })
     @ApiResponse({
@@ -126,12 +178,12 @@ export class SummonersController {
         description: 'The summoner was found and the data is correct',
         type: [ChampDto],
     })
-    @ServerParam()
-    @SummonerNameParam()
-    @GamesLimitQuery()
-    @ChampsLimitQuery()
-    @OffsetQuery()
-    @QueueTypeQuery()
+    @ParamServer()
+    @ParamSummonerName()
+    @QueryGamesLimit()
+    @QueryChampsLimit()
+    @QueryOffset()
+    @QueryQueueType()
     async getChampsData(
         @Param('server') server: string,
         @Param('summonerName') summonerName: string,
@@ -140,7 +192,7 @@ export class SummonersController {
         @Query('offset') offset = 0,
         @Query('queueType') queueType: string,
     ): Promise<ChampDto[]> {
-        this.logger.verbose(`Started a complete search for: ${summonerName}`)
+        this.logger.verbose(`Started a champs search for: ${summonerName}`)
 
         const summonerData = await this.summonersService.getSummonerDataByName(summonerName, server)
         const champs = await this.summonersService.getChampsData(summonerData.puuid, server, champsLimit, gamesLimit, offset, queueType)

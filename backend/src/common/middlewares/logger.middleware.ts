@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express'
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
-    private readonly logger = new Logger(LoggerMiddleware.name)
+    private readonly logger = new Logger(this.constructor.name)
 
     use(req: Request, res: Response, next: NextFunction) {
         this.logger.log(`${req.method} ${req.url}`)

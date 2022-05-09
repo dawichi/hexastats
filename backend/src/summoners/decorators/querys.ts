@@ -1,7 +1,7 @@
 import { applyDecorators } from '@nestjs/common'
 import { ApiQuery } from '@nestjs/swagger'
 
-export function ChampsLimitQuery() {
+export function QueryChampsLimit() {
     return applyDecorators(
         ApiQuery({
             name: 'champsLimit',
@@ -13,7 +13,7 @@ export function ChampsLimitQuery() {
     )
 }
 
-export function GamesLimitQuery() {
+export function QueryGamesLimit() {
     return applyDecorators(
         ApiQuery({
             name: 'gamesLimit',
@@ -25,19 +25,19 @@ export function GamesLimitQuery() {
     )
 }
 
-export function MasteriesLimitQuery() {
+export function QueryMasteriesLimit() {
     return applyDecorators(
         ApiQuery({
             name: 'masteriesLimit',
-            description: 'Limit of masteries to be returned. Empty defaults to 24',
+            description: 'Limit of masteries to be returned. 0 returns all',
             example: 24,
             type: Number,
-            required: false,
+            required: true,
         }),
     )
 }
 
-export function OffsetQuery() {
+export function QueryOffset() {
     return applyDecorators(
         ApiQuery({
             name: 'offset',
@@ -49,12 +49,12 @@ export function OffsetQuery() {
     )
 }
 
-export function QueueTypeQuery() {
+export function QueryQueueType() {
     return applyDecorators(
         ApiQuery({
             name: 'queueType',
-            description: 'Specify a queue type to check only a specific type of game. Default checks only rankeds.',
-            enum: ['normal', 'ranked', 'all'],
+            description: 'Specify a queue type to check only a specific type of game. Empty checks both.',
+            enum: ['normal', 'ranked'],
             example: 'ranked',
             required: false,
         }),

@@ -2,7 +2,7 @@ import { Logger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app.module'
-import { validateEnv } from './common/utils'
+import { validateEnv } from './common/validators'
 
 const port = process.env.PORT || 5000
 const logger = new Logger('Init')
