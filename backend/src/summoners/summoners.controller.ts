@@ -11,13 +11,17 @@ import {
     ServerParam,
     SummonerNameParam,
 } from './decorators'
+import { DatabaseService } from 'src/database/database.service'
+import { validateTTL } from 'src/common/utils'
 
 @ApiTags('summoners')
 @Controller('summoners')
 export class SummonersController {
-    constructor(private readonly summonersService: SummonersService) {}
+    private readonly logger: Logger
 
-    private readonly logger = new Logger(SummonersController.name)
+    constructor(private readonly summonersService: SummonersService, private readonly databaseService: DatabaseService) {
+        this.logger = new Logger(this.constructor.name)
+    }
 
     /**
      * ## Get summoner information by summoner name
@@ -40,13 +44,20 @@ export class SummonersController {
     async getBasicSummoner(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<PlayerDto> {
         this.logger.verbose(`Started a basic search for: ${summonerName}`)
 
+        const redisData = await this.databaseService.recoverSummonerData(server, summonerName)
+
+        if (redisData) {
+            const stillValid = validateTTL(redisData.ttl)
+
+            if (stillValid) {
+                return redisData.data
+            }
+        }
+
         const version = await this.summonersService.getLatestVersion()
         const summonerData = await this.summonersService.getSummonerDataByName(summonerName, server)
         const { solo, flex } = await this.summonersService.getRankData(summonerData.id, server)
-
-        this.logger.verbose('Done!')
-
-        return {
+        const result = {
             alias: summonerData.name,
             image: `https://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${summonerData.profileIconId}.png`,
             level: summonerData.summonerLevel,
@@ -55,6 +66,10 @@ export class SummonersController {
                 flex,
             },
         }
+
+        await this.databaseService.saveSummonerData(server, summonerName, result)
+        this.logger.verbose('Done!')
+        return result
     }
 
     /**

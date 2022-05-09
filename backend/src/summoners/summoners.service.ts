@@ -8,13 +8,13 @@ import { ChampDto, MasteryDto, RankDto, SummonerDto } from './dto'
 export class SummonersService {
     private readonly apiKey: string
     private readonly headers: { headers: { 'X-Riot-Token': string } }
+    private readonly logger: Logger
 
-    constructor(private configService: ConfigService, private httpService: HttpService) {
+    constructor(private readonly configService: ConfigService, private readonly httpService: HttpService) {
         this.apiKey = this.configService.get<string>('RIOT_API_KEY')
         this.headers = { headers: { 'X-Riot-Token': this.apiKey } }
+        this.logger = new Logger(this.constructor.name)
     }
-
-    private readonly logger: Logger = new Logger(SummonersService.name)
 
     /**
      * ## Get the RIOT base URL based on the server variable

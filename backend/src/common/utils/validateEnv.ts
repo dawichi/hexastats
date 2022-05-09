@@ -1,4 +1,8 @@
-export const validateEnv = () => {
+/**
+ * Validate if environment variables are set
+ * @returns Array with erros if any
+ */
+export const validateEnv = (): string[] => {
     const err = []
 
     // Validate if RIOT API KEY is set
