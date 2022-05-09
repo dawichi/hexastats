@@ -2,21 +2,24 @@ import { Logger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app.module'
+import { validateEnv } from './common/utils'
 
 const port = process.env.PORT || 5000
 const logger = new Logger('Init')
 
 async function bootstrap() {
+    // Validate the environment variables
+    const errors = validateEnv()
+
+    if (errors.length > 0) {
+        errors.forEach(error => logger.error(error))
+        process.exit(1)
+    }
+
+    // Create the Nest application
     const app = await NestFactory.create(AppModule)
 
     app.enableCors()
-
-    // Validate if the API KEY is set
-    if (!process.env.RIOT_API_KEY) {
-        logger.error('RIOT_API_KEY is not set')
-        logger.error('Please set it in .env file')
-        process.exit(1)
-    }
 
     // Create the swagger documentation
     const swaggerConfig = new DocumentBuilder()
@@ -30,6 +33,7 @@ async function bootstrap() {
     logger.verbose(`NestJS is running on http://localhost:${port}`)
     logger.verbose(`Swagger running http://localhost:${port}/swagger`)
 
+    // Start the application
     await app.listen(port)
 }
 bootstrap()
