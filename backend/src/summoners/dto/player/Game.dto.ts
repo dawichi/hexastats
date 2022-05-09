@@ -1,4 +1,5 @@
 export class Game {
+    participantNumber: number
     gameDuration: number
     gameMode: string
     teams: Team[]
@@ -31,14 +32,15 @@ class Team {
 
 class Participant {
     win: boolean
-    lane: string
+    timePlayed: number
+    teamPosition: string
 
     champ: {
         champLevel: number
         championName: string
         largestMultiKill: number
-        totalDamageDealtToChampions: number
-        totalDamageTaken: number
+        damageDealt: number
+        damageTaken: number
     }
 
     kda: {
@@ -48,30 +50,29 @@ class Participant {
     }
 
     multiKill: {
-        doubleKills: number
-        tripleKills: number
-        quadraKills: number
-        pentaKills: number
+        doubles: number
+        triples: number
+        quadras: number
+        pentas: number
     }
 
     farm: {
-        goldEarned: number
-        neutralMinionsKilled: number
-        totalMinionsKilled: number
+        gold: number
+        cs: number
     }
 
     items: {
-        item0: number
-        item1: number
-        item2: number
-        item3: number
-        item4: number
-        item5: number
-        item6: number
+        0: number
+        1: number
+        2: number
+        3: number
+        4: number
+        5: number
+        6: number
     }
 
     spells: {
-        summoner1Id: number
-        summoner2Id: number
+        0: number
+        1: number
     }
 }

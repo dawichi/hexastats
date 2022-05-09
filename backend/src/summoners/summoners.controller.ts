@@ -55,7 +55,7 @@ export class SummonersController {
 
         if (redisData) {
             const stillValid = validateTTL(redisData.ttl)
-            const numOfGamesStored = redisData.data.games.length
+            const numOfGamesStored = redisData.data?.games?.length
 
             if (stillValid) {
                 if (numOfGamesStored >= gamesLimit) {
@@ -68,7 +68,7 @@ export class SummonersController {
         const summonerData = await this.summonersService.getSummonerDataByName(summonerName, server)
         const { solo, flex } = await this.summonersService.getRankData(summonerData.id, server)
         const masteries = await this.summonersService.getMasteries(summonerData.id, server, 0)
-        const games = await this.summonersService.getGames(summonerData.id, server, gamesLimit, 0, queueType)
+        const games = await this.summonersService.getGames(summonerData.puuid, server, gamesLimit, 0, queueType)
 
         const result = {
             alias: summonerData.name,

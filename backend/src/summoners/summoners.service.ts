@@ -2,7 +2,8 @@ import { HttpService } from '@nestjs/axios'
 import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
-import { ChampDto, MasteryDto, RankDto, SummonerDto } from './dto'
+import { validateQueueType } from 'src/common/validators'
+import { ChampDto, GameDto, MasteryDto, RankDto, SummonerDto } from './dto'
 
 @Injectable()
 export class SummonersService {
@@ -90,7 +91,7 @@ export class SummonersService {
         // This response cointains all +140 champions, so we take the {masteriesLimit} first ones
         const masteries: MasteryDto[] = []
 
-        this.logger.verbose(`Fount ${all_champions.length} masteries`)
+        this.logger.verbose(`Found ${all_champions.length} masteries`)
 
         // Slice result if exceeds the limiit
         if (masteriesLimit < all_champions.length) {
@@ -236,6 +237,121 @@ export class SummonersService {
     }
 
     /**
+     * ## Server region validator
+     * Depending of the server, the games must be requested to a different region
+     * @param {string} server Server name (e.g. 'euw1')
+     * @returns {string} region name (e.g. 'europe')
+     */
+    private serverRegion(server: string): string {
+        const servers: { [key: string]: string } = {
+            oc1: 'americas',
+            la1: 'americas',
+            la2: 'americas',
+            br1: 'americas',
+            na1: 'americas',
+            jp1: 'asia',
+            kr: 'asia',
+            euw1: 'europe',
+            eun1: 'europe',
+            tr1: 'europe',
+            ru: 'europe',
+        }
+
+        return servers[server] ?? 'europe'
+    }
+
+    /**
+     * ## Process the data of a game
+     * @param idx The index of the summoner
+     * @param param1 The data of the game
+     * @returns {GameDto} The info of a unique game formatted
+     */
+    private processGame(idx: number, { gameMode, gameDuration, teams, participants }: any): GameDto {
+        participants = participants.map((participant: any) => {
+            return {
+                win: participant.win,
+                timePlayed: participant.timePlayed,
+                teamPosition: participant.teamPosition,
+                champ: {
+                    champLevel: participant.champLevel,
+                    championName: participant.championName,
+                    largestMultiKill: participant.largestMultiKill,
+                    damageDealt: participant.totalDamageDealtToChampions,
+                    damageTaken: participant.totalDamageTaken,
+                },
+                kda: {
+                    assists: participant.assists,
+                    deaths: participant.deaths,
+                    kills: participant.kills,
+                },
+                multiKill: {
+                    doubles: participant.doubleKills,
+                    triples: participant.tripleKills,
+                    quadras: participant.quadraKills,
+                    pentas: participant.pentaKills,
+                },
+                farm: {
+                    gold: participant.goldEarned,
+                    cs: participant.neutralMinionsKilled + participant.totalMinionsKilled,
+                },
+                items: {
+                    0: participant.item0,
+                    1: participant.item1,
+                    2: participant.item2,
+                    3: participant.item3,
+                    4: participant.item4,
+                    5: participant.item5,
+                    6: participant.item6,
+                },
+                spells: {
+                    0: participant.summoner1Id,
+                    1: participant.summoner2Id,
+                },
+            }
+        })
+
+        return {
+            participantNumber: idx,
+            gameDuration,
+            gameMode,
+            teams,
+            participants,
+        }
+    }
+
+    async getGames(puuid: string, server: string, gamesLimit: number, offset: number, queueType: string): Promise<any[]> {
+        this.logger.verbose(`Getting data from last ${gamesLimit} games`)
+
+        server = this.serverRegion(server)
+        const queue = validateQueueType(queueType)
+
+        const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${offset}&count=${gamesLimit}${queue}`
+        const games_list: string[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
+
+        // Accumulate the promises of each game
+        const promises: Promise<any>[] = games_list.map((game_id: string) => {
+            const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/${game_id}`
+
+            return lastValueFrom(this.httpService.get(url, this.headers))
+        })
+
+        // Run all the promises in parallel
+        const games = await Promise.all(promises)
+        const result = []
+
+        for (const game of games) {
+            const idx: number = game.data.metadata.participants.indexOf(puuid)
+            const { gameId, gameMode } = game.data.info
+
+            this.logger.log(`Processing game: ${gameId} \t ${gameMode} \t ${game.data.info.participants[idx].championName}`)
+
+            result.push(this.processGame(idx, game.data.info))
+        }
+
+        return result
+    }
+
+    /**
      * ## Accumulates the game information from a champion
      * To calculate the average information about a champion, we need to accumulate
      * the data from all the games played with it. So with this function, it modifies the values
@@ -285,30 +401,6 @@ export class SummonersService {
     }
 
     /**
-     * ## Server region validator
-     * Depending of the server, the games must be requested to a different region
-     * @param {string} server Server name (e.g. 'euw1')
-     * @returns {string} region name (e.g. 'EUROPE')
-     */
-    private serverRegion(server: string): string {
-        const servers: { [key: string]: string } = {
-            oc1: 'AMERICAS',
-            la1: 'AMERICAS',
-            la2: 'AMERICAS',
-            br1: 'AMERICAS',
-            na1: 'AMERICAS',
-            jp1: 'ASIA',
-            kr: 'ASIA',
-            euw1: 'EUROPE',
-            eun1: 'EUROPE',
-            tr1: 'EUROPE',
-            ru: 'EUROPE',
-        }
-
-        return servers[server] ?? 'EUROPE'
-    }
-
-    /**
      * ## Get the stats by champ
      * Loops over last 100 games and gets the stats by champ
      * Calls each game info individually and calculates the stats by champ
@@ -329,15 +421,9 @@ export class SummonersService {
         queueType: string,
     ): Promise<any> {
         this.logger.verbose(`Getting data from last ${gamesLimit} games`)
-        // Validate queueType
-        const queueTypes: { [key: string]: string } = {
-            normal: '&type=normal',
-            ranked: '&type=ranked',
-            all: '',
-        }
-        const queue = queueTypes[queueType] ?? '&type=normal'
 
         server = this.serverRegion(server)
+        const queue = validateQueueType(queueType)
 
         const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${offset}&count=${gamesLimit}${queue}`
         const games_list: string[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
