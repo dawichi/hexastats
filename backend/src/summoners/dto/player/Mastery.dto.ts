@@ -14,7 +14,7 @@ export class Mastery {
     image: string
 
     @ApiProperty({
-        description: 'Mastery level',
+        description: 'Mastery level (0-7)',
         example: 7,
     })
     level: number

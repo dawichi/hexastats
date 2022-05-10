@@ -2,7 +2,7 @@ import { Controller, Get, Logger, Param, Query } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { DatabaseService } from '../database/database.service'
 import { SummonersService } from './summoners.service'
-import { ChampDto, MasteryDto, PlayerBasicDto, PlayerDto } from './dto'
+import { ChampDto, MasteryDto, PlayerDto } from './dto'
 import { validateTTL } from '../common/validators'
 import {
     QueryChampsLimit,
@@ -60,6 +60,9 @@ export class SummonersController {
             if (stillValid) {
                 if (numOfGamesStored >= gamesLimit) {
                     return redisData.data
+                } else {
+                    this.logger.verbose(`Found ${numOfGamesStored} games in redis, but ${gamesLimit} are required.`)
+                    // code to get more games
                 }
             }
         }
@@ -88,43 +91,6 @@ export class SummonersController {
     }
 
     /**
-     * ## Get summoner information by summoner name
-     * @param {string} server Server name (e.g. 'euw1')
-     * @param {string} summonerName Summoner name in the game
-     * @returns {Promise<PlayerDto>} Player object with all the information
-     */
-    @Get('/:server/:summonerName/basic')
-    @ApiOperation({
-        summary: 'Get player info without champs',
-        description: 'Returns the basic info (only summoner data and rankings)',
-    })
-    @ApiResponse({
-        status: 200,
-        description: 'The summoner was found and the data is correct',
-        type: PlayerDto,
-    })
-    @ParamServer()
-    @ParamSummonerName()
-    async getBasicSummoner(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<PlayerBasicDto> {
-        this.logger.verbose(`Started a basic search for: ${summonerName}`)
-
-        const version = await this.summonersService.getLatestVersion()
-        const summonerData = await this.summonersService.getSummonerDataByName(summonerName, server)
-        const { solo, flex } = await this.summonersService.getRankData(summonerData.id, server)
-
-        this.logger.verbose('Done!')
-        return {
-            alias: summonerData.name,
-            image: `https://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${summonerData.profileIconId}.png`,
-            level: summonerData.summonerLevel,
-            rank: {
-                solo,
-                flex,
-            },
-        }
-    }
-
-    /**
      * ## Get masteries of a summoner
      * @param {string} server Server name (e.g. 'euw1')
      * @param {string} summonerName Summoner name in the game
@@ -135,6 +101,7 @@ export class SummonersController {
     @ApiOperation({
         summary: 'Get masteries',
         description: 'Returns the number of masteries requested, sort by most points',
+        deprecated: true,
     })
     @ApiResponse({
         status: 200,
@@ -172,6 +139,7 @@ export class SummonersController {
     @ApiOperation({
         summary: 'Get champs',
         description: 'Returns the champs information from a summoner. Loads the last X games and returns the stats calculated',
+        deprecated: true,
     })
     @ApiResponse({
         status: 200,

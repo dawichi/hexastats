@@ -14,7 +14,7 @@ export class Rank {
     image: string
 
     @ApiProperty({
-        description: 'LP of the player in this league',
+        description: 'League Points of the player in this league',
         example: 86,
     })
     lp: number
