@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios'
 import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
+import { spellUrl } from 'src/common/utils'
 import { validateQueueType } from 'src/common/validators'
 import { ChampDto, GameDto, MasteryDto, RankDto, SummonerDto } from './dto'
 
@@ -93,9 +94,11 @@ export class SummonersService {
 
         this.logger.verbose(`Found ${all_champions.length} masteries`)
 
-        // Slice result if exceeds the limiit
-        if (masteriesLimit < all_champions.length) {
-            all_champions.length = masteriesLimit
+        // Slice result if exceeds the limit
+        if (masteriesLimit) {
+            if (masteriesLimit < all_champions.length) {
+                all_champions.length = masteriesLimit
+            }
         }
 
         for (let i = 0; i < all_champions.length; i++) {
@@ -267,11 +270,14 @@ export class SummonersService {
      * @returns {GameDto} The info of a unique game formatted
      */
     private processGame(idx: number, { gameMode, gameDuration, teams, participants }: any): GameDto {
+        const itemUrl = (id: number) => `http://ddragon.leagueoflegends.com/cdn/12.8.1/img/item/${id}.png`
+
         participants = participants.map((participant: any) => {
             return {
                 win: participant.win,
                 timePlayed: participant.timePlayed,
                 teamPosition: participant.teamPosition,
+                visionScore: participant.visionScore,
                 champ: {
                     champLevel: participant.champLevel,
                     championName: participant.championName,
@@ -295,17 +301,17 @@ export class SummonersService {
                     cs: participant.neutralMinionsKilled + participant.totalMinionsKilled,
                 },
                 items: {
-                    0: participant.item0,
-                    1: participant.item1,
-                    2: participant.item2,
-                    3: participant.item3,
-                    4: participant.item4,
-                    5: participant.item5,
-                    6: participant.item6,
+                    0: itemUrl(participant.item0),
+                    1: itemUrl(participant.item1),
+                    2: itemUrl(participant.item2),
+                    3: itemUrl(participant.item3),
+                    4: itemUrl(participant.item4),
+                    5: itemUrl(participant.item5),
+                    6: itemUrl(participant.item6),
                 },
                 spells: {
-                    0: participant.summoner1Id,
-                    1: participant.summoner2Id,
+                    0: spellUrl(participant.summoner1Id),
+                    1: spellUrl(participant.summoner2Id),
                 },
             }
         })

@@ -34,6 +34,7 @@ class Participant {
     win: boolean
     timePlayed: number
     teamPosition: string
+    visionScore: number
 
     champ: {
         champLevel: number
