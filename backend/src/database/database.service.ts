@@ -16,6 +16,19 @@ export class DatabaseService {
         this.logger = new Logger(this.constructor.name)
     }
 
+    async reset(): Promise<boolean> {
+        this.logger.log('Reseting the database...')
+        await this.redis.flushdb()
+        this.logger.log('Database reseted!')
+        return true
+    }
+
+    async deleteSummonerData(server: string, summonerName: string) {
+        this.logger.log('Deleting data in redis...')
+        await this.redis.del(`${server}:${summonerName}`)
+        return true
+    }
+
     async recoverSummonerData(server: string, summonerName: string): Promise<SummonerDataForRedis> {
         this.logger.log('Checking if data exists in redis...')
         const data: SummonerDataForRedis = await this.redis.get(`${server}:${summonerName}`)
