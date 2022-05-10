@@ -1,0 +1,1 @@
+export { spellUrl } from './spellUrl'
