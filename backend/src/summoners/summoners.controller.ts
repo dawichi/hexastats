@@ -55,14 +55,29 @@ export class SummonersController {
 
         if (redisData) {
             const stillValid = validateTTL(redisData.ttl)
-            const numOfGamesStored = redisData.data?.games?.length
+            const numGamesStored = redisData.data.games.length
 
             if (stillValid) {
-                if (numOfGamesStored >= gamesLimit) {
+                if (numGamesStored >= gamesLimit) {
                     return redisData.data
                 } else {
-                    this.logger.verbose(`Found ${numOfGamesStored} games in redis, but ${gamesLimit} are required.`)
-                    // code to get more games
+                    this.logger.verbose(`Found ${numGamesStored} games in redis, but ${gamesLimit} are required.`)
+                    const { puuid } = await this.summonersService.getSummonerDataByName(summonerName, server)
+
+                    // Append new games to the existing ones in redisData
+                    const newGames = await this.summonersService.getGames(
+                        puuid,
+                        server,
+                        gamesLimit - numGamesStored,
+                        numGamesStored,
+                        queueType,
+                    )
+
+                    redisData.data.games.push(...newGames)
+                    await this.databaseService.saveSummonerData(server, summonerName, redisData.data)
+                    this.logger.verbose('Done!')
+
+                    return redisData.data
                 }
             }
         }
