@@ -16,6 +16,14 @@ export class DatabaseService {
         this.logger = new Logger(this.constructor.name)
     }
 
+    async checkAll(): Promise<string[]> {
+        this.logger.log('Checking all registered keys in redis...')
+        const keys = await this.redis.keys('*')
+
+        this.logger.log(`Found ${keys.length} keys!`)
+        return keys
+    }
+
     async reset(): Promise<boolean> {
         this.logger.log('Reseting the database...')
         await this.redis.flushdb()

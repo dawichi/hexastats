@@ -12,12 +12,31 @@ export class DatabaseController {
     }
 
     /**
+     * ## Print all the database keys registered
+     * @returns Response with the array of keys
+     */
+    @Get('/print')
+    @ApiOperation({
+        summary: 'Print all keys registered',
+        description: 'Print all keys registered in the Redis database',
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'All the keys was checked',
+        type: [String],
+    })
+    async checkAll(): Promise<string[]> {
+        this.logger.verbose('Check all keys in redis')
+        return this.databaseService.checkAll()
+    }
+
+    /**
      * ## Reset all database registers
      * @returns Confirmation that the database was deleted
      */
     @Get('/reset')
     @ApiOperation({
-        summary: 'Clean all data',
+        summary: 'Clear all data',
         description: 'Reset the Redis database, clearing all data',
     })
     @ApiResponse({

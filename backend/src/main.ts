@@ -2,7 +2,7 @@ import { Logger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app.module'
-import { validateEnv } from './common/validators'
+import { validateDatabase, validateEnv } from './common/validators'
 
 const port = process.env.PORT || 5000
 const logger = new Logger('Init')
@@ -15,6 +15,10 @@ async function bootstrap() {
         errors.forEach(error => logger.error(error))
         process.exit(1)
     }
+
+    // Validate the database
+    await validateDatabase()
+    logger.log('Redis database connected!')
 
     // Create the Nest application
     const app = await NestFactory.create(AppModule)
