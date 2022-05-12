@@ -18,11 +18,6 @@ export default function Index() {
                     <p>A data visualization webapp for League of Legends !</p>
                     <p>Search players from multiple servers and start comparing them !</p>
                 </div>
-
-                <p>
-                    First of all, add the players you would like to compare here <br />
-                    (recommended 3 at least)
-                </p>
             </div>
 
             <AddPlayer />
