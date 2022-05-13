@@ -1,4 +1,4 @@
-lockfileVersion: 5.3
+lockfileVersion: 5.4
 
 specifiers:
   '@headlessui/react': 1.5.0
@@ -26,23 +26,23 @@ specifiers:
   typescript: 4.6.2
 
 dependencies:
-  '@headlessui/react': 1.5.0_react-dom@17.0.2+react@17.0.2
+  '@headlessui/react': 1.5.0_sfoxds7t5ydpegc3knd667wn6m
   '@types/react': 17.0.40
   axios: 0.26.1
   d3: 7.3.0
-  next: 12.1.0_770cdee6eac9f5b17619eec686780a53
+  next: 12.1.0_o4gn5zxkzh23c5qz53dim6akkm
   prettier: 2.5.1
   prop-types: 15.8.1
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
-  recharts: 2.1.9_75cb922c19ee1b7939faae9b4d1f4cf7
+  recharts: 2.1.9_oxfzelaz5ynxsop2v2nu2h2m64
 
 devDependencies:
   '@testing-library/jest-dom': 5.16.2
-  '@testing-library/react': 12.1.4_react-dom@17.0.2+react@17.0.2
+  '@testing-library/react': 12.1.4_sfoxds7t5ydpegc3knd667wn6m
   autoprefixer: 10.4.2_postcss@8.4.8
   eslint: 8.11.0
-  eslint-config-next: 12.1.0_3ac81353fe98918efb885c3e6be622c2
+  eslint-config-next: 12.1.0_hlebgu76tciy564ilq7gxzrcyi
   jest: 27.5.1
   postcss: 8.4.8
   postcss-flexbugs-fixes: 5.0.2_postcss@8.4.8
@@ -498,7 +498,7 @@ packages:
       - supports-color
     dev: true
 
-  /@headlessui/react/1.5.0_react-dom@17.0.2+react@17.0.2:
+  /@headlessui/react/1.5.0_sfoxds7t5ydpegc3knd667wn6m:
     resolution: {integrity: sha512-aaRnYxBb3MU2FNJf3Ut9RMTUqqU3as0aI1lQhgo2n9Fa67wRu14iOGqx93xB+uMNVfNwZ5B3y/Ndm7qZGuFeMQ==}
     engines: {node: '>=10'}
     peerDependencies:
@@ -922,7 +922,7 @@ packages:
       redent: 3.0.0
     dev: true
 
-  /@testing-library/react/12.1.4_react-dom@17.0.2+react@17.0.2:
+  /@testing-library/react/12.1.4_sfoxds7t5ydpegc3knd667wn6m:
     resolution: {integrity: sha512-jiPKOm7vyUw311Hn/HlNQ9P8/lHNtArAx0PisXyFixDDvfl8DbD6EUdbshK5eqauvBSvzZd19itqQ9j3nferJA==}
     engines: {node: '>=12'}
     peerDependencies:
@@ -1092,7 +1092,7 @@ packages:
       '@types/yargs-parser': 21.0.0
     dev: true
 
-  /@typescript-eslint/parser/5.13.0_eslint@8.11.0+typescript@4.6.2:
+  /@typescript-eslint/parser/5.13.0_ynv3edxl3ah44xwgrna2g2yine:
     resolution: {integrity: sha512-GdrU4GvBE29tm2RqWOM0P5QfCtgCyN4hXICj/X9ibKED16136l9ZpoJvCL5pSKtmJzA+NRDzQ312wWMejCVVfg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -2275,7 +2275,7 @@ packages:
       source-map: 0.6.1
     dev: true
 
-  /eslint-config-next/12.1.0_3ac81353fe98918efb885c3e6be622c2:
+  /eslint-config-next/12.1.0_hlebgu76tciy564ilq7gxzrcyi:
     resolution: {integrity: sha512-tBhuUgoDITcdcM7xFvensi9I5WTI4dnvH4ETGRg1U8ZKpXrZsWQFdOKIDzR3RLP5HR3xXrLviaMM4c3zVoE/pA==}
     peerDependencies:
       eslint: ^7.23.0 || ^8.0.0
@@ -2287,15 +2287,15 @@ packages:
     dependencies:
       '@next/eslint-plugin-next': 12.1.0
       '@rushstack/eslint-patch': 1.1.0
-      '@typescript-eslint/parser': 5.13.0_eslint@8.11.0+typescript@4.6.2
+      '@typescript-eslint/parser': 5.13.0_ynv3edxl3ah44xwgrna2g2yine
       eslint: 8.11.0
       eslint-import-resolver-node: 0.3.6
-      eslint-import-resolver-typescript: 2.5.0_fe22d862ffeecaee86c93a006d59e41e
+      eslint-import-resolver-typescript: 2.5.0_7yrnqyx753fo5bwjhiag2wpedy
       eslint-plugin-import: 2.25.4_eslint@8.11.0
       eslint-plugin-jsx-a11y: 6.5.1_eslint@8.11.0
       eslint-plugin-react: 7.29.2_eslint@8.11.0
       eslint-plugin-react-hooks: 4.3.0_eslint@8.11.0
-      next: 12.1.0_770cdee6eac9f5b17619eec686780a53
+      next: 12.1.0_o4gn5zxkzh23c5qz53dim6akkm
       typescript: 4.6.2
     transitivePeerDependencies:
       - supports-color
@@ -2308,7 +2308,7 @@ packages:
       resolve: 1.22.0
     dev: true
 
-  /eslint-import-resolver-typescript/2.5.0_fe22d862ffeecaee86c93a006d59e41e:
+  /eslint-import-resolver-typescript/2.5.0_7yrnqyx753fo5bwjhiag2wpedy:
     resolution: {integrity: sha512-qZ6e5CFr+I7K4VVhQu3M/9xGv9/YmwsEXrsm3nimw8vWaVHRDrQRp26BgCypTxBp3vUp4o5aVEJRiy0F2DFddQ==}
     engines: {node: '>=4'}
     peerDependencies:
@@ -3838,7 +3838,7 @@ packages:
     resolution: {integrity: sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=}
     dev: true
 
-  /next/12.1.0_770cdee6eac9f5b17619eec686780a53:
+  /next/12.1.0_o4gn5zxkzh23c5qz53dim6akkm:
     resolution: {integrity: sha512-s885kWvnIlxsUFHq9UGyIyLiuD0G3BUC/xrH0CEnH5lHEWkwQcHOORgbDF0hbrW9vr/7am4ETfX4A7M6DjrE7Q==}
     engines: {node: '>=12.22.0'}
     hasBin: true
@@ -4594,7 +4594,7 @@ packages:
     resolution: {integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==}
     dev: false
 
-  /react-resize-detector/6.7.8_react-dom@17.0.2+react@17.0.2:
+  /react-resize-detector/6.7.8_sfoxds7t5ydpegc3knd667wn6m:
     resolution: {integrity: sha512-0FaEcUBAbn+pq3PT5a9hHRebUfuS1SRLGLpIw8LydU7zX429I6XJgKerKAMPsJH0qWAl6o5bVKNqFJqr6tGPYw==}
     peerDependencies:
       react: ^16.0.0 || ^17.0.0
@@ -4607,7 +4607,7 @@ packages:
       resize-observer-polyfill: 1.5.1
     dev: false
 
-  /react-smooth/2.0.0_75cb922c19ee1b7939faae9b4d1f4cf7:
+  /react-smooth/2.0.0_oxfzelaz5ynxsop2v2nu2h2m64:
     resolution: {integrity: sha512-wK4dBBR6P21otowgMT9toZk+GngMplGS1O5gk+2WSiHEXIrQgDvhR5IIlT74Vtu//qpTcipkgo21dD7a7AUNxw==}
     peerDependencies:
       prop-types: ^15.6.0
@@ -4619,10 +4619,10 @@ packages:
       raf: 3.4.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-transition-group: 2.9.0_react-dom@17.0.2+react@17.0.2
+      react-transition-group: 2.9.0_sfoxds7t5ydpegc3knd667wn6m
     dev: false
 
-  /react-transition-group/2.9.0_react-dom@17.0.2+react@17.0.2:
+  /react-transition-group/2.9.0_sfoxds7t5ydpegc3knd667wn6m:
     resolution: {integrity: sha512-+HzNTCHpeQyl4MJ/bdE0u6XRMe9+XG/+aL4mCxVN4DnPBQ0/5bfHWPDuOZUzYdMj94daZaZdCCc1Dzt9R/xSSg==}
     peerDependencies:
       react: '>=15.0.0'
@@ -4657,7 +4657,7 @@ packages:
       decimal.js-light: 2.5.1
     dev: false
 
-  /recharts/2.1.9_75cb922c19ee1b7939faae9b4d1f4cf7:
+  /recharts/2.1.9_oxfzelaz5ynxsop2v2nu2h2m64:
     resolution: {integrity: sha512-VozH5uznUvGqD7n224FGj7cmMAenlS0HPCs+7r2HeeHiQK6un6z0CTZfWVAB860xbcr4m+BN/EGMPZmYWd34Rg==}
     engines: {node: '>=12'}
     peerDependencies:
@@ -4676,8 +4676,8 @@ packages:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-is: 16.13.1
-      react-resize-detector: 6.7.8_react-dom@17.0.2+react@17.0.2
-      react-smooth: 2.0.0_75cb922c19ee1b7939faae9b4d1f4cf7
+      react-resize-detector: 6.7.8_sfoxds7t5ydpegc3knd667wn6m
+      react-smooth: 2.0.0_oxfzelaz5ynxsop2v2nu2h2m64
       recharts-scale: 0.4.5
       reduce-css-calc: 2.1.8
     transitivePeerDependencies:
