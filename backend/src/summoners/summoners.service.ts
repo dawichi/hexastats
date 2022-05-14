@@ -2,8 +2,8 @@ import { HttpService } from '@nestjs/axios'
 import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
-import { spellUrl } from 'src/common/utils'
-import { validateQueueType } from 'src/common/validators'
+import { spellUrl } from '../common/utils'
+import { validateQueueType } from '../common/validators'
 import { ChampDto, GameDto, MasteryDto, RankDto, SummonerDto } from './dto'
 
 @Injectable()
