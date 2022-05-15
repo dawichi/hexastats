@@ -3,7 +3,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
 import { spellUrl } from '../common/utils'
-import { validateQueueType } from '../common/validators'
+import { validateQueueType, validateGameType } from '../common/validators'
 import { ChampDto, GameDto, MasteryDto, RankDto, SummonerDto } from './dto'
 
 @Injectable()
@@ -270,7 +270,7 @@ export class SummonersService {
      * @param param1 The data of the game
      * @returns {GameDto} The info of a unique game formatted
      */
-    private async processGame(idx: number, { gameMode, gameDuration, teams, participants }: any): Promise<GameDto> {
+    private async processGame(idx: number, { gameDuration, teams, participants }: any, gameMode: string): Promise<GameDto> {
         const version = await this.getLatestVersion()
         const champ_names = await this.getChampionNames()
         const itemUrl = (id: number) => {
@@ -364,11 +364,12 @@ export class SummonersService {
 
         for (const game of games) {
             const idx: number = game.data.metadata.participants.indexOf(puuid)
-            const { gameId, gameMode } = game.data.info
+            const { gameId } = game.data.info
+            const gameType = validateGameType(game.data.info.queueId)
 
-            this.logger.log(`Processing game: ${gameId} \t ${gameMode} \t ${game.data.info.participants[idx].championName}`)
+            this.logger.log(`Processing game: ${gameId} \t ${gameType} \t ${game.data.info.participants[idx].championName}`)
 
-            result.push(await this.processGame(idx, game.data.info))
+            result.push(await this.processGame(idx, game.data.info, gameType))
         }
 
         return result
