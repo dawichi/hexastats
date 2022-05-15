@@ -270,7 +270,10 @@ export class SummonersService {
      * @returns {GameDto} The info of a unique game formatted
      */
     private processGame(idx: number, { gameMode, gameDuration, teams, participants }: any): GameDto {
-        const itemUrl = (id: number) => `http://ddragon.leagueoflegends.com/cdn/12.8.1/img/item/${id}.png`
+        const itemUrl = (id: number) => {
+            if (!id) return null
+            return `http://ddragon.leagueoflegends.com/cdn/12.8.1/img/item/${id}.png`
+        }
 
         participants = participants.map((participant: any) => {
             return {
