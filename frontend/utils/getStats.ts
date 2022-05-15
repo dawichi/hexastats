@@ -1,4 +1,4 @@
-import { Player } from 'interfaces/player'
+import { PlayerDto } from 'interfaces'
 import { PlayerStatsResult } from 'interfaces/interfaces'
 
 /**
@@ -6,7 +6,7 @@ import { PlayerStatsResult } from 'interfaces/interfaces'
  * @param {Player} player object with the player structure
  * @returns {PlayerStatsResult} Object with the stats calculated
  */
-export const getStats = (player: Player): PlayerStatsResult => {
+export const getStats = (player: PlayerDto): PlayerStatsResult => {
     const result: PlayerStatsResult = {
         name: player.alias,
         image: player.image,

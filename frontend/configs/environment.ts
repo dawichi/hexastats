@@ -6,7 +6,7 @@ const envConfig = {
     * just add a .env.local file with the following content:
     *   LOCAL_API=True
     */
-    local: process.env.LOCAL_API,
+    local: process.env.LOCAL_API === 'true',
     backendUrl: '',
 }
 
@@ -16,6 +16,6 @@ export const environment = new Proxy(envConfig, {
             return target[key]
         }
 
-        return envConfig.local ? 'http://localhost:5000/' : 'https://backend-hexastats.vercel.app/'
+        return envConfig.local ? 'http://localhost:5000/' : 'https://api-hexastats.vercel.app/'
     }
 })

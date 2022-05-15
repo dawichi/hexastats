@@ -18,7 +18,9 @@ const ListPlayers = () => {
         localStorage.setItem('players', JSON.stringify(start.concat(end)))
     }
 
-    if (router.pathname === '/') {
+    const route_exceptions = ['/', '/summoners']
+
+    if (route_exceptions.includes(router.pathname)) {
         return <></>
     }
 

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { environment, servers, validateServer } from 'configs'
-import { Player } from 'interfaces/player'
+import { PlayerDto} from 'interfaces'
 
 
 /**
@@ -9,10 +9,10 @@ import { Player } from 'interfaces/player'
  * Provides caching and an improved management of the data.
  */
 export class SummonerService {
-    private readonly players: Player[]
+    private readonly players: PlayerDto[]
     private readonly setPlayers: any
 
-    constructor (players: Player[], setPlayers: any) {
+    constructor (players: PlayerDto[], setPlayers: any) {
         this.players = players
         this.setPlayers = setPlayers
     }
@@ -21,7 +21,7 @@ export class SummonerService {
      * ## Saves summoner data into the React Context
      * @param data The summoner data to save
      */
-    private saveSummoner(data: Player) {
+    private saveSummoner(data: PlayerDto) {
         const newPlayers = this.players.concat(data)
         this.setPlayers(newPlayers)
         localStorage.setItem('players', JSON.stringify(newPlayers))
@@ -35,7 +35,7 @@ export class SummonerService {
      */
     async get(server: string, summonerName: string) {
         const okServer = validateServer(servers[server])
-        const { data }: { data: Player } = await axios.get(`${environment.backendUrl}summoners/${okServer}/${summonerName}`)
+        const { data }: { data: PlayerDto } = await axios.get(`${environment.backendUrl}summoners/${okServer}/${summonerName}`)
         
         return this.saveSummoner(data)
     }

@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Mastery } from 'interfaces/player'
+import { Mastery } from 'interfaces/Player'
 import { styles } from 'styles/styles.config'
 import { parse_k_num } from 'utils'
 import { Container, EmptyPlayers, PlayerImg } from 'components'
@@ -27,20 +27,12 @@ export default function Masteries() {
         )
     }
 
-    /* TODO: Order players by total mastery.
-	
-		Instead of players.map(), make:
-			ordered_players = players.sort
-		and then:
-			ordered_players.map( // etc... )
-	*/
-
     return (
         <Container {...containerProps}>
             <div className='grid gap-4 2xl:grid-cols-2'>
                 {players.map((player, idx_player) => {
                     let total_masteries = 0
-                    player.masteries.map((mastery: Mastery) => (total_masteries += mastery.points))
+                    player.masteries?.map((mastery: Mastery) => (total_masteries += mastery.points))
 
                     return (
                         <div key={idx_player} className={`p-2 m-2 ${styles.card} ${styles.foreground} md:grid grid-cols-4`}>
@@ -52,30 +44,36 @@ export default function Masteries() {
                                 </div>
                             </div>
                             <div className='col-span-3 grid grid-cols-4 sm:grid-cols-7'>
-                                {player.masteries.map((mastery: Mastery, idx_mastery: number) => (
-                                    <div key={idx_mastery} className='p-2 text-center'>
-                                        <span>
-                                            {mastery.points > 100000 ? '🔥' : ''}
-                                            {parse_k_num(mastery.points, 0, true)}
-                                        </span>
-                                        <div className='relative h-24 flex justify-center'>
-                                            <div className='absolute t-0 r-0'>
-                                                <div className='relative w-16 h-28 rounded'>
-                                                    <Image
-                                                        src={'/images/mastery/mastery_' + mastery.level + '.png'}
-                                                        layout='fill'
-                                                        alt={mastery.name}
-                                                    />
+                                {player.masteries?.map((mastery: Mastery, idx_mastery: number) => {
+                                    if (idx_mastery > 6) {
+                                        return
+                                    }
+
+                                    return (
+                                        <div key={idx_mastery} className='p-2 text-center'>
+                                            <span>
+                                                {mastery.points > 100000 ? '🔥' : ''}
+                                                {parse_k_num(mastery.points, 0, true)}
+                                            </span>
+                                            <div className='relative h-24 flex justify-center'>
+                                                <div className='absolute t-0 r-0'>
+                                                    <div className='relative w-16 h-28 rounded'>
+                                                        <Image
+                                                            src={'/images/mastery/mastery_' + mastery.level + '.png'}
+                                                            layout='fill'
+                                                            alt={mastery.name}
+                                                        />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className='absolute t-0 r-0'>
-                                                <div className='relative w-16 h-16 rounded'>
-                                                    <Image src={mastery.image} layout='fill' alt={mastery.name} />
+                                                <div className='absolute t-0 r-0'>
+                                                    <div className='relative w-16 h-16 rounded'>
+                                                        <Image src={mastery.image} layout='fill' alt={mastery.name} />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    )
+                                })}
                             </div>
                         </div>
                     )

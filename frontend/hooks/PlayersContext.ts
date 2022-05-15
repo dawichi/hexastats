@@ -1,7 +1,7 @@
-import { Player } from 'interfaces/player'
+import { PlayerDto } from 'interfaces'
 import { createContext } from 'react'
 
 export const PlayersContext = createContext({
-    players: <Array<Player>>[],
+    players: <Array<PlayerDto>>[],
     setPlayers: (context: any) => context,
 })

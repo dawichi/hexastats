@@ -3,7 +3,7 @@ import { statTitle, getStats, parse_k_num } from 'utils'
 import { Container, EmptyPlayers, PlayerImg, RankStructure, CompareChart } from 'components'
 import { styles } from 'styles/styles.config'
 import { PlayersContext } from 'hooks/PlayersContext'
-import { Player } from 'interfaces/player'
+import { PlayerDto } from 'interfaces'
 
 const sections = [
     {
@@ -107,10 +107,6 @@ export default function Compare() {
 
         return front ? result.frontColor : result.backColor
     }
-
-    // Sort players by ELO
-    players.forEach(player => (player.rank.rank_p = player.rank.rank_p ? player.rank.rank_p : 100))
-    players.sort((a, b) => a.rank.rank_p - b.rank.rank_p)
 
     const stats = {
         0: [
@@ -228,7 +224,7 @@ export default function Compare() {
 
             <div className='container mx-auto p-4'>
                 <div className='grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
-                    {players.map((player: Player, idx) => (
+                    {players.map((player: PlayerDto, idx) => (
                         <div
                             key={idx}
                             className={`p-2 cursor-pointer ${styles.card} ${tintPlayerSelected(idx)}`}
@@ -241,16 +237,6 @@ export default function Compare() {
                                         {idx + 1}. {player.alias}
                                     </h2>
                                 </div>
-                            </div>
-                            <div className='mt-2 flex justify-between'>
-                                <span>{player.rank.rank_n.toLocaleString('es-ES')}º</span>
-                                <span>{player.rank.rank_p.toFixed(1)} %</span>
-                            </div>
-                            <div className={`rounded-xl h-2 ${tint_sections(player.rank.rank_p, false)}`}>
-                                <div
-                                    className={`rounded-xl h-2 bg-gradient-to-r ${tint_sections(player.rank.rank_p, true)}`}
-                                    style={{ width: 100 - player.rank.rank_p + '%' }}
-                                ></div>
                             </div>
                         </div>
                     ))}

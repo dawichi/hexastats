@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { Popover } from '@headlessui/react'
 import { Container, EmptyPlayers, RankStructure } from 'components'
 import { PlayersContext } from 'hooks/PlayersContext'
-import { Player } from 'interfaces/player'
+import { PlayerDto } from 'interfaces'
 import { styles } from 'styles/styles.config'
 import Image from 'next/image'
 
@@ -60,7 +60,7 @@ export default function Home() {
         <Container {...containerProps}>
             <div className='grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>
                 {/* For each player, print a table and its table-head */}
-                {players.map((player: Player, index_player: number) => (
+                {players.map((player: PlayerDto, index_player: number) => (
                     <div key={index_player} className={`flex flex-col ${styles.foreground} ${styles.card}`}>
                         <div className='p-4'>
                             <RankStructure player={player} />
@@ -80,7 +80,7 @@ export default function Home() {
                             </thead>
                             <tbody>
                                 {/* For each champ inside a player, print a row with the data */}
-                                {player.champs.map((champ, index_champ) => (
+                                {player.champs?.map((champ, index_champ) => (
                                     <tr key={index_champ} className='border dark:border-zinc-500'>
                                         <td>
                                             <Popover className='relative'>

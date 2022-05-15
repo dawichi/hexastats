@@ -277,6 +277,7 @@ export class SummonersService {
 
         participants = participants.map((participant: any) => {
             return {
+                summonerName: participant.summonerName,
                 win: participant.win,
                 timePlayed: participant.timePlayed,
                 teamPosition: participant.teamPosition,

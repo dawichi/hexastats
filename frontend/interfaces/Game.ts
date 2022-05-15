@@ -1,22 +1,14 @@
-export class Game {
-    participantNumber: number
-    gameDuration: number
-    gameMode: string
-    teams: Team[]
-    participants: Participant[]
-}
-
-class Objective {
+interface Objective {
     first: boolean
     kills: number
 }
 
-class Ban {
+interface Ban {
     championId: number
     pickTurn: number
 }
 
-class Team {
+interface Team {
     teamId: number
     win: boolean
     bans: Ban[]
@@ -30,7 +22,7 @@ class Team {
     }
 }
 
-class Participant {
+interface Participant {
     summonerName: string
     win: boolean
     timePlayed: number
@@ -78,3 +70,12 @@ class Participant {
         1: number
     }
 }
+
+export interface Game {
+    participantNumber: number
+    gameDuration: number
+    gameMode: string
+    teams: Team[]
+    participants: Participant[]
+}
+

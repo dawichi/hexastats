@@ -1,3 +1,5 @@
+import { GameDto } from 'interfaces'
+
 export interface Rank {
     rank: string
     image: string
@@ -42,11 +44,9 @@ export interface Player {
     image: string
     level: number
     rank: {
-        rank_n: number
-        rank_p: number
         solo: Rank
         flex: Rank
     }
-    champs: Champ[]
+    games: GameDto[]
     masteries: Mastery[]
 }

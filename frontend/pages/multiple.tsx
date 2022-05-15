@@ -1,9 +1,8 @@
 import { useContext } from 'react'
 import { PlayersContext } from 'hooks/PlayersContext'
 import { Container, EmptyPlayers, PlayerImg } from 'components'
-import Image from 'next/image'
 import { statTitle } from 'utils'
-import { Champ } from 'interfaces/player'
+import { Champ } from 'interfaces/Player'
 
 // ┌────────────────┐
 // │ MULTIPLE PAGE: │
@@ -33,7 +32,7 @@ export default function Multiple() {
                 let games = 0
                 let stat_value = 0
 
-                player.champs.map((champ: Champ) => {
+                player.champs?.map((champ: Champ) => {
                     games += champ.games
                     stat_value += champ[stat]
                 })
@@ -57,20 +56,19 @@ export default function Multiple() {
                                 </div>
                                 <p>{player.alias}</p>
                             </div>
-                            {result !== 0 && (
-                                <div className='lg:col-span-2 flex flex-col justify-center'>
-                                    <div className='flex justify-between items-center'>
-                                        <span>{result} &nbsp; &nbsp; by game</span>
-                                        <span>{stat_value} total</span>
-                                    </div>
-                                    <div className='h-3 rounded w-full bg-zinc-400/50'>
-                                        <div
-                                            className='h-3 rounded bg-indigo-400'
-                                            style={{ width: `${(result * 100) / widths[stat]}%` }}
-                                        ></div>
-                                    </div>
+
+                            <div className='lg:col-span-2 flex flex-col justify-center'>
+                                <div className='flex justify-between items-center'>
+                                    <span>{result} &nbsp; &nbsp; by game</span>
+                                    <span>{stat_value} total</span>
                                 </div>
-                            )}
+                                <div className='h-3 rounded w-full bg-zinc-400/50'>
+                                    <div
+                                        className='h-3 rounded bg-indigo-400'
+                                        style={{ width: `${(result * 100) / widths[stat]}%` }}
+                                    ></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 )

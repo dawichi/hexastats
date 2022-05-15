@@ -17,7 +17,7 @@ export default function Summoners() {
 
     const containerProps = {
         title: 'Summoners',
-        description: 'Your summoner page',
+        description: 'Your summoner page, check your information',
     }
 
     if (!players || players.length === 0) {
@@ -29,7 +29,7 @@ export default function Summoners() {
     }
 
     return (
-        <Container {...containerProps}>
+        <Container {...containerProps} disableHeader>
             <div className='py-2 flex flex-wrap items-center'>
                 {players.map((player, idx_player) => (
                     <div
@@ -48,8 +48,6 @@ export default function Summoners() {
                     </div>
                 ))}
             </div>
-
-            <h3 className='text-3xl mb-5'>{players[playerSelected].alias}</h3>
 
             {playerSelected < players.length && <SummonerPage player={players[playerSelected]} />}
         </Container>

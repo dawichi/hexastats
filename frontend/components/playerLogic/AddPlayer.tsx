@@ -1,9 +1,8 @@
 import { KeyboardEvent, useContext, useState } from 'react'
 import { Listbox } from '@headlessui/react'
-import useFormInput from 'hooks/useFormInput'
-import { PlayersContext } from 'hooks/PlayersContext'
-import axios from 'axios'
-import { environment, servers } from 'configs'
+import { PlayersContext, useFormInput } from 'hooks'
+import { SummonerService } from 'services'
+import { servers } from 'configs'
 
 const AddPlayer = () => {
     // Search params
@@ -16,15 +15,14 @@ const AddPlayer = () => {
 
     // Context
     const { players, setPlayers } = useContext(PlayersContext)
+    const summonerService = new SummonerService(players, setPlayers)
 
     // Search logic once the button is pressed
-    const handleSearch = async () => {
+    const handleSearch = () => {
         setError(false)
         setSearching(true)
         try {
-            const { data } = await axios.get(environment.backendUrl + user.inputProp.value + '?server=' + servers[server])
-            setPlayers(players.concat(data.data))
-            localStorage.setItem('players', JSON.stringify(players.concat(data.data)))
+            summonerService.get(servers[server], user.inputProp.value)
         } catch (e) {
             setError(true)
         }
@@ -39,22 +37,9 @@ const AddPlayer = () => {
         }
     }
 
-    const loadFriends = async () => {
-        const friends = ['Agazhord', 'Alexwwe', 'Brr1', 'BloddSword', 'Dawichii', 'DryadZero', 'Traketero', 'TR0I']
-        setSearching(true)
-        const players_data = []
-        for (let i = 0; i < friends.length; i++) {
-            const { data } = await axios.get(environment.backendUrl + friends[i])
-            players_data.push(data.data)
-        }
-        setPlayers(players.concat(players_data))
-        localStorage.setItem('players', JSON.stringify(players.concat(players_data)))
-        setSearching(false)
-    }
-
     return (
         <div>
-            <hr className='md:w-1/2 mx-auto mt-3 p-2' onClick={loadFriends} />
+            <hr className='md:w-1/2 mx-auto mt-3 p-2' />
             <div className='sm:w-96 p-5 m-auto grid grid-cols-2 gap-4'>
                 <Listbox value={server} onChange={setServer}>
                     <div className='relative select-none cursor-pointer rounded shadow'>

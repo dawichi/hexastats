@@ -4,7 +4,7 @@ import { PlayersContext } from 'hooks/PlayersContext'
 import { trophyIcon, statTitle, getStats, getValuesForPieChart } from 'utils'
 import { DataForChart, PlayerStatsResult } from 'interfaces/interfaces'
 import { styles } from 'styles/styles.config'
-import { Player } from 'interfaces/player'
+import { PlayerDto } from 'interfaces'
 
 // TODO: Collapsed version of trophies
 // TODO: button for collapsed and extended version
@@ -20,6 +20,15 @@ export default function Graphs() {
         title: 'Graphs',
         description: 'Visualize the data in multiple graph types',
     }
+
+    // delete me
+    return (
+        <Container {...containerProps}>
+            <EmptyPlayers />
+        </Container>
+    )
+    // delete me
+
 
     if (!players || players.length === 0) {
         return (
@@ -42,7 +51,7 @@ export default function Graphs() {
     const playerStats: PlayerStatsResult[] = []
 
     // Fill both arrays
-    players.forEach((player: Player) => {
+    players.forEach((player: PlayerDto) => {
         // Podium stores an object for each category with the
         podium.push({
             name: player.alias,
