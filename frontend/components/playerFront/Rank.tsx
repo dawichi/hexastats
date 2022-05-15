@@ -8,7 +8,7 @@ const Rank = ({ title, rankdata }: { title: string; rankdata: Rank }) => (
             {rankdata.rank} ({rankdata.lp})
         </h4>
         <div className='m-auto w-14 h-14 rounded relative'>
-            <Image layout='fill' src={`/images/league-emblems/${rankdata.image}`} alt={'Rank image'} />
+            <Image layout='fill' src={`/images/leagues/${rankdata.image}`} alt={'Rank image'} />
         </div>
         <p>
             <span className='rounded px-1 text-white bg-green-600'>{rankdata.win}</span>
