@@ -3,7 +3,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
 import { spellUrl } from '../common/utils'
-import { validateQueueType } from '../common/validators'
+import { validateQueueType, validateGameType } from '../common/validators'
 import { ChampDto, GameDto, MasteryDto, RankDto, SummonerDto } from './dto'
 
 @Injectable()
@@ -208,6 +208,7 @@ export class SummonersService {
             neutralMinionsKilled,
         }: any,
     ): Promise<ChampDto> {
+        const version = await this.getLatestVersion()
         const kda = deaths ? (kills + assists) / deaths : kills + assists
         const cs = totalMinionsKilled + neutralMinionsKilled
         const csmin = parseFloat(((60 * cs) / gameDuration).toFixed(1))
@@ -215,7 +216,7 @@ export class SummonersService {
         return {
             //'time': f'{minutes}:{seconds}',
             name: championName,
-            image: `http://ddragon.leagueoflegends.com/cdn/12.7.1/img/champion/${championName}.png`,
+            image: `http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${championName}.png`,
             assists,
             deaths,
             kills,
@@ -269,10 +270,12 @@ export class SummonersService {
      * @param param1 The data of the game
      * @returns {GameDto} The info of a unique game formatted
      */
-    private processGame(idx: number, { gameMode, gameDuration, teams, participants }: any): GameDto {
+    private async processGame(idx: number, { gameDuration, teams, participants }: any, gameMode: string): Promise<GameDto> {
+        const version = await this.getLatestVersion()
+        const champ_names = await this.getChampionNames()
         const itemUrl = (id: number) => {
             if (!id) return null
-            return `http://ddragon.leagueoflegends.com/cdn/12.8.1/img/item/${id}.png`
+            return `http://ddragon.leagueoflegends.com/cdn/${version}/img/item/${id}.png`
         }
 
         participants = participants.map((participant: any) => {
@@ -319,7 +322,17 @@ export class SummonersService {
                 },
             }
         })
-
+        teams = teams.map((team: any) => {
+            team = team.bans.map((ban: any) => {
+                if (ban.championId !== -1) {
+                    ban.championId = `http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champ_names[ban.championId]}.png`
+                } else {
+                    ban.championId = null
+                }
+                return ban
+            })
+            return team
+        })
         return {
             participantNumber: idx,
             gameDuration,
@@ -351,11 +364,12 @@ export class SummonersService {
 
         for (const game of games) {
             const idx: number = game.data.metadata.participants.indexOf(puuid)
-            const { gameId, gameMode } = game.data.info
+            const { gameId } = game.data.info
+            const gameType = validateGameType(game.data.info.queueId)
 
-            this.logger.log(`Processing game: ${gameId} \t ${gameMode} \t ${game.data.info.participants[idx].championName}`)
+            this.logger.log(`Processing game: ${gameId} \t ${gameType} \t ${game.data.info.participants[idx].championName}`)
 
-            result.push(this.processGame(idx, game.data.info))
+            result.push(await this.processGame(idx, game.data.info, gameType))
         }
 
         return result
