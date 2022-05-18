@@ -4,7 +4,6 @@ import { styles } from 'styles/styles.config'
 import RankStructure from '../RankStructure'
 import GamesList from './GamesList'
 
-
 export default function SummonerPage({ player }: { player: Player }) {
     const riotService = new RiotService()
 
@@ -23,9 +22,7 @@ export default function SummonerPage({ player }: { player: Player }) {
                 </header>
 
                 <div className='grid grid-cols-3'>
-                    <div className={`${styles.background} border rounded border-red-600 m-2`}>
-                        hi
-                    </div>
+                    <div className={`${styles.background} border rounded border-red-600 m-2`}>hi</div>
                     <div className='col-span-2'>
                         <GamesList player={player} />
                     </div>

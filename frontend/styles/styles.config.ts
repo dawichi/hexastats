@@ -4,6 +4,7 @@ export const styles = {
     active: 'bg-indigo-400 dark:bg-indigo-700',
     card: 'rounded shadow hover:shadow-lg dark:shadow-zinc-700 hover:dark:shadow-indigo-700',
     shadow: 'hover:shadow-lg dark:shadow-indigo-400',
+    scale: 'transition-transform hover:scale-105',
     stat: {
         games: 'py-1 px-2 bg-green-300 dark:bg-green-800',
         winrate: 'py-1 px-2 bg-sky-300 dark:bg-sky-800',
