@@ -1,4 +1,5 @@
 /**
+ * Corrects the title of the stat.
  * @param prop the key of the prop
  * @returns the text label for that key
  */
