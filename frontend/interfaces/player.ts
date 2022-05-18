@@ -21,14 +21,15 @@ export interface Champ {
     cs: number
     csmin: number
     gold: number
-    max_kills: number
-    max_deaths: number
-    avg_damage_dealt: number
-    avg_damage_taken: number
-    double_kills: number
-    triple_kills: number
-    quadra_kills: number
-    penta_kills: number
+    maxKills: number
+    maxDeaths: number
+    avgDamageDealt: number
+    avgDamageTaken: number
+    visionScore: number
+    doubleKills: number
+    tripleKills: number
+    quadraKills: number
+    pentaKills: number
 }
 
 export interface Mastery {

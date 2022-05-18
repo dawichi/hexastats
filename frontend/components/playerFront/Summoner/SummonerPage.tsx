@@ -1,11 +1,15 @@
 import { Player } from 'interfaces/Player'
-import { RiotService } from 'services'
+import { ChampService, RiotService } from 'services'
 import { styles } from 'styles/styles.config'
 import RankStructure from '../RankStructure'
 import GamesList from './GamesList'
 
 export default function SummonerPage({ player }: { player: Player }) {
     const riotService = new RiotService()
+
+    const champService = new ChampService()
+
+    champService.champsBuilder(player.games)
 
     return (
         <div
