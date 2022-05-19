@@ -1,5 +1,7 @@
 /**
- * ## Service to manage the requests about riot assets
+ * ## Service to manage the riot assets
+ * Riot's assets have different URLs depending on the type.
+ * So this service provides a centralized way to get the correct URL for each asset.
  */
 export class RiotService {
     private readonly baseUrl: string = 'http://ddragon.leagueoflegends.com/cdn/'

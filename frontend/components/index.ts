@@ -12,7 +12,7 @@ export { default as CompareChart } from './graphs/CompareChart'
 export { default as Rank } from './playerFront/Rank'
 export { default as PlayerImg } from './playerFront/PlayerImg'
 export { default as RankStructure } from './playerFront/RankStructure'
-export { default as SummonerPage } from './playerFront/SummonerPage'
+export { default as SummonerPage } from './playerFront/Summoner/SummonerPage'
 
 // Player logic management
 export { default as AddPlayer } from './playerLogic/AddPlayer'
