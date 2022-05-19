@@ -15,11 +15,11 @@ export default function GamesList({ player }: { player: Player }) {
                     return (
                         <span key={itemId}>
                             {items[itemId] ? (
-                                <Image className='rounded' src={items[itemId]} alt='item' width={35} height={35} />
+                                <Image className='rounded' src={items[itemId]} alt='item' width={40} height={40} />
                             ) : (
                                 <div
                                     className='bg-gradient-to-br from-zinc-500 to-zinc-800 rounded'
-                                    style={{ width: '35px', height: '35px' }}
+                                    style={{ width: '40px', height: '40px' }}
                                 />
                             )}
                         </span>
@@ -95,11 +95,11 @@ export default function GamesList({ player }: { player: Player }) {
                             </span>
                         </div>
                         <div className='relative flex flex-col items-center'>
-                            <div className='absolute top-1 bottom-1 left-1'>
+                            <div className='absolute top-1 bottom-1 left-3'>
                                 <div className='flex flex-col h-full justify-around'>
-                                    <Image className='rounded' src={String(spells[1])} alt='spell 2' width={35} height={35} />
-                                    <Image className='rounded' src={String(spells[0])} alt='spell 1' width={35} height={35} />
-                                    <Image className='rounded' src={String(items[6])} alt='guard' width={35} height={35} />
+                                    <Image className='rounded' src={String(spells[1])} alt='spell 2' width={40} height={40} />
+                                    <Image className='rounded' src={String(spells[0])} alt='spell 1' width={40} height={40} />
+                                    <Image className='rounded' src={String(items[6])} alt='guard' width={40} height={40} />
                                 </div>
                             </div>
                             <p className='text-xl text-center'>

@@ -115,14 +115,16 @@ export class ChampService {
      * @param games The games to build the stats from
      * @returns The champs stats
      */
-    champsBuilder = (games: Game[]): any => {
-        const acc = {}
+    champsBuilder = (games: Game[]): Champ[] => {
+        const acc: {
+            [champName: string]: Champ
+        } = {}
         // First, index the games by champ name, accumulating the stats
         for (const game of games) {
             const champName = game.participants[game.participantNumber].champ.championName
             acc[champName] = acc[champName] ? this.accChamp(acc[champName], this.mockChamp(game)) : this.mockChamp(game)
         }
-
-        console.log(acc)
+        
+        return Object.keys(acc).map(key => acc[key])
     }
 }
