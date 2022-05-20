@@ -1,9 +1,12 @@
 import { Player } from 'interfaces/Player'
 import { ChampService, RiotService } from 'services'
 import { styles } from 'styles/styles.config'
-import RankStructure from '../RankStructure'
+import { RankStructure } from 'components'
+
+// Local components not exported to the rest of the app
 import ChampsList from './ChampsList'
 import GamesList from './GamesList'
+import ChampStats from './ChampStats'
 
 export default function SummonerPage({ player }: { player: Player }) {
     const riotService = new RiotService()
@@ -29,7 +32,7 @@ export default function SummonerPage({ player }: { player: Player }) {
 
                 <div className='grid grid-cols-3'>
                     <section>
-                        <div className={`${styles.foreground} ${styles.card} m-2`}>
+                        <div className={`${styles.background} ${styles.card} m-2`}>
                             <h2 className='text-center text-2xl pt-3'>Champions</h2>
                             <div className='grid grid-cols-4 text-center p-2'>
                                 <span>Champ</span>
@@ -40,8 +43,8 @@ export default function SummonerPage({ player }: { player: Player }) {
                             <hr className='my-2' />
                             <ChampsList champs={champs} />
                         </div>
-                        <div className={`${styles.foreground} ${styles.card} m-2`}>
-                            <h2 className='text-center text-2xl pt-3'>Champions</h2>
+                        <div className={`${styles.background} ${styles.card} m-2`}>
+                            <h2 className='text-center text-2xl pt-3'>Stats</h2>
                             <div className='grid grid-cols-4 text-center p-2'>
                                 <span>Champ</span>
                                 <span>Games</span>
@@ -49,7 +52,7 @@ export default function SummonerPage({ player }: { player: Player }) {
                                 <span>KDA</span>
                             </div>
                             <hr className='my-2' />
-                            <ChampsList champs={champs} />
+                            <ChampStats games={player.games} />
                         </div>
                     </section>
                     <section className='col-span-2'>

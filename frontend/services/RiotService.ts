@@ -31,12 +31,12 @@ export class RiotService {
     teamPositionIcon(position: string) {
         const positions = {
             TOP: 'position_top.png',
-            MID: 'position_mid.png',
+            MIDDLE: 'position_mid.png',
             JUNGLE: 'position_jungle.png',
             BOTTOM: 'position_bottom.png',
             SUPPORT: 'position_support.png'
         }
 
-        return `https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-career-stats/global/default/${positions[position] ?? positions.MID}`
+        return `https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-career-stats/global/default/${positions[position] ?? positions.MIDDLE}`
     }
 }
