@@ -11,6 +11,8 @@ export class RiotService {
      * @param champName The name of the champ
      */
     champImage(champName: string) {
+        // TODO: use this one. The opp-static doesn't work for Fiddle
+        // https://raw.communitydragon.org/latest/game/assets/characters/fiddlesticks/hud/fiddlesticks_square.png
         return `https://opgg-static.akamaized.net/images/lol/champion/${champName}.png`
     }
 

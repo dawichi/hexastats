@@ -21,20 +21,40 @@ export default function SummonerPage({ player }: { player: Player }) {
                 backgroundPosition: 'center',
             }}
         >
+            <span className='absolute top-3 left-5'>{player.games.length} games loaded</span>
             <section className='bg-orange-50/80 dark:bg-zinc-900/80 pb-12'>
                 <header className='py-5'>
                     <RankStructure player={player} />
                 </header>
 
                 <div className='grid grid-cols-3'>
-                    <div className={`${styles.background} border rounded border-red-600 m-2`}>
-                        <h2 className='text-center text-xl my-3'>Champions</h2>
-                        <hr/>
-                        <ChampsList champs={champs} />
-                    </div>
-                    <div className='col-span-2'>
+                    <section>
+                        <div className={`${styles.foreground} ${styles.card} m-2`}>
+                            <h2 className='text-center text-2xl pt-3'>Champions</h2>
+                            <div className='grid grid-cols-4 text-center p-2'>
+                                <span>Champ</span>
+                                <span>Games</span>
+                                <span>Winrate</span>
+                                <span>KDA</span>
+                            </div>
+                            <hr className='my-2' />
+                            <ChampsList champs={champs} />
+                        </div>
+                        <div className={`${styles.foreground} ${styles.card} m-2`}>
+                            <h2 className='text-center text-2xl pt-3'>Champions</h2>
+                            <div className='grid grid-cols-4 text-center p-2'>
+                                <span>Champ</span>
+                                <span>Games</span>
+                                <span>Winrate</span>
+                                <span>KDA</span>
+                            </div>
+                            <hr className='my-2' />
+                            <ChampsList champs={champs} />
+                        </div>
+                    </section>
+                    <section className='col-span-2'>
                         <GamesList player={player} />
-                    </div>
+                    </section>
                 </div>
             </section>
         </div>
