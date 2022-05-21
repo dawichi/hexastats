@@ -1,22 +1,59 @@
 import { RiotService } from 'services'
 import { Champ } from 'interfaces/Player'
 import Image from 'next/image'
+import { useState } from 'react'
 
-export default function ChampsList({ champs }: {
-    champs: Champ[]
-}) {
+export default function ChampsList({ champs }: { champs: Champ[] }) {
     const riotService = new RiotService()
 
+    const ProgressBar = ({ max, value, color }: { max: number; value: number; color: number }) => {
+        const width = `${(value / max) * 100}%`
+        const colors = {
+            0: 'bg-blue-400',
+            1: 'bg-red-400',
+            2: 'bg-green-400',
+        }
+
+        return (
+            <div className='w-full px-2'>
+                <span className=''>{value}</span>
+                <div className={`h-2 ${colors[color] ?? colors[0]} rounded`} style={{ width }} />
+            </div>
+        )
+    }
+
+    const [maxGames, setMaxGames] = useState<number>(null)
+    const [maxWinrate, setMaxWinrate] = useState<number>(null)
+    const [maxKda, setMaxKda] = useState<number>(null)
+
     return (
-        <div>
-            {champs.map((champ, idx) => (
-                <div key={idx} className='grid grid-cols-4'>
-                    <Image className='rounded' src={riotService.champImage(champ.name)} alt='champion' width={100} height={100} />
-                    <span>{champ.games}</span>
-                    <span>{champ.winrate}</span>
-                    <span>{champ.kda}</span>
-                </div>
-            ))}
-        </div>
+        <>
+            {champs.map((champ, idx) => {
+                if (champ.games > maxGames) {
+                    setMaxGames(champ.games)
+                }
+                if (champ.winrate > maxWinrate) {
+                    setMaxWinrate(champ.winrate)
+                }
+                if (champ.kda > maxKda) {
+                    setMaxKda(champ.kda)
+                }
+
+                if (idx > 5) {
+                    return
+                }
+
+                return (
+                    <div key={idx} className='grid grid-cols-4 gap-1 px-4'>
+                        <span>
+                            <Image className='rounded' src={riotService.champImage(champ.name)} alt='champion' width={50} height={50} />
+                        </span>
+                        <ProgressBar max={maxGames} value={champ.games} color={0} />
+                        <ProgressBar max={maxWinrate} value={champ.winrate} color={1} />
+                        <ProgressBar max={maxKda} value={champ.kda} color={2} />
+                    </div>
+                )
+            })}
+        </>
     )
 }

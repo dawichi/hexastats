@@ -125,6 +125,6 @@ export class ChampService {
             acc[champName] = acc[champName] ? this.accChamp(acc[champName], this.mockChamp(game)) : this.mockChamp(game)
         }
         
-        return Object.keys(acc).map(key => acc[key])
+        return Object.keys(acc).map(key => acc[key]).sort((a, b) => b.games - a.games)
     }
 }

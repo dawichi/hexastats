@@ -11,6 +11,8 @@ export class RiotService {
      * @param champName The name of the champ
      */
     champImage(champName: string) {
+        // TODO: use this one. The opp-static doesn't work for Fiddle
+        // https://raw.communitydragon.org/latest/game/assets/characters/fiddlesticks/hud/fiddlesticks_square.png
         return `https://opgg-static.akamaized.net/images/lol/champion/${champName}.png`
     }
 
@@ -29,12 +31,12 @@ export class RiotService {
     teamPositionIcon(position: string) {
         const positions = {
             TOP: 'position_top.png',
-            MID: 'position_mid.png',
+            MIDDLE: 'position_mid.png',
             JUNGLE: 'position_jungle.png',
             BOTTOM: 'position_bottom.png',
             SUPPORT: 'position_support.png'
         }
 
-        return `https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-career-stats/global/default/${positions[position] ?? positions.MID}`
+        return `https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-career-stats/global/default/${positions[position] ?? positions.MIDDLE}`
     }
 }

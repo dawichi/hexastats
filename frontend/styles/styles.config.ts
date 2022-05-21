@@ -3,6 +3,7 @@ export const styles = {
     foreground: 'bg-zinc-100 dark:bg-zinc-800',
     active: 'bg-indigo-400 dark:bg-indigo-700',
     card: 'rounded shadow hover:shadow-lg dark:shadow-zinc-700 hover:dark:shadow-indigo-700',
+    border: 'border border-indigo-400 dark:border-indigo-700',
     shadow: 'hover:shadow-lg dark:shadow-indigo-400',
     scale: 'transition-transform hover:scale-105',
     stat: {
