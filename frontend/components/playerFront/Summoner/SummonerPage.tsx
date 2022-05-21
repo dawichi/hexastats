@@ -45,12 +45,6 @@ export default function SummonerPage({ player }: { player: Player }) {
                         </div>
                         <div className={`${styles.background} ${styles.card} m-2`}>
                             <h2 className='text-center text-2xl pt-3'>Stats</h2>
-                            <div className='grid grid-cols-4 text-center p-2'>
-                                <span>Champ</span>
-                                <span>Games</span>
-                                <span>Winrate</span>
-                                <span>KDA</span>
-                            </div>
                             <hr className='my-2' />
                             <ChampStats games={player.games} />
                         </div>

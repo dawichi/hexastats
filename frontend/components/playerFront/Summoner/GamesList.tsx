@@ -54,6 +54,10 @@ export default function GamesList({ player }: { player: Player }) {
         </div>
     )
 
+    const loadMorePlayers = () => {
+        console.log('load more players')
+    }
+
     return (
         <>
             {player.games.map((game, idx: number) => {
@@ -115,6 +119,12 @@ export default function GamesList({ player }: { player: Player }) {
                     </div>
                 )
             })}
+
+            <div className='flex justify-center'>
+                <span onClick={loadMorePlayers} className={`${styles.foreground} ${styles.card} ${styles.scale} ${styles.border} cursor-pointer mx-4 my-2 p-6 px-12`}>
+                    Load more
+                </span>
+            </div>
         </>
     )
 }
