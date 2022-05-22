@@ -6,7 +6,7 @@ import { RankStructure } from 'components'
 // Local components not exported to the rest of the app
 import ChampsList from './ChampsList'
 import GamesList from './GamesList'
-import ChampStats from './ChampStats'
+import PositionStats from './PositionStats'
 import FriendsList from './FriendsList'
 
 export default function SummonerPage({ player }: { player: Player }) {
@@ -33,7 +33,7 @@ export default function SummonerPage({ player }: { player: Player }) {
 
                 <div className='grid grid-cols-3'>
                     <section>
-                        <div className={`${styles.background} ${styles.card} m-2`}>
+                        <div className={`${styles.background} ${styles.card} m-2 mb-4`}>
                             <h2 className='text-center text-2xl pt-3'>Champions</h2>
                             <div className='grid grid-cols-4 text-center p-2'>
                                 <span>Champ</span>
@@ -44,13 +44,21 @@ export default function SummonerPage({ player }: { player: Player }) {
                             <hr className='my-2' />
                             <ChampsList champs={champs} />
                         </div>
-                        <div className={`${styles.background} ${styles.card} m-2`}>
-                            <h2 className='text-center text-2xl pt-3'>Stats</h2>
+                        <div className={`${styles.background} ${styles.card} m-2 mb-4`}>
+                            <h2 className='text-center text-2xl pt-3'>
+                                <i className="bi bi-bar-chart-fill"></i>
+                                <span className='m-5'>Positions</span>
+                                <i className="bi bi-bar-chart-fill"></i>
+                            </h2>
                             <hr className='my-2' />
-                            <ChampStats games={player.games} />
+                            <PositionStats games={player.games} />
                         </div>
-                        <div className={`${styles.background} ${styles.card} m-2`}>
-                            <h2 className='text-center text-2xl pt-3'>Friends</h2>
+                        <div className={`${styles.background} ${styles.card} m-2 mb-4`}>
+                            <h2 className='text-center text-2xl pt-3'>
+                                <i className="bi bi-person-fill"></i>
+                                <span className='m-5'>Friends</span>
+                                <i className="bi bi-person-fill"></i>
+                            </h2>
                             <hr className='my-2' />
                             <FriendsList friends={champService.friendsCheck(player.games)} />
                         </div>

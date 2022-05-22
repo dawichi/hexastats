@@ -87,7 +87,7 @@ export default function GamesList({ player }: { player: Player }) {
                             ></div>
                             <div
                                 className='absolute t-0 l-0 w-full h-full'
-                                style={{ backgroundImage: 'linear-gradient(to right, #000000bd , #ffffff00)' }}
+                                style={{ backgroundImage: 'linear-gradient(to top right, #000000bd , #ffffff00)' }}
                             ></div>
                             <div className='absolute top-2 left-3'>
                                 <Image src={riotService.teamPositionIcon(teamPosition)} alt='champ image' width={50} height={50} />

@@ -9,6 +9,17 @@ export default function FriendsList({ friends }: { friends: FriendsDto }) {
 
     const friendsList = Object.keys(friends).sort((a, b) => friends[b].games - friends[a].games)
 
+    if (!friendsList.length) {
+        return (
+            <div className='p-5 text-center'>
+                <span className='text-2xl'>
+                    <i className='bi bi-emoji-frown'></i>
+                </span>
+                <p>There is games with friends loaded.</p>
+            </div>
+        )
+    }
+
     return (
         <div className='p-4'>
             <section className='grid grid-cols-3 gap-2 mb-4'>
