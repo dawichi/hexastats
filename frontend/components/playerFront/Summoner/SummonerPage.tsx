@@ -7,6 +7,7 @@ import { RankStructure } from 'components'
 import ChampsList from './ChampsList'
 import GamesList from './GamesList'
 import ChampStats from './ChampStats'
+import FriendsList from './FriendsList'
 
 export default function SummonerPage({ player }: { player: Player }) {
     const riotService = new RiotService()
@@ -47,6 +48,11 @@ export default function SummonerPage({ player }: { player: Player }) {
                             <h2 className='text-center text-2xl pt-3'>Stats</h2>
                             <hr className='my-2' />
                             <ChampStats games={player.games} />
+                        </div>
+                        <div className={`${styles.background} ${styles.card} m-2`}>
+                            <h2 className='text-center text-2xl pt-3'>Friends</h2>
+                            <hr className='my-2' />
+                            <FriendsList friends={champService.friendsCheck(player.games)} />
                         </div>
                     </section>
                     <section className='col-span-2'>

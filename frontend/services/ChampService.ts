@@ -1,6 +1,7 @@
+import { RiotService } from './RiotService'
 import { Game } from 'interfaces/Game'
 import { Champ } from 'interfaces/Player'
-import { RiotService } from './RiotService'
+import FriendsDto from 'components/playerFront/Summoner/Friends.dto'
 
 /**
  * ## Service to manage the champ stats
@@ -12,6 +13,7 @@ export class ChampService {
     /**
      * ## Calculates the kda
      * (kills + assists) / deaths
+     *
      * @param kills The number of kills
      * @param deaths The number of deaths
      * @param assists The number of assists
@@ -23,6 +25,7 @@ export class ChampService {
     /**
      * ## Calculates the value per minute
      * (60 * val) / time
+     *
      * @param value The value to calculate
      * @param time The time in seconds
      * @returns
@@ -31,6 +34,7 @@ export class ChampService {
 
     /**
      * ## Mock data from one single champ based on a game
+     *
      * @param game The game to calculate the stats from
      * @returns The stats for the champ of that game
      */
@@ -67,6 +71,7 @@ export class ChampService {
      * To calculate the average information about a champion, we need to accumulate
      * the data from all the games played with it. So with this function, it modifies the values
      * depending of it its an incremental value (like number of games played) or an average (like the winrate)
+     *
      * @param {ChampDto} acc Accumulated data object
      * @param {ChampDto} cur Current data object
      * @returns {ChampDto} Modified accumulated data object
@@ -112,6 +117,7 @@ export class ChampService {
 
     /**
      * ## Builds the champs stats based on the games
+     *
      * @param games The games to build the stats from
      * @returns The champs stats
      */
@@ -124,7 +130,54 @@ export class ChampService {
             const champName = game.participants[game.participantNumber].champ.championName
             acc[champName] = acc[champName] ? this.accChamp(acc[champName], this.mockChamp(game)) : this.mockChamp(game)
         }
+
+        return Object.keys(acc)
+            .map(key => acc[key])
+            .sort((a, b) => b.games - a.games)
+    }
+
+
+    /**
+     * ## Checks the friends winrate
+     * Check if a player have been repeeated in your games and if so,
+     * considers it a friend and checks its winrate before adding it to the list.
+     *
+     * @param games The games to build the stats from
+     * @returns The list stats
+     */
+    friendsCheck = (games: Game[]): FriendsDto => {
+        const friends: FriendsDto = {}
         
-        return Object.keys(acc).map(key => acc[key]).sort((a, b) => b.games - a.games)
+        // First, index all the players you have played with
+        for (const game of games) {
+            const yourTeam = game.participantNumber > 4 ? [5,9] : [0,4]
+            // iterate over your teammates only
+            for (let i = yourTeam[0]; i < yourTeam[1]; i++) {
+                const player = game.participants[i];
+                if (!friends[player.summonerName]) {
+                    friends[player.summonerName] = {
+                        wins: player.win ? 1 : 0,
+                        games: 1,
+                    }
+                } else {
+                    friends[player.summonerName].wins += player.win ? 1 : 0
+                    friends[player.summonerName].games += 1
+                }
+            }
+
+        }
+
+        // Remove all players you only played with once
+        for (const friend in friends) {
+            if (friends[friend].games === 1) {
+                delete friends[friend]
+            }
+        }
+
+        // Remove your own name from the list
+        delete friends[games[0].participants[games[0].participantNumber].summonerName]
+
+
+        return friends
     }
 }

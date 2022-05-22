@@ -98,7 +98,7 @@ export default function GamesList({ player }: { player: Player }) {
                                 {gameMinutes}:{gameSeconds}
                             </span>
                         </div>
-                        <div className='relative flex flex-col items-center'>
+                        <div className='relative flex flex-col items-center text-center'>
                             <div className='absolute top-1 bottom-1 left-3'>
                                 <div className='flex flex-col h-full justify-around'>
                                     <Image className='rounded' src={String(spells[1])} alt='spell 2' width={40} height={40} />
@@ -106,8 +106,11 @@ export default function GamesList({ player }: { player: Player }) {
                                     <Image className='rounded' src={String(items[6])} alt='guard' width={40} height={40} />
                                 </div>
                             </div>
-                            <p className='text-xl text-center'>
-                                {kills} / {deaths} / {assists} - {calc_kda}
+                            <p className='text-xl'>
+                                {kills} / {deaths} / {assists}
+                            </p>
+                            <p className='text-sm'>
+                                {calc_kda} kda
                             </p>
                             <div className='mt-4 ml-4'>
                                 <ItemsGrid items={items} />
@@ -121,7 +124,10 @@ export default function GamesList({ player }: { player: Player }) {
             })}
 
             <div className='flex justify-center'>
-                <span onClick={loadMorePlayers} className={`${styles.foreground} ${styles.card} ${styles.scale} ${styles.border} cursor-pointer mx-4 my-2 p-6 px-12`}>
+                <span
+                    onClick={loadMorePlayers}
+                    className={`${styles.foreground} ${styles.card} ${styles.scale} ${styles.border} cursor-pointer mx-4 my-2 p-6 px-12`}
+                >
                     Load more
                 </span>
             </div>

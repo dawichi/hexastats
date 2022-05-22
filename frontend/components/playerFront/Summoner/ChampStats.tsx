@@ -36,7 +36,6 @@ export default function ChampStats({ games }: { games: Game[] }) {
     games.map(game => {
         // Don't use ?? as it comes as '' instead of null or undefined
         const position = game.participants[game.participantNumber].teamPosition || 'MIDDLE'
-        console.log(position)
         positions[position].num++
         positions[position].wins += game.participants[game.participantNumber].win ? 1 : 0
     })
@@ -48,8 +47,6 @@ export default function ChampStats({ games }: { games: Game[] }) {
             maxGames = positions[position].num
         }
     })
-
-    console.log(positions)
 
     return (
         <div className='grid grid-cols-5 pb-5'>
