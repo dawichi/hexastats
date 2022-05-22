@@ -1,35 +1,46 @@
 import Image from 'next/image'
 import { RiotService } from 'services'
-import { Game } from 'interfaces/Game'
-import { Player } from 'interfaces/Player'
-import { styles } from 'styles/styles.config'
 import { classNames } from 'utils'
+import { GameDto, SummonerDto } from 'interfaces'
+import { styles } from 'styles/styles.config'
 
-export default function GamesList({ player }: { player: Player }) {
+/**
+ * ## ItemsGrid component
+ * Display a list of items in 3x2 grid
+ *
+ * @param props.items - Items list to display
+ */
+const ItemsGrid = ({ items }: { items: { [key: number]: string } }) => (
+    <div className='grid grid-cols-3 gap-2'>
+        {Object.keys(items).map(itemId => {
+            if (itemId !== '6') {
+                return (
+                    <span key={itemId}>
+                        {items[itemId] ? (
+                            <Image className='rounded' src={items[itemId]} alt='item' width={40} height={40} />
+                        ) : (
+                            <div
+                                className='bg-gradient-to-br from-zinc-500 to-zinc-800 rounded'
+                                style={{ width: '40px', height: '40px' }}
+                            />
+                        )}
+                    </span>
+                )
+            }
+        })}
+    </div>
+)
+
+/**
+ * ## SummonerGrid component
+ * Display a list of summoners who played in that game
+ *
+ * @param props.game - Game to display
+ */
+const SummonersGrid = ({ game }: { game: GameDto }) => {
     const riotService = new RiotService()
 
-    const ItemsGrid = ({ items }) => (
-        <div className='grid grid-cols-3 gap-2'>
-            {Object.keys(items).map(itemId => {
-                if (itemId !== '6') {
-                    return (
-                        <span key={itemId}>
-                            {items[itemId] ? (
-                                <Image className='rounded' src={items[itemId]} alt='item' width={40} height={40} />
-                            ) : (
-                                <div
-                                    className='bg-gradient-to-br from-zinc-500 to-zinc-800 rounded'
-                                    style={{ width: '40px', height: '40px' }}
-                                />
-                            )}
-                        </span>
-                    )
-                }
-            })}
-        </div>
-    )
-
-    const SummonersGrid = ({ game }: { game: Game }) => (
+    return (
         <div className='columns-2 p-1'>
             {game.participants.map((participant, idx) => (
                 <span key={idx} className='flex items-center'>
@@ -53,6 +64,16 @@ export default function GamesList({ player }: { player: Player }) {
             ))}
         </div>
     )
+}
+
+/**
+ * ## GamesList component
+ * Display a list of games from a summoner
+ *
+ * @param props.player - Player to display the games list from
+ */
+export default function GamesList({ player }: { player: SummonerDto }) {
+    const riotService = new RiotService()
 
     const loadMorePlayers = () => {
         console.log('load more players')
@@ -109,9 +130,7 @@ export default function GamesList({ player }: { player: Player }) {
                             <p className='text-xl'>
                                 {kills} / {deaths} / {assists}
                             </p>
-                            <p className='text-sm'>
-                                {calc_kda} kda
-                            </p>
+                            <p className='text-sm'>{calc_kda} kda</p>
                             <div className='mt-4 ml-4'>
                                 <ItemsGrid items={items} />
                             </div>
@@ -126,7 +145,7 @@ export default function GamesList({ player }: { player: Player }) {
             <div className='flex justify-center'>
                 <span
                     onClick={loadMorePlayers}
-                    className={`${styles.foreground} ${styles.card} ${styles.scale} ${styles.border} cursor-pointer mx-4 my-2 p-6 px-12`}
+                    className={`${styles.card} ${styles.scale} bg-indigo-600 text-white cursor-pointer mx-4 my-2 p-3 px-6`}
                 >
                     Load more
                 </span>

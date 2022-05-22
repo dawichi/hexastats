@@ -1,5 +1,11 @@
 import FriendsDto from './Friends.dto'
 
+/**
+ * ## FriendsList Component
+ * Displays a list of friends with their stats
+ *
+ * @param props.friends - Friends list to display
+ */
 export default function FriendsList({ friends }: { friends: FriendsDto }) {
     const WinrateProgressBar = ({ width }: { width: number }) => (
         <div className='bg-zinc-600 h-2 rounded'>

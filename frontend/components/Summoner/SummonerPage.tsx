@@ -1,7 +1,7 @@
-import { Player } from 'interfaces/Player'
 import { ChampService, RiotService } from 'services'
-import { styles } from 'styles/styles.config'
 import { RankStructure } from 'components'
+import { SummonerDto } from 'interfaces'
+import { styles } from 'styles/styles.config'
 
 // Local components not exported to the rest of the app
 import ChampsList from './ChampsList'
@@ -9,9 +9,8 @@ import GamesList from './GamesList'
 import PositionStats from './PositionStats'
 import FriendsList from './FriendsList'
 
-export default function SummonerPage({ player }: { player: Player }) {
+export default function SummonerPage({ player }: { player: SummonerDto }) {
     const riotService = new RiotService()
-
     const champService = new ChampService()
 
     const champs = champService.champsBuilder(player.games)

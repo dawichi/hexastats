@@ -1,7 +1,6 @@
 import { RiotService } from './RiotService'
-import { Game } from 'interfaces/Game'
-import { Champ } from 'interfaces/Player'
-import FriendsDto from 'components/playerFront/Summoner/Friends.dto'
+import FriendsDto from 'components/Summoner/Friends.dto'
+import { ChampDto, GameDto } from 'interfaces'
 
 /**
  * ## Service to manage the champ stats
@@ -38,7 +37,7 @@ export class ChampService {
      * @param game The game to calculate the stats from
      * @returns The stats for the champ of that game
      */
-    private mockChamp = (game: Game): Champ => {
+    private mockChamp = (game: GameDto): ChampDto => {
         const player = game.participants[game.participantNumber]
         const { kills, deaths, assists } = player.kda
 
@@ -76,7 +75,7 @@ export class ChampService {
      * @param {ChampDto} cur Current data object
      * @returns {ChampDto} Modified accumulated data object
      */
-    private accChamp(acc: Champ, cur: Champ): Champ {
+    private accChamp(acc: ChampDto, cur: ChampDto): ChampDto {
         const avg = (a: number, b: number, n: number) => parseFloat(((a * n + b) / (n + 1)).toFixed(2))
 
         const props_max = ['maxKills', 'maxDeaths']
@@ -121,9 +120,9 @@ export class ChampService {
      * @param games The games to build the stats from
      * @returns The champs stats
      */
-    champsBuilder = (games: Game[]): Champ[] => {
+    champsBuilder = (games: GameDto[]): ChampDto[] => {
         const acc: {
-            [champName: string]: Champ
+            [champName: string]: ChampDto
         } = {}
         // First, index the games by champ name, accumulating the stats
         for (const game of games) {
@@ -145,14 +144,14 @@ export class ChampService {
      * @param games The games to build the stats from
      * @returns The list stats
      */
-    friendsCheck = (games: Game[]): FriendsDto => {
+    friendsCheck = (games: GameDto[]): FriendsDto => {
         const friends: FriendsDto = {}
         
         // First, index all the players you have played with
         for (const game of games) {
-            const yourTeam = game.participantNumber > 4 ? [5,9] : [0,4]
+            const [initialTeamMate, lastTeamMate] = game.participantNumber > 4 ? [5,9] : [0,4]
             // iterate over your teammates only
-            for (let i = yourTeam[0]; i < yourTeam[1]; i++) {
+            for (let i = initialTeamMate; i < lastTeamMate; i++) {
                 const player = game.participants[i];
                 if (!friends[player.summonerName]) {
                     friends[player.summonerName] = {

@@ -25,7 +25,4 @@ export interface DataForChart {
     value: number
 }
 
-export interface link {
-    name: string
-    url: string
-}
+

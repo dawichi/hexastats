@@ -1,5 +1,9 @@
 import Link from 'next/link'
 
+/**
+ * ## Footer component
+ * Renders the footer of the website, with link and copyright
+ */
 const Footer = () => (
     <footer className='bg-zinc-800 text-white p-3'>
         <div className='container m-auto'>

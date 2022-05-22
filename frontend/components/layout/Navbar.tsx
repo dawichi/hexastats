@@ -1,12 +1,68 @@
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { NextRouter, useRouter } from 'next/router'
+import Link from 'next/link'
+import Image from 'next/image'
 import { Disclosure, Switch } from '@headlessui/react'
 import { navigation } from 'configs'
-import { link } from 'interfaces/interfaces'
-import Image from 'next/image'
+import { LinkDto } from 'interfaces'
 
-// Navbar of the app
+/**
+ * ## Render Links
+ * Renders the links list to allow the navigation
+ *
+ * @param props.navigation - Array of links to display in the navbar
+ * @param props.router - Router of the app (checks the URL to highlight the current link)
+ */
+const RenderLinks = ({ navigation, router }: { navigation: LinkDto[]; router: NextRouter }) => (
+    <>
+        {navigation.map((item, idx) => (
+            <Link href={item.url} key={idx} passHref>
+                <button
+                    key={item.name}
+                    className={
+                        'block px-3 py-2 rounded-md text-base font-medium ' +
+                        (router.pathname === item.url ? 'bg-zinc-900 text-white' : 'text-zinc-300 hover:bg-zinc-700 hover:text-white')
+                    }
+                >
+                    {item.name}
+                </button>
+            </Link>
+        ))}
+    </>
+)
+
+/**
+ * ## Toggle component
+ * Toggles the dark mode of the app.
+ *
+ * @param props.darkMode - boolean, true if dark mode is on
+ * @param props.setDarkMode - function to set dark mode on/off
+ */
+const Toggle = ({ darkMode, setDarkMode }) => (
+    <Switch
+        checked={darkMode}
+        onChange={setDarkMode}
+        className={
+            'relative inline-flex flex-shrink-0 h-[34px] w-[58px] border-2 dark:border-transparent border-orange-100 rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 bg-orange-50 dark:bg-zinc-900'
+        }
+    >
+        <span className='sr-only'>Use setting</span>
+        <span
+            aria-hidden='true'
+            className={`${
+                darkMode ? 'translate-x-6 bg-zinc-700' : 'translate-x-0 bg-orange-200'
+            } pointer-events-none inline-block h-[30px] w-[30px]
+				rounded-full shadow-lg transform ring-0 transition ease-in-out duration-200 flex justify-center items-center`}
+        >
+            {darkMode ? <i className='bi bi-moon-fill text-white'></i> : <i className='bi bi-sun-fill text-black'></i>}
+        </span>
+    </Switch>
+)
+
+/**
+ * ## Navbar of the app
+ * Handles the navigation and dark-mode systems
+ */
 export default function Navbar() {
     const router = useRouter()
 
@@ -35,47 +91,6 @@ export default function Navbar() {
     }, [darkMode, theme])
 
     // END DARK MODE
-
-    // Links, used both in desktop and mobile view
-    const RenderLinks = ({ navigation, router }: { navigation: link[]; router: NextRouter }) => (
-        <>
-            {navigation.map((item, idx) => (
-                <Link href={item.url} key={idx} passHref>
-                    <button
-                        key={item.name}
-                        className={
-                            'block px-3 py-2 rounded-md text-base font-medium ' +
-                            (router.pathname === item.url ? 'bg-zinc-900 text-white' : 'text-zinc-300 hover:bg-zinc-700 hover:text-white')
-                        }
-                    >
-                        {item.name}
-                    </button>
-                </Link>
-            ))}
-        </>
-    )
-
-    // Toggle to switch between dark and light mode
-    const Toggle = ({ darkMode, setDarkMode }) => (
-        <Switch
-            checked={darkMode}
-            onChange={setDarkMode}
-            className={
-                'relative inline-flex flex-shrink-0 h-[34px] w-[58px] border-2 dark:border-transparent border-orange-100 rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 bg-orange-50 dark:bg-zinc-900'
-            }
-        >
-            <span className='sr-only'>Use setting</span>
-            <span
-                aria-hidden='true'
-                className={`${
-                    darkMode ? 'translate-x-6 bg-zinc-700' : 'translate-x-0 bg-orange-200'
-                } pointer-events-none inline-block h-[30px] w-[30px]
-				rounded-full shadow-lg transform ring-0 transition ease-in-out duration-200 flex justify-center items-center`}
-            >
-                {darkMode ? <i className='bi bi-moon-fill text-white'></i> : <i className='bi bi-sun-fill text-black'></i>}
-            </span>
-        </Switch>
-    )
 
     return (
         <Disclosure as='nav' className='bg-zinc-800 shadow dark:shadow-zinc-700'>

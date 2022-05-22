@@ -1,9 +1,15 @@
-import { RiotService } from 'services'
-import { Champ } from 'interfaces/Player'
-import Image from 'next/image'
 import { useState } from 'react'
+import Image from 'next/image'
+import { RiotService } from 'services'
+import { ChampDto } from 'interfaces'
 
-export default function ChampsList({ champs }: { champs: Champ[] }) {
+/**
+ * ## ChampsList component
+ * Display a list of champions with their stats
+ *
+ * @param props.champs - Champs list to display
+ */
+export default function ChampsList({ champs }: { champs: ChampDto[] }) {
     const riotService = new RiotService()
 
     const ProgressBar = ({ max, value, color }: { max: number; value: number; color: number }) => {

@@ -1,8 +1,14 @@
-import { Game } from 'interfaces/Game'
 import Image from 'next/image'
 import { RiotService } from 'services'
+import { GameDto } from 'interfaces'
 
-export default function ChampStats({ games }: { games: Game[] }) {
+/**
+ * ## ChampStats component
+ * Displays the stats from the champs you have played.
+ *
+ * @param props.games - Games list to build the stats from
+ */
+export default function ChampStats({ games }: { games: GameDto[] }) {
     const riotService = new RiotService()
 
     const ProgressBar = ({ numGames, wins, max }: { numGames: number; wins: number; max: number }) => {
@@ -48,6 +54,7 @@ export default function ChampStats({ games }: { games: Game[] }) {
         }
     })
 
+    // TODO: Add winrate text for each position and the global winrate below
     return (
         <div className='grid grid-cols-5 pb-5'>
             {Object.keys(positions).map((position, idx) => (
