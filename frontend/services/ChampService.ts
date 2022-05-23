@@ -130,9 +130,17 @@ export class ChampService {
             acc[champName] = acc[champName] ? this.accChamp(acc[champName], this.mockChamp(game)) : this.mockChamp(game)
         }
 
-        return Object.keys(acc)
+        // Then, convert the object to an array
+        const champs = Object.keys(acc)
             .map(key => acc[key])
             .sort((a, b) => b.games - a.games)
+        
+        // Trim the array to the top 7 champs
+        if (champs.length > 7) {
+            champs.length = 7
+        }
+
+        return champs
     }
 
 

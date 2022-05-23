@@ -45,10 +45,6 @@ export default function ChampsList({ champs }: { champs: ChampDto[] }) {
                     setMaxKda(champ.kda)
                 }
 
-                if (idx > 5) {
-                    return
-                }
-
                 return (
                     <div key={idx} className='grid grid-cols-4 gap-1 px-4'>
                         <span>

@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { PlayersContext } from 'hooks/PlayersContext'
 import { Container, EmptyPlayers, PlayerImg } from 'components'
 import { statTitle } from 'utils'
-import { Champ } from 'interfaces/Player'
+import { ChampDto } from 'interfaces'
 
 // ┌────────────────┐
 // │ MULTIPLE PAGE: │
@@ -32,7 +32,7 @@ export default function Multiple() {
                 let games = 0
                 let stat_value = 0
 
-                player.champs?.map((champ: Champ) => {
+                player.champs?.map((champ: ChampDto) => {
                     games += champ.games
                     stat_value += champ[stat]
                 })

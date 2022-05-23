@@ -2,9 +2,10 @@ import { useContext } from 'react'
 import { Popover } from '@headlessui/react'
 import { Container, EmptyPlayers, RankStructure } from 'components'
 import { PlayersContext } from 'hooks/PlayersContext'
-import { PlayerDto } from 'interfaces'
+import { SummonerDto } from 'interfaces'
 import { styles } from 'styles/styles.config'
 import Image from 'next/image'
+import { ChampService } from 'services'
 
 // ┌────────────────┐
 // │ STATS PAGE:    │
@@ -12,11 +13,13 @@ import Image from 'next/image'
 // Visualize each player in a table
 // Each row of the table is a champ with his stats
 export default function Home() {
+    const champService = new ChampService()
+
     const { players } = useContext(PlayersContext)
 
     const containerProps = {
         title: 'Stats',
-        description: 'Basic stats of your 7 most played champs in rankeds',
+        description: 'Basic stats of your 7 most played champs',
     }
 
     if (!players || players.length === 0) {
@@ -60,7 +63,7 @@ export default function Home() {
         <Container {...containerProps}>
             <div className='grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>
                 {/* For each player, print a table and its table-head */}
-                {players.map((player: PlayerDto, index_player: number) => (
+                {players.map((player: SummonerDto, index_player: number) => (
                     <div key={index_player} className={`flex flex-col ${styles.foreground} ${styles.card}`}>
                         <div className='p-4'>
                             <RankStructure player={player} />
@@ -80,7 +83,7 @@ export default function Home() {
                             </thead>
                             <tbody>
                                 {/* For each champ inside a player, print a row with the data */}
-                                {player.champs?.map((champ, index_champ) => (
+                                {champService.champsBuilder(player.games).map((champ, index_champ) => (
                                     <tr key={index_champ} className='border dark:border-zinc-500'>
                                         <td>
                                             <Popover className='relative'>
@@ -106,35 +109,35 @@ export default function Home() {
                                                                 <TintRow
                                                                     title={'Max Kills'}
                                                                     tint={styles.stat.kills}
-                                                                    data={champ.max_kills}
+                                                                    data={champ.maxKills}
                                                                 />
                                                                 <TintRow
                                                                     title={'Max Deaths'}
                                                                     tint={styles.stat.deaths}
-                                                                    data={champ.max_deaths}
+                                                                    data={champ.maxDeaths}
                                                                 />
                                                                 <TintRow
                                                                     title={'Damage'}
                                                                     tint={styles.stat.kills}
-                                                                    data={champ.avg_damage_dealt}
+                                                                    data={champ.avgDamageDealt}
                                                                 />
                                                                 <TintRow
                                                                     title={<i className='bi bi-shield-shaded'></i>}
                                                                     tint={'text-green-500'}
-                                                                    data={champ.avg_damage_taken}
+                                                                    data={champ.avgDamageTaken}
                                                                 />
                                                                 <TintRow
                                                                     title={'x 2'}
                                                                     tint={styles.stat.assists}
-                                                                    data={champ.double_kills}
+                                                                    data={champ.doubleKills}
                                                                 />
-                                                                <TintRow title={'x 3'} tint={styles.stat.games} data={champ.triple_kills} />
+                                                                <TintRow title={'x 3'} tint={styles.stat.games} data={champ.tripleKills} />
                                                                 <TintRow
                                                                     title={'x 4'}
                                                                     tint={styles.stat.winrate}
-                                                                    data={champ.quadra_kills}
+                                                                    data={champ.quadraKills}
                                                                 />
-                                                                <TintRow title={'x 5'} tint={styles.stat.kda} data={champ.penta_kills} />
+                                                                <TintRow title={'x 5'} tint={styles.stat.kda} data={champ.pentaKills} />
                                                             </tbody>
                                                         </table>
                                                     </div>
