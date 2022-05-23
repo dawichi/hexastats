@@ -66,8 +66,8 @@ interface Participant {
     }
 
     spells: {
-        0: number
-        1: number
+        0: string
+        1: string
     }
 }
 

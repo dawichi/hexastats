@@ -122,9 +122,9 @@ export default function GamesList({ player }: { player: SummonerDto }) {
                         <div className='relative flex flex-col items-center text-center'>
                             <div className='absolute top-1 bottom-1 left-3'>
                                 <div className='flex flex-col h-full justify-around'>
-                                    <Image className='rounded' src={String(spells[1])} alt='spell 2' width={40} height={40} />
-                                    <Image className='rounded' src={String(spells[0])} alt='spell 1' width={40} height={40} />
-                                    <Image className='rounded' src={String(items[6])} alt='guard' width={40} height={40} />
+                                    <Image className='rounded' src={spells[1]} alt='spell 2' width={40} height={40} />
+                                    <Image className='rounded' src={spells[0]} alt='spell 1' width={40} height={40} />
+                                    <Image className='rounded' src={items[6]} alt='guard' width={40} height={40} />
                                 </div>
                             </div>
                             <p className='text-xl'>
