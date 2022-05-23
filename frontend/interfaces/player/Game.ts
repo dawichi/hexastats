@@ -66,8 +66,8 @@ interface Participant {
     }
 
     spells: {
-        0: number
-        1: number
+        0: string
+        1: string
     }
 }
 
@@ -76,6 +76,7 @@ interface Participant {
  * Contains all the information about a game
  */
 export interface Game {
+    matchId: string
     participantNumber: number
     gameDuration: number
     gameMode: string

@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
 import { spellUrl } from '../common/utils'
 import { validateQueueType, validateGameType } from '../common/validators'
-import { ChampDto, GameDto, MasteryDto, RankDto, SummonerDto } from './dto'
+import { GameDto, MasteryDto, RankDto, SummonerDto } from './dto'
 
 @Injectable()
 export class SummonersService {
@@ -179,68 +179,6 @@ export class SummonersService {
     }
 
     /**
-     * ## Formats the data of a game
-     * From the riot game data structure, it formats it to return only
-     * the info we need, following the ChampDto structure
-     * @param {number} gameDuration The duration of the game in seconds
-     * @param {object} data The data of the game
-     * @returns {ChampDto} The info of a unique game formatted
-     */
-    private async processGameData(
-        gameDuration: number,
-        {
-            championName,
-            assists,
-            deaths,
-            kills,
-            doubleKills,
-            tripleKills,
-            quadraKills,
-            pentaKills,
-            win,
-            totalDamageTaken,
-            totalDamageDealtToChampions,
-            goldEarned,
-            visionScore,
-            timePlayed,
-            turretKills,
-            totalMinionsKilled,
-            neutralMinionsKilled,
-        }: any,
-    ): Promise<ChampDto> {
-        const version = await this.getLatestVersion()
-        const kda = deaths ? (kills + assists) / deaths : kills + assists
-        const cs = totalMinionsKilled + neutralMinionsKilled
-        const csmin = parseFloat(((60 * cs) / gameDuration).toFixed(1))
-
-        return {
-            //'time': f'{minutes}:{seconds}',
-            name: championName,
-            image: `http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${championName}.png`,
-            assists,
-            deaths,
-            kills,
-            kda,
-            doubleKills,
-            tripleKills,
-            quadraKills,
-            pentaKills,
-            cs,
-            csmin,
-            gold: goldEarned,
-            avgDamageDealt: totalDamageDealtToChampions,
-            avgDamageTaken: totalDamageTaken,
-            games: 1,
-            maxKills: kills,
-            maxDeaths: deaths,
-            winrate: win ? 1 : 0,
-            visionScore,
-            timePlayed,
-            turretKills,
-        }
-    }
-
-    /**
      * ## Server region validator
      * Depending of the server, the games must be requested to a different region
      * @param {string} server Server name (e.g. 'euw1')
@@ -270,7 +208,12 @@ export class SummonersService {
      * @param param1 The data of the game
      * @returns {GameDto} The info of a unique game formatted
      */
-    private async processGame(idx: number, { gameDuration, teams, participants }: any, gameMode: string): Promise<GameDto> {
+    private async processGame(
+        matchId: string,
+        idx: number,
+        { gameDuration, teams, participants }: any,
+        gameMode: string,
+    ): Promise<GameDto> {
         const version = await this.getLatestVersion()
         const champ_names = await this.getChampionNames()
         const itemUrl = (id: number) => {
@@ -280,6 +223,7 @@ export class SummonersService {
 
         participants = participants.map((participant: any) => {
             return {
+                matchId,
                 summonerName: participant.summonerName,
                 win: participant.win,
                 timePlayed: participant.timePlayed,
@@ -342,6 +286,17 @@ export class SummonersService {
         }
     }
 
+    /**
+     * ## Get the games of a summoner
+     * Gets the last games played from a summoner
+     *
+     * @param {string} puuid The puuid of the summoner
+     * @param {string} server The server of the player
+     * @param {number} gamesLimit The number of games to return
+     * @param {number} offset The number of games to skip before starting to analyze
+     * @param {string} queueType Specify to check only a specific queue ('ranked', 'normal', 'all')
+     * @returns {Player} The info of the player
+     */
     async getGames(puuid: string, server: string, gamesLimit: number, offset: number, queueType: string): Promise<any[]> {
         this.logger.verbose(`Getting data from last ${gamesLimit} games`)
 
@@ -364,131 +319,14 @@ export class SummonersService {
 
         for (const game of games) {
             const idx: number = game.data.metadata.participants.indexOf(puuid)
+            const matchId = game.data.metadata.matchId
             const { gameId } = game.data.info
             const gameType = validateGameType(game.data.info.queueId)
 
             this.logger.log(`Processing game: ${gameId} \t ${gameType} \t ${game.data.info.participants[idx].championName}`)
 
-            result.push(await this.processGame(idx, game.data.info, gameType))
+            result.push(await this.processGame(matchId, idx, game.data.info, gameType))
         }
-
-        return result
-    }
-
-    /**
-     * ## Accumulates the game information from a champion
-     * To calculate the average information about a champion, we need to accumulate
-     * the data from all the games played with it. So with this function, it modifies the values
-     * depending of it its an incremental value (like number of games played) or an average (like the winrate)
-     * @param {ChampDto} acc Accumulated data object
-     * @param {ChampDto} cur Current data object
-     * @returns {ChampDto} Modified accumulated data object
-     */
-    private accumulateGameData(acc: ChampDto, cur: ChampDto): ChampDto {
-        const avg = (a: number, b: number, n: number) => parseFloat(((a * n + b) / (n + 1)).toFixed(2))
-
-        const props_max = ['maxKills', 'maxDeaths']
-        const props_increment = ['doubleKills', 'tripleKills', 'quadraKills', 'pentaKills', 'winrate']
-        const props_average = [
-            'kills',
-            'deaths',
-            'assists',
-            'kda',
-            'cs',
-            'csmin',
-            'gold',
-            'avgDamageTaken',
-            'avgDamageDealt',
-            'visionScore',
-            'timePlayed',
-            'turretKills',
-        ]
-
-        // Max props: return the bigger value between the accumulated value and the new value
-        for (const prop of props_max) {
-            acc[prop] = cur[prop] > acc[prop] ? cur[prop] : acc[prop]
-        }
-
-        // Incremental props: just add the new value to the accumulated value
-        for (const prop of props_increment) {
-            acc[prop] += cur[prop]
-        }
-
-        // Average props: calculate the average of the accumulated value and the new value
-        for (const prop of props_average) {
-            acc[prop] = avg(acc[prop], cur[prop], acc.games)
-        }
-
-        // Don't accumulate games before to don't break averages for loop
-        acc.games += 1
-        return acc
-    }
-
-    /**
-     * ## Get the stats by champ
-     * Loops over last 100 games and gets the stats by champ
-     * Calls each game info individually and calculates the stats by champ
-     * @param {string} puuid The puuid of the summoner
-     * @param {string} server The server of the player
-     * @param {number} champsLimit The number of champs to return
-     * @param {number} gamesLimit The number of games to analyze
-     * @param {number} offset The number of games to skip before starting to analyze
-     * @param {string} queueType Specify to check only a specific queue ('ranked', 'normal', 'all')
-     * @returns {Player} The info of the player
-     */
-    async getChampsData(
-        puuid: string,
-        server: string,
-        champsLimit: number,
-        gamesLimit: number,
-        offset: number,
-        queueType: string,
-    ): Promise<any> {
-        this.logger.verbose(`Getting data from last ${gamesLimit} games`)
-
-        server = this.serverRegion(server)
-        const queue = validateQueueType(queueType)
-
-        const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${offset}&count=${gamesLimit}${queue}`
-        const games_list: string[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
-
-        // Accumulate the promises of each game
-        const promises: Promise<any>[] = games_list.map((game_id: string) => {
-            const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/${game_id}`
-
-            return lastValueFrom(this.httpService.get(url, this.headers))
-        })
-
-        // Run all the promises in parallel
-        const games = await Promise.all(promises)
-        const temp: { [key: string]: ChampDto } = {}
-
-        for (const game of games) {
-            const idx: number = game.data.metadata.participants.indexOf(puuid)
-            const data: any = game.data.info.participants[idx]
-            const { gameId, gameMode, gameDuration } = game.data.info
-
-            this.logger.log(`Processing game: ${gameId} \t ${gameMode} \t ${data.championName}`)
-
-            const gameInfo = await this.processGameData(gameDuration, data)
-            const champName: string = gameInfo.name
-
-            temp[champName] = temp[champName] ? this.accumulateGameData(temp[champName], gameInfo) : gameInfo
-        }
-        const result = Object.values(temp)
-
-        // Sort the champs by number of games played
-        result.sort((a: any, b: any) => {
-            return b.games - a.games
-        })
-
-        // Slice result if exceeds the limiit
-        if (champsLimit < result.length) {
-            result.length = champsLimit
-        }
-
-        this.logger.verbose(`Got { ${Object.keys(temp).length} } champs from { ${games.length} } games`)
-        this.logger.verbose(`Returning { ${result.length} } champs. Max set to { ${champsLimit} }`)
 
         return result
     }

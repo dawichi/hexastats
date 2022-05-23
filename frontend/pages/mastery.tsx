@@ -1,9 +1,9 @@
 import { useContext } from 'react'
-import { Mastery } from 'interfaces/Player'
-import { styles } from 'styles/styles.config'
-import { parse_k_num } from 'utils'
-import { Container, EmptyPlayers, PlayerImg } from 'components'
 import { PlayersContext } from 'hooks/PlayersContext'
+import { Container, EmptyPlayers, PlayerImg } from 'components'
+import { styles } from 'styles/styles.config'
+import { MasteryDto } from 'interfaces'
+import { parse_k_num } from 'utils'
 import Image from 'next/image'
 
 // ┌────────────────┐
@@ -32,7 +32,7 @@ export default function Masteries() {
             <div className='grid gap-4 2xl:grid-cols-2'>
                 {players.map((player, idx_player) => {
                     let total_masteries = 0
-                    player.masteries?.map((mastery: Mastery) => (total_masteries += mastery.points))
+                    player.masteries?.map((mastery: MasteryDto) => (total_masteries += mastery.points))
 
                     return (
                         <div key={idx_player} className={`p-2 m-2 ${styles.card} ${styles.foreground} md:grid grid-cols-4`}>
@@ -44,7 +44,7 @@ export default function Masteries() {
                                 </div>
                             </div>
                             <div className='col-span-3 grid grid-cols-4 sm:grid-cols-7'>
-                                {player.masteries?.map((mastery: Mastery, idx_mastery: number) => {
+                                {player.masteries?.map((mastery: MasteryDto, idx_mastery: number) => {
                                     if (idx_mastery > 6) {
                                         return
                                     }
