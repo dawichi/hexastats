@@ -2,7 +2,7 @@ import { Controller, Get, Logger, Param, Query } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { DatabaseService } from '../database/database.service'
 import { SummonersService } from './summoners.service'
-import { ChampDto, MasteryDto, PlayerDto } from './dto'
+import { GameDto, MasteryDto, PlayerDto } from './dto'
 import { validateTTL } from '../common/validators'
 import {
     QueryChampsLimit,
@@ -106,6 +106,48 @@ export class SummonersController {
     }
 
     /**
+     * ## Get summoner information by summoner name
+     * @param server Server name (e.g. 'euw1')
+     * @param summonerName Summoner name in the game
+     * @param gamesLimit Limit of games to be checked (default: 50)
+     * @param offset Offset of the games to be checked (default: 0)
+     * @param queueType Specify to check only a specific queue ('ranked' or 'normal')
+     * @returns Array of games
+     */
+    @Get('/:server/:summonerName/games')
+    @ApiOperation({
+        summary: 'Get champs',
+        description: 'Returns the champs information from a summoner. Loads the last X games and returns the stats calculated',
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'The summoner was found and the data is correct',
+        type: [GameDto],
+    })
+    @ParamServer()
+    @ParamSummonerName()
+    @QueryGamesLimit()
+    @QueryChampsLimit()
+    @QueryOffset()
+    @QueryQueueType()
+    async getGames(
+        @Param('server') server: string,
+        @Param('summonerName') summonerName: string,
+        @Query('gamesLimit') gamesLimit = 10,
+        @Query('offset') offset = 0,
+        @Query('queueType') queueType: string,
+    ): Promise<GameDto[]> {
+        this.logger.verbose(`Started a ${gamesLimit} games search for: ${summonerName}`)
+
+        const summonerData = await this.summonersService.getSummonerDataByName(summonerName, server)
+        const games = await this.summonersService.getGames(summonerData.puuid, server, gamesLimit, offset, queueType)
+
+        this.logger.verbose('Done!')
+
+        return games
+    }
+
+    /**
      * ## Get masteries of a summoner
      * @param {string} server Server name (e.g. 'euw1')
      * @param {string} summonerName Summoner name in the game
@@ -139,49 +181,5 @@ export class SummonersController {
         this.logger.verbose('Done!')
 
         return masteries
-    }
-
-    /**
-     * ## Get summoner information by summoner name
-     * @param {string} server Server name (e.g. 'euw1')
-     * @param {string} summonerName Summoner name in the game
-     * @param {number} champsLimit Limit of champions to be returned (default: 7)
-     * @param {number} gamesLimit Limit of games to be checked (default: 50)
-     * @param {string} queueType Specify to check only a specific queue ('ranked' or 'normal')
-     * @returns {Promise<ChampDto[]>} Player object with all the information
-     */
-    @Get('/:server/:summonerName/champs')
-    @ApiOperation({
-        summary: 'Get champs',
-        description: 'Returns the champs information from a summoner. Loads the last X games and returns the stats calculated',
-        deprecated: true,
-    })
-    @ApiResponse({
-        status: 200,
-        description: 'The summoner was found and the data is correct',
-        type: [ChampDto],
-    })
-    @ParamServer()
-    @ParamSummonerName()
-    @QueryGamesLimit()
-    @QueryChampsLimit()
-    @QueryOffset()
-    @QueryQueueType()
-    async getChampsData(
-        @Param('server') server: string,
-        @Param('summonerName') summonerName: string,
-        @Query('champsLimit') champsLimit = 7,
-        @Query('gamesLimit') gamesLimit = 10,
-        @Query('offset') offset = 0,
-        @Query('queueType') queueType: string,
-    ): Promise<ChampDto[]> {
-        this.logger.verbose(`Started a champs search for: ${summonerName}`)
-
-        const summonerData = await this.summonersService.getSummonerDataByName(summonerName, server)
-        const champs = await this.summonersService.getChampsData(summonerData.puuid, server, champsLimit, gamesLimit, offset, queueType)
-
-        this.logger.verbose('Done!')
-
-        return champs
     }
 }

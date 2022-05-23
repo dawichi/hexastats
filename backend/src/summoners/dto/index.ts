@@ -1,5 +1,4 @@
 // Player DTOs are used to return the data to the client.
-export { Champ as ChampDto } from './player/Champ.dto'
 export { Game as GameDto } from './player/Game.dto'
 export { Mastery as MasteryDto } from './player/Mastery.dto'
 export { Rank as RankDto } from './player/Rank.dto'
