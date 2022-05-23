@@ -76,6 +76,7 @@ interface Participant {
  * Contains all the information about a game
  */
 export interface Game {
+    matchId: string
     participantNumber: number
     gameDuration: number
     gameMode: string

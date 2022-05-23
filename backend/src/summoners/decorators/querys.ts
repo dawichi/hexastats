@@ -1,18 +1,6 @@
 import { applyDecorators } from '@nestjs/common'
 import { ApiQuery } from '@nestjs/swagger'
 
-export function QueryChampsLimit() {
-    return applyDecorators(
-        ApiQuery({
-            name: 'champsLimit',
-            description: 'Limit of champs to be returned. Empty defaults to 7',
-            example: 7,
-            type: Number,
-            required: false,
-        }),
-    )
-}
-
 export function QueryGamesLimit() {
     return applyDecorators(
         ApiQuery({

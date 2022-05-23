@@ -145,6 +145,12 @@ class Participant {
 
 export class Game {
     @ApiProperty({
+        description: 'ID of the match',
+        example: 'EUW_47234724',
+    })
+    matchId: string
+
+    @ApiProperty({
         description: 'Index of the summoner in the participants list',
         enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
         example: 0,

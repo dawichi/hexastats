@@ -127,7 +127,6 @@ export class SummonersController {
     @ParamServer()
     @ParamSummonerName()
     @QueryGamesLimit()
-    @QueryChampsLimit()
     @QueryOffset()
     @QueryQueueType()
     async getGames(

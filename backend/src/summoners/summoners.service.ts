@@ -208,7 +208,12 @@ export class SummonersService {
      * @param param1 The data of the game
      * @returns {GameDto} The info of a unique game formatted
      */
-    private async processGame(idx: number, { gameDuration, teams, participants }: any, gameMode: string): Promise<GameDto> {
+    private async processGame(
+        matchId: string,
+        idx: number,
+        { gameDuration, teams, participants }: any,
+        gameMode: string,
+    ): Promise<GameDto> {
         const version = await this.getLatestVersion()
         const champ_names = await this.getChampionNames()
         const itemUrl = (id: number) => {
@@ -218,6 +223,7 @@ export class SummonersService {
 
         participants = participants.map((participant: any) => {
             return {
+                matchId,
                 summonerName: participant.summonerName,
                 win: participant.win,
                 timePlayed: participant.timePlayed,
@@ -313,12 +319,13 @@ export class SummonersService {
 
         for (const game of games) {
             const idx: number = game.data.metadata.participants.indexOf(puuid)
+            const matchId = game.data.metadata.matchId
             const { gameId } = game.data.info
             const gameType = validateGameType(game.data.info.queueId)
 
             this.logger.log(`Processing game: ${gameId} \t ${gameType} \t ${game.data.info.participants[idx].championName}`)
 
-            result.push(await this.processGame(idx, game.data.info, gameType))
+            result.push(await this.processGame(matchId, idx, game.data.info, gameType))
         }
 
         return result
