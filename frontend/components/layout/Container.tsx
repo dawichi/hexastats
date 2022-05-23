@@ -1,12 +1,12 @@
-// Common HTML structure for all the /pages/*
 /**
  * ## HTML structure for all the /pages/*
  * It is a container component for each page,
  * adding a title and a description before the main content.
- * @param title Title of the page
- * @param description Description of the page
- * @param children Main content
- * @param disableHeader Disable the title and description
+ *
+ * @param props.title Title of the page
+ * @param props.description Description of the page
+ * @param props.children Main content
+ * @param props.disableHeader Disable the title and description
  */
 const Container = ({ title, description, children, disableHeader = false }: {
     title: string,

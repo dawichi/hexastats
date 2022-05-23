@@ -3,15 +3,15 @@ interface Objective {
     kills: number
 }
 
-interface Ban {
-    championId: number
-    pickTurn: number
-}
-
 interface Team {
     teamId: number
     win: boolean
-    bans: Ban[]
+    bans: [
+        {
+            championId: number
+            pickTurn: number
+        }
+    ]
     objectives: {
         baron: Objective
         champion: Objective
@@ -56,13 +56,13 @@ interface Participant {
     }
 
     items: {
-        0: number
-        1: number
-        2: number
-        3: number
-        4: number
-        5: number
-        6: number
+        0: string
+        1: string
+        2: string
+        3: string
+        4: string
+        5: string
+        6: string
     }
 
     spells: {
@@ -71,6 +71,10 @@ interface Participant {
     }
 }
 
+/**
+ * ## Game information
+ * Contains all the information about a game
+ */
 export interface Game {
     participantNumber: number
     gameDuration: number

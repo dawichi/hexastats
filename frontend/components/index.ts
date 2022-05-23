@@ -8,11 +8,12 @@ export { default as PieChart } from './graphs/PieChart'
 export { default as ActivePieChart } from './graphs/ActivePieChart'
 export { default as CompareChart } from './graphs/CompareChart'
 
-// Player data visualization
-export { default as Rank } from './playerFront/Rank'
-export { default as PlayerImg } from './playerFront/PlayerImg'
-export { default as RankStructure } from './playerFront/RankStructure'
-export { default as SummonerPage } from './playerFront/Summoner/SummonerPage'
+// Common structures for data visualization
+export { default as PlayerImg } from './common/PlayerImg'
+export { default as RankStructure } from './common/RankStructure'
+
+// Components for /summoner page
+export { default as SummonerPage } from './Summoner/SummonerPage'
 
 // Player logic management
 export { default as AddPlayer } from './playerLogic/AddPlayer'

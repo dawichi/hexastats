@@ -1,7 +1,13 @@
-import { Rank } from 'interfaces/Player'
+import { RankDto } from 'interfaces'
 import Image from 'next/image'
 
-const Rank = ({ title, rankdata }: { title: string; rankdata: Rank }) => (
+/**
+ * ## Displays the rank of a league from a player
+ * The rank is displayed in a circle over the image of the player
+ * @param param0 
+ * @returns 
+ */
+const Rank = ({ title, rankdata }: { title: string; rankdata: RankDto }) => (
     <div className='text-center text-sm'>
         <h3>{title}</h3>
         <h4 className='text-xs'>
