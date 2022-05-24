@@ -223,7 +223,6 @@ export class SummonersService {
 
         participants = participants.map((participant: any) => {
             return {
-                matchId,
                 summonerName: participant.summonerName,
                 win: participant.win,
                 timePlayed: participant.timePlayed,
@@ -278,12 +277,36 @@ export class SummonersService {
             return team
         })
         return {
+            matchId,
             participantNumber: idx,
             gameDuration,
             gameMode,
             teams,
             participants,
         }
+    }
+
+    /**
+     * ## Check if a match is the last played game
+     *
+     * @param server The server of the summoner
+     * @param puuid The puuid of the summoner
+     * @param matchId The id of the match
+     * @returns True if the match is the last played game
+     */
+    async isLastGame(server: string, puuid: string, matchId: string): Promise<boolean> {
+        this.logger.verbose(`Checking if match ${matchId} is the last played game`)
+        server = this.serverRegion(server)
+
+        // Get the IDs of the games
+        const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=1`
+        const gameIDs_list: string[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
+
+        // Check if the match is the last played game
+        const result = gameIDs_list[0] === matchId
+
+        this.logger.verbose(`${result ? 'Yes, it is' : 'No, it is not'} the last played game`)
+        return result
     }
 
     /**

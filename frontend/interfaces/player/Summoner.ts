@@ -8,6 +8,7 @@ import { Rank } from './Rank'
  */
 export interface Summoner {
     alias: string
+    server: string
     image: string
     level: number
     rank: {

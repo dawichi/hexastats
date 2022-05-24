@@ -4,15 +4,7 @@ import { DatabaseService } from '../database/database.service'
 import { SummonersService } from './summoners.service'
 import { GameDto, MasteryDto, PlayerDto } from './dto'
 import { validateTTL } from '../common/validators'
-import {
-    QueryChampsLimit,
-    QueryGamesLimit,
-    QueryMasteriesLimit,
-    QueryOffset,
-    QueryQueueType,
-    ParamServer,
-    ParamSummonerName,
-} from './decorators'
+import { QueryGamesLimit, QueryMasteriesLimit, QueryOffset, QueryQueueType, ParamServer, ParamSummonerName } from './decorators'
 
 @ApiTags('summoners')
 @Controller('summoners')
@@ -24,7 +16,39 @@ export class SummonersController {
     }
 
     /**
+     * ## Get fresh data from the API
+     */
+    private async getFreshGames(server: string, summonerName: string, queueType: string): Promise<PlayerDto> {
+        this.logger.verbose('Getting new games!')
+        const gamesLimit = 10
+        const version = await this.summonersService.getLatestVersion()
+        const summonerData = await this.summonersService.getSummonerDataByName(summonerName, server)
+        const { solo, flex } = await this.summonersService.getRankData(summonerData.id, server)
+        const masteries = await this.summonersService.getMasteries(summonerData.id, server, 0)
+        const games = await this.summonersService.getGames(summonerData.puuid, server, gamesLimit, 0, queueType)
+
+        const result = {
+            alias: summonerData.name,
+            server,
+            image: `https://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${summonerData.profileIconId}.png`,
+            level: summonerData.summonerLevel,
+            rank: {
+                solo,
+                flex,
+            },
+            games,
+            masteries,
+        }
+
+        await this.databaseService.saveSummonerData(server, summonerName, result)
+        this.logger.verbose('Done!')
+        return result
+    }
+
+    /**
      * ## Get summoner information by summoner name
+     * Returns complete information about a summoner.
+     *
      * @param {string} server Server name (e.g. 'euw1')
      * @param {string} summonerName Summoner name in the game
      * @returns {Promise<PlayerDto>} Player object with all the information
@@ -51,58 +75,53 @@ export class SummonersController {
     ): Promise<PlayerDto> {
         this.logger.verbose(`Started a complete search for: ${summonerName}`)
 
+        // 1. Check if there is data in redis
         const redisData = await this.databaseService.recoverSummonerData(server, summonerName)
 
-        if (redisData) {
-            const stillValid = validateTTL(redisData.ttl)
-            const numGamesStored = redisData.data.games.length
-
-            if (stillValid) {
-                if (numGamesStored >= gamesLimit) {
-                    return redisData.data
-                } else {
-                    this.logger.verbose(`Found ${numGamesStored} games in redis, but ${gamesLimit} are required.`)
-                    const { puuid } = await this.summonersService.getSummonerDataByName(summonerName, server)
-
-                    // Append new games to the existing ones in redisData
-                    const newGames = await this.summonersService.getGames(
-                        puuid,
-                        server,
-                        gamesLimit - numGamesStored,
-                        numGamesStored,
-                        queueType,
-                    )
-
-                    redisData.data.games.push(...newGames)
-                    await this.databaseService.saveSummonerData(server, summonerName, redisData.data)
-                    this.logger.verbose('Done!')
-
-                    return redisData.data
-                }
-            }
+        // If there is no data in redis, return new data form the API
+        if (!redisData) {
+            return this.getFreshGames(server, summonerName, queueType)
         }
 
-        const version = await this.summonersService.getLatestVersion()
+        // 2. Check if the data is still valid
+        const stillValid = validateTTL(redisData.ttl)
+        const numGamesStored: number = redisData.data.games.length
+
+        // If the data is not valid, return new data form the API
+        if (!stillValid) {
+            return this.getFreshGames(server, summonerName, queueType)
+        }
+
+        // 3. Check if there is new games in the API
+        // TODO: Eventually we could add the new ones and return mixed data
         const summonerData = await this.summonersService.getSummonerDataByName(summonerName, server)
-        const { solo, flex } = await this.summonersService.getRankData(summonerData.id, server)
-        const masteries = await this.summonersService.getMasteries(summonerData.id, server, 0)
-        const games = await this.summonersService.getGames(summonerData.puuid, server, gamesLimit, 0, queueType)
+        const isLastGame = await this.summonersService.isLastGame(server, summonerData.puuid, redisData.data.games[0].matchId)
 
-        const result = {
-            alias: summonerData.name,
-            image: `https://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${summonerData.profileIconId}.png`,
-            level: summonerData.summonerLevel,
-            rank: {
-                solo,
-                flex,
-            },
-            games,
-            masteries,
+        // If there is new games to check, return new data form the API
+        if (!isLastGame) {
+            return this.getFreshGames(server, summonerName, queueType)
         }
 
-        await this.databaseService.saveSummonerData(server, summonerName, result)
+        // 4. If the stored games satisfy the limit, return the data from redis
+        if (numGamesStored >= gamesLimit) {
+            this.logger.verbose(`Requested ${gamesLimit} games and ${numGamesStored} are stored. Returning the stored data.`)
+            return redisData.data
+        }
+
+        // 5. If the stored games don't satisfy the limit, add new games from the API to the data
+        this.logger.verbose(`Found ${numGamesStored} games in redis, but ${gamesLimit} are required.`)
+        const { puuid } = await this.summonersService.getSummonerDataByName(summonerName, server)
+
+        // Append new games to the existing ones in redisData
+        this.logger.verbose('Adding 10 new games to redis data.')
+        const newGames = await this.summonersService.getGames(puuid, server, 10, numGamesStored, queueType)
+
+        // 6. Save the new data in redis
+        redisData.data.games.push(...newGames)
+        await this.databaseService.saveSummonerData(server, summonerName, redisData.data)
         this.logger.verbose('Done!')
-        return result
+
+        return redisData.data
     }
 
     /**
@@ -129,7 +148,7 @@ export class SummonersController {
     @QueryGamesLimit()
     @QueryOffset()
     @QueryQueueType()
-    async getGames(
+    async getOnlyGames(
         @Param('server') server: string,
         @Param('summonerName') summonerName: string,
         @Query('gamesLimit') gamesLimit = 10,
