@@ -29,6 +29,7 @@ export class SummonersController {
 
         const result = {
             alias: summonerData.name,
+            server,
             image: `https://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${summonerData.profileIconId}.png`,
             level: summonerData.summonerLevel,
             rank: {

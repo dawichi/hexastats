@@ -1,5 +1,7 @@
+import { useContext, useState } from 'react'
+import { PlayersContext } from 'hooks'
 import Image from 'next/image'
-import { RiotService } from 'services'
+import { RiotService, SummonerService } from 'services'
 import { classNames } from 'utils'
 import { GameDto, SummonerDto } from 'interfaces'
 import { styles } from 'styles/styles.config'
@@ -73,10 +75,18 @@ const SummonersGrid = ({ game }: { game: GameDto }) => {
  * @param props.player - Player to display the games list from
  */
 export default function GamesList({ player }: { player: SummonerDto }) {
-    const riotService = new RiotService()
+    const { players, setPlayers } = useContext(PlayersContext)
 
-    const loadMorePlayers = () => {
-        console.log('load more players')
+    const riotService = new RiotService()
+    const summonerService = new SummonerService(players, setPlayers)
+
+    const [loadingGames, setLoadingGames] = useState(false)
+
+    const loadMorePlayers = async () => {
+        console.log(`Loading more games for ${player.alias}`)
+        setLoadingGames(true)
+        await summonerService.addGames(player.server, player.alias, player.games.length)
+        setLoadingGames(false)
     }
 
     return (
@@ -147,7 +157,14 @@ export default function GamesList({ player }: { player: SummonerDto }) {
                     onClick={loadMorePlayers}
                     className={`${styles.card} ${styles.scale} bg-indigo-600 text-white cursor-pointer mx-4 my-2 p-3 px-6`}
                 >
-                    Load more
+                    {loadingGames ? (
+                        <div className='flex justify-center items-center'>
+                            <i className='bi bi-arrow-clockwise animate-spin block '></i>
+                            <span className='ml-3'>Loading...</span>
+                        </div>
+                    ):(
+                        'Load more'
+                )}
                 </span>
             </div>
         </>

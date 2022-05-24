@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { environment, servers, validateServer } from 'configs'
-import { SummonerDto} from 'interfaces'
+import { GameDto, SummonerDto} from 'interfaces'
 
 
 /**
@@ -35,11 +35,52 @@ export class SummonerService {
      * @param summonerName The summoner name to request the data from
      * @returns The summoner data
      */
-    async get(server: string, summonerName: string) {
+    async get(server: string, summonerName: string): Promise<void> {
         const okServer = validateServer(servers[server])
         const { data }: { data: SummonerDto } = await axios.get(`${environment.backendUrl}summoners/${okServer}/${summonerName}`)
         
         return this.saveSummoner(data)
     }
 
+    /**
+     * ## Saves summoner games into the React Context
+     *
+     * @param summonerName The summoner name
+     * @param data The summoner games to save
+     */
+    private saveGames(summonerName: string, data: GameDto[]): void {
+        const newPlayers = this.players.map(player => {
+            if (player.alias === summonerName) {
+                player.games = data
+            }
+            
+            return player
+        })
+        this.setPlayers(newPlayers)
+        localStorage.setItem('players', JSON.stringify(newPlayers))
+    }
+
+    /**
+     * ## Requests new extra games from the backend API
+     *
+     * @param server The server to request the data from
+     * @param summonerName The summoner name to request the data from
+     * @param games The number of games already stored
+     * @returns The games data
+     */
+    async addGames(server: string, summonerName: string, games: number): Promise<void> {
+        const gamesLimit = games + 10
+        const okServer = validateServer(servers[server])
+        let newGames: GameDto[]
+        try {
+            const { data }: { data: SummonerDto } = await axios.get(`${environment.backendUrl}summoners/${okServer}/${summonerName}?gamesLimit=${gamesLimit}`)
+            newGames = data.games
+        } catch {
+            console.error('Error while requesting new games, try again...')
+            
+            return null
+        }
+
+        return this.saveGames(summonerName, newGames)
+    }
 }

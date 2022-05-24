@@ -11,6 +11,12 @@ export class Player {
     alias: string
 
     @ApiProperty({
+        description: 'Server of the player',
+        example: 'euw1',
+    })
+    server: string
+
+    @ApiProperty({
         description: 'URL to the image',
         example: 'https://ddragon.leagueoflegends.com/cdn/12.7.1/img/profileicon/4411.png',
     })
