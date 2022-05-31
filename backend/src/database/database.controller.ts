@@ -1,5 +1,6 @@
-import { Controller, Get, Logger } from '@nestjs/common'
+import { Controller, Get, Logger, Param } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ParamServer, ParamSummonerName } from 'src/summoners/decorators'
 import { DatabaseService } from './database.service'
 
 @ApiTags('database')
@@ -28,6 +29,27 @@ export class DatabaseController {
     async checkAll(): Promise<string[]> {
         this.logger.verbose('Check all keys in redis')
         return this.databaseService.checkAll()
+    }
+
+    /**
+     * ## Reset all database registers
+     * @returns Confirmation that the database was deleted
+     */
+    @Get('/print/:server/:summonerName')
+    @ApiOperation({
+        summary: 'Print the value from a key',
+        description: 'Print all the data stored for a key',
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'All data was checked',
+        type: Boolean,
+    })
+    @ParamServer()
+    @ParamSummonerName()
+    async printByKey(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<any> {
+        this.logger.verbose(`Getting data from ${server}:${summonerName} in redis`)
+        return this.databaseService.recoverSummonerData(server, summonerName)
     }
 
     /**
