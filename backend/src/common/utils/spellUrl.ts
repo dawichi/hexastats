@@ -1,9 +1,10 @@
 /**
  * ## Get the spell url by id
- * @param spell the id of the spell
+ *
+ * @param spellId the id of the spell
  * @returns the url of the spell image
  */
-export const spellUrl = (spell: number): string => {
+export const spellUrl = (spellId: number): string => {
     const spells: { [key: number]: string } = {
         21: 'Barrier',
         1: 'Boost',
@@ -23,8 +24,8 @@ export const spellUrl = (spell: number): string => {
         55: '_UltBookSmitePlaceholder',
     }
 
-    if (!spells[spell]) {
+    if (!spells[spellId]) {
         throw new Error('Spell Key not valid :(')
     }
-    return `http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/Summoner${spells[spell]}.png`
+    return `http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/Summoner${spells[spellId]}.png`
 }

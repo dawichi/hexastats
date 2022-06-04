@@ -28,7 +28,7 @@ export class DatabaseController {
     })
     async checkAll(): Promise<string[]> {
         this.logger.verbose('Check all keys in redis')
-        return this.databaseService.checkAll()
+        return this.databaseService.printKeys()
     }
 
     /**
@@ -37,19 +37,19 @@ export class DatabaseController {
      */
     @Get('/print/:server/:summonerName')
     @ApiOperation({
-        summary: 'Print the value from a key',
-        description: 'Print all the data stored for a key',
+        summary: 'Get data from a key',
+        description: 'Print all the data stored in a key',
     })
     @ApiResponse({
         status: 200,
-        description: 'All data was checked',
+        description: 'Data returned',
         type: Boolean,
     })
     @ParamServer()
     @ParamSummonerName()
     async printByKey(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<any> {
         this.logger.verbose(`Getting data from ${server}:${summonerName} in redis`)
-        return this.databaseService.recoverSummonerData(server, summonerName)
+        return this.databaseService.getData(server, summonerName)
     }
 
     /**
@@ -68,6 +68,6 @@ export class DatabaseController {
     })
     async reset(): Promise<boolean> {
         this.logger.verbose('Clear all data from redis')
-        return this.databaseService.reset()
+        return this.databaseService.flushDb()
     }
 }
