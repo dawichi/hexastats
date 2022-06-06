@@ -4,6 +4,7 @@ import { Logger } from '@nestjs/common'
  * ## Validate the TTL
  * Checks if the data has been stored more than 24h ago,
  * comparing the timestamp of the data with the current time.
+ *
  * @param {number} ttl Date.now() - when the register was created
  * @returns {boolean} If the TTL is still valid or not
  */

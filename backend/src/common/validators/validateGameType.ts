@@ -2,6 +2,7 @@
  * ## Validate Game Type
  * The riot uses a certain query param depending of the queue type you want to check
  * https://static.developer.riotgames.com/docs/lol/queues.json
+ *
  * @param queueId id of the queue in which the game takes place
  * @returns the query param to use
  */

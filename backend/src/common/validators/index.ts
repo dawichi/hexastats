@@ -1,5 +1,5 @@
 export { validateDatabase } from './validateDatabase'
 export { validateEnv } from './validateEnv'
-export { validateTTL } from './validateTTL'
 export { validateQueueType } from './validateQueueType'
 export { validateGameType } from './validateGameType'
+export { validateTTL } from './validateTTL'
