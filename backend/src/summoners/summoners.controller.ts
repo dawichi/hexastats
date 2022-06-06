@@ -40,7 +40,7 @@ export class SummonersController {
             masteries,
         }
 
-        await this.databaseService.saveSummonerData(server, summonerName, result)
+        await this.databaseService.postData(server, summonerName, result)
         this.logger.verbose('Done!')
         return result
     }
@@ -76,7 +76,7 @@ export class SummonersController {
         this.logger.verbose(`Started a complete search for: ${summonerName}`)
 
         // 1. Check if there is data in redis
-        const redisData = await this.databaseService.recoverSummonerData(server, summonerName)
+        const redisData = await this.databaseService.getData(server, summonerName)
 
         // If there is no data in redis, return new data form the API
         if (!redisData) {
@@ -118,7 +118,7 @@ export class SummonersController {
 
         // 6. Save the new data in redis
         redisData.data.games.push(...newGames)
-        await this.databaseService.saveSummonerData(server, summonerName, redisData.data)
+        await this.databaseService.postData(server, summonerName, redisData.data)
         this.logger.verbose('Done!')
 
         return redisData.data
