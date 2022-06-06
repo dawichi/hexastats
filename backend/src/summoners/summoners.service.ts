@@ -257,7 +257,7 @@ export class SummonersService {
                     3: itemUrl(participant.item3),
                     4: itemUrl(participant.item4),
                     5: itemUrl(participant.item5),
-                    6: itemUrl(participant.item6),
+                    6: itemUrl(participant.item6 || 2052),
                 },
                 spells: {
                     0: spellUrl(participant.summoner1Id),
