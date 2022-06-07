@@ -1,9 +1,10 @@
 <h1 align="center">Hexastats</h1>
 
 <div align="center">
-    <img src="https://img.shields.io/badge/made%20with-typescript-blue" />
     <img src="https://img.shields.io/badge/backend-nest%20js-ea2845" />
     <img src="https://img.shields.io/badge/frontend-next%20js-black" />
+    <img src="https://img.shields.io/badge/database-redis-ea2845" />
+    <img src="https://img.shields.io/badge/made%20with-typescript-blue" />
     <img src="https://img.shields.io/badge/styles-tailwindcss-ff69b4" />
 </div>
 <p align="center">Web application to allow players to visualize their data from League of Legends.</p>
