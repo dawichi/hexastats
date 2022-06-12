@@ -1,27 +1,95 @@
 import { ApiProperty } from '@nestjs/swagger'
 
 class Objective {
+    @ApiProperty({
+        description: 'Was the first objective of this kind completed?',
+        example: true,
+    })
     first: boolean
+
+    @ApiProperty({
+        description: 'How many times',
+        example: 3,
+    })
     kills: number
 }
 
 class Ban {
+    @ApiProperty({
+        description: 'Champion ID of the banned champion',
+        example: 420,
+    })
     championId: number
+
+    @ApiProperty({
+        description: 'Ban turn',
+        example: 3,
+    })
     pickTurn: number
 }
 
+class Objectives {
+    @ApiProperty({
+        description: 'Baron kills',
+        type: Objective,
+    })
+    baron: Objective
+
+    @ApiProperty({
+        description: 'Champion kills',
+        type: Objective,
+    })
+    champion: Objective
+
+    @ApiProperty({
+        description: 'Dragon kills',
+        type: Objective,
+    })
+    dragon: Objective
+
+    @ApiProperty({
+        description: 'Inhibitor kills',
+        type: Objective,
+    })
+    inhibitor: Objective
+
+    @ApiProperty({
+        description: 'Herald kills',
+        type: Objective,
+    })
+    riftHerald: Objective
+
+    @ApiProperty({
+        description: 'Tower kills',
+        type: Objective,
+    })
+    tower: Objective
+}
+
 class Team {
+    @ApiProperty({
+        description: 'Team ID',
+        example: 123456,
+    })
     teamId: number
+
+    @ApiProperty({
+        description: 'Won the game?',
+        example: true,
+    })
     win: boolean
+
+    @ApiProperty({
+        description: 'Bans of the team',
+        type: [Ban],
+    })
     bans: Ban[]
-    objectives: {
-        baron: Objective
-        champion: Objective
-        dragon: Objective
-        inhibitor: Objective
-        riftHerald: Objective
-        tower: Objective
-    }
+
+    @ApiProperty({
+        description: 'Objectives completed by the team',
+        type: Objectives,
+    })
+    objectives: Objectives
 }
 
 class Participant {
