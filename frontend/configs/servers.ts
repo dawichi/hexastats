@@ -1,4 +1,4 @@
-export const servers = ['euw', 'lan', 'las', 'na', 'kr', 'eune', 'tr', 'oce', 'ru', 'jp', 'br']
+export const servers: string[] = ['euw', 'lan', 'las', 'na', 'kr', 'eune', 'tr', 'oce', 'ru', 'jp', 'br']
 
 /**
  * ## Validate the server
@@ -7,7 +7,7 @@ export const servers = ['euw', 'lan', 'las', 'na', 'kr', 'eune', 'tr', 'oce', 'r
  * @returns The region of the server. Default is euw1
  */
 export const validateServer = (server: string): string => {
-    const servers = {
+    const servers: {[key: string]: string} = {
         euw: 'euw1',
         lan: 'la1',
         las: 'la2',

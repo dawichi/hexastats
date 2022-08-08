@@ -7,7 +7,7 @@ import { servers } from 'configs'
 const AddPlayer = () => {
     // Search params
     const user = useFormInput()
-    const [server, setServer] = useState<number>(0)
+    const [serverIdx, setServerIdx] = useState<number>(0)
 
     // Search helpers
     const [searching, setSearching] = useState<boolean>(false)
@@ -18,11 +18,11 @@ const AddPlayer = () => {
     const summonerService = new SummonerService(players, setPlayers)
 
     // Search logic once the button is pressed
-    const handleSearch = () => {
+    const handleSearch = async () => {
         setError(false)
         setSearching(true)
         try {
-            summonerService.get(servers[server], user.inputProp.value)
+            await summonerService.get(serverIdx, user.inputProp.value)
         } catch (e) {
             setError(true)
         }
@@ -41,10 +41,10 @@ const AddPlayer = () => {
         <div>
             <hr className='md:w-1/2 mx-auto mt-3 p-2' />
             <div className='sm:w-96 p-5 m-auto grid grid-cols-2 gap-4'>
-                <Listbox value={server} onChange={setServer}>
+                <Listbox value={serverIdx} onChange={setServerIdx}>
                     <div className='relative select-none cursor-pointer rounded shadow'>
                         <Listbox.Button className='p-2 m-auto pl-5 w-full h-12 rounded relative text-left bg-white dark:bg-zinc-800 hover:shadow-md focus:ring-4 ring-indigo-400'>
-                            <span className='block truncate'>{servers[server]}</span>
+                            <span className='block truncate'>{servers[serverIdx]}</span>
                             <span className='absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>
                                 <i className='bi bi-chevron-expand'></i>
                             </span>

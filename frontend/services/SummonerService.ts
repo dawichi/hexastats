@@ -31,12 +31,12 @@ export class SummonerService {
     /**
      * ## Requests summoner data from the backend API
      *
-     * @param server The server to request the data from
+     * @param server_idx The index of server in servers array
      * @param summonerName The summoner name to request the data from
      * @returns The summoner data
      */
-    async get(server: string, summonerName: string): Promise<void> {
-        const okServer = validateServer(servers[server])
+    async get(server_idx: number, summonerName: string): Promise<void> {
+        const okServer = validateServer(servers[server_idx])
         const { data }: { data: SummonerDto } = await axios.get(`${environment.backendUrl}summoners/${okServer}/${summonerName}`)
         
         return this.saveSummoner(data)
@@ -68,9 +68,9 @@ export class SummonerService {
      * @param games The number of games already stored
      * @returns The games data
      */
-    async addGames(server: string, summonerName: string, games: number): Promise<void> {
+    async addGames(server: string, summonerName: string, games: number): Promise<any> {
         const gamesLimit = games + 10
-        const okServer = validateServer(servers[server])
+        const okServer = validateServer(server)
         let newGames: GameDto[]
         try {
             const { data }: { data: SummonerDto } = await axios.get(`${environment.backendUrl}summoners/${okServer}/${summonerName}?gamesLimit=${gamesLimit}`)
