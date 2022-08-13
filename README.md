@@ -1,4 +1,4 @@
-<!-- Template: https://github.com/othneildrew/Best-README-Template -->
+<!-- Bootstraped with: https://github.com/othneildrew/Best-README-Template -->
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a name="readme-top"></a>
 
@@ -11,24 +11,31 @@
 [![LinkedIn][linkedin-shield]][linkedin-url]
 <!-- ------------------------------------------------------------------------------------------------------------------------ -->
 
-
-<h1 align="center">Hexastats</h1>
-
+<!-- PROJECT LOGO -->
+<br />
 <div align="center">
-    <img src="https://img.shields.io/badge/backend-nest%20js-ea2845" />
-    <img src="https://img.shields.io/badge/frontend-next%20js-black" />
-    <img src="https://img.shields.io/badge/database-redis-ea2845" />
-    <img src="https://img.shields.io/badge/made%20with-typescript-blue" />
-    <img src="https://img.shields.io/badge/styles-tailwindcss-ff69b4" />
+    <img src="./frontend/public/images/logo.png" alt="Logo" width="80" height="80"/>
+    <h1 align="center">Hexastats</h1>
+    <div align="center">
+        <img src="https://img.shields.io/badge/backend-nest%20js-ea2845" />
+        <img src="https://img.shields.io/badge/frontend-next%20js-black" />
+        <img src="https://img.shields.io/badge/database-redis-ea2845" />
+        <img src="https://img.shields.io/badge/made%20with-typescript-blue" />
+        <img src="https://img.shields.io/badge/styles-tailwindcss-ff69b4" />
+    </div>
+    <p align="center">Web application to allow players to visualize their data from League of Legends.</p>
+    <p align="center">🎉🎉🎉 Check it on <a href="https://hexastats.vercel.app" target="_blank">hexastats.vercel.app</a> 🎉🎉🎉</p>
 </div>
-<p align="center">Web application to allow players to visualize their data from League of Legends.</p>
-<p align="center">🎉🎉🎉 Check it on <a href="https://hexastats.vercel.app" target="_blank">hexastats.vercel.app</a> 🎉🎉🎉</p>
-
 
 The project is a monorepo consisted in:
 
 * [`/frontend`](https://github.com/dawichi/hexastats/tree/main/frontend)  React App (Next JS)
-* [`/backend`](https://github.com/dawichi/hexastats/tree/main/backend) Node JS API (Nest JS)
+* [`/backend`](https://github.com/dawichi/hexastats/tree/main/backend) Node API (Nest JS)
+<!-- ------------------------------------------------------------------------------------------------------------------------ -->
+
+
+
+
 
 
 
