@@ -23,9 +23,10 @@
         <img src="https://img.shields.io/badge/made%20with-typescript-blue" />
         <img src="https://img.shields.io/badge/styles-tailwindcss-ff69b4" />
     </div>
-    <p align="center">Web application to allow players to visualize their data from League of Legends.</p>
+    <p align="center">Visualize your stats and metrics from League of Legends!</p>
     <p align="center">🎉🎉🎉 Check it on <a href="https://hexastats.vercel.app" target="_blank">hexastats.vercel.app</a> 🎉🎉🎉</p>
 </div>
+<br/>
 
 The project is a monorepo consisted in:
 
@@ -38,6 +39,25 @@ The project is a monorepo consisted in:
 
 
 
+
+<!-- ABOUT -->
+## About the project
+
+Hexastats is a web app to visualize your metrics from League of Legends.  
+* Last games performance, winrates, graphs and more! 🔥  
+* It also allows you to enter multiple usernames, giving you a fast, visual and interactive way to compare data between players.
+
+[![Hexastats][showcase1]][hexastats-url]
+
+The project was born from the need to compare data between players in a fast and interactive way.  
+First, we created a basic script that eventually turned into a small API to play with some stats from our accounts and compare them.
+
+Eventually, more people wanted to be added to try it, so we turned the project into a web with search system, so everyone could add their own username and their friends to make comparisons and have fun.
+
+Right now, we keep working on it, adding new features, sections and thinking about new ways to compare data!
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<!-- ------------------------------------------------------------------------------------------------------------------------ -->
 
 ## Description
 
@@ -87,7 +107,8 @@ For more specific info, browse both [`/frontend`](https://github.com/dawichi/hex
 [license-url]: https://github.com/dawichi/hexastats/blob/master/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/dawichi
-[product-screenshot]: images/screenshot.png
+[showcase1]: showcase.png
+[hexastats-url]: https://hexastats.vercel.app
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
