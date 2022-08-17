@@ -3,6 +3,7 @@
 <a name="readme-top"></a>
 
 
+
 <!-- PROJECT SHIELDS -->
 [![Contributors][contributors-shield]][contributors-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -10,6 +11,7 @@
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 <!-- ------------------------------------------------------------------------------------------------------------------------ -->
+
 
 <!-- PROJECT LOGO -->
 <br />
@@ -29,7 +31,36 @@ The project is a monorepo consisted in:
 
 
 
-
+<!-- TABLE OF CONTENTS -->
+<br/>
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li><a href="#about-the-project">About the project</a></li>
+    <li>
+      <a href="#technical-approach">Technical approach</a>
+      <ul>
+        <li><a href="#built-with">Built with</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#local-setup">Local setup</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#setup-frontend">Setup: frontend</a></li>
+        <li><a href="#setup-backend">Setup: backend</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
+<br/>
+<!-- ------------------------------------------------------------------------------------------------------------------------ -->
 
 
 
@@ -40,7 +71,7 @@ Hexastats is a web app to visualize your metrics from League of Legends.
 * Last games performance, winrates, graphs and more! 🔥  
 * It also allows you to enter multiple usernames, giving you a fast, visual and interactive way to compare data between players.
 
-[![Hexastats][showcase1]][hexastats-url]
+[![Hexastats][showcase-1]][hexastats-url]
 
 The project was born from the need to compare data between players in a fast and interactive way.  
 First, we created a basic script that eventually turned into a small API to play with some stats from our accounts and compare them.
@@ -55,6 +86,11 @@ Right now, we keep working on it, adding new features, sections and thinking abo
 
 
 <!-- BUILT WITH -->
+## Technical approach
+When a backend endpoint is called with a username, it loads, packages and serves the information in JSON to the frontend. The data is loaded into React Context and managed to visualize the stats through multiple different ways with graphs from [D3.js](https://d3js.org/)
+
+For more specific info, browse both [`/frontend`](https://github.com/dawichi/hexastats/tree/main/frontend) and [`/backend`](https://github.com/dawichi/hexastats/tree/main/backend).
+
 ### Built With
 
 It has been written entirely in TypeScript, using the latest solid frameworks such as Nestjs for frontend and Nest for backend.
@@ -69,9 +105,39 @@ It has been written entirely in TypeScript, using the latest solid frameworks su
 
 
 
-## Description
+<!-- LOCAL SETUP -->
+<br/>
+<br/>
 
-Hexastats is a web app to visualize your stats from League of Legends. It allows you to enter multiple usernames, giving you a fast, visual and interactive way to compare data between players.
+## Local setup
+
+Instructions to setup the project locally:
+
+### Prerequisites
+
+To run the project locally, you need:
+
+* Frontend running
+* Backend running
+* Redis running (optional, it's only a cache)
+
+### Setup: frontend
+
+```sh
+~/hexastats $ cd frontend
+~/hexastats/frontend $ npm install # or yarn, or pnpm
+~/hexastats/frontend $ npm run dev
+```
+
+### Setup: backend
+
+```sh
+~/hexastats $ cd backend
+~/hexastats/backend $ npm install # or yarn, or pnpm
+~/hexastats/backend $ npm run start:dev
+```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<!-- ------------------------------------------------------------------------------------------------------------------------ -->
 
 ## Last features
 
@@ -85,21 +151,21 @@ Hexastats is a web app to visualize your stats from League of Legends. It allows
 * Integration with League of Legends desktop client
 * Automatic load of player names once you enter in a new game, to give you statics of both teams
 
-## Technical approach
-When a backend endpoint is called with a username, it loads, packages and serves the information in JSON to the frontend. The data is loaded into React Context and managed to visualize the stats through multiple different ways with graphs from [D3.js](https://d3js.org/)
-
-For more specific info, browse both [`/frontend`](https://github.com/dawichi/hexastats/tree/main/frontend) and [`/backend`](https://github.com/dawichi/hexastats/tree/main/backend).
 
 
 
 
 ---
 
-![showcase](https://raw.githubusercontent.com/Dawichi/hexastats/main/showcase.png)
+## Gallery
 
-![showcase](https://raw.githubusercontent.com/Dawichi/hexastats/main/frontend/public/images/mastery.png)
+Some images from the project:
 
-![showcase](https://raw.githubusercontent.com/Dawichi/hexastats/main/frontend/public/images/compare.png)
+![Hexastats][showcase-2]
+
+![Hexastats][showcase-3]
+
+![Hexastats][showcase-4]
 
 
 <!-- ------------------------------------------------------------------------------------------------------------------------ -->
@@ -122,10 +188,13 @@ For more specific info, browse both [`/frontend`](https://github.com/dawichi/hex
 [linkedin-url]: https://linkedin.com/in/dawichi
 
 <!-- IMAGES -->
-[showcase1]: showcase.png
+[showcase-1]: showcase.png
+[showcase-2]: frontend/public/images/graphs.png
+[showcase-3]: frontend/public/images/mastery.png
+[showcase-4]: frontend/public/images/compare.png
 
 <!-- TECH STACK -->
-[TypeScript]: https://img.shields.io/badge/TS-3178c6?style=for-the-badge
+[TypeScript]: https://img.shields.io/github/languages/top/dawichi/hexastats?logo=typescript&logoColor=fff&style=for-the-badge
 [TypeScript-url]: https://typescriptlang.org/
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
