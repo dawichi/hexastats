@@ -93,7 +93,7 @@ For more specific info, browse both [`/frontend`](https://github.com/dawichi/hex
 
 ### Built With
 
-It has been written entirely in TypeScript, using the latest solid frameworks such as Nestjs for frontend and Nest for backend.
+It has been written entirely in TypeScript, using the latest solid frameworks such as Next.js for frontend and Nest for backend.
 
 * [![TypeScript][TypeScript]][TypeScript-url]
 * [![React][React.js]][React-url]
