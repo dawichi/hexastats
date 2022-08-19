@@ -11,13 +11,13 @@ import { Logger } from '@nestjs/common'
 export const validateTTL = (ttl: number): boolean => {
     const logger = new Logger(validateTTL.name)
     const diff = Date.now() - ttl
-    const diffHours = Math.floor(diff / 1000 / 60 / 60)
-    const valid = diffHours < 24
+    const diffDays = Math.floor(diff / 1000 / 60 / 60 / 24)
+    const valid = diffDays < 7
 
     if (valid) {
-        logger.log(`TTL is still valid: ${24 - diffHours} hours left`)
+        logger.log(`TTL is still valid: ${7 - diffDays} hours left`)
     } else {
-        logger.log(`TTL is expired: ${diffHours - 24} hours ago`)
+        logger.log('TTL is expired')
     }
 
     return valid
