@@ -2,7 +2,7 @@ import { Logger } from '@nestjs/common'
 
 /**
  * ## Validate the TTL
- * Checks if the data has been stored more than 24h ago,
+ * Checks if the data has been stored more than 14 days ago,
  * comparing the timestamp of the data with the current time.
  *
  * @param {number} ttl Date.now() - when the register was created
@@ -12,13 +12,8 @@ export const validateTTL = (ttl: number): boolean => {
     const logger = new Logger(validateTTL.name)
     const diff = Date.now() - ttl
     const diffDays = Math.floor(diff / 1000 / 60 / 60 / 24)
-    const valid = diffDays < 7
+    const valid = diffDays < 14
 
-    if (valid) {
-        logger.log(`TTL is still valid: ${7 - diffDays} hours left`)
-    } else {
-        logger.log('TTL is expired')
-    }
-
+    logger.log(`TTL is ${valid ? 'valid' : 'expired'}`)
     return valid
 }
