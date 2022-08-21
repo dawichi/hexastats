@@ -1,59 +1,27 @@
 import { Container } from 'components'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
 
 interface Contributor {
     name: string
     alias: string
     url: string
-    bio: string | null
-    blog: string | null
-    image: string | null
-    company: string | null
-    location: string | null
+    bio: string
+    blog: string
+    image: string
+    company: string
+    location: string
     followers: number
     following: number
     public_repos: number
-    twitter: string | null
+    twitter: string
 }
 
-export default function About() {
-    const contributors = ['dawichi', 'Brr1-99', 'alexxwe']
-
-    const [contributorsList, setContributorsList] = useState<Array<Contributor>>([])
-
-    useEffect(() => {
-        if (contributorsList.length < contributors.length) {
-            for (const contributor of contributors) {
-                // fetch data from github
-                fetch(`https://api.github.com/users/${contributor}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (!data.message) {
-                            setContributorsList(contributorsList => [...contributorsList, {
-                                name: data.name,
-                                alias: data.login,
-                                url: data.html_url,
-                                bio: data.bio ?? '-',
-                                blog: data.blog ?? '-',
-                                image: data.avatar_url,
-                                company: data.company ?? '-',
-                                location: data.location ?? '-',
-                                followers: data.followers,
-                                following: data.following,
-                                public_repos: data.public_repos,
-                                twitter: data.twitter_username ?? '-',
-                            }])
-                        }
-                    })
-            }
-        }
-    }, [])
+export default function About({ contributorsList }: { contributorsList: Contributor[] }) {
 
     // NOTE: Cards inspired by https://codepen.io/RocktimSaikia/pen/jObbBmR
     // Addapted with tailwindcss
     const ContributorCard = ({ contributor }: { contributor: Contributor }) => (
-        <div className="relative h-96 rounded-lg shadow bg-white dark:bg-zinc-800">
+        <div className="relative h-full rounded-lg shadow bg-white dark:bg-zinc-800 flex flex-col justify-between">
             <div className='absolute bg-indigo-400 left-0 top-0 h-24 w-full rounded-t-lg'></div>
             <span className='absolute top-2 left-2 text-white'>{contributor.company}</span>
             <span className='absolute top-2 right-2 text-white'>
@@ -84,9 +52,9 @@ export default function About() {
             </a>
 
             {/* Stats */}
-            <section className='shadow-md dark:shadow-zinc-700 rounded border-0 border-t-2 border-indigo-400 grid grid-cols-3 mx-8 mt-3 p-3'>
+            <section className='shadow-md dark:shadow-zinc-700 rounded border-0 border-t-2 border-indigo-400 grid grid-cols-3 mx-8 my-3 p-3'>
                 <div>
-                    <p className='text-xl'>{contributor.followers + contributor.following}</p>
+                    <p className='text-xl'>{contributor.followers}</p>
                     <p className='text-xs text-zinc-400'>Followers</p>
                 </div>
                 <div>
@@ -149,4 +117,34 @@ export default function About() {
             </div>
         </Container>
     )
+}
+
+export async function getStaticProps() {
+    const contributors = ['dawichi', 'Brr1-99', 'alexxwe']
+    const contributorsList = []
+
+    for (const contributor of contributors) {
+        const res = await fetch(`https://api.github.com/users/${contributor}`)
+        const data = await res.json()
+        contributorsList.push({
+            name: data.name,
+            alias: data.login,
+            url: data.html_url,
+            bio: data.bio ?? '-',
+            blog: data.blog ?? '-',
+            image: data.avatar_url ?? 'https://avatars.githubusercontent.com/u/51042900?v=4',
+            company: data.company ?? '-',
+            location: data.location ?? '-',
+            followers: data.followers,
+            following: data.following,
+            public_repos: data.public_repos,
+            twitter: data.twitter_username ?? '-',
+        })
+    }
+
+    return {
+        props: {
+            contributorsList,
+        },
+    }
 }
