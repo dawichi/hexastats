@@ -12,9 +12,11 @@ import { ChampDto } from 'interfaces'
 export default function ChampsList({ champs }: { champs: ChampDto[] }) {
     const riotService = new RiotService()
 
-    const ProgressBar = ({ max, value, color }: { max: number; value: number; color: number }) => {
+    const ProgressBar = ({ max, value, color, isWr }: { max: number; value: number; color: number, isWr?: boolean }) => {
         const width = `${(value / max) * 100}%`
-        const colors = {
+        const colors: {
+            [key: number]: string
+        } = {
             0: 'bg-blue-400',
             1: 'bg-red-400',
             2: 'bg-green-400',
@@ -22,15 +24,15 @@ export default function ChampsList({ champs }: { champs: ChampDto[] }) {
 
         return (
             <div className='w-full px-2'>
-                <span className=''>{value}</span>
+                <span className=''>{isWr ? `${value}%` : value}</span>
                 <div className={`h-2 ${colors[color] ?? colors[0]} rounded`} style={{ width }} />
             </div>
         )
     }
 
-    const [maxGames, setMaxGames] = useState<number>(null)
-    const [maxWinrate, setMaxWinrate] = useState<number>(null)
-    const [maxKda, setMaxKda] = useState<number>(null)
+    const [maxGames, setMaxGames] = useState<number>(0)
+    const [maxWinrate, setMaxWinrate] = useState<number>(0)
+    const [maxKda, setMaxKda] = useState<number>(0)
 
     return (
         <>
@@ -51,7 +53,7 @@ export default function ChampsList({ champs }: { champs: ChampDto[] }) {
                             <Image className='rounded' src={riotService.champImage(champ.name)} alt='champion' width={50} height={50} />
                         </span>
                         <ProgressBar max={maxGames} value={champ.games} color={0} />
-                        <ProgressBar max={maxWinrate} value={champ.winrate} color={1} />
+                        <ProgressBar max={maxWinrate} value={champ.winrate} color={1} isWr={true} />
                         <ProgressBar max={maxKda} value={champ.kda} color={2} />
                     </div>
                 )

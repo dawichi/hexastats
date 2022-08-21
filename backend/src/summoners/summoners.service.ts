@@ -92,7 +92,7 @@ export class SummonersService {
         // This response cointains all +140 champions, so we take the {masteriesLimit} first ones
         const masteries: MasteryDto[] = []
 
-        this.logger.verbose(`Found ${all_champions.length} masteries`)
+        this.logger.log(`Found ${all_champions.length} masteries`)
 
         // Slice result if exceeds the limit
         if (masteriesLimit) {
@@ -103,8 +103,6 @@ export class SummonersService {
 
         for (let i = 0; i < all_champions.length; i++) {
             const champ_name = champ_names_table[all_champions[i].championId]
-
-            this.logger.log(`Mastery: ${champ_name}`)
 
             masteries.push({
                 name: champ_name,
@@ -142,7 +140,10 @@ export class SummonersService {
             lose: 0,
             winrate: 0,
         }
-        const winrate = (wins: number, losses: number) => (wins && losses ? (wins / (wins + losses)) * 100 : 0)
+        const winrate = (wins: number, losses: number): number => {
+            if (!(wins + losses)) return 0
+            return (wins / (wins + losses)) * 100
+        }
         const buildRank = (i: number): RankDto => {
             return {
                 rank: rank_data[i].tier ? `${rank_data[i].tier} ${rank_data[i].rank}` : 'Unranked',

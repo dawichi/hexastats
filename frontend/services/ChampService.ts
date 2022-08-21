@@ -32,12 +32,12 @@ export class ChampService {
     private perMin = (value: number, time: number) => parseFloat(((60 * value) / time).toFixed(1))
 
     /**
-     * ## Mock data from one single champ based on a game
+     * ## Parse data from one single champ based on a game
      *
      * @param game The game to calculate the stats from
      * @returns The stats for the champ of that game
      */
-    private mockChamp = (game: GameDto): ChampDto => {
+    private parseChamp = (game: GameDto): ChampDto => {
         const player = game.participants[game.participantNumber]
         const { kills, deaths, assists } = player.kda
 
@@ -127,7 +127,14 @@ export class ChampService {
         // First, index the games by champ name, accumulating the stats
         for (const game of games) {
             const champName = game.participants[game.participantNumber].champ.championName
-            acc[champName] = acc[champName] ? this.accChamp(acc[champName], this.mockChamp(game)) : this.mockChamp(game)
+            acc[champName] = acc[champName] ? this.accChamp(acc[champName], this.parseChamp(game)) : this.parseChamp(game)
+        }
+
+        // Convert accummulated wins to actual winrate
+        for (const champName in acc) {
+            if (acc.hasOwnProperty(champName)) {
+                acc[champName].winrate = parseInt(((acc[champName].winrate / acc[champName].games) * 100).toFixed(0))
+            }
         }
 
         // Then, convert the object to an array

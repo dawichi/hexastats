@@ -4,6 +4,7 @@
  * based in all the games with that champion.
  */
 export interface Champ {
+    [key: string]: number | string;
     name: string
     image: string
     games: number
