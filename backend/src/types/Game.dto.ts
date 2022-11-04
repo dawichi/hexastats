@@ -36,28 +36,10 @@ class Objectives {
     baron: Objective
 
     @ApiProperty({
-        description: 'Champion kills',
-        type: Objective,
-    })
-    champion: Objective
-
-    @ApiProperty({
         description: 'Dragon kills',
         type: Objective,
     })
     dragon: Objective
-
-    @ApiProperty({
-        description: 'Inhibitor kills',
-        type: Objective,
-    })
-    inhibitor: Objective
-
-    @ApiProperty({
-        description: 'Herald kills',
-        type: Objective,
-    })
-    riftHerald: Objective
 
     @ApiProperty({
         description: 'Tower kills',
@@ -189,25 +171,36 @@ class Participant {
 
     @ApiProperty({
         description: 'URL to the images of the items used. (7º is the ward)',
-        example: 'https://ddragon.leagueoflegends.com/cdn/10.3.1/img/item/1054.png',
+        example: {
+            0: 'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3157.png',
+            1: 'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/6655.png',
+            2: 'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/4645.png',
+            3: 'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3020.png',
+            4: 'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3165.png',
+            5: 'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3089.png',
+            6: 'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3340.png',
+        },
     })
     items: {
-        0: string
-        1: string
-        2: string
-        3: string
-        4: string
-        5: string
-        6: string
+        0: URL
+        1: URL
+        2: URL
+        3: URL
+        4: URL
+        5: URL
+        6: URL
     }
 
     @ApiProperty({
         description: 'URL to the images of the spells used',
-        example: 'https://ddragon.leagueoflegends.com/cdn/10.8.1/img/spell/SummonerFlash.png',
+        example: {
+            0: 'http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/SummonerFlash.png',
+            1: 'http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/SummonerHaste.png',
+        },
     })
     spells: {
-        0: string
-        1: string
+        0: URL
+        1: URL
     }
 }
 

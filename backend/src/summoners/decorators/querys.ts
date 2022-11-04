@@ -13,30 +13,6 @@ export function QueryGamesLimit() {
     )
 }
 
-export function QueryMasteriesLimit() {
-    return applyDecorators(
-        ApiQuery({
-            name: 'masteriesLimit',
-            description: 'Limit of masteries to be returned. 0 returns all',
-            example: 24,
-            type: Number,
-            required: true,
-        }),
-    )
-}
-
-export function QueryOffset() {
-    return applyDecorators(
-        ApiQuery({
-            name: 'offset',
-            description: 'Skip a number of games before starting to analyze',
-            example: 0,
-            type: Number,
-            required: false,
-        }),
-    )
-}
-
 export function QueryQueueType() {
     return applyDecorators(
         ApiQuery({

@@ -1,12 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Redis } from '@upstash/redis'
+import { PlayerDto } from 'src/types'
 
-/**
- * ## Schema for the database
- */
-interface SummonerDataDTO {
+type RecordDto = {
     ttl: number
-    data: any
+    data: PlayerDto
 }
 
 @Injectable()
@@ -20,11 +18,11 @@ export class DatabaseService {
     }
 
     /**
-     * ## Print all the database keys registered
+     * ## LIST all the database keys registered
      *
      * @returns Array of all keys in the database
      */
-    async printKeys(): Promise<string[]> {
+    async list(): Promise<string[]> {
         this.logger.log('Checking all registered keys in redis...')
         const keys = await this.redis.keys('*')
 
@@ -37,7 +35,7 @@ export class DatabaseService {
      *
      * @returns Confirmation that the database was deleted
      */
-    async flushDb(): Promise<boolean> {
+    async deleteAll(): Promise<boolean> {
         this.logger.log('Reseting the database...')
         await this.redis.flushdb()
         this.logger.log('Database reseted!')
@@ -47,47 +45,43 @@ export class DatabaseService {
     /**
      * ## DELETE ONE key from the database
      *
-     * @param server Server name
-     * @param summonerName Summoner name
+     * @param key Key to be deleted
      * @returns Confirmation that the register was deleted
      */
-    async deleteOne(server: string, summonerName: string) {
+    async deleteOne(key: string): Promise<boolean> {
         this.logger.log('Deleting data in redis...')
-        await this.redis.del(`${server}:${summonerName}`)
+        await this.redis.del(key)
         return true
     }
 
     /**
      * ## GET data from a key
      *
-     * @param server Server name
-     * @param summonerName Summoner name
+     * @param key Key to be searched
      * @returns Data stored in the key
      */
-    async getData(server: string, summonerName: string): Promise<SummonerDataDTO> {
-        this.logger.log('Checking if data exists in redis...')
-        const data: SummonerDataDTO = await this.redis.get(`${server}:${summonerName}`)
+    async getOne(key: string): Promise<RecordDto> {
+        const data: RecordDto = await this.redis.get(key)
 
-        this.logger.log(data ? 'Data found!' : 'Data not found!')
+        this.logger.log(data ? 'Redis: Data found!' : 'Redis: Data not found!')
         return data
     }
 
     /**
      * ## POST data in a key
      *
-     * @param server Server name
-     * @param summonerName Summoner name
+     * @param key Key to be stored
      * @param summonerData Data to be stored in the key
      */
-    async postData(server: string, summonerName: string, summonerData: any) {
+    async addOne(key: string, summonerData: PlayerDto) {
         this.logger.log('Saving data in redis...')
 
-        const stored = {
+        const newRecord: RecordDto = {
             ttl: Date.now(),
             data: summonerData,
         }
 
-        await this.redis.set(`${server}:${summonerName}`, stored)
-        this.logger.log(`${server} : ${summonerName} - Data saved!`)
+        await this.redis.set(key, newRecord)
+        this.logger.log(`${key} - Data saved!`)
     }
 }
