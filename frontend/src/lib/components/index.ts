@@ -3,5 +3,12 @@ export { default as Container } from './layout/Container.svelte'
 export { default as Footer } from './layout/Footer.svelte'
 export { default as Navbar } from './layout/Navbar.svelte'
 
-// Common - UI components
+// Logic
+export { default as AddPlayer } from './logic/AddPlayer.svelte'
+export { default as ListPlayers } from './logic/ListPlayers.svelte'
+
+// Common
+export { default as Rank } from './common/Rank.svelte'
 export { default as Image } from './common/Image.svelte'
+export { default as ProfileImg } from './common/ProfileImg.svelte'
+export { default as RankStructure } from './common/RankStructure.svelte'
