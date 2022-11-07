@@ -4,7 +4,7 @@
  * @param spellId the id of the spell
  * @returns the url of the spell image
  */
-export const spellUrl = (spellId: number): string => {
+export function spellUrl(spellId: number): string {
     const spells: { [key: number]: string } = {
         21: 'Barrier',
         1: 'Boost',

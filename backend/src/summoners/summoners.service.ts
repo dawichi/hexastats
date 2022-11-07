@@ -2,76 +2,85 @@ import { HttpService } from '@nestjs/axios'
 import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
-import { spellUrl } from '../common/utils'
+import { serverRegion, spellUrl, winrate } from '../common/utils'
 import { validateQueueType, validateGameType } from '../common/validators'
-import { GameDto, MasteryDto, RankDto, SummonerDto } from './dto'
+import { GameDto, MasteryDto, PlayerDto, RankDto } from '../types'
+import { SummonerDto } from './types/summoner.dto'
+
+export type queueTypeDto = 'ranked' | 'normal' | 'all'
 
 @Injectable()
 export class SummonersService {
     private readonly apiKey: string
     private readonly headers: { headers: { 'X-Riot-Token': string } }
-    private readonly logger: Logger
+    private readonly logger = new Logger(this.constructor.name)
 
     constructor(private readonly configService: ConfigService, private readonly httpService: HttpService) {
         this.apiKey = this.configService.get<string>('RIOT_API_KEY')
         this.headers = { headers: { 'X-Riot-Token': this.apiKey } }
-        this.logger = new Logger(this.constructor.name)
     }
 
-    /**
-     * ## Get the RIOT base URL based on the server variable
-     * @param {string} server Server of the summoner
-     * @returns {string} The base url of the api
-     */
     private baseUrl(server: string): string {
         return `https://${server}.api.riotgames.com/lol/`
     }
 
-    /**
-     * ## Get the latest version of the game
-     * Riot stores all game versions in an array, so by getting
-     * the first one you can get the latest version of the api
-     * @returns {string} The latest version of the game
-     */
-    async getLatestVersion(): Promise<string> {
+    private async getLatestVersion(): Promise<string> {
         const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
 
         return (await lastValueFrom(this.httpService.get(url, this.headers))).data[0]
     }
 
     /**
-     * ## Get the summoner information (by name)
+     * ## Get the basic summoner info (by name)
      * To use other methods, you need to get the summoner id first
-     * @param {string} summoner_name Alias of the summoner
-     * @param {string} server Server of the summoner
-     * @returns {Promise<Summoner>} The summoner information
      */
-    async getSummonerDataByName(summoner_name: string, server: string): Promise<SummonerDto> {
-        this.logger.verbose('Getting summoner data')
-        const url = `${this.baseUrl(server)}summoner/v4/summoners/by-name/${summoner_name}`
+    async getBasicInfo(summonerName: string, server: string): Promise<SummonerDto> {
+        const url = `https://${server}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}`
 
         return (await lastValueFrom(this.httpService.get(url, this.headers))).data
     }
 
     /**
-     * ## Get the champion names table (by id)
-     * Riot stores an array with all the chamions, so to get the name
-     * you need to get the id and search in the array for that id
-     * @returns {Promise<{[key: string]: string}>} A object with pairs [id => name] of all champions
+     * ## Get new data of the summoner
      */
-    private async getChampionNames(): Promise<{
-        [key: string]: string
-    }> {
+    async getData(summonerName: string, server: string, gamesLimit: number, queueType: queueTypeDto): Promise<PlayerDto> {
+        const info = await this.getBasicInfo(summonerName, server)
+        const { solo, flex } = await this.getRankData(info.id, server)
+        const masteries = await this.getMasteries(info.id, server, 24)
+        const games = await this.getGames(info.puuid, server, gamesLimit, 0, queueType)
+
+        const version = await this.getLatestVersion()
+
+        return {
+            alias: info.name,
+            server,
+            image: `https://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${info.profileIconId}.png`,
+            level: info.summonerLevel,
+            rank: {
+                solo,
+                flex,
+            },
+            games,
+            masteries,
+        }
+    }
+
+    /**
+     * ## Get the champion names table
+     * Riot stores an array with all the chamions names
+     * @returns A object with pairs `[id => name]` of all champions
+     */
+    private async getChampionNames(): Promise<Record<string, string>> {
         const version = await this.getLatestVersion()
         const url = `http://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`
         const res = (await lastValueFrom(this.httpService.get(url, this.headers))).data.data
-        const champion_names: { [key: string]: string } = {}
+        const champions: Record<string, string> = {}
 
         Object.keys(res).forEach(champion_name => {
-            champion_names[res[champion_name].key] = res[champion_name].id
+            champions[res[champion_name].key] = res[champion_name].id
         })
 
-        return champion_names
+        return champions
     }
 
     /**
@@ -83,32 +92,32 @@ export class SummonersService {
      * @param {string} masteriesLimit Limit of the masteries to return
      * @returns {Promise<MasteryDto[]>} The list of biggest masteries
      */
-    async getMasteries(summoner_id: string, server: string, masteriesLimit: number): Promise<MasteryDto[]> {
+    private async getMasteries(summoner_id: string, server: string, masteriesLimit: number): Promise<MasteryDto[]> {
         this.logger.verbose(`Getting masteries about best ${masteriesLimit} champs`)
-        const version = await this.getLatestVersion()
         const url = `${this.baseUrl(server)}champion-mastery/v4/champion-masteries/by-summoner/${summoner_id}`
-        const champ_names_table = await this.getChampionNames()
-        const all_champions = (await lastValueFrom(this.httpService.get(url, this.headers))).data
-        // This response cointains all +140 champions, so we take the {masteriesLimit} first ones
+        const allMasteries = (await lastValueFrom(this.httpService.get(url, this.headers))).data
+
+        // This response cointains all (+140) champions, so we take the {masteriesLimit} first ones
         const masteries: MasteryDto[] = []
 
-        this.logger.log(`Found ${all_champions.length} masteries`)
+        this.logger.log(`Found ${allMasteries.length} masteries`)
 
         // Slice result if exceeds the limit
-        if (masteriesLimit) {
-            if (masteriesLimit < all_champions.length) {
-                all_champions.length = masteriesLimit
-            }
+        if ((masteriesLimit ?? 0) < allMasteries.length) {
+            allMasteries.length = masteriesLimit
         }
 
-        for (let i = 0; i < all_champions.length; i++) {
-            const champ_name = champ_names_table[all_champions[i].championId]
+        const version = await this.getLatestVersion()
+        const champ_names_table = await this.getChampionNames()
+
+        for (let i = 0; i < allMasteries.length; i++) {
+            const champ_name = champ_names_table[allMasteries[i].championId]
 
             masteries.push({
                 name: champ_name,
                 image: `http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champ_name}.png`,
-                level: all_champions[i].championLevel,
-                points: all_champions[i].championPoints,
+                level: allMasteries[i].championLevel,
+                points: allMasteries[i].championPoints,
             })
         }
         return masteries
@@ -140,20 +149,6 @@ export class SummonersService {
             lose: 0,
             winrate: 0,
         }
-        const winrate = (wins: number, losses: number): number => {
-            if (!(wins + losses)) return 0
-            return (wins / (wins + losses)) * 100
-        }
-        const buildRank = (i: number): RankDto => {
-            return {
-                rank: rank_data[i].tier ? `${rank_data[i].tier} ${rank_data[i].rank}` : 'Unranked',
-                image: rank_data[i].tier ? `${rank_data[i].tier.toLowerCase()}.png` : 'unranked.png',
-                lp: rank_data[i].leaguePoints,
-                win: rank_data[i].wins,
-                lose: rank_data[i].losses,
-                winrate: parseInt(winrate(rank_data[i]['wins'], rank_data[i]['losses']).toFixed(0)),
-            }
-        }
 
         // Is unranked in both queues
         if (!rank_data.length) {
@@ -164,6 +159,15 @@ export class SummonersService {
         }
 
         const soloFirst = rank_data[0].queueType == 'RANKED_SOLO_5x5'
+
+        const buildRank = (i: number): RankDto => ({
+            rank: rank_data[i].tier ? `${rank_data[i].tier} ${rank_data[i].rank}` : 'Unranked',
+            image: rank_data[i].tier ? `${rank_data[i].tier.toLowerCase()}.png` : 'unranked.png',
+            lp: rank_data[i].leaguePoints,
+            win: rank_data[i].wins,
+            lose: rank_data[i].losses,
+            winrate: winrate(rank_data[i]['wins'], rank_data[i]['losses']),
+        })
 
         // Is ranked in only one queue: check which one
         if (rank_data.length == 1) {
@@ -177,30 +181,6 @@ export class SummonersService {
             solo: soloFirst ? buildRank(0) : buildRank(1),
             flex: soloFirst ? buildRank(1) : buildRank(0),
         }
-    }
-
-    /**
-     * ## Server region validator
-     * Depending of the server, the games must be requested to a different region
-     * @param {string} server Server name (e.g. 'euw1')
-     * @returns {string} region name (e.g. 'europe')
-     */
-    private serverRegion(server: string): string {
-        const servers: { [key: string]: string } = {
-            oc1: 'americas',
-            la1: 'americas',
-            la2: 'americas',
-            br1: 'americas',
-            na1: 'americas',
-            jp1: 'asia',
-            kr: 'asia',
-            euw1: 'europe',
-            eun1: 'europe',
-            tr1: 'europe',
-            ru: 'europe',
-        }
-
-        return servers[server] ?? 'europe'
     }
 
     /**
@@ -251,19 +231,16 @@ export class SummonersService {
                     gold: participant.goldEarned,
                     cs: participant.neutralMinionsKilled + participant.totalMinionsKilled,
                 },
-                items: {
-                    0: itemUrl(participant.item0),
-                    1: itemUrl(participant.item1),
-                    2: itemUrl(participant.item2),
-                    3: itemUrl(participant.item3),
-                    4: itemUrl(participant.item4),
-                    5: itemUrl(participant.item5),
-                    6: itemUrl(participant.item6 || 2052),
-                },
-                spells: {
-                    0: spellUrl(participant.summoner1Id),
-                    1: spellUrl(participant.summoner2Id),
-                },
+                ward: itemUrl(participant.item6 || 2052),
+                items: [
+                    itemUrl(participant.item0),
+                    itemUrl(participant.item1),
+                    itemUrl(participant.item2),
+                    itemUrl(participant.item3),
+                    itemUrl(participant.item4),
+                    itemUrl(participant.item5),
+                ],
+                spells: [spellUrl(participant.summoner1Id), spellUrl(participant.summoner2Id)],
             }
         })
         teams = teams.map((team: any) => {
@@ -297,7 +274,7 @@ export class SummonersService {
      */
     async isLastGame(server: string, puuid: string, matchId: string): Promise<boolean> {
         this.logger.verbose(`Checking if match ${matchId} is the last played game`)
-        server = this.serverRegion(server)
+        server = serverRegion(server)
 
         // Get the IDs of the games
         const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=1`
@@ -324,7 +301,7 @@ export class SummonersService {
     async getGames(puuid: string, server: string, gamesLimit: number, offset: number, queueType: string): Promise<any[]> {
         this.logger.verbose(`Getting data from last ${gamesLimit} games`)
 
-        server = this.serverRegion(server)
+        server = serverRegion(server)
         const queue = validateQueueType(queueType)
 
         const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${offset}&count=${gamesLimit}${queue}`

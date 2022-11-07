@@ -1,0 +1,15 @@
+{
+    "printWidth": 160,
+    "tabWidth": 4,
+    "useTabs": false,
+    "semi": false,
+    "singleQuote": true,
+    "jsxSingleQuote": true,
+    "quoteProps": "as-needed",
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "arrowParens": "avoid",
+    "pluginSearchDirs": ["."],
+    "overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }]
+}

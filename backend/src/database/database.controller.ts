@@ -1,5 +1,6 @@
 import { Controller, Get, Logger, Param } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { PlayerDto } from 'src/types'
 import { ParamServer, ParamSummonerName } from '../summoners/decorators'
 import { DatabaseService } from './database.service'
 
@@ -28,7 +29,7 @@ export class DatabaseController {
     })
     async checkAll(): Promise<string[]> {
         this.logger.verbose('Check all keys in redis')
-        return this.databaseService.printKeys()
+        return this.databaseService.list()
     }
 
     /**
@@ -43,13 +44,13 @@ export class DatabaseController {
     @ApiResponse({
         status: 200,
         description: 'Data returned',
-        type: Boolean,
+        type: PlayerDto,
     })
     @ParamServer()
     @ParamSummonerName()
     async printByKey(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<any> {
         this.logger.verbose(`Getting data from ${server}:${summonerName} in redis`)
-        return this.databaseService.getData(server, summonerName)
+        return this.databaseService.getOne(`${server}:${summonerName}`)
     }
 
     /**
@@ -68,6 +69,6 @@ export class DatabaseController {
     })
     async reset(): Promise<boolean> {
         this.logger.verbose('Clear all data from redis')
-        return this.databaseService.flushDb()
+        return this.databaseService.deleteAll()
     }
 }
