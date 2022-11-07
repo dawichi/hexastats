@@ -1,14 +1,12 @@
 import { RiotService } from './Riot.service'
 import type { ChampDto, GameDto } from '$lib/types'
-import type FriendsDto from '$lib/types/Friend.dto'
+import type { FriendDto } from '$lib/types/Friend.dto'
 
 /**
  * ## Service to manage the champ stats
  * From the games data, it allows to build the stats for each champ.
  */
 export class ChampService {
-    private readonly riotService = new RiotService()
-
     /**
      * ## Calculates the kda
      * (kills + assists) / deaths
@@ -43,7 +41,7 @@ export class ChampService {
 
         return {
             name: player.champ.championName,
-            image: this.riotService.champImage(player.champ.championName),
+            image: RiotService.champImage(player.champ.championName),
             games: 1,
             winrate: player.win ? 1 : 0,
             assists,
@@ -120,7 +118,7 @@ export class ChampService {
      * @param games The games to build the stats from
      * @returns The champs stats
      */
-    champsBuilder = (games: GameDto[]): ChampDto[] => {
+    static champsBuilder = (games: GameDto[]): ChampDto[] => {
         const acc: {
             [champName: string]: ChampDto
         } = {}
@@ -159,15 +157,19 @@ export class ChampService {
      * @param games The games to build the stats from
      * @returns The list stats
      */
-    friendsCheck = (games: GameDto[]): FriendsDto => {
-        const friends: FriendsDto = {}
+    static friendsCheck(games: GameDto[]): FriendDto[] {
+        const friends: Record<string, {
+            games: number
+            wins: number
+        }> = {}
         
-        // First, index all the players you have played with
+        // Iterate all games
         for (const game of games) {
+            // Iterate over your teammates only
             const [initialTeamMate, lastTeamMate] = game.participantNumber > 4 ? [5,9] : [0,4]
-            // iterate over your teammates only
             for (let i = initialTeamMate; i < lastTeamMate; i++) {
                 const player = game.participants[i];
+
                 if (!friends[player.summonerName]) {
                     friends[player.summonerName] = {
                         wins: player.win ? 1 : 0,
@@ -191,6 +193,10 @@ export class ChampService {
         // Remove your own name from the list
         delete friends[games[0].participants[games[0].participantNumber].summonerName]
 
-        return friends
+        return Object.keys(friends).map(key => ({
+            name: key,
+            games: friends[key].games,
+            wins: friends[key].wins,
+        }))
     }
 }

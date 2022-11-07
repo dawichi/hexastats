@@ -11,8 +11,6 @@
     import { Container, EmptyPlayers, Image, RankStructure } from '$lib/components'
     import { ChampService } from '$lib/services/Champ.service'
 
-    const champService = new ChampService()
-
     // Context
     let _players: SummonerDto[] = []
     playersContext.subscribe(players => (_players = players))
@@ -72,7 +70,7 @@
                         </thead>
                         <tbody>
                             <!-- For each champ inside a player, print a row with the data -->
-                            {#each champService.champsBuilder(player.games) as champ}
+                            {#each ChampService.champsBuilder(player.games) as champ}
                                 <tr class="border dark:border-zinc-500">
                                     <td>
                                         <div class="relative">

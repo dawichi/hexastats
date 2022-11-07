@@ -1,6 +1,5 @@
-export default interface FriendsDto {
-    [friendName: string]: {
-        games: number
-        wins: number
-    }
+export type FriendDto = {
+    name: string
+    games: number
+    wins: number
 }

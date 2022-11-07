@@ -10,7 +10,7 @@
      * ## URL to the champ image
      * @param champName The name of the champ
      */
-    champImage(champName: string): string {
+    static champImage(champName: string): string {
         // TODO: use this one. The opp-static doesn't work for Fiddle
         // https://raw.communitydragon.org/latest/game/assets/characters/fiddlesticks/hud/fiddlesticks_square.png
         return `https://opgg-static.akamaized.net/images/lol/champion/${champName}.png`
@@ -20,7 +20,7 @@
      * ## URL to the champ splash art
      * @param champName The name of the champ
      */
-    champSplash(champName: string): string {
+     static champSplash(champName: string): string {
         return `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champName}_0.jpg`
     }
 
@@ -28,7 +28,7 @@
      * ## URL to the position image
      * @param position The position of the champ
      */
-    teamPositionIcon(position: string): string {
+     static teamPositionIcon(position: string): string {
         const positions: Record<string, string> = {
             TOP: 'position_top.png',
             MIDDLE: 'position_mid.png',
