@@ -8,7 +8,7 @@
     import type { SummonerDto } from '$lib/types'
     import { styles } from '$lib/config'
     import { playersContext } from '$lib/context/players'
-    import { Container, Image, RankStructure } from '$lib/components'
+    import { Container, EmptyPlayers, Image, RankStructure } from '$lib/components'
     import { ChampService } from '$lib/services/Champ.service'
 
     const champService = new ChampService()
@@ -16,14 +16,6 @@
     // Context
     let _players: SummonerDto[] = []
     playersContext.subscribe(players => (_players = players))
-
-    // if (!players || players.length === 0) {
-    //     return (
-    //         <Container {...containerProps}>
-    //             <EmptyPlayers />
-    //         </Container>
-    //     )
-    // }
 
     /**
      * Highlights table cells based on the stat requirements
@@ -56,38 +48,39 @@
     // )
 </script>
 
-<Container title="Stats" description="Basic stats of your 7 most played champs">
-    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-        <!-- For each player, print a table and its table-head -->
-        {#each _players as player}
-            <div class={`flex flex-col ${styles.foreground} ${styles.card}`}>
-                <div class="p-4">
-                    <RankStructure {player} />
-                </div>
+{#if _players.length}
+    <Container title="Stats" description="Basic stats of your 7 most played champs">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            <!-- For each player, print a table and its table-head -->
+            {#each _players as player}
+                <div class={`flex flex-col ${styles.foreground} ${styles.card}`}>
+                    <div class="p-4">
+                        <RankStructure {player} />
+                    </div>
 
-                <table class={`table-auto m-3 text-center border dark:border-zinc-500`}>
-                    <thead>
-                        <tr>
-                            <th class="bg-zinc-300 py-1 px-2 dark:bg-zinc-800">Champ</th>
-                            <th class={styles.stat.games}>Games</th>
-                            <th class={styles.stat.kda}>KDA</th>
-                            <th class={styles.stat.kills}>K</th>
-                            <th class={styles.stat.deaths}>D</th>
-                            <th class={styles.stat.assists}>A</th>
-                            <th class={styles.stat.cs}>CSM</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- For each champ inside a player, print a row with the data -->
-                        {#each champService.champsBuilder(player.games) as champ}
-                            <tr class="border dark:border-zinc-500">
-                                <td>
-                                    <div class="relative">
-                                        <div class="relative mt-2 h-10 w-10 justify-center p-1">
-                                            <Image image={champ.image} />
-                                        </div>
-                                        <!-- TODO: Tooltip con info extra, quizás repensarlo como /summoner? maybe -->
-                                        <!-- <Popover.Panel class='absolute z-10 transform translate-x-1/4 -translate-y-1/2 left-1/2 w-64'>
+                    <table class={`table-auto m-3 text-center border dark:border-zinc-500`}>
+                        <thead>
+                            <tr>
+                                <th class="bg-zinc-300 py-1 px-2 dark:bg-zinc-800">Champ</th>
+                                <th class={styles.stat.games}>Games</th>
+                                <th class={styles.stat.kda}>KDA</th>
+                                <th class={styles.stat.kills}>K</th>
+                                <th class={styles.stat.deaths}>D</th>
+                                <th class={styles.stat.assists}>A</th>
+                                <th class={styles.stat.cs}>CSM</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- For each champ inside a player, print a row with the data -->
+                            {#each champService.champsBuilder(player.games) as champ}
+                                <tr class="border dark:border-zinc-500">
+                                    <td>
+                                        <div class="relative">
+                                            <div class="relative mt-2 h-10 w-10 justify-center p-1">
+                                                <Image image={champ.image} />
+                                            </div>
+                                            <!-- TODO: Tooltip con info extra, quizás repensarlo como /summoner? maybe -->
+                                            <!-- <Popover.Panel class='absolute z-10 transform translate-x-1/4 -translate-y-1/2 left-1/2 w-64'>
                                             <div class={`p-4 border border-zinc-400 shadow-xl rounded-lg ${styles.foreground}`}>
                                                 <div class='p-1 ml-2 w-10 relative h-10'>
                                                     <Image src={champ.image} alt='champ image' layout='fill' />
@@ -137,32 +130,35 @@
                                                 </table>
                                             </div>
                                         </Popover.Panel> -->
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class={tint(champ.games, 'games')}>{champ.games}</span> (
-                                    <span class={tint(champ.winrate, 'winrate')}>{champ.winrate}%</span>)
-                                </td>
-                                <td>
-                                    <span class={tint(champ.kda, 'kda')}>{champ.kda}</span>
-                                </td>
-                                <td>
-                                    <span class={tint(champ.kills, 'kills')}>{champ.kills}</span>
-                                </td>
-                                <td>
-                                    <span class={tint(champ.deaths, 'deaths')}>{champ.deaths}</span>
-                                </td>
-                                <td>
-                                    <span class={tint(champ.assists, 'assists')}>{champ.assists}</span>
-                                </td>
-                                <td>
-                                    <span class={tint(champ.csmin, 'csmin')}>{champ.csmin}</span>
-                                </td>
-                            </tr>
-                        {/each}
-                    </tbody>
-                </table>
-            </div>
-        {/each}
-    </div>
-</Container>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class={tint(champ.games, 'games')}>{champ.games}</span> (
+                                        <span class={tint(champ.winrate, 'winrate')}>{champ.winrate}%</span>)
+                                    </td>
+                                    <td>
+                                        <span class={tint(champ.kda, 'kda')}>{champ.kda}</span>
+                                    </td>
+                                    <td>
+                                        <span class={tint(champ.kills, 'kills')}>{champ.kills}</span>
+                                    </td>
+                                    <td>
+                                        <span class={tint(champ.deaths, 'deaths')}>{champ.deaths}</span>
+                                    </td>
+                                    <td>
+                                        <span class={tint(champ.assists, 'assists')}>{champ.assists}</span>
+                                    </td>
+                                    <td>
+                                        <span class={tint(champ.csmin, 'csmin')}>{champ.csmin}</span>
+                                    </td>
+                                </tr>
+                            {/each}
+                        </tbody>
+                    </table>
+                </div>
+            {/each}
+        </div>
+    </Container>
+{:else}
+    <EmptyPlayers />
+{/if}

@@ -11,17 +11,6 @@ const backendUrl = development ? 'http://localhost:5000/' : 'https://api-hexasta
  */
 export class SummonerService {
     /**
-     * ## Saves summoner data into the React Context
-     *
-     * @param data The summoner data to save
-     */
-    // private saveSummoner(data: SummonerDto) {
-    //     const newPlayers = this.players.concat(data)
-    //     this.setPlayers(newPlayers)
-    //     localStorage.setItem('players', JSON.stringify(newPlayers))
-    // }
-
-    /**
      * ## Requests summoner data from the backend API
      *
      * @param server_idx The index of server in servers array
@@ -31,8 +20,11 @@ export class SummonerService {
     static async getSummonerByName(server_idx: number, summonerName: string): Promise<SummonerDto> {
         const okServer = validateServer(servers[server_idx])
         const data = await fetch(`${backendUrl}summoners/${okServer}/${summonerName}`)
+
+        if (!data.ok) {
+            throw new Error('Summoner not found')
+        }
         return data.json()
-        // return this.saveSummoner(data)
     }
 
     // /**

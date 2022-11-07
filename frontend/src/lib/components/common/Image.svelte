@@ -10,7 +10,7 @@
     const style = 'background-image: url(' + image + ');'
 </script>
 
-<div class="rounded bgimage" {style} />
+<div class="rounded bgimage h-full w-full" {style} />
 
 <style>
     .bgimage {

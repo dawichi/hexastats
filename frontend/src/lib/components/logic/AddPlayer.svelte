@@ -28,7 +28,11 @@
         searching = true
         try {
             const playerData = await SummonerService.getSummonerByName(serverIdx, username)
-            playersContext.update(players => [...players, playerData])
+            playersContext.update(players => {
+                const newPlayers = [...players, playerData]
+                localStorage.setItem('players', JSON.stringify(newPlayers))
+                return newPlayers
+            })
         } catch (e) {
             error = true
         }
