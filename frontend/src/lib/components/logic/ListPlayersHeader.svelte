@@ -39,7 +39,7 @@
             <div class={`${styles.foreground} rounded shadow-sm m-1 p-2 relative border border-zinc-300 dark:border-zinc-600`}>
                 <div class="flex items-end justify-center">
                     <div class="relative h-12 w-12 overflow-hidden rounded">
-                        <Image image={player.image} />
+                        <img src={player.image} alt="profile pic" />
                     </div>
                     <span class="ml-2">{player.alias}</span>
 

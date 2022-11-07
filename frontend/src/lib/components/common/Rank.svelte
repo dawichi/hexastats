@@ -18,7 +18,7 @@
         {rankdata.rank} ({rankdata.lp})
     </h4>
     <div class="relative m-auto h-14 w-14 rounded">
-        <Image image={`/images/leagues/${rankdata.image}`} />
+        <img src={`/images/leagues/${rankdata.image}`} alt="rank" />
     </div>
     <p>
         <span class="rounded bg-green-600 px-1 text-white">{rankdata.win}</span>
