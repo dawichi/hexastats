@@ -22,7 +22,7 @@ interface Team {
     }
 }
 
-interface Participant {
+export interface Participant {
     summonerName: string
     win: boolean
     timePlayed: number
@@ -55,20 +55,9 @@ interface Participant {
         cs: number
     }
 
-    items: {
-        0: string
-        1: string
-        2: string
-        3: string
-        4: string
-        5: string
-        6: string
-    }
-
-    spells: {
-        0: string
-        1: string
-    }
+    ward: string
+    items: Array<string>
+    spells: Array<string>
 }
 
 /**

@@ -27,45 +27,22 @@ export class SummonerService {
         return data.json()
     }
 
-    // /**
-    //  * ## Saves summoner games into the React Context
-    //  *
-    //  * @param summonerName The summoner name
-    //  * @param data The summoner games to save
-    //  */
-    // private saveGames(summonerName: string, data: GameDto[]): void {
-    //     const newPlayers = this.players.map(player => {
-    //         if (player.alias === summonerName) {
-    //             player.games = data
-    //         }
-            
-    //         return player
-    //     })
-    //     this.setPlayers(newPlayers)
-    //     localStorage.setItem('players', JSON.stringify(newPlayers))
-    // }
+    /**
+     * ## Requests new extra games from the backend API
+     *
+     * @param server The server to request the data from
+     * @param summonerName The summoner name to request the data from
+     * @param gamesLength The number of games already stored
+     * @returns The games data
+     */
+    static async addGames(server: string, summonerName: string, gamesLength: number): Promise<SummonerDto> {
+        const gamesLimit = gamesLength + 10
+        const okServer = validateServer(server)
 
-    // /**
-    //  * ## Requests new extra games from the backend API
-    //  *
-    //  * @param server The server to request the data from
-    //  * @param summonerName The summoner name to request the data from
-    //  * @param games The number of games already stored
-    //  * @returns The games data
-    //  */
-    // async addGames(server: string, summonerName: string, games: number): Promise<any> {
-    //     const gamesLimit = games + 10
-    //     const okServer = validateServer(server)
-    //     let newGames: GameDto[]
-    //     try {
-    //         const { data }: { data: SummonerDto } = await axios.get(`${environment.backendUrl}summoners/${okServer}/${summonerName}?gamesLimit=${gamesLimit}`)
-    //         newGames = data.games
-    //     } catch {
-    //         console.error('Error while requesting new games, try again...')
-            
-    //         return null
-    //     }
-
-    //     return this.saveGames(summonerName, newGames)
-    // }
+        const data = await fetch(`${backendUrl}summoners/${okServer}/${summonerName}?gamesLimit=${gamesLimit}`)
+        if (!data.ok) {
+            throw new Error('Error while requesting new games, try again...')
+        }
+        return data.json()
+    }
 }

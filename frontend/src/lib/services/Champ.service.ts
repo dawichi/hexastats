@@ -197,6 +197,6 @@ export class ChampService {
             name: key,
             games: friends[key].games,
             wins: friends[key].wins,
-        }))
+        })).sort((a, b) => b.games - a.games)
     }
 }

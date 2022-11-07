@@ -231,19 +231,16 @@ export class SummonersService {
                     gold: participant.goldEarned,
                     cs: participant.neutralMinionsKilled + participant.totalMinionsKilled,
                 },
-                items: {
-                    0: itemUrl(participant.item0),
-                    1: itemUrl(participant.item1),
-                    2: itemUrl(participant.item2),
-                    3: itemUrl(participant.item3),
-                    4: itemUrl(participant.item4),
-                    5: itemUrl(participant.item5),
-                    6: itemUrl(participant.item6 || 2052),
-                },
-                spells: {
-                    0: spellUrl(participant.summoner1Id),
-                    1: spellUrl(participant.summoner2Id),
-                },
+                ward: itemUrl(participant.item6 || 2052),
+                items: [
+                    itemUrl(participant.item0),
+                    itemUrl(participant.item1),
+                    itemUrl(participant.item2),
+                    itemUrl(participant.item3),
+                    itemUrl(participant.item4),
+                    itemUrl(participant.item5),
+                ],
+                spells: [spellUrl(participant.summoner1Id), spellUrl(participant.summoner2Id)],
             }
         })
         teams = teams.map((team: any) => {

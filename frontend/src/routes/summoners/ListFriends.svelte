@@ -24,7 +24,7 @@
                     {friend.wins} / {friend.games}
                 </span>
                 <div class="h-2 rounded bg-zinc-600">
-                    <div class="h-2 rounded bg-green-400" style={`width: "${(friend.wins / friend.games) * 100}%"`} />
+                    <div class="h-2 rounded bg-green-400" style={`width: ${(friend.wins / friend.games) * 100}%`} />
                 </div>
             </section>
         {/each}

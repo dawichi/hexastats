@@ -170,38 +170,32 @@ class Participant {
     }
 
     @ApiProperty({
-        description: 'URL to the images of the items used. (7º is the ward)',
-        example: {
-            0: 'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3157.png',
-            1: 'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/6655.png',
-            2: 'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/4645.png',
-            3: 'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3020.png',
-            4: 'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3165.png',
-            5: 'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3089.png',
-            6: 'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3340.png',
-        },
+        description: 'URLs to the image of the ward',
+        example: 'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3340.png',
     })
-    items: {
-        0: URL
-        1: URL
-        2: URL
-        3: URL
-        4: URL
-        5: URL
-        6: URL
-    }
+    ward: string
+
+    @ApiProperty({
+        description: 'URLs to the images of the items used',
+        example: [
+            'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3157.png',
+            'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/6655.png',
+            'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/4645.png',
+            'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3020.png',
+            'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3165.png',
+            'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3089.png',
+        ],
+    })
+    items: Array<string>
 
     @ApiProperty({
         description: 'URL to the images of the spells used',
-        example: {
-            0: 'http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/SummonerFlash.png',
-            1: 'http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/SummonerHaste.png',
-        },
+        example: [
+            'http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/SummonerFlash.png',
+            'http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/SummonerHaste.png',
+        ],
     })
-    spells: {
-        0: URL
-        1: URL
-    }
+    spells: Array<string>
 }
 
 export class Game {
