@@ -23,11 +23,7 @@ async function bootstrap() {
     // Create the Nest application
     const app = await NestFactory.create(AppModule)
 
-    app.enableCors({
-        origin: '*',
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-        preflightContinue: false,
-    })
+    app.enableCors({})
 
     // Create the swagger documentation
     const swaggerConfig = new DocumentBuilder()

@@ -1,8 +1,8 @@
 import { Controller, Get, Logger, Param } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { PlayerDto } from 'src/types'
 import { ParamServer, ParamSummonerName } from '../summoners/decorators'
 import { DatabaseService } from './database.service'
+import { PlayerDto } from '../types'
 
 @ApiTags('database')
 @Controller('database')
