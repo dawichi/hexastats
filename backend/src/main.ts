@@ -23,10 +23,6 @@ async function bootstrap() {
     // Create the Nest application
     const app = await NestFactory.create(AppModule)
 
-    app.enableCors({
-        origin: 'https://hexastats.vercel.app',
-    })
-
     // Create the swagger documentation
     const swaggerConfig = new DocumentBuilder()
         .setTitle('Hexastats Swagger API')
