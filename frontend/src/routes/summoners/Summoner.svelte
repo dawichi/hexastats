@@ -9,6 +9,9 @@
     import { RankStructure } from '$lib/components'
     import { RiotService } from '$lib/services/Riot.service'
     import ListFriends from './ListFriends.svelte'
+    import ListPositions from './ListPositions.svelte'
+    import ListChamps from './ListChamps.svelte'
+    import ListGames from './games/ListGames.svelte'
 
     export let player: SummonerDto
 </script>
@@ -33,8 +36,8 @@
                         <span>Winrate</span>
                         <span>KDA</span>
                     </div>
-                    <hr class="my-2" />
-                    <!-- <ChampsList champs={champs} /> -->
+                    <hr class="m-2" />
+                    <ListChamps {player} />
                 </div>
                 <div class={`${styles.background} ${styles.card} m-2 mb-4`}>
                     <h2 class="pt-3 text-center text-2xl">
@@ -42,8 +45,8 @@
                         <span class="m-5">Positions</span>
                         <i class="bi bi-bar-chart-fill" />
                     </h2>
-                    <hr class="my-2" />
-                    <!-- <PositionStats games={player.games} /> -->
+                    <hr class="m-2" />
+                    <ListPositions {player} />
                 </div>
                 <div class={`${styles.background} ${styles.card} m-2 mb-4`}>
                     <h2 class="pt-3 text-center text-2xl">
@@ -51,12 +54,12 @@
                         <span class="m-5">Friends</span>
                         <i class="bi bi-person-fill" />
                     </h2>
-                    <hr class="my-2" />
+                    <hr class="m-2" />
                     <ListFriends {player} />
                 </div>
             </section>
             <section class="col-span-2">
-                <!-- <GamesList player={player} /> -->
+                <ListGames {player} />
             </section>
         </div>
     </section>

@@ -26,7 +26,7 @@ interface Participant {
     summonerName: string
     win: boolean
     timePlayed: number
-    teamPosition: string
+    teamPosition: 'TOP' | 'JUNGLE' | 'MIDDLE' | 'BOTTOM' | 'UTILITY'
     visionScore: number
 
     champ: {

@@ -18,7 +18,7 @@
             <h4>Winrate</h4>
         </section>
         {#each ChampService.friendsCheck(player.games) as friend}
-            <section class="grid grid-cols-3 gap-2">
+            <section class="grid grid-cols-3 items-center gap-2">
                 <span class="overflow-hidden">{friend.name}</span>
                 <span>
                     {friend.wins} / {friend.games}
