@@ -50,7 +50,7 @@ export class DatabaseService {
      */
     async deleteOne(key: string): Promise<boolean> {
         this.logger.log('Deleting data in redis...')
-        await this.redis.del(key)
+        await this.redis.del(key.toLowerCase())
         return true
     }
 
@@ -61,7 +61,7 @@ export class DatabaseService {
      * @returns Data stored in the key
      */
     async getOne(key: string): Promise<RecordDto> {
-        const data: RecordDto = await this.redis.get(key)
+        const data: RecordDto = await this.redis.get(key.toLowerCase())
 
         this.logger.log(data ? 'Redis: Data found!' : 'Redis: Data not found!')
         return data
@@ -74,6 +74,7 @@ export class DatabaseService {
      * @param summonerData Data to be stored in the key
      */
     async addOne(key: string, summonerData: PlayerDto) {
+        key = key.toLowerCase()
         this.logger.log('Saving data in redis...')
 
         const newRecord: RecordDto = {
