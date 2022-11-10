@@ -1,7 +1,9 @@
 import { servers, validateServer } from '$lib/config'
-import type { SummonerDto} from '$lib/types'
+import type { SummonerDto } from '$lib/types'
 
-const development = false
+import { PUBLIC_IS_DEVELOPMENT } from '$env/static/public'
+
+const development = PUBLIC_IS_DEVELOPMENT === 'true'
 const backendUrl = development ? 'http://localhost:5000/' : 'https://api-hexastats.vercel.app/'
 
 /**
