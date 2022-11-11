@@ -27,7 +27,7 @@
                 {item.name}
             </a>
         {/each}
-        <div class='flex'>
+        <div class='flex items-center'>
             <DarkToggle />
             <div class='flex items-center justify-center ml-10 hidden md:block text-white hover:text-indigo-400 text-2xl'>
                 <a title='See project' href='https://github.com/dawichi/hexastats' target='_blank' rel='noreferrer'>

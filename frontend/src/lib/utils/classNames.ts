@@ -1,5 +1,5 @@
 /**
- * 
+ * ## ClassNames - Join class names
  * @param classes Array of classes
  * @returns A single string of classes
  */
