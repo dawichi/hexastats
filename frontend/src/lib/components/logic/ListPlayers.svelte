@@ -8,10 +8,14 @@
     import { playersContext } from '$lib/context/players'
     import type { SummonerDto } from '$lib/types'
     import RankStructure from '../common/RankStructure.svelte'
+    import { generalContext } from '$lib/context/general'
 
     // Context
     let _players: SummonerDto[] = []
     playersContext.subscribe(players => (_players = players))
+
+    let _loading = false
+    generalContext.subscribe(general => (_loading = general.loadingPlayer))
 
     const handleDeletePlayer = (player_to_delete: number) => {
         const start = _players.slice(0, player_to_delete)
@@ -38,6 +42,11 @@
                     </button>
                 </div>
             {/each}
+            {#if _loading}
+                <div class={`${styles.foreground} ${styles.card} p-4 relative`}>
+                    <RankStructure player={null} />
+                </div>
+            {/if}
         </div>
     </div>
 {/if}

@@ -5,6 +5,7 @@
 -->
 <script lang="ts">
     import { servers } from '$lib/config/servers'
+    import { generalContext } from '$lib/context/general'
     import { playersContext } from '$lib/context/players'
     import { SummonerService } from '$lib/services/Summoner.service'
     import type { SummonerDto } from '$lib/types'
@@ -15,17 +16,18 @@
     let showServerList = false
 
     // Search helpers
-    let searching = false
     let error = false
 
     // Context
     let _players: SummonerDto[] = []
     playersContext.subscribe(players => (_players = players))
+    let _loading: boolean = false
+    generalContext.subscribe(general => (_loading = general.loadingPlayer))
 
     // Search logic once the button is pressed
     async function handleSearch() {
         error = false
-        searching = true
+        generalContext.update(x => ({ ...x, loadingPlayer: true }))
         try {
             const playerData = await SummonerService.getSummonerByName(serverIdx, username)
             playersContext.update(players => {
@@ -36,7 +38,7 @@
         } catch (e) {
             error = true
         }
-        searching = false
+        generalContext.update(x => ({ ...x, loadingPlayer: false }))
         username = ''
     }
 
@@ -60,9 +62,10 @@
                 </span>
             </button>
             {#if showServerList}
-                <ul class="absolute z-10 mt-2 w-full overflow-auto dark:shadow-zinc-600 rounded-md bg-white shadow-xl dark:bg-zinc-800">
+                <ul class="absolute z-10 mt-2 w-full overflow-auto rounded-md bg-white shadow-xl dark:bg-zinc-800 dark:shadow-zinc-600">
                     <div class="grid grid-cols-2 gap-x-1">
                         {#each servers as server, idx}
+                            <!-- svelte-ignore a11y-click-events-have-key-events -->
                             <div
                                 on:click={() => {
                                     serverIdx = idx
@@ -95,11 +98,11 @@
 
         <button
             class={`p-2 h-12 rounded text-white font-bold tracking-widest bg-indigo-400 hover:bg-indigo-500 col-span-2 shadow ${
-                searching ? 'cursor-not-allowed opacity-50' : ''
+                _loading ? 'cursor-not-allowed opacity-50' : ''
             }`}
             on:click={handleSearch}
         >
-            {#if searching}
+            {#if _loading}
                 <div class="flex items-center justify-center">
                     <i class="bi bi-arrow-clockwise block animate-spin " />
                     <span class="ml-3">Loading...</span>
