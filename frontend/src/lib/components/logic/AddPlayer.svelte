@@ -30,11 +30,7 @@
         generalContext.update(x => ({ ...x, loadingPlayer: true }))
         try {
             const playerData = await SummonerService.getSummonerByName(serverIdx, username)
-            playersContext.update(players => {
-                const newPlayers = [...players, playerData]
-                localStorage.setItem('players', JSON.stringify(newPlayers))
-                return newPlayers
-            })
+            playersContext.update(players => ([...players, playerData]))
         } catch (e) {
             error = true
         }

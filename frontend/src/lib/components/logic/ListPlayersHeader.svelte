@@ -18,7 +18,6 @@
         const start = _players.slice(0, player_to_delete)
         const end = _players.slice(player_to_delete + 1, _players.length)
         playersContext.update(x => start.concat(end))
-        localStorage.setItem('players', JSON.stringify(start.concat(end)))
     }
 </script>
 
