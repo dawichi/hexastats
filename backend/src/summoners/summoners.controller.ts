@@ -6,6 +6,7 @@ import { validateTTL } from '../common/validators'
 import { PlayerDto } from '../types'
 import { DatabaseService } from '../database/database.service'
 import { QueryGamesLimit, QueryQueueType, ParamServer, ParamSummonerName } from './decorators'
+import { InfoResponse } from './types/InfoResponse.dto'
 
 @ApiTags('summoners')
 @Controller('summoners')
@@ -100,5 +101,37 @@ export class SummonersController {
 
         this.logger.verbose('Done!')
         return newData
+    }
+
+    /**
+     * ## Get name. level and image
+     * Returns complete information about a summoner.
+     *
+     * @param server Server name (e.g. 'euw1')
+     * @param summonerName Summoner name in the game
+     * @returns {Promise<InfoResponse>} Player object with all the information
+     */
+    @Get('/:server/:summonerName/level-image')
+    @ApiOperation({
+        summary: 'Get level and image only',
+        description: 'Returns the name, level and image only',
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'The summoner was found and the data is correct',
+        type: InfoResponse,
+    })
+    @ParamServer()
+    @ParamSummonerName()
+    async getBasicSummoner(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<InfoResponse> {
+        const data = await this.summonersService.getBasicInfo(summonerName, server)
+        const version = await this.summonersService.getLatestVersion()
+
+        this.logger.log(`Returning ${data.name} lv ${data.summonerLevel}`)
+        return {
+            name: data.name,
+            level: data.summonerLevel,
+            image: `https://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${data.profileIconId}.png`,
+        }
     }
 }

@@ -24,7 +24,7 @@ export class SummonersService {
         return `https://${server}.api.riotgames.com/lol/`
     }
 
-    private async getLatestVersion(): Promise<string> {
+    async getLatestVersion(): Promise<string> {
         const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
 
         return (await lastValueFrom(this.httpService.get(url, this.headers))).data[0]
