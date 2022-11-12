@@ -32,8 +32,8 @@
 <button class="h-[34px] w-[58px] cursor-pointer rounded-full bg-orange-50 focus:outline-none dark:bg-zinc-900" on:click={toggleDarkMode}>
     <span
         class={classNames(
-            `${_general.darkMode ? 'translate-x-[25px] bg-zinc-700' : 'translate-x-[2px] bg-orange-200'}`,
-            ' pointer-events-none inline-block h-[30px] w-[30px] rounded-full transform ring-0 transition ease-in-out duration-200 flex justify-center items-center',
+            `${_general.darkMode ? 'translate-x-[25px] bg-zinc-700' : 'translate-x-[2px] bg-orange-200'} pointer-events-none inline-block`,
+            ' h-[30px] w-[30px] rounded-full transform ring-0 transition ease-in-out duration-700 flex justify-center items-center',
         )}
     >
         {#if _general.darkMode}
@@ -43,3 +43,4 @@
         {/if}
     </span>
 </button>
+
