@@ -25,7 +25,7 @@
     }
 </script>
 
-{#if _players.length}
+{#if _players.length || _loading}
     <div class="container mx-auto">
         <h3 class="my-3 text-xl">Players added:</h3>
         <hr />

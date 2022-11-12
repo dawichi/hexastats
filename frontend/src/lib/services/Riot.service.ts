@@ -34,7 +34,7 @@
             MIDDLE: 'position_mid.png',
             JUNGLE: 'position_jungle.png',
             BOTTOM: 'position_bottom.png',
-            SUPPORT: 'position_support.png'
+            UTILITY: 'position_support.png'
         }
 
         return `https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-career-stats/global/default/${positions[position] ?? positions.MIDDLE}`
