@@ -9,7 +9,7 @@
     import { generalContext } from '$lib/context/general'
     import { playersContext } from '$lib/context/players'
     import { SummonerService } from '$lib/services/Summoner.service'
-    import { Dropdown, DropdownItem } from 'flowbite-svelte'
+    // import { Dropdown, DropdownItem } from 'flowbite-svelte'
 
     // Search params
     let username = ''
@@ -33,13 +33,13 @@
             const playerData = await SummonerService.getSummonerByName(serverIdx, username)
             playersContext.update(players => [...players, playerData])
 
-            const storedNames = JSON.parse(localStorage.getItem('players') ?? '[]')
-            const newPlayer = {
-                name: playerData.alias,
-                level: playerData.level,
-                image: playerData.image,
-            }
-            localStorage.setItem('players', JSON.stringify([...storedNames, newPlayer]))
+            // const storedNames = JSON.parse(localStorage.getItem('players') ?? '[]')
+            // const newPlayer = {
+            //     name: playerData.alias,
+            //     level: playerData.level,
+            //     image: playerData.image,
+            // }
+            // localStorage.setItem('players', JSON.stringify([...storedNames, newPlayer]))
         } catch (e) {
             error = true
         }
@@ -98,7 +98,7 @@
             on:keypress={handleKeyPress}
             bind:value={username}
         />
-        <Dropdown frameClass="bg-white shadow-xl dark:bg-zinc-800 dark:shadow-zinc-600">
+        <!-- <Dropdown frameClass="bg-white shadow-xl dark:bg-zinc-800 dark:shadow-zinc-600">
             {#each JSON.parse(localStorage.getItem('players') ?? '[]') as { name, image }}
                 <DropdownItem>
                     <div class="flex items-center justify-between">
@@ -107,7 +107,7 @@
                     </div>
                 </DropdownItem>
             {/each}
-        </Dropdown>
+        </Dropdown> -->
 
         <button
             class={`p-2 h-12 rounded text-white font-bold tracking-widest bg-indigo-400 hover:bg-indigo-500 col-span-2 shadow ${
