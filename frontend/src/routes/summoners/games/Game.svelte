@@ -18,14 +18,13 @@
 </script>
 
 <div
-    class={classNames(
-        `${styles.shadow} ${styles.background} ${styles.scale} ${participant.win ? 'border-green-500' : 'border-red-500'}`,
-        'cursor-pointer border-8 border-y-0 border-r-0 rounded-lg mx-4 my-2 grid grid-cols-3',
-    )}
+    class="{styles.shadow} {styles.background} {styles.scale} {participant.win
+        ? 'border-green-500'
+        : 'border-red-500'} mx-4 my-2 grid cursor-pointer grid-cols-3 rounded-lg border-8 border-y-0 border-r-0"
 >
     <div class="relative text-white">
-        <div class="t-0 l-0 absolute h-full w-full bg-cover bg-top" style={`background-image: url(${RiotService.champSplash(participant.champ.championName)})`} />
-        <div class="t-0 l-0 absolute h-full w-full" style={`background-image: linear-gradient(to top right, #000000bd , #ffffff00)`} />
+        <div class="t-0 l-0 absolute h-full w-full bg-cover bg-top" style="background-image: url({RiotService.champSplash(participant.champ.championName)})" />
+        <div class="t-0 l-0 absolute h-full w-full" style="background-image: linear-gradient(to top right, #000000bd , #ffffff00)" />
         <div class="absolute top-2 left-3">
             <img src={RiotService.teamPositionIcon(participant.teamPosition)} alt="champ" style="width: 42px; height: 42px;" />
         </div>
@@ -51,7 +50,7 @@
         </p>
         <div class="mt-4 ml-4">
             <div class="grid grid-cols-3 gap-2">
-                {#each [0,1,2,3,4,5] as itemId}
+                {#each [0, 1, 2, 3, 4, 5] as itemId}
                     <span>
                         {#if participant.items[itemId]}
                             <img class="rounded" src={participant.items[itemId]} alt="item" style="width: 36px; height: 36px;" />

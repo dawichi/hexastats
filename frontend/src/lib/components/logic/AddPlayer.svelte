@@ -76,11 +76,9 @@
                                     serverIdx = idx
                                     showServerList = false
                                 }}
-                                class={`rounded relative p-2 pl-7 hover:bg-indigo-200 hover:dark:bg-indigo-800 ${
-                                    idx === serverIdx && 'bg-indigo-400 text-white'
-                                }`}
+                                class="relative rounded p-2 pl-7 hover:bg-indigo-200 hover:dark:bg-indigo-800 {idx === serverIdx && 'bg-indigo-400 text-white'}"
                             >
-                                <span class={`${idx === serverIdx ? 'font-medium' : ''} block truncate`}>{server}</span>
+                                <span class="{idx === serverIdx ? 'font-medium' : ''} block truncate">{server}</span>
                                 {#if idx === serverIdx}
                                     <span class="absolute inset-y-0 left-0 flex items-center pl-1">
                                         <i class="bi bi-check" />

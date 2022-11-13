@@ -2,14 +2,13 @@
     import '../app.css'
     import { styles } from '$lib/config/styles'
     import { Footer, ListPlayersHeader, Navbar } from '$lib/components'
-    import type { SummonerDto } from '$lib/types'
 </script>
 
 <header>
     <Navbar />
 </header>
 
-<main class={`pb-20 dark:text-white min-h-screen ${styles.background}`}>
+<main class="pb-20 dark:text-white min-h-screen {styles.background}">
     <ListPlayersHeader />
     <slot />
 </main>

@@ -51,12 +51,12 @@
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             <!-- For each player, print a table and its table-head -->
             {#each _players as player}
-                <div class={`flex flex-col ${styles.foreground} ${styles.card}`}>
+                <div class="flex flex-col {styles.foreground} {styles.card}">
                     <div class="p-4">
                         <RankStructure {player} />
                     </div>
 
-                    <table class={`table-auto m-3 text-center border dark:border-zinc-500`}>
+                    <table class="m-3 table-auto border text-center dark:border-zinc-500">
                         <thead>
                             <tr>
                                 <th class="bg-zinc-300 py-1 px-2 dark:bg-zinc-800">Champ</th>
@@ -79,7 +79,7 @@
                                             </div>
                                             <!-- TODO: Tooltip con info extra, quizás repensarlo como /summoner? maybe -->
                                             <!-- <Popover.Panel class='absolute z-10 transform translate-x-1/4 -translate-y-1/2 left-1/2 w-64'>
-                                            <div class={`p-4 border border-zinc-400 shadow-xl rounded-lg ${styles.foreground}`}>
+                                            <div class={p-4 border border-zinc-400 shadow-xl rounded-lg {styles.foreground}}>
                                                 <div class='p-1 ml-2 w-10 relative h-10'>
                                                     <Image src={champ.image} alt='champ image' layout='fill' />
                                                 </div>

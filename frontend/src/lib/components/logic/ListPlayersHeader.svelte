@@ -28,14 +28,14 @@
             <a href="/">
                 <button
                     title="Add more players"
-                    class={`${styles.foreground} ${styles.card} hover:text-white hover:bg-indigo-600 hover:dark:bg-indigo-600 m-1 py-2 px-3 cursor-pointer`}
+                    class="{styles.foreground} {styles.card} m-1 cursor-pointer py-2 px-3 hover:bg-indigo-600 hover:text-white hover:dark:bg-indigo-600"
                 >
                     <i class="bi bi-person-plus-fill" />
                 </button>
             </a>
         </div>
         {#each _players as player, idx}
-            <div class={`${styles.foreground} rounded shadow-sm m-1 p-2 relative border border-zinc-300 dark:border-zinc-600`}>
+            <div class="{styles.foreground} relative m-1 rounded border border-zinc-300 p-2 shadow-sm dark:border-zinc-600">
                 <div class="flex items-end justify-center">
                     <div class="relative h-12 w-12 overflow-hidden rounded">
                         <img src={player.image} alt="profile pic" />

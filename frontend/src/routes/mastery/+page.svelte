@@ -23,7 +23,7 @@
     <Container title="Mastery" description="Your 7 champions with most points">
         <div class="grid gap-4 2xl:grid-cols-2">
             {#each _players as player}
-                <div class={`p-2 m-2 ${styles.card} ${styles.foreground} md:grid grid-cols-4`}>
+                <div class="m-2 p-2 {styles.card} {styles.foreground} grid-cols-4 md:grid">
                     <div class="flex items-center">
                         <ProfileImg image={player.image} level={player.level} />
                         <div class="flex flex-col">

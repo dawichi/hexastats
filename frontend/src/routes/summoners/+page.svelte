@@ -25,9 +25,9 @@
                 <div
                     title={player.alias}
                     on:click={() => (idxSelected = _players.indexOf(player))}
-                    class={`rounded cursor-pointer shadow-sm m-1 p-2 relative border border-zinc-300 dark:border-zinc-600 ${
-                        idx === idxSelected ? styles.active : styles.foreground
-                    }`}
+                    class="relative m-1 cursor-pointer rounded border border-zinc-300 p-2 shadow-sm dark:border-zinc-600 {idx === idxSelected
+                        ? styles.active
+                        : styles.foreground}"
                 >
                     <div class="flex items-end justify-center">
                         <div class="relative h-12 w-12 overflow-hidden rounded">

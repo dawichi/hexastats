@@ -75,8 +75,8 @@
 
             <div class="flex h-16 justify-center">
                 <div class="w-2 rounded bg-zinc-300 dark:bg-zinc-600">
-                    <div class="flex w-2 rounded bg-red-400" style={`height: ${(position.games / buildPosition(player).maxGames) * 100}%`}>
-                        <div class="w-2 rounded bg-green-400" style={`height: ${calcHeight(position.wins, position.games)}%`} />
+                    <div class="flex w-2 rounded bg-red-400" style="height: {(position.games / buildPosition(player).maxGames) * 100}%">
+                        <div class="w-2 rounded bg-green-400" style="height: {calcHeight(position.wins, position.games)}%" />
                     </div>
                 </div>
             </div>

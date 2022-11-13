@@ -16,7 +16,7 @@
     <a href="/">
         <button
             title="Add more players"
-            class={`${styles.foreground} ${styles.card} hover:text-white hover:bg-indigo-600 hover:dark:bg-indigo-600 m-1 py-2 px-3 cursor-pointer`}
+            class="{styles.foreground} {styles.card} m-1 cursor-pointer py-2 px-3 hover:bg-indigo-600 hover:text-white hover:dark:bg-indigo-600"
         >
             <i class="bi bi-person-plus-fill" />
         </button>

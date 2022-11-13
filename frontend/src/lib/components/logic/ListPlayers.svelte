@@ -33,7 +33,7 @@
         </p>
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {#each _players as player, idx}
-                <div class={`${styles.foreground} ${styles.card} p-4 relative`}>
+                <div class="{styles.foreground} {styles.card} relative p-4">
                     <RankStructure {player} />
 
                     <button on:click={() => handleDeletePlayer(idx)} class="absolute top-0 right-0 rounded-sm p-1 px-2 hover:bg-red-500">
@@ -42,7 +42,7 @@
                 </div>
             {/each}
             {#if _loading}
-                <div class={`${styles.foreground} ${styles.card} p-4 relative`}>
+                <div class="{styles.foreground} {styles.card} relative p-4">
                     <RankStructure player={null} />
                 </div>
             {/if}
