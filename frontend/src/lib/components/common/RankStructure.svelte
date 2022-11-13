@@ -29,29 +29,29 @@
             <!-- ProfileImg -->
             <MockImage />
             <!-- Title -->
-            <div class="mt-2 h-2.5 w-24 rounded-full bg-gray-300 dark:bg-gray-700" />
+            <div class="mt-2 h-2.5 w-24 rounded-full bg-zinc-300 dark:bg-zinc-700" />
         </div>
         <!-- Rank 1 -->
         <div class="flex flex-col items-center justify-center">
-            <div class="my-1 h-2.5 w-16 rounded-full bg-gray-300 dark:bg-gray-700" />
-            <div class="my-1 h-2.5 w-24 rounded-full bg-gray-300 dark:bg-gray-700" />
+            <div class="my-1 h-2.5 w-16 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+            <div class="my-1 h-2.5 w-24 rounded-full bg-zinc-300 dark:bg-zinc-700" />
             <MockImage />
             <div class="flex gap-2">
-                <div class="my-1 h-2.5 w-8 rounded-full bg-gray-300 dark:bg-gray-700" />
-                <div class="my-1 h-2.5 w-8 rounded-full bg-gray-300 dark:bg-gray-700" />
+                <div class="my-1 h-2.5 w-8 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+                <div class="my-1 h-2.5 w-8 rounded-full bg-zinc-300 dark:bg-zinc-700" />
             </div>
-            <div class="my-1 h-2.5 w-24 rounded-full bg-gray-300 dark:bg-gray-700" />
+            <div class="my-1 h-2.5 w-24 rounded-full bg-zinc-300 dark:bg-zinc-700" />
         </div>
         <!-- Rank 2 -->
         <div class="flex flex-col items-center justify-center">
-            <div class="my-1 h-2.5 w-16 rounded-full bg-gray-300 dark:bg-gray-700" />
-            <div class="my-1 h-2.5 w-24 rounded-full bg-gray-300 dark:bg-gray-700" />
+            <div class="my-1 h-2.5 w-16 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+            <div class="my-1 h-2.5 w-24 rounded-full bg-zinc-300 dark:bg-zinc-700" />
             <MockImage />
             <div class="flex gap-2">
-                <div class="my-1 h-2.5 w-8 rounded-full bg-gray-300 dark:bg-gray-700" />
-                <div class="my-1 h-2.5 w-8 rounded-full bg-gray-300 dark:bg-gray-700" />
+                <div class="my-1 h-2.5 w-8 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+                <div class="my-1 h-2.5 w-8 rounded-full bg-zinc-300 dark:bg-zinc-700" />
             </div>
-            <div class="my-1 h-2.5 w-24 rounded-full bg-gray-300 dark:bg-gray-700" />
+            <div class="my-1 h-2.5 w-24 rounded-full bg-zinc-300 dark:bg-zinc-700" />
         </div>
     </div>
 {/if}
