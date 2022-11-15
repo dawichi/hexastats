@@ -9,7 +9,8 @@
     import { generalContext } from '$lib/context/general'
     import { playersContext } from '$lib/context/players'
     import { SummonerService } from '$lib/services/Summoner.service'
-    // import { Dropdown, DropdownItem } from 'flowbite-svelte'
+    import { Dropdown, DropdownItem } from 'flowbite-svelte'
+    import { LocalStorageService } from '$lib/services/LocalStorage.service'
 
     // Search params
     let username = ''
@@ -18,6 +19,7 @@
 
     // Search helpers
     let error = false
+    let storedNames = LocalStorageService.list()
 
     // Context
     let _players: SummonerDto[] = []
@@ -27,29 +29,39 @@
 
     // Search logic once the button is pressed
     async function handleSearch() {
+        if (_loading) return
         error = false
         generalContext.update(x => ({ ...x, loadingPlayer: true }))
         try {
             const playerData = await SummonerService.getSummonerByName(serverIdx, username)
             playersContext.update(players => [...players, playerData])
 
-            // const storedNames = JSON.parse(localStorage.getItem('players') ?? '[]')
-            // const newPlayer = {
-            //     name: playerData.alias,
-            //     level: playerData.level,
-            //     image: playerData.image,
-            // }
-            // localStorage.setItem('players', JSON.stringify([...storedNames, newPlayer]))
+            // Add new "recently searched player" to the local storage
+            LocalStorageService.add({
+                serverIdx,
+                name: playerData.alias,
+                level: playerData.level,
+                image: playerData.image,
+            })
+            storedNames = LocalStorageService.list()
         } catch (e) {
             error = true
         }
         generalContext.update(x => ({ ...x, loadingPlayer: false }))
         username = ''
+        storedNames = LocalStorageService.list()
     }
 
     // Search button by pressing enter
-    const handleKeyPress = (event: KeyboardEvent) => {
+    const handleKeyPress = (event: KeyboardEvent): void => {
         if (event.key === 'Enter') handleSearch()
+    }
+
+    // Click on a recently searched player
+    const handleRecentClick = (server: number, name: string): void => {
+        serverIdx = server
+        username = name
+        handleSearch()
     }
 </script>
 
@@ -98,16 +110,16 @@
             on:keypress={handleKeyPress}
             bind:value={username}
         />
-        <!-- <Dropdown frameClass="bg-white shadow-xl dark:bg-zinc-800 dark:shadow-zinc-600">
-            {#each JSON.parse(localStorage.getItem('players') ?? '[]') as { name, image }}
+        <Dropdown frameClass="bg-white shadow-xl dark:bg-zinc-800 dark:shadow-zinc-600">
+            {#each storedNames as { serverIdx, name, image }}
                 <DropdownItem>
-                    <div class="flex items-center justify-between">
+                    <button on:click={() => handleRecentClick(serverIdx, name)} class="flex items-center justify-between">
                         <img class="h-10 w-10 rounded" src={image} alt="profile pic" />
                         <h6 class="w-full truncate pl-1 text-center">{name}</h6>
-                    </div>
+                    </button>
                 </DropdownItem>
             {/each}
-        </Dropdown> -->
+        </Dropdown>
 
         <button
             class={`p-2 h-12 rounded text-white font-bold tracking-widest bg-indigo-400 hover:bg-indigo-500 col-span-2 shadow ${
