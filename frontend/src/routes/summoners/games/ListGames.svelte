@@ -10,7 +10,6 @@
     import { playersContext } from '$lib/context/players'
     import Game from './Game.svelte'
     import { MockImage } from '$lib/components'
-    import { Skeleton } from 'flowbite-svelte'
 
     export let player: SummonerDto
 
