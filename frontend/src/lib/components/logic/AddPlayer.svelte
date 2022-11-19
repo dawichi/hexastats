@@ -10,7 +10,8 @@
     import { playersContext } from '$lib/context/players'
     import { SummonerService } from '$lib/services/Summoner.service'
     import { Dropdown, DropdownItem } from 'flowbite-svelte'
-    import { LocalStorageService } from '$lib/services/LocalStorage.service'
+    import { LocalStorageService, type PlayerStoredDto } from '$lib/services/LocalStorage.service'
+    import { onMount } from 'svelte'
 
     // Search params
     let username = ''
@@ -19,7 +20,11 @@
 
     // Search helpers
     let error = false
-    let storedNames = LocalStorageService.list()
+    let storedNames: PlayerStoredDto[] = []
+
+    onMount(() => {
+        storedNames = LocalStorageService.list()
+    })
 
     // Context
     let _players: SummonerDto[] = []
