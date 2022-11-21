@@ -7,7 +7,7 @@
     import { styles } from '$lib/config'
 </script>
 
-<div class="animate__animated animate__fadeIn flex h-96 flex-col items-center justify-center text-2xl">
+<div class="animate__animated animate__fadeIn flex h-96 flex-col items-center justify-center text-xl md:text-2xl">
     <i class="bi bi-emoji-frown-fill" />
     <h2>There is no players !</h2>
     <p>To visualize their data, add them first !</p>
