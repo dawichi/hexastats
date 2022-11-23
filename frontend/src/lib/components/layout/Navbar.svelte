@@ -7,7 +7,7 @@
     import { navigation } from '$lib/config/navigation'
     import DarkToggle from './DarkToggle.svelte'
 
-    let menuOpen: boolean = true
+    let menuOpen: boolean = false
 
     // TODO: Svelte router, highlight active link
 </script>
@@ -49,7 +49,7 @@
         </div>
     </div>
 
-    <div class="transition {menuOpen ? 'h-32 border-t' : 'h-0'} overflow-hidden">
+    <div class="block transition lg:hidden {menuOpen ? 'h-32 border-t' : 'h-0'} overflow-hidden">
         <ul class="grid grid-cols-2">
             {#each navigation as item}
                 <a
