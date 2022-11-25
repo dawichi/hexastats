@@ -87,9 +87,11 @@ Right now, we keep working on it, adding new features, sections and thinking abo
 
 <!-- BUILT WITH -->
 ## Technical approach
-When a backend endpoint is called with a username, it loads, packages and serves the information in JSON to the frontend. The data is loaded into React Context and managed to visualize the stats through multiple different ways with graphs from [D3.js](https://d3js.org/)
+When the API is called with an username, it loads and serves the JSON data to the frontend. The client loads the data into a SvelteKit store (equivalent to React context) from where can be accessed by each page to display and visualize different information depending of the page.
 
-For more specific info, browse both [`/frontend`](https://github.com/dawichi/hexastats/tree/main/frontend) and [`/backend`](https://github.com/dawichi/hexastats/tree/main/backend).
+![](frontend/static/images/diagram.png)
+
+For more specific info, browse both [`/frontend`](https://github.com/dawichi/hexastats/tree/main/frontend) and [`/backend`](https://github.com/dawichi/hexastats/tree/main/backend) code.
 
 ### Built With
 
@@ -189,9 +191,9 @@ Some images from the project:
 
 <!-- IMAGES -->
 [showcase-1]: showcase.png
-[showcase-2]: frontend/public/images/graphs.png
-[showcase-3]: frontend/public/images/mastery.png
-[showcase-4]: frontend/public/images/compare.png
+[showcase-2]: frontend/static/images/mastery.png
+[showcase-3]: frontend/static/images/graphs.png
+[showcase-4]: frontend/static/images/compare.png
 
 <!-- TECH STACK -->
 [TypeScript]: https://img.shields.io/github/languages/top/dawichi/hexastats?logo=typescript&logoColor=fff&style=for-the-badge
