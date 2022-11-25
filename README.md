@@ -1,8 +1,5 @@
-<!-- Bootstraped with: https://github.com/othneildrew/Best-README-Template -->
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a name="readme-top"></a>
-
-
 
 <!-- PROJECT SHIELDS -->
 [![Contributors][contributors-shield]][contributors-url]
@@ -25,8 +22,8 @@
 
 The project is a monorepo consisted in:
 
-* [`/frontend`](https://github.com/dawichi/hexastats/tree/main/frontend)  React App (Next JS)
-* [`/backend`](https://github.com/dawichi/hexastats/tree/main/backend) Node API (Nest JS)
+* [`/frontend`](https://github.com/dawichi/hexastats/tree/main/frontend)  SveteKit App
+* [`/backend`](https://github.com/dawichi/hexastats/tree/main/backend) API in Nest JS
 <!-- ------------------------------------------------------------------------------------------------------------------------ -->
 
 
