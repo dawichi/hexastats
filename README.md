@@ -66,7 +66,7 @@ The project is a monorepo consisted in:
 
 Hexastats is a web app to visualize your metrics from League of Legends.  
 * Last games performance, winrates, graphs and more! 🔥  
-* It also allows you to enter multiple usernames, giving you a fast, visual and interactive way to compare data between players.
+* It allows you to enter multiple usernames, giving you a fast, visual and interactive way to compare data between players.
 
 [![Hexastats][showcase-1]][hexastats-url]
 
@@ -95,8 +95,6 @@ For more specific info, browse both [`/frontend`](https://github.com/dawichi/hex
 It has been written entirely in TypeScript, using the latest solid frameworks such as Next.js for frontend and Nest for backend.
 
 * [![TypeScript][TypeScript]][TypeScript-url]
-* [![React][React.js]][React-url]
-* [![Next][Next.js]][Next-url]
 * [![Node][Node.js]][Node-url]
 * [![Nest][Nest.js]][Nest-url]
 * [![Redis][Redis]][Redis-url]
