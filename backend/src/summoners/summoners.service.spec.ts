@@ -19,8 +19,8 @@ describe('SummonersService', () => {
         expect(service).toBeDefined()
     })
 
-    it('should return summoner data', async () => {
-        const summoner = await service.getSummonerDataByName('test', 'euw1')
+    it('should return the basic summoner data', async () => {
+        const summoner = await service.getBasicInfo('test', 'euw1')
 
         expect(summoner).toHaveProperty('accountId')
     })
