@@ -1,5 +1,6 @@
 import { Controller, Get, Logger, Param, Query } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ConfigService } from '@nestjs/config'
 
 import { SummonersService } from './summoners.service'
 import { validateTTL } from '../common/validators'
@@ -11,9 +12,15 @@ import { InfoResponse } from './types/InfoResponse.dto'
 @ApiTags('summoners')
 @Controller('summoners')
 export class SummonersController {
+    private readonly apiKey: string
     private readonly logger: Logger
 
-    constructor(private readonly summonersService: SummonersService, private readonly databaseService: DatabaseService) {
+    constructor(
+        private readonly configService: ConfigService,
+        private readonly summonersService: SummonersService,
+        private readonly databaseService: DatabaseService,
+    ) {
+        this.apiKey = this.configService.get<string>('RIOT_API_KEY')
         this.logger = new Logger(this.constructor.name)
     }
 
