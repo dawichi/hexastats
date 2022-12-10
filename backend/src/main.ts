@@ -1,4 +1,5 @@
 import { Logger } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app.module'
@@ -16,9 +17,15 @@ async function bootstrap() {
         process.exit(1)
     }
 
-    // Validate the database
-    await validateDatabase()
-    logger.log('Redis database connected!')
+    // Is redis cache active?
+    const configService = new ConfigService()
+    const IS_REDIS_DISABLED: boolean = configService.get<string>('UPSTASH_REDIS_REST_DISABLE') === 'true'
+
+    if (IS_REDIS_DISABLED) {
+        logger.warn('Redis cache is disabled. The API will be slower.')
+    } else {
+        await validateDatabase()
+    }
 
     // Create the Nest application
     const app = await NestFactory.create(AppModule)

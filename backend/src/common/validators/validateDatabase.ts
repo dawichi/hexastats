@@ -15,6 +15,7 @@ export const validateDatabase = async (): Promise<void> => {
         await redis.set('test', 'test')
         await redis.get('test')
         await redis.del('test')
+        logger.verbose('Redis database connected!')
     } catch {
         logger.error('Database is not working!')
         process.exit(1)
