@@ -118,21 +118,43 @@ To run the project locally, you need:
 * Backend running
 * Redis running (optional, it's only a cache)
 
+<br/>
+
 ### Setup: frontend
 
+Move to `frontend/` folder, install dependencies and run the project
 ```sh
-~/hexastats $ cd frontend
-~/hexastats/frontend $ npm install # or yarn, or pnpm
-~/hexastats/frontend $ npm run dev
+~/hexastats/ $ cd frontend
+~/hexastats/frontend/ $ npm install # or yarn, or pnpm
+~/hexastats/frontend/ $ npm run dev
 ```
+
+In `frontend/.env` file you can setup
+```env
+PUBLIC_IS_DEVELOPMENT = 'true'
+```
+This will make the calls to `http://localhost:5000/`, local backend  
+If not, it will call `https://api-hexastats.vercel.app/`, the production URL
+
+<br/>
 
 ### Setup: backend
 
+Move to `frontend/` folder, install dependencies and run the project
 ```sh
-~/hexastats $ cd backend
-~/hexastats/backend $ npm install # or yarn, or pnpm
-~/hexastats/backend $ npm run start:dev
+~/hexastats/ $ cd backend
+~/hexastats/backend/ $ npm install # or yarn, or pnpm
+~/hexastats/backend/ $ npm run dev
 ```
+
+To setup the environment, copy `backend/.env.example` file to `backend/.env` and fill the variables
+
+* If you don't have a Riot API key, you can get one [here](https://developer.riotgames.com/)
+
+* If you don't have a Upstash redis instance, you can get one [here](https://upstash.com/)  
+Or you could disable it by setting `UPSTASH_REDIS_REST_DISABLE = true`
+
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <!-- ------------------------------------------------------------------------------------------------------------------------ -->
 
