@@ -115,7 +115,7 @@
             on:keypress={handleKeyPress}
             bind:value={username}
         />
-        <Dropdown frameClass="bg-white shadow-xl dark:bg-zinc-800 dark:shadow-zinc-600">
+        <!-- <Dropdown frameClass="bg-white shadow-xl dark:bg-zinc-800 dark:shadow-zinc-600">
             {#each storedNames as { serverIdx, name, image }}
                 <DropdownItem>
                     <button on:click={() => handleRecentClick(serverIdx, name)} class="flex items-center justify-between">
@@ -124,7 +124,7 @@
                     </button>
                 </DropdownItem>
             {/each}
-        </Dropdown>
+        </Dropdown> -->
 
         <button
             class={`p-2 h-12 rounded text-white font-bold tracking-widest bg-indigo-400 hover:bg-indigo-500 col-span-2 shadow ${
