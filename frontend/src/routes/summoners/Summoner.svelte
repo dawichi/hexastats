@@ -37,20 +37,12 @@
                     <ListChamps {player} />
                 </div>
                 <div class="{styles.background} {styles.card} m-2 mb-4">
-                    <h2 class="pt-3 text-center text-2xl">
-                        <i class="bi bi-bar-chart-fill" />
-                        <span class="m-5">Positions</span>
-                        <i class="bi bi-bar-chart-fill" />
-                    </h2>
+                    <h2 class="pt-3 text-center text-2xl">Positions</h2>
                     <hr class="m-2" />
                     <ListPositions {player} />
                 </div>
                 <div class="{styles.background} {styles.card} m-2 mb-4">
-                    <h2 class="pt-3 text-center text-2xl">
-                        <i class="bi bi-person-fill" />
-                        <span class="m-5">Friends</span>
-                        <i class="bi bi-person-fill" />
-                    </h2>
+                    <h2 class="pt-3 text-center text-2xl">Friends</h2>
                     <hr class="m-2" />
                     <ListFriends {player} />
                 </div>

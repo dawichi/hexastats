@@ -60,26 +60,28 @@
         }
     }
 
-    function calcHeight(wins: number, total: number): number {
-        if (!wins) return 0
-        return Math.round((wins / total) * 100)
+    function winrate(wins: number, losses: number): number {
+        if (!(wins + losses)) return 0
+        return Math.round((wins / (wins + losses)) * 100)
+    }
+
+    function styleWinrate(winrate: number): string {
+        if (winrate < 45) return 'text-red-500'
+        if (winrate > 55) return 'text-green-500'
+        return ''
     }
 </script>
 
 <div class="grid grid-cols-5 pb-4">
     {#each buildPosition(player).positions as position}
         <div class="flex flex-col items-center gap-2 text-center">
-            <span>{position.games}</span>
+            <span>{position.wins} / {position.games}</span>
 
             <img src={RiotService.teamPositionIcon(position.key)} width={35} height={35} alt="position" />
 
-            <div class="flex h-16 justify-center">
-                <div class="w-2 rounded bg-zinc-300 dark:bg-zinc-600">
-                    <div class="flex w-2 rounded bg-red-400" style="height: {(position.games / buildPosition(player).maxGames) * 100}%">
-                        <div class="w-2 rounded bg-green-400" style="height: {calcHeight(position.wins, position.games)}%" />
-                    </div>
-                </div>
-            </div>
+            {#if position.games}
+            <span class="{styleWinrate(winrate(position.wins, position.games - position.wins))}">{winrate(position.wins, position.games - position.wins)} %</span>
+            {/if}
         </div>
     {/each}
 </div>
