@@ -45,10 +45,10 @@
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             {#if !loadingGames}
                 <button on:click={loadMoreGames} class="{styles.card} {styles.scale} mx-4 my-2 cursor-pointer bg-indigo-600 p-3 px-6 text-white">
-                    <i class="bi bi-cloud-download mr-2"></i> Load 10 more games
+                    <i class="bi bi-cloud-download mr-2" /> Load 10 more games
                 </button>
             {:else}
-                <div class="{styles.background} {styles.card} mx-4 my-2 grid grid h-36 w-full animate-pulse grid-cols-3 grid-cols-3">
+                <div class="{styles.background} {styles.card} mx-4 my-2 grid h-36 w-full animate-pulse grid-cols-3">
                     <!-- Champ Image -->
                     <div class="relative h-full">
                         <MockImage height="h-full" width="w-full" />

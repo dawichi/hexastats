@@ -11,7 +11,6 @@
     export let player: SummonerDto
 
     const maxGames = () => Math.max(...ChampService.champsBuilder(player.games).map(champ => champ.games))
-    const maxWinrate = () => Math.max(...ChampService.champsBuilder(player.games).map(champ => champ.winrate))
     const maxKDA = () => Math.max(...ChampService.champsBuilder(player.games).map(champ => champ.kda))
 </script>
 
@@ -31,7 +30,7 @@
         <div class="w-full px-2">
             <span class="">{champ.winrate}%</span>
             <div class="h-2 rounded bg-zinc-300 dark:bg-zinc-600">
-                <div class="h-2 rounded bg-red-400" style="width: {(champ.winrate / maxWinrate()) * 100}%" />
+                <div class="h-2 rounded bg-red-400" style="width: {champ.winrate}%" />
             </div>
         </div>
 
