@@ -16,14 +16,11 @@
     export let player: SummonerDto
 </script>
 
-<div
-    class="relative rounded-lg bg-cover bg-center shadow"
-    style="background-image: url({RiotService.champSplash(player.masteries[0].name)})"
->
+<div class="relative rounded-lg bg-cover bg-center shadow" style="background-image: url({RiotService.champSplash(player.masteries[0].name)})">
     <span class="absolute top-3 left-5">{player.games.length} games loaded</span>
     <section class="bg-orange-50/80 pb-12 dark:bg-zinc-900/80">
         <header class="py-5">
-            <RankStructure player={player} />
+            <RankStructure {player} />
         </header>
 
         <div class="grid grid-cols-3">
