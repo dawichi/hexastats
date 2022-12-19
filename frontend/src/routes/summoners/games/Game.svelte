@@ -6,7 +6,6 @@
 <script lang="ts">
     import type { Participant } from '$lib/types/player/Game'
     import { styles } from '$lib/config'
-    import { classNames } from '$lib/utils'
     import { RiotService } from '$lib/services/Riot.service'
     import SummonersGrid from './SummonersGrid.svelte'
     import type { GameDto } from '$lib/types'
@@ -14,13 +13,17 @@
     export let game: GameDto
     export let participant: Participant
 
+    let expanded = false
+
     const calc_kda = (kills: number, deaths: number, assists: number) => (deaths ? ((kills + assists) / deaths).toFixed(1) : kills + assists)
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
-    class="{styles.shadow} {styles.background} {styles.scale} {participant.win
+    class="{styles.shadow} {styles.background} {styles.scale} transition {expanded ? 'h-96' : 'h-36'} {participant.win
         ? 'border-green-500'
         : 'border-red-500'} mx-4 my-2 grid cursor-pointer grid-cols-3 rounded-lg border-8 border-y-0 border-r-0"
+    on:click={() => (expanded = !expanded)}
 >
     <div class="relative text-white">
         <div class="t-0 l-0 absolute h-full w-full bg-cover bg-top" style="background-image: url({RiotService.champSplash(participant.champ.championName)})" />
@@ -66,3 +69,9 @@
         <SummonersGrid {game} />
     </div>
 </div>
+
+<style>
+    .transition {
+        transition: all 0.3s ease-in-out;
+    }
+</style>
