@@ -15,16 +15,16 @@ export const navigation: {
         name: 'Mastery',
         path: '/mastery',
     },
-    {
-        name: 'Multi',
-        path: '/multiple',
-    },
-    {
-        name: 'Graphs',
-        path: '/graphs',
-    },
-    {
-        name: 'Compare',
-        path: '/compare',
-    },
+    // {
+    //     name: 'Multi',
+    //     path: '/multiple',
+    // },
+    // {
+    //     name: 'Graphs',
+    //     path: '/graphs',
+    // },
+    // {
+    //     name: 'Compare',
+    //     path: '/compare',
+    // },
 ]
