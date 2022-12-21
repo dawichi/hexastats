@@ -8,7 +8,7 @@
     import { styles } from '$lib/config'
     import { playersContext } from '$lib/context/players'
     import { Container, EmptyPlayers } from '$lib/components'
-    import Summoner from './Summoner.svelte'
+    import Wrapper from './Wrapper.svelte'
 
     // Context
     let _players: SummonerDto[] = []
@@ -38,7 +38,7 @@
             {/each}
         </div>
 
-        <Summoner player={_players[idxSelected]} />
+        <Wrapper player={_players[idxSelected]} />
     </Container>
 {:else}
     <EmptyPlayers />
