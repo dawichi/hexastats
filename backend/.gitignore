@@ -35,3 +35,8 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Ignore lock files for NPM, PNPM and YARN
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
