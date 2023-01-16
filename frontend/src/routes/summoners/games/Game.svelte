@@ -20,9 +20,9 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
-    class="{styles.shadow} {styles.background} {styles.scale} transition {expanded ? 'h-96' : 'h-36'} {participant.win
-        ? 'border-green-500'
-        : 'border-red-500'} mx-4 my-2 grid cursor-pointer grid-cols-3 rounded-lg border-8 border-y-0 border-r-0"
+    class="{styles.shadow} {styles.scale} transition {expanded ? 'h-96' : 'h-36'} {participant.win
+        ? 'border-green-500 bg-green-500/10 dark:bg-green-500/10'
+        : 'border-red-500 bg-red-500/10 dark:bg-red-500/10'} mx-4 my-2 grid cursor-pointer grid-cols-3 rounded-lg border-8 border-y-0 border-r-0"
     on:click={() => (expanded = !expanded)}
 >
     <div class="relative text-white">
