@@ -4,7 +4,7 @@
   Visualize the masteries of a player
 -->
 <script lang="ts">
-    import type { MasteryDto, SummonerDto } from '$lib/types'
+    import type { SummonerDto } from '$lib/types'
     import { styles } from '$lib/config'
     import { parse_k_num } from '$lib/utils'
     import { playersContext } from '$lib/context/players'
@@ -14,7 +14,18 @@
     let _players: SummonerDto[] = []
     playersContext.subscribe(players => (_players = players))
 
-    function totalMasteries(masteries: MasteryDto[]) {
+    interface MasteryDto {
+        name: string
+        image: string
+        level: number
+        points: number
+    }
+
+    /**
+     * Get the total sum of all masteries
+     * @param masteries - Array of masteries
+     */
+    function totalMasteries(masteries: MasteryDto[]): number {
         return masteries.reduce((acc, curr) => acc + curr.points, 0)
     }
 </script>
