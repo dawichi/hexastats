@@ -49,7 +49,7 @@
                     <div class="col-span-3 grid grid-cols-4 sm:grid-cols-7">
                         {#each player.masteries.slice(0, 7) as mastery}
                             <div class="p-2 text-center">
-                                <span>
+                                <span class="whitespace-nowrap">
                                     {mastery.points > 100000 ? '🔥' : ''}
                                     {parse_k_num(mastery.points, 0, true)}
                                 </span>
