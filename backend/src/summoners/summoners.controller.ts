@@ -6,7 +6,7 @@ import { SummonersService } from './summoners.service'
 import { validateTTL } from '../common/validators'
 import { PlayerDto } from '../types'
 import { DatabaseService } from '../database/database.service'
-import { QueryGamesLimit, QueryQueueType, ParamServer, ParamSummonerName } from './decorators'
+import { QueryGamesLimit, QueryQueueType, ParamServer, ParamSummonerName } from '../common/decorators'
 import { InfoResponse } from './types/InfoResponse.dto'
 
 @ApiTags('summoners')
