@@ -39,8 +39,9 @@ export class RiotService {
 
     async getLatestVersion(): Promise<string> {
         const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
+        const versions = await this.httpGet<string[]>(url)
 
-        return (await lastValueFrom(this.httpService.get(url, this.headers))).data[0]
+        return versions[0]
     }
 
     /**
