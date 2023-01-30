@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Redis } from '@upstash/redis'
-import { PlayerDto } from '../types'
+import { PlayerDto } from '../../types'
 
 type RecordDto = {
     ttl: number
