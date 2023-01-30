@@ -1,28 +1,19 @@
 import { Controller, Get, Logger, Param, Query } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { ConfigService } from '@nestjs/config'
 
-import { SummonersService } from './summoners.service'
-import { validateTTL } from '../common/validators'
-import { PlayerDto } from '../types'
+import { validateTTL } from '../../common/validators'
+import { MasteryDto, PlayerDto } from '../../types'
 import { DatabaseService } from '../database/database.service'
-import { QueryGamesLimit, QueryQueueType, ParamServer, ParamSummonerName } from '../common/decorators'
-import { InfoResponse } from './types/InfoResponse.dto'
+import { QueryGamesLimit, QueryQueueType, ParamServer, ParamSummonerName } from '../../common/decorators'
+import { InfoResponse } from '../../common/types/InfoResponse.dto'
+import { RiotService } from 'src/modules/riot/riot.service'
 
 @ApiTags('summoners')
 @Controller('summoners')
 export class SummonersController {
-    private readonly apiKey: string
-    private readonly logger: Logger
+    private readonly logger = new Logger(this.constructor.name)
 
-    constructor(
-        private readonly configService: ConfigService,
-        private readonly summonersService: SummonersService,
-        private readonly databaseService: DatabaseService,
-    ) {
-        this.apiKey = this.configService.get<string>('RIOT_API_KEY')
-        this.logger = new Logger(this.constructor.name)
-    }
+    constructor(private readonly summonersService: RiotService, private readonly databaseService: DatabaseService) {}
 
     /**
      * ## Get summoner cached data
@@ -140,5 +131,25 @@ export class SummonersController {
             level: data.summonerLevel,
             image: `https://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${data.profileIconId}.png`,
         }
+    }
+
+    /**
+     * ## Get masteries
+     * Returns all the masteries of a summoner.
+     */
+    @Get('/:server/:summonerName/masteries')
+    @ApiOperation({
+        summary: 'Get level and image only',
+        description: 'Returns the name, level and image only',
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'The summoner was found and the data is correct',
+        type: [MasteryDto],
+    })
+    @ParamServer()
+    @ParamSummonerName()
+    async getMasteries(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<MasteryDto[]> {
+        return this.summonersService.getMasteries(summonerName, server, 24)
     }
 }
