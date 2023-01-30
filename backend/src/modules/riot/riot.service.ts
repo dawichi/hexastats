@@ -56,27 +56,27 @@ export class RiotService {
     /**
      * ## Get new data of the summoner
      */
-    async getData(summonerName: string, server: string, gamesLimit: number, queueType: queueTypeDto): Promise<PlayerDto> {
-        const info = await this.getBasicInfo(summonerName, server)
-        const { solo, flex } = await this.getRankData(info.id, server)
-        const masteries = await this.getMasteries(info.id, server, 24)
-        const games = await this.getGames(info.puuid, server, gamesLimit, 0, queueType)
+    // async getData(summonerName: string, server: string, gamesLimit: number, queueType: queueTypeDto): Promise<PlayerDto> {
+    //     const info = await this.getBasicInfo(summonerName, server)
+    //     const { solo, flex } = await this.getRankData(info.id, server)
+    //     const masteries = await this.getMasteries(info.id, server, 24)
+    //     const games = await this.getGames(info.puuid, server, gamesLimit, 0, queueType)
 
-        const version = await this.getLatestVersion()
+    //     const version = await this.getLatestVersion()
 
-        return {
-            alias: info.name,
-            server,
-            image: `https://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${info.profileIconId}.png`,
-            level: info.summonerLevel,
-            rank: {
-                solo,
-                flex,
-            },
-            games,
-            masteries,
-        }
-    }
+    //     return {
+    //         alias: info.name,
+    //         server,
+    //         image: `https://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${info.profileIconId}.png`,
+    //         level: info.summonerLevel,
+    //         rank: {
+    //             solo,
+    //             flex,
+    //         },
+    //         games,
+    //         masteries,
+    //     }
+    // }
 
     /**
      * ## Get the champion names table
@@ -97,13 +97,11 @@ export class RiotService {
     }
 
     /**
-     * ## Get the mastery information (by summoner_id)
-     * Riot returns an array of masteries with all your played champs,
-     * so we filter the response to get only the first 7 with most points
-     * @param {string} summonerName Name of the summoner
-     * @param {string} server Server of the summoner
-     * @param {string} masteriesLimit Limit of the masteries to return
-     * @returns {Promise<MasteryDto[]>} The list of biggest masteries
+     * ## Get the mastery information
+     * @param summonerName Name of the summoner
+     * @param server Server of the summoner
+     * @param masteriesLimit Limit of the masteries to return
+     * @returns Array of masteries
      */
     async getMasteries(summonerName: string, server: string, masteriesLimit: number): Promise<MasteryDto[]> {
         this.logger.verbose(`Getting masteries about best ${masteriesLimit} champs`)
