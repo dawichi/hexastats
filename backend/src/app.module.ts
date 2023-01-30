@@ -1,10 +1,11 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { LoggerMiddleware } from './common/middlewares/logger.middleware'
-import { SummonersModule } from './summoners/summoners.module'
+import { SummonersModule } from './modules/summoners/summoners.module'
 import { ConfigModule } from '@nestjs/config'
+import { RiotModule } from './modules/riot/riot.module'
 
 @Module({
-    imports: [ConfigModule.forRoot(), SummonersModule],
+    imports: [ConfigModule.forRoot(), SummonersModule, RiotModule],
     controllers: [],
     providers: [],
 })
