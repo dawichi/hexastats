@@ -1,4 +1,4 @@
-export class RiotMasteryDto {
+export interface RiotMasteryDto {
     championId: number
     championLevel: number
     championPoints: number

@@ -1,0 +1,5 @@
+export { RiotChampionsDto } from './riotChampions.dto'
+export { RiotGameDto } from './riotGame.dto'
+export { RiotMasteryDto } from './riotMastery.dto'
+export { RiotRankDto } from './riotRank.dto'
+export { RiotSummonerDto } from './riotSummoner.dto'

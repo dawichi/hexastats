@@ -1,4 +1,4 @@
-export class RiotSummonerDto {
+export interface RiotSummonerDto {
     id: string
     accountId: string
     puuid: string
