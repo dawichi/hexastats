@@ -19,14 +19,23 @@ export class SummonerService {
      * @param summonerName The summoner name to request the data from
      * @returns The summoner data
      */
-    static async getSummonerByName(server_idx: number, summonerName: string): Promise<SummonerDto> {
+    static async getData(server_idx: number, summonerName: string): Promise<SummonerDto> {
         const okServer = validateServer(servers[server_idx])
-        const data = await fetch(`${backendUrl}summoners/${okServer}/${summonerName}`)
 
-        if (!data.ok) {
-            throw new Error('Summoner not found')
+        const playerData = await fetch(`${backendUrl}summoners/${okServer}/${summonerName}`)
+        const playerMasteries = await fetch(`${backendUrl}summoners/${okServer}/${summonerName}/masteries`)
+        const playerGames = await fetch(`${backendUrl}summoners/${okServer}/${summonerName}/games`)
+
+        if (!playerData.ok || !playerMasteries.ok || !playerGames.ok) throw new Error('Summoner not found')
+        const summonerData = await playerData.json()
+        const masteries = await playerMasteries.json()
+        const games = await playerGames.json()
+
+        return {
+            ...summonerData,
+            masteries,
+            games,
         }
-        return data.json()
     }
 
     /**
