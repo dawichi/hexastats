@@ -1,11 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Redis } from '@upstash/redis'
-import { GameDto, MasteryDto, PlayerDto } from '../../types'
-
-type RecordDto = {
-    ttl: number
-    data: GameDto[] | MasteryDto[]
-}
+import { RedisRecordDto } from '../../common/types/RedisRecord.dto'
+import { GameDto, MasteryDto } from '../../types'
 
 @Injectable()
 export class DatabaseService {
@@ -36,9 +32,10 @@ export class DatabaseService {
      * @returns Confirmation that the database was deleted
      */
     async deleteAll(): Promise<boolean> {
-        this.logger.log('Reseting the database...')
+        const keys = await this.redis.keys('*')
+
+        this.logger.log(`REDIS: Deleting ${keys.length} keys...`)
         await this.redis.flushdb()
-        this.logger.log('Database reseted!')
         return true
     }
 
@@ -49,7 +46,7 @@ export class DatabaseService {
      * @returns Confirmation that the register was deleted
      */
     async deleteOne(key: string): Promise<boolean> {
-        this.logger.log('Deleting data in redis...')
+        this.logger.log(`REDIS: Deleting ${key}...`)
         await this.redis.del(key.toLowerCase())
         return true
     }
@@ -60,10 +57,10 @@ export class DatabaseService {
      * @param key Key to be searched
      * @returns Data stored in the key
      */
-    async getOne(key: string): Promise<RecordDto> {
-        const data: RecordDto = await this.redis.get(key.toLowerCase())
+    async getOne(key: string): Promise<RedisRecordDto> {
+        const data: RedisRecordDto = await this.redis.get(key.toLowerCase())
 
-        this.logger.log(data ? 'Redis: Data found!' : 'Redis: Data not found!')
+        this.logger.log(data ? 'REDIS: Data found!' : 'REDIS: Data not found!')
         return data
     }
 
@@ -75,14 +72,24 @@ export class DatabaseService {
      */
     async addOne(key: string, summonerData: GameDto[] | MasteryDto[]) {
         key = key.toLowerCase()
-        this.logger.log('Saving data in redis...')
+        this.logger.log(`REDIS: saving ${key} data...`)
 
-        const newRecord: RecordDto = {
+        const newRecord: RedisRecordDto = {
             ttl: Date.now(),
             data: summonerData,
         }
 
         await this.redis.set(key, newRecord)
-        this.logger.log(`${key} - Data saved!`)
+    }
+
+    /**
+     * ## GET count of keys in the database
+     */
+    async count(): Promise<number> {
+        this.logger.log('Counting all registered keys in redis...')
+        const keys = await this.redis.keys('*')
+
+        this.logger.log(`REDIS: Found ${keys.length} keys!`)
+        return keys.length
     }
 }

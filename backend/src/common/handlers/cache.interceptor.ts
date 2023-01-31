@@ -62,7 +62,7 @@ export class CacheInterceptor implements NestInterceptor {
 
         // Last game is in cache -> load the games (1-9) that were played since last time
         const gameIdsPending = lastGamesPlayed.slice(0, lastGameIndex + 1)
-        const newGames = await this.riotService.getGamesDetail(puuid, server, gameIdsPending)
+        const newGames = await this.riotService.getGamesDetail(puuid, serverRegion(server), gameIdsPending)
 
         // HACK: to avoid having too many games in cache
         if (cachedData.length > 50) {

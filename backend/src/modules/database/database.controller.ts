@@ -2,6 +2,7 @@ import { Controller, Get, Logger, Param } from '@nestjs/common'
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { DatabaseService } from './database.service'
 import { PlayerDto } from '../../types'
+import { RedisRecordDto } from '../../common/types/RedisRecord.dto'
 
 @ApiTags('database')
 @Controller('database')
@@ -26,9 +27,12 @@ export class DatabaseController {
         description: 'All the keys was checked',
         type: [String],
     })
-    async checkAll(): Promise<string[]> {
+    async checkAll(): Promise<{ total: number; keys: string[] }> {
         this.logger.log('Check all keys in redis')
-        return this.databaseService.list()
+        const keys = await this.databaseService.list()
+        const total = await this.databaseService.count()
+
+        return { total, keys }
     }
 
     /**
@@ -50,7 +54,7 @@ export class DatabaseController {
         description: 'Key to get the data from',
         type: String,
     })
-    async printByKey(@Param('key') key: string): Promise<any> {
+    async printByKey(@Param('key') key: string): Promise<RedisRecordDto> {
         this.logger.log(`Getting data from ${key} in redis`)
         return this.databaseService.getOne(key)
     }
