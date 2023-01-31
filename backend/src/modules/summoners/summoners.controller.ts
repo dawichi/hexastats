@@ -1,10 +1,10 @@
 import { Controller, Get, Param, UseInterceptors } from '@nestjs/common'
 import { SummonersService } from './summoners.service'
-import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
-import { ApiCustomResponse, ParamServer, ParamSummonerName } from 'src/common/decorators'
-import { GameDto, MasteryDto, PlayerDto } from 'src/types'
-import { InfoResponse } from 'src/common/types/InfoResponse.dto'
-import { CacheInterceptor } from 'src/common/handlers/cache.interceptor'
+import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiCustomResponse, ParamServer, ParamSummonerName } from '../../common/decorators'
+import { GameDto, MasteryDto, PlayerDto } from '../../types'
+import { InfoResponse } from '../../common/types/InfoResponse.dto'
+import { CacheInterceptor } from '../../common/handlers/cache.interceptor'
 
 @ApiTags('summoners')
 @Controller('summoners')

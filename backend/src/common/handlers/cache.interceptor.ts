@@ -1,9 +1,9 @@
 import { Injectable, NestInterceptor, ExecutionContext, CallHandler, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Observable, of, tap } from 'rxjs'
-import { DatabaseService } from 'src/modules/database/database.service'
-import { RiotService } from 'src/modules/riot/riot.service'
-import { GameDto, MasteryDto } from 'src/types'
+import { DatabaseService } from '../../modules/database/database.service'
+import { RiotService } from '../../modules/riot/riot.service'
+import { GameDto, MasteryDto } from '../../types'
 import { serverRegion } from '../utils'
 import { validateTTL } from '../validators'
 

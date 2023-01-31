@@ -4,8 +4,8 @@ import { ApiTags } from '@nestjs/swagger'
 import { GameDto, MasteryDto, PlayerDto } from '../../types'
 import { DatabaseService } from '../database/database.service'
 import { InfoResponse } from '../../common/types/InfoResponse.dto'
-import { RiotService } from 'src/modules/riot/riot.service'
-import { serverRegion } from 'src/common/utils'
+import { RiotService } from '../../modules/riot/riot.service'
+import { serverRegion } from '../../common/utils'
 
 @ApiTags('summoners')
 @Injectable()
