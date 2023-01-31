@@ -24,4 +24,10 @@ export class Mastery {
         example: 120_000,
     })
     points: number
+
+    @ApiProperty({
+        description: 'Chest granted',
+        example: 0,
+    })
+    chestGranted: boolean
 }
