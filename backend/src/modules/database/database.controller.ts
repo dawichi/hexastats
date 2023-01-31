@@ -1,6 +1,5 @@
 import { Controller, Get, Logger, Param } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { ParamServer, ParamSummonerName } from '../../common/decorators'
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { DatabaseService } from './database.service'
 import { PlayerDto } from '../../types'
 
@@ -28,7 +27,7 @@ export class DatabaseController {
         type: [String],
     })
     async checkAll(): Promise<string[]> {
-        this.logger.verbose('Check all keys in redis')
+        this.logger.log('Check all keys in redis')
         return this.databaseService.list()
     }
 
@@ -36,7 +35,7 @@ export class DatabaseController {
      * ## Reset all database registers
      * @returns Confirmation that the database was deleted
      */
-    @Get('/print/:server/:summonerName')
+    @Get('/print/:key')
     @ApiOperation({
         summary: 'Get data from a key',
         description: 'Print all the data stored in a key',
@@ -46,11 +45,14 @@ export class DatabaseController {
         description: 'Data returned',
         type: PlayerDto,
     })
-    @ParamServer()
-    @ParamSummonerName()
-    async printByKey(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<any> {
-        this.logger.verbose(`Getting data from ${server}:${summonerName} in redis`)
-        return this.databaseService.getOne(`${server}:${summonerName}`)
+    @ApiParam({
+        name: 'key',
+        description: 'Key to get the data from',
+        type: String,
+    })
+    async printByKey(@Param('key') key: string): Promise<any> {
+        this.logger.log(`Getting data from ${key} in redis`)
+        return this.databaseService.getOne(key)
     }
 
     /**
@@ -68,7 +70,7 @@ export class DatabaseController {
         type: Boolean,
     })
     async reset(): Promise<boolean> {
-        this.logger.verbose('Clear all data from redis')
+        this.logger.log('Clear all data from redis')
         return this.databaseService.deleteAll()
     }
 }

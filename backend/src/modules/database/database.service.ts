@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Redis } from '@upstash/redis'
-import { PlayerDto } from '../../types'
+import { GameDto, MasteryDto, PlayerDto } from '../../types'
 
 type RecordDto = {
     ttl: number
-    data: PlayerDto
+    data: GameDto[] | MasteryDto[]
 }
 
 @Injectable()
@@ -73,7 +73,7 @@ export class DatabaseService {
      * @param key Key to be stored
      * @param summonerData Data to be stored in the key
      */
-    async addOne(key: string, summonerData: PlayerDto) {
+    async addOne(key: string, summonerData: GameDto[] | MasteryDto[]) {
         key = key.toLowerCase()
         this.logger.log('Saving data in redis...')
 
