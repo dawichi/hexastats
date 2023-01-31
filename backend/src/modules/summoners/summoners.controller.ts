@@ -1,8 +1,8 @@
 import { Controller, Get, Param, UseInterceptors } from '@nestjs/common'
 import { SummonersService } from './summoners.service'
-import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { ApiCustomResponse, ParamServer, ParamSummonerName } from 'src/common/decorators'
-import { MasteryDto } from 'src/types'
+import { GameDto, MasteryDto, PlayerDto } from 'src/types'
 import { InfoResponse } from 'src/common/types/InfoResponse.dto'
 import { CacheInterceptor } from 'src/common/handlers/cache.interceptor'
 
@@ -32,30 +32,22 @@ export class SummonersController {
     /**
      * ## Get name, level and image
      * Returns complete information about a summoner.
-     *
-     * @param server Server name (e.g. 'euw1')
-     * @param summonerName Summoner name in the game
-     * @returns Player object with all the information
      */
-    // @Get('/:server/:summonerName')
-    // @ApiOperation({
-    //     summary: 'Get summoner data and ranking infor',
-    //     description: 'Returns the basic data along with the ranking information',
-    // })
-    // @ApiCustomResponse(PlayerDto)
-    // @ParamServer()
-    // @ParamSummonerName()
-    // getData(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<PlayerDto> {
-    //     return this.summonersService.getData(server, summonerName)
-    // }
+    @Get('/:server/:summonerName')
+    @ApiOperation({
+        summary: 'Get summoner data and ranking infor',
+        description: 'Returns the basic data along with the ranking information',
+    })
+    @ApiCustomResponse(PlayerDto)
+    @ParamServer()
+    @ParamSummonerName()
+    getSummoner(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<PlayerDto> {
+        return this.summonersService.getSummoner(server, summonerName)
+    }
 
     /**
      * ## Get name, level and image
      * Returns complete information about a summoner.
-     *
-     * @param server Server name (e.g. 'euw1')
-     * @param summonerName Summoner name in the game
-     * @returns Player object with all the information
      */
     @Get('/:server/:summonerName/level-image')
     @ApiOperation({
@@ -71,9 +63,6 @@ export class SummonersController {
 
     /**
      * ## Get masteries
-     * @param server Server name (e.g. 'euw1')
-     * @param summonerName Summoner name in the game
-     * @returns Array of masteries
      */
     @Get('/:server/:summonerName/masteries')
     @ApiOperation({
@@ -85,5 +74,20 @@ export class SummonersController {
     @ParamSummonerName()
     async getMasteries(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<MasteryDto[]> {
         return this.summonersService.getMasteries(server, summonerName)
+    }
+
+    /**
+     * ## Get games
+     */
+    @Get('/:server/:summonerName/games')
+    @ApiOperation({
+        summary: 'Get games',
+        description: 'Returns an array of games',
+    })
+    @ApiCustomResponse([GameDto])
+    @ParamServer()
+    @ParamSummonerName()
+    async getGames(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<GameDto[]> {
+        return this.summonersService.getGames(server, summonerName)
     }
 }

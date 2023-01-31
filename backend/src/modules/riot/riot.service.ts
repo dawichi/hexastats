@@ -3,10 +3,9 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
 import { serverRegion, spellUrl, winrate } from '../../common/utils'
-import { validateQueueType, validateGameType } from '../../common/validators'
-import { GameDto, MasteryDto, PlayerDto, RankDto } from '../../types'
-import { RiotMasteryDto } from './types/riotMastery.dto'
-import { RiotSummonerDto } from './types/riotSummoner.dto'
+import { validateGameType } from '../../common/validators'
+import { GameDto, MasteryDto, RankDto } from '../../types'
+import { RiotChampionsDto, RiotGameDto, RiotMasteryDto, RiotRankDto, RiotSummonerDto } from './types'
 
 export type queueTypeDto = 'ranked' | 'normal' | 'all'
 
@@ -16,7 +15,13 @@ export class RiotService {
     private readonly headers = { headers: { 'X-Riot-Token': this.apiKey } }
     private readonly logger = new Logger(this.constructor.name)
 
-    constructor(private readonly configService: ConfigService, private readonly httpService: HttpService) {}
+    // These properties doesnt usually change, so they are generated in the constructor and stored instead of fetching them every time
+    version: string
+    private champions: Record<string, string> = {}
+
+    constructor(private readonly configService: ConfigService, private readonly httpService: HttpService) {
+        this.init()
+    }
 
     /**
      * Util function to fetch data from Riot API
@@ -25,6 +30,7 @@ export class RiotService {
      */
     private async httpGet<T>(url: string): Promise<T> {
         try {
+            this.logger.debug(`Fetching ${url}`)
             return (await lastValueFrom(this.httpService.get(url, this.headers))).data
         } catch (error) {
             this.logger.error(error)
@@ -33,68 +39,45 @@ export class RiotService {
         }
     }
 
-    private baseUrl(server: string): string {
-        return `https://${server}.api.riotgames.com/lol/`
-    }
-
-    async getLatestVersion(): Promise<string> {
+    /**
+     * INIT FUNCTION
+     * Is called on the constructor to initialize and cache the values of some common properties
+     *  1. Get the latest version of the game
+     *  2. Generate the table [champ_id => champ_name]
+     */
+    private async init(): Promise<void> {
+        this.logger.debug('RiotService constructor - catching version and champions')
+        /**
+         * 1. Get the latest version of the game
+         */
         const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
         const versions = await this.httpGet<string[]>(url)
 
-        return versions[0]
+        this.version = versions[0]
+
+        /**
+         * 2. Generate the table [champ_id => champ_name]
+         */
+        const url2 = `https://ddragon.leagueoflegends.com/cdn/${this.version}/data/en_US/champion.json`
+        const { data } = await this.httpGet<RiotChampionsDto>(url2)
+
+        Object.keys(data).forEach(champion_name => {
+            this.champions[data[champion_name].key] = data[champion_name].id
+        })
+    }
+
+    private baseUrl(server: string): string {
+        return `https://${server}.api.riotgames.com/lol/`
     }
 
     /**
      * ## Get the basic summoner info (by name)
      * To use other methods, you need to get the summoner id first
      */
-    async getBasicInfo(summonerName: string, server: string): Promise<RiotSummonerDto> {
+    async getBasicInfo(server: string, summonerName: string): Promise<RiotSummonerDto> {
         const url = `https://${server}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}`
 
-        return (await lastValueFrom(this.httpService.get(url, this.headers))).data
-    }
-
-    /**
-     * ## Get new data of the summoner
-     */
-    // async getData(summonerName: string, server: string, gamesLimit: number, queueType: queueTypeDto): Promise<PlayerDto> {
-    //     const info = await this.getBasicInfo(summonerName, server)
-    //     const { solo, flex } = await this.getRankData(info.id, server)
-    //     const masteries = await this.getMasteries(info.id, server, 24)
-    //     const games = await this.getGames(info.puuid, server, gamesLimit, 0, queueType)
-
-    //     const version = await this.getLatestVersion()
-
-    //     return {
-    //         alias: info.name,
-    //         server,
-    //         image: `https://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${info.profileIconId}.png`,
-    //         level: info.summonerLevel,
-    //         rank: {
-    //             solo,
-    //             flex,
-    //         },
-    //         games,
-    //         masteries,
-    //     }
-    // }
-
-    /**
-     * ## Get the champion names table
-     * Riot stores an array with all the chamions names
-     * @returns A object with pairs `[id => name]` of all champions
-     */
-    private async getChampionNames(): Promise<Record<string, string>> {
-        const version = await this.getLatestVersion()
-        const url = `http://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`
-        const res = (await lastValueFrom(this.httpService.get(url, this.headers))).data.data
-        const champions: Record<string, string> = {}
-
-        Object.keys(res).forEach(champion_name => {
-            champions[res[champion_name].key] = res[champion_name].id
-        })
-
-        return champions
+        return this.httpGet<RiotSummonerDto>(url)
     }
 
     /**
@@ -105,8 +88,7 @@ export class RiotService {
      * @returns Array of masteries
      */
     async getMasteries(summonerName: string, server: string, masteriesLimit: number): Promise<MasteryDto[]> {
-        this.logger.verbose(`Getting masteries about best ${masteriesLimit} champs`)
-        const summoner_id = (await this.getBasicInfo(summonerName, server)).id
+        const summoner_id = (await this.getBasicInfo(server, summonerName)).id
         const url = `${this.baseUrl(server)}champion-mastery/v4/champion-masteries/by-summoner/${summoner_id}`
         const allMasteries = await this.httpGet<RiotMasteryDto[]>(url)
 
@@ -120,17 +102,15 @@ export class RiotService {
             allMasteries.length = masteriesLimit
         }
 
-        const version = await this.getLatestVersion()
-        const champ_names_table = await this.getChampionNames()
-
         for (let i = 0; i < allMasteries.length; i++) {
-            const champ_name = champ_names_table[allMasteries[i].championId]
+            const champ_name = this.champions[allMasteries[i].championId]
 
             masteries.push({
                 name: champ_name,
-                image: `http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champ_name}.png`,
+                image: `http://ddragon.leagueoflegends.com/cdn/${this.version}/img/champion/${champ_name}.png`,
                 level: allMasteries[i].championLevel,
                 points: allMasteries[i].championPoints,
+                chestGranted: allMasteries[i].chestGranted,
             })
         }
         return masteries
@@ -151,9 +131,9 @@ export class RiotService {
         solo: RankDto
         flex: RankDto
     }> {
-        this.logger.verbose('Getting classification data in ranked queues')
+        this.logger.log('Getting classification data in ranked queues')
         const url = `${this.baseUrl(server)}league/v4/entries/by-summoner/${summoner_id}`
-        const rank_data: any[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
+        const rank_data = await this.httpGet<RiotRankDto[]>(url)
         const league_default = {
             rank: 'Unranked',
             image: 'unranked.png',
@@ -171,16 +151,16 @@ export class RiotService {
             }
         }
 
-        const soloFirst = rank_data[0].queueType == 'RANKED_SOLO_5x5'
-
         const buildRank = (i: number): RankDto => ({
-            rank: rank_data[i].tier ? `${rank_data[i].tier} ${rank_data[i].rank}` : 'Unranked',
-            image: rank_data[i].tier ? `${rank_data[i].tier.toLowerCase()}.png` : 'unranked.png',
+            rank: `${rank_data[i].tier} ${rank_data[i].rank}` ?? 'Unranked',
+            image: `${rank_data[i].tier.toLowerCase()}.png` ?? 'unranked.png',
             lp: rank_data[i].leaguePoints,
             win: rank_data[i].wins,
             lose: rank_data[i].losses,
             winrate: winrate(rank_data[i]['wins'], rank_data[i]['losses']),
         })
+
+        const soloFirst = rank_data[0].queueType == 'RANKED_SOLO_5x5'
 
         // Is ranked in only one queue: check which one
         if (rank_data.length == 1) {
@@ -189,6 +169,7 @@ export class RiotService {
                 flex: soloFirst ? league_default : buildRank(0),
             }
         }
+
         // If not, both have data
         return {
             solo: soloFirst ? buildRank(0) : buildRank(1),
@@ -197,26 +178,59 @@ export class RiotService {
     }
 
     /**
-     * ## Process the data of a game
-     * @param idx The index of the summoner
-     * @param param1 The data of the game
-     * @returns {GameDto} The info of a unique game formatted
+     * ## Check if a match is the last played game
+     *
+     * @param server The server of the summoner
+     * @param puuid The puuid of the summoner
+     * @param matchId The id of the match
+     * @returns [is_last, last_game_id]
      */
-    private async processGame(
-        matchId: string,
-        idx: number,
-        { gameDuration, teams, participants }: any,
-        gameMode: string,
-    ): Promise<GameDto> {
-        const version = await this.getLatestVersion()
-        const champ_names = await this.getChampionNames()
-        const itemUrl = (id: number) => {
-            if (!id) return null
-            return `http://ddragon.leagueoflegends.com/cdn/${version}/img/item/${id}.png`
-        }
+    async isLastGame(server: string, puuid: string, matchId: string): Promise<{ is_last: boolean; last_game_id: string }> {
+        this.logger.log(`Is ${matchId} the last played game?`)
+        server = serverRegion(server)
 
-        participants = participants.map((participant: any) => {
-            return {
+        // Get the IDs of the games
+        const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=1`
+        const gameIDs_list: string[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
+
+        // Check if the match is the last played game
+        const is_last = gameIDs_list[0] === matchId
+
+        this.logger.log(is_last ? 'Yes, it is' : 'No, it is not')
+        return {
+            is_last,
+            last_game_id: gameIDs_list[0],
+        }
+    }
+
+    /**
+     * ## Format Game
+     * Format the raw data of a game to our custom schema
+     * @param rawGame The raw data of the game as Riot returns
+     * @returns The info parsed
+     */
+    formatGame(rawGame: RiotGameDto, puuid: string): GameDto {
+        const itemUrl = (id: number) => (id ? `http://ddragon.leagueoflegends.com/cdn/${this.version}/img/item/${id}.png` : null)
+
+        return {
+            matchId: rawGame.metadata.matchId,
+            participantNumber: rawGame.metadata.participants.indexOf(puuid),
+            gameDuration: rawGame.info.gameDuration,
+            gameMode: validateGameType(rawGame.info.queueId),
+            teams: rawGame.info.teams.map((team: any) => {
+                team = team.bans.map((ban: any) => {
+                    if (ban.championId !== -1) {
+                        ban.championId = `http://ddragon.leagueoflegends.com/cdn/${this.version}/img/champion/${
+                            this.champions[ban.championId]
+                        }.png`
+                    } else {
+                        ban.championId = null
+                    }
+                    return ban
+                })
+                return team
+            }),
+            participants: rawGame.info.participants.map(participant => ({
                 summonerName: participant.summonerName,
                 win: participant.win,
                 timePlayed: participant.timePlayed,
@@ -254,93 +268,42 @@ export class RiotService {
                     itemUrl(participant.item5),
                 ],
                 spells: [spellUrl(participant.summoner1Id), spellUrl(participant.summoner2Id)],
-            }
-        })
-        teams = teams.map((team: any) => {
-            team = team.bans.map((ban: any) => {
-                if (ban.championId !== -1) {
-                    ban.championId = `http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champ_names[ban.championId]}.png`
-                } else {
-                    ban.championId = null
-                }
-                return ban
-            })
-            return team
-        })
-        return {
-            matchId,
-            participantNumber: idx,
-            gameDuration,
-            gameMode,
-            teams,
-            participants,
+            })),
         }
     }
 
     /**
-     * ## Check if a match is the last played game
+     * ## Get a list of game IDs
+     * Gets the last game IDs played from a summoner
      *
-     * @param server The server of the summoner
      * @param puuid The puuid of the summoner
-     * @param matchId The id of the match
-     * @returns True if the match is the last played game
+     * @param server The server of the player
+     * @param gamesLimit The number of games to return
+     * @param offset The number of games to skip
+     * @returns The game IDs list
      */
-    async isLastGame(server: string, puuid: string, matchId: string): Promise<boolean> {
-        this.logger.verbose(`Checking if match ${matchId} is the last played game`)
-        server = serverRegion(server)
+    async getGameIds(puuid: string, server: string, gamesLimit: number, offset: number): Promise<string[]> {
+        this.logger.log(`Getting data from last ${gamesLimit} games`)
+        const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${offset}&count=${gamesLimit}`
 
-        // Get the IDs of the games
-        const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=1`
-        const gameIDs_list: string[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
-
-        // Check if the match is the last played game
-        const result = gameIDs_list[0] === matchId
-
-        this.logger.verbose(`${result ? 'Yes, it is' : 'No, it is not'} the last played game`)
-        return result
+        return this.httpGet<string[]>(url)
     }
 
     /**
-     * ## Get the games of a summoner
-     * Gets the last games played from a summoner
-     *
-     * @param {string} puuid The puuid of the summoner
-     * @param {string} server The server of the player
-     * @param {number} gamesLimit The number of games to return
-     * @param {number} offset The number of games to skip before starting to analyze
-     * @param {string} queueType Specify to check only a specific queue ('ranked', 'normal', 'all')
-     * @returns {Player} The info of the player
+     * ## Get games detail
+     * Loads the information of a chunk of games
      */
-    async getGames(puuid: string, server: string, gamesLimit: number, offset: number, queueType: string): Promise<any[]> {
-        this.logger.verbose(`Getting data from last ${gamesLimit} games`)
-
-        server = serverRegion(server)
-        const queue = validateQueueType(queueType)
-
-        const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${offset}&count=${gamesLimit}${queue}`
-        const games_list: string[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
-
+    async getGamesDetail(puuid: string, server: string, matchIds: string[]): Promise<GameDto[]> {
         // Accumulate the promises of each game
-        const promises: Promise<any>[] = games_list.map((game_id: string) => {
+        const promises: Promise<RiotGameDto>[] = matchIds.map((game_id: string) => {
             const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/${game_id}`
 
-            return lastValueFrom(this.httpService.get(url, this.headers))
+            return this.httpGet<RiotGameDto>(url)
         })
 
         // Run all the promises in parallel
         const games = await Promise.all(promises)
-        const result = []
-
-        for (const game of games) {
-            const idx: number = game.data.metadata.participants.indexOf(puuid)
-            const matchId = game.data.metadata.matchId
-            const { gameId } = game.data.info
-            const gameType = validateGameType(game.data.info.queueId)
-
-            this.logger.log(`Processing game: ${gameId} \t ${gameType} \t ${game.data.info.participants[idx].championName}`)
-
-            result.push(await this.processGame(matchId, idx, game.data.info, gameType))
-        }
+        const result: GameDto[] = games.map(game => this.formatGame(game, puuid))
 
         return result
     }
