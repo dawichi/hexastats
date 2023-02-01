@@ -1,7 +1,9 @@
 import { servers, validateServer } from '$lib/config'
-import type { SummonerDto } from '$lib/types'
+import type { GameDto, SummonerDto } from '$lib/types'
 
 import { PUBLIC_IS_DEVELOPMENT } from '$env/static/public'
+import type { PlayerDto } from '$lib/types/player/Player.dto'
+import type { MasteryDto } from '$lib/types/player/Mastery.dto'
 
 const development = PUBLIC_IS_DEVELOPMENT === 'true'
 const backendUrl = development ? 'http://localhost:5000/' : 'https://api-hexastats.vercel.app/'
@@ -27,9 +29,10 @@ export class SummonerService {
         const playerGames = await fetch(`${backendUrl}summoners/${okServer}/${summonerName}/games`)
 
         if (!playerData.ok || !playerMasteries.ok || !playerGames.ok) throw new Error('Summoner not found')
-        const summonerData = await playerData.json()
-        const masteries = await playerMasteries.json()
-        const games = await playerGames.json()
+
+        const summonerData: PlayerDto = await playerData.json()
+        const masteries: MasteryDto[] = await playerMasteries.json()
+        const games: GameDto[] = await playerGames.json()
 
         return {
             ...summonerData,

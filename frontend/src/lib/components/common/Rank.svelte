@@ -5,7 +5,6 @@
   The rank is displayed in a circle over the image of the player
 -->
 <script lang="ts">
-    import Image from './Image.svelte'
     import type { RankDto } from '$lib/types'
 
     export let title: string
