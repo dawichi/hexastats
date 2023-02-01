@@ -4,14 +4,14 @@
   Display a game row
 -->
 <script lang="ts">
-    import type { Participant } from '$lib/types/player/Game'
+    import type { ParticipantDto } from '$lib/types/player/Game.dto'
     import { styles } from '$lib/config'
     import { RiotService } from '$lib/services/Riot.service'
     import SummonersGrid from './SummonersGrid.svelte'
     import type { GameDto } from '$lib/types'
 
     export let game: GameDto
-    export let participant: Participant
+    export let participant: ParticipantDto
 
     let expanded = false
 
