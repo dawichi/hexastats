@@ -3,7 +3,7 @@
  * Used when calculating the stats for a character,
  * based in all the games with that champion.
  */
-export interface Champ {
+export interface ChampDto {
     [key: string]: number | string;
     name: string
     image: string

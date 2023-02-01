@@ -22,7 +22,7 @@ interface Team {
     }
 }
 
-export interface Participant {
+export interface ParticipantDto {
     summonerName: string
     win: boolean
     timePlayed: number
@@ -64,12 +64,12 @@ export interface Participant {
  * ## Game information
  * Contains all the information about a game
  */
-export interface Game {
+export interface GameDto {
     matchId: string
     participantNumber: number
     gameDuration: number
     gameMode: string
     teams: Team[]
-    participants: Participant[]
+    participants: ParticipantDto[]
 }
 
