@@ -4,7 +4,7 @@ import { ConfigModule } from '@nestjs/config'
 import { RiotService } from './riot.service'
 
 @Module({
-    imports: [HttpModule, ConfigModule, RiotModule],
+    imports: [HttpModule, ConfigModule],
     providers: [RiotService],
     exports: [RiotService],
 })

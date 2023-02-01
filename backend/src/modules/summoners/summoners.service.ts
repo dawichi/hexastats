@@ -2,7 +2,6 @@ import { Injectable, Logger } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { GameDto, MasteryDto, PlayerDto } from '../../types'
-import { DatabaseService } from '../database/database.service'
 import { InfoResponse } from '../../common/types/InfoResponse.dto'
 import { RiotService } from '../../modules/riot/riot.service'
 import { serverRegion } from '../../common/utils'
@@ -12,7 +11,7 @@ import { serverRegion } from '../../common/utils'
 export class SummonersService {
     private readonly logger = new Logger(this.constructor.name)
 
-    constructor(private readonly riotService: RiotService, private readonly databaseService: DatabaseService) {}
+    constructor(private readonly riotService: RiotService) {}
 
     /**
      * /summoners/:server/:summonerName
@@ -51,7 +50,7 @@ export class SummonersService {
      * /summoners/:server/:summonerName/masteries
      */
     async getMasteries(server: string, summonerName: string): Promise<MasteryDto[]> {
-        return this.riotService.getMasteries(summonerName, server, 24)
+        return this.riotService.getMasteries(summonerName, server, 12)
     }
 
     /**
