@@ -81,7 +81,11 @@ Right now, we keep working on it, adding new features, sections and thinking abo
 ## Technical approach
 When the API is called with an username, it loads and serves the JSON data to the frontend. The client loads the data into a SvelteKit store (equivalent to React context) from where can be accessed by each page to display and visualize different information depending of the page.
 
+### General diagram of the project:
 ![](frontend/static/images/diagram.png)
+
+### NestJS specific diagram:
+![](backend/backend-diagram.png)
 
 For more specific info, browse both [`/frontend`](https://github.com/dawichi/hexastats/tree/main/frontend) and [`/backend`](https://github.com/dawichi/hexastats/tree/main/backend) code.
 
