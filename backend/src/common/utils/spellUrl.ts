@@ -24,8 +24,5 @@ export function spellUrl(spellId: number): string {
         55: '_UltBookSmitePlaceholder',
     }
 
-    if (!spells[spellId]) {
-        throw new Error('Spell Key not valid :(')
-    }
-    return `http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/Summoner${spells[spellId]}.png`
+    return `http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/Summoner${spells[spellId] ?? 'Flash'}.png`
 }
