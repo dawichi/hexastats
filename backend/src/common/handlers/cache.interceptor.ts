@@ -4,7 +4,6 @@ import { Observable, of, tap } from 'rxjs'
 import { DatabaseService } from '../../modules/database/database.service'
 import { RiotService } from '../../modules/riot/riot.service'
 import { GameDto, MasteryDto } from '../../types'
-import { serverRegion } from '../utils'
 import { validateTTL } from '../validators'
 
 /**
@@ -54,7 +53,7 @@ export class CacheInterceptor implements NestInterceptor {
 
         // Last game is already cached, so just return them
         if (is_last) return cachedData
-        const lastGamesPlayed = await this.riotService.getGameIds(puuid, serverRegion(server), 10, 0)
+        const lastGamesPlayed = await this.riotService.getGameIds(puuid, server, 10, 0)
         const lastGameIndex = lastGamesPlayed.indexOf(last_game_id)
 
         // Last game is not in cache -> +10 games were played since last time -> load new ones
@@ -62,7 +61,7 @@ export class CacheInterceptor implements NestInterceptor {
 
         // Last game is in cache -> load the games (1-9) that were played since last time
         const gameIdsPending = lastGamesPlayed.slice(0, lastGameIndex + 1)
-        const newGames = await this.riotService.getGamesDetail(puuid, serverRegion(server), gameIdsPending)
+        const newGames = await this.riotService.getGamesDetail(puuid, server, gameIdsPending)
 
         // HACK: to avoid having too many games in cache
         if (cachedData.length > 50) {
