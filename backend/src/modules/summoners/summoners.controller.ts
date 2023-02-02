@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseInterceptors } from '@nestjs/common'
+import { Controller, Get, Param, ParseIntPipe, UseInterceptors } from '@nestjs/common'
 import { SummonersService } from './summoners.service'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { ApiCustomResponse, ParamServer, ParamSummonerName } from '../../common/decorators'
@@ -89,5 +89,24 @@ export class SummonersController {
     @ParamSummonerName()
     async getGames(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<GameDto[]> {
         return this.summonersService.getGames(server, summonerName)
+    }
+
+    /**
+     * ## Add new games to the stored ones
+     */
+    @Get('/:server/:summonerName/addGames/:amount')
+    @ApiOperation({
+        summary: 'Get games',
+        description: 'Returns an array of games',
+    })
+    @ApiCustomResponse([GameDto])
+    @ParamServer()
+    @ParamSummonerName()
+    async addGames(
+        @Param('server') server: string,
+        @Param('summonerName') summonerName: string,
+        @Param('amount', ParseIntPipe) amount: number,
+    ): Promise<GameDto[]> {
+        return this.summonersService.addGames(server, summonerName, amount)
     }
 }

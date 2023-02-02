@@ -4,14 +4,14 @@ import { ApiTags } from '@nestjs/swagger'
 import { GameDto, MasteryDto, PlayerDto } from '../../types'
 import { InfoResponse } from '../../common/types/InfoResponse.dto'
 import { RiotService } from '../../modules/riot/riot.service'
-import { serverRegion } from '../../common/utils'
+import { DatabaseService } from '../database/database.service'
 
 @ApiTags('summoners')
 @Injectable()
 export class SummonersService {
     private readonly logger = new Logger(this.constructor.name)
 
-    constructor(private readonly riotService: RiotService) {}
+    constructor(private readonly riotService: RiotService, private readonly databaseService: DatabaseService) {}
 
     /**
      * /summoners/:server/:summonerName
@@ -59,12 +59,29 @@ export class SummonersService {
     async getGames(server: string, summonerName: string): Promise<GameDto[]> {
         const { puuid } = await this.riotService.getBasicInfo(server, summonerName)
 
-        server = serverRegion(server)
-
         // Get the list of game IDs
         const games_list = await this.riotService.getGameIds(puuid, server, 10, 0)
 
         // Get the game data
         return this.riotService.getGamesDetail(puuid, server, games_list)
+    }
+
+    /**
+     * /summoners/:server/:summonerName/addGames/:amount
+     */
+    async addGames(server: string, summonerName: string, amount: number): Promise<GameDto[]> {
+        const { puuid } = await this.riotService.getBasicInfo(server, summonerName)
+        const { data } = await this.databaseService.getOne(`${server}:${summonerName}:games`)
+
+        const new_games = await this.riotService.getGameIds(puuid, server, amount, data.length)
+        const new_games_data = await this.riotService.getGamesDetail(puuid, server, new_games)
+
+        this.logger.log(`Adding ${new_games_data.length} games to stored ${data.length} games`)
+        const isGameData = (data: GameDto[] | MasteryDto[]): data is GameDto[] => 'matchId' in data[0]
+
+        if (isGameData(data)) {
+            await this.databaseService.addOne(`${server}:${summonerName}:games`, [...data, ...new_games_data])
+        }
+        return new_games_data
     }
 }
