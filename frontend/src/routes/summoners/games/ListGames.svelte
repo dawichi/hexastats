@@ -23,7 +23,7 @@
     async function loadMoreGames(): Promise<void> {
         loadingGames = true
         try {
-            const playerData = await SummonerService.addGames(player.server, player.alias, player.games.length)
+            const playerData = await SummonerService.addGames(player.server, player.alias)
             playersContext.update(players => players.map(p => (p.alias === player.alias ? playerData : p)))
         } catch (error) {
             console.error(error)

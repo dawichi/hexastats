@@ -42,18 +42,17 @@ export class SummonerService {
     }
 
     /**
-     * ## Requests new extra games from the backend API
+     * ## Requests 10 extra games from the backend API
      *
      * @param server The server to request the data from
      * @param summonerName The summoner name to request the data from
-     * @param gamesLength The number of games already stored
-     * @returns The games data
+     * @returns The new games data
      */
-    static async addGames(server: string, summonerName: string, gamesLength: number): Promise<SummonerDto> {
-        const gamesLimit = gamesLength + 10
+    static async addGames(server: string, summonerName: string): Promise<GameDto[]> {
+        const GAMES_LIMIT = 10
         const okServer = validateServer(server)
 
-        const data = await fetch(`${backendUrl}summoners/${okServer}/${summonerName}?gamesLimit=${gamesLimit}`)
+        const data = await fetch(`${backendUrl}summoners/${okServer}/${summonerName}/addGames/${GAMES_LIMIT}`)
         if (!data.ok) {
             throw new Error('Error while requesting new games, try again...')
         }
