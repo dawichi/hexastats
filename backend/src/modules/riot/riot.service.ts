@@ -75,7 +75,7 @@ export class RiotService {
      * To use other methods, you need to get the summoner id first
      */
     async getBasicInfo(server: string, summonerName: string): Promise<RiotSummonerDto> {
-        const url = `https://${server}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}`
+        const url = `https://${server}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${encodeURI(summonerName)}`
 
         return this.httpGet<RiotSummonerDto>(url)
     }

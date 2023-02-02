@@ -9,6 +9,7 @@
     import { RiotService } from '$lib/services/Riot.service'
     import SummonersGrid from './SummonersGrid.svelte'
     import type { GameDto } from '$lib/types'
+    import { classNames } from '$lib/utils'
 
     export let game: GameDto
     export let participant: ParticipantDto
@@ -16,13 +17,23 @@
     let expanded = false
 
     const calc_kda = (kills: number, deaths: number, assists: number) => (deaths ? ((kills + assists) / deaths).toFixed(1) : kills + assists)
+
+    function rowStyle(): string {
+        if (game.gameDuration < 300) {
+            return 'border-zinc-500 bg-zinc-500/10 dark:bg-zinc-500/10'
+        }
+        return participant.win ? 'border-green-500 bg-green-500/10 dark:bg-green-500/10' : 'border-red-500 bg-red-500/10 dark:bg-red-500/10'
+    }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
-    class="{styles.shadow} {styles.scale} transition {expanded ? 'h-96' : 'h-36'} {participant.win
-        ? 'border-green-500 bg-green-500/10 dark:bg-green-500/10'
-        : 'border-red-500 bg-red-500/10 dark:bg-red-500/10'} mx-4 my-2 grid cursor-pointer grid-cols-3 rounded-lg border-8 border-y-0 border-r-0"
+    class={classNames(
+        `${styles.shadow} ${styles.scale}`, // base styles
+        `transition ${expanded ? 'h-96' : 'h-36'}`, //expandable
+        'mx-4 my-2 grid cursor-pointer grid-cols-3 rounded-lg border-8 border-y-0 border-r-0', //adjustment
+        rowStyle(), //row color
+    )}
     on:click={() => (expanded = !expanded)}
 >
     <div class="relative text-white">
@@ -34,7 +45,7 @@
         <span class="absolute top-3 left-14 text-center text-xl">{participant.champ.champLevel}</span>
         <span class="absolute bottom-1 left-2">{game.gameMode}</span>
         <span class="absolute bottom-1 right-2">
-            {(game.gameDuration / 60).toFixed(0)}:{game.gameDuration % 60}
+            {(game.gameDuration / 60).toFixed(0)}:{(game.gameDuration % 60).toFixed(0).padStart(2, '0')}
         </span>
     </div>
     <div class="relative flex flex-col items-center text-center">
