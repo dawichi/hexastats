@@ -215,6 +215,7 @@ export class RiotService {
         return {
             matchId: rawGame.metadata.matchId,
             participantNumber: rawGame.metadata.participants.indexOf(puuid),
+            gameCreation: rawGame.info.gameCreation,
             gameDuration: rawGame.info.gameDuration,
             gameMode: validateGameType(rawGame.info.queueId),
             teams: rawGame.info.teams.map((team: any) => {
