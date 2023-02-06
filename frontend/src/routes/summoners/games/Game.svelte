@@ -31,7 +31,7 @@
 <div
     class={classNames(
         `${styles.shadow} ${styles.scale}`, // base styles
-        `transition ${expanded ? 'h-96' : 'h-36'}`, //expandable
+        `transition ${expanded ? 'h-96' : 'h-32'}`, //expandable
         'mx-4 my-2 grid cursor-pointer grid-cols-3 rounded-lg border-8 border-y-0 border-r-0', //adjustment
         rowStyle(), //row color
     )}

@@ -74,6 +74,12 @@ export class DatabaseService {
         key = key.toLowerCase()
         this.logger.log(`REDIS: saving ${key} data...`)
 
+        // to avoid having too many games in cache
+        if (summonerData.length > 50) {
+            this.logger.log(`> 50 games in cache (${summonerData.length}), removing the oldest 10`)
+            summonerData = summonerData.slice(0, 50)
+        }
+
         const newRecord: RedisRecordDto = {
             ttl: Date.now(),
             data: summonerData,

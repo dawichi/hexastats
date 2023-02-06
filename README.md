@@ -20,7 +20,7 @@
 </div>
 <br/>
 
-The project is a monorepo consisted in:
+The project is consisted in:
 
 * [`/frontend`](https://github.com/dawichi/hexastats/tree/main/frontend)  SveteKit App
 * [`/backend`](https://github.com/dawichi/hexastats/tree/main/backend) API in Nest JS
