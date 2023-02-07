@@ -206,17 +206,23 @@ export class Game {
     matchId: string
 
     @ApiProperty({
-        description: 'Index of the summoner in the participants list',
-        enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-        example: 0,
+        description: 'Date of the game in miliseconds',
+        example: '3.0651651',
     })
-    participantNumber: number
+    gameCreation: number
 
     @ApiProperty({
         description: 'Duration of the game in seconds',
         example: 1800,
     })
     gameDuration: number
+
+    @ApiProperty({
+        description: 'Index of the summoner in the participants list',
+        enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        example: 0,
+    })
+    participantNumber: number
 
     @ApiProperty({
         description: 'Mode of the game (e.g. CLASSIC, ARAM, ...)',

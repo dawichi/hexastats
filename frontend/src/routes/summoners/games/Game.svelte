@@ -10,6 +10,7 @@
     import SummonersGrid from './SummonersGrid.svelte'
     import type { GameDto } from '$lib/types'
     import { classNames } from '$lib/utils'
+    import { formatDate } from '$lib/utils/formatDate'
 
     export let game: GameDto
     export let participant: ParticipantDto
@@ -43,7 +44,8 @@
             <img src={RiotService.teamPositionIcon(participant.teamPosition)} alt="champ" style="width: 42px; height: 42px;" />
         </div>
         <span class="absolute top-3 left-14 text-center text-xl">{participant.champ.champLevel}</span>
-        <span class="absolute bottom-1 left-2">{game.gameMode}</span>
+        <span class="absolute bottom-1 left-2 text-sm">{formatDate(game.gameCreation, game.gameDuration)}</span>
+        <span class="absolute bottom-5 left-2">{game.gameMode}</span>
         <span class="absolute bottom-1 right-2">
             {(game.gameDuration / 60).toFixed(0)}:{(game.gameDuration % 60).toFixed(0).padStart(2, '0')}
         </span>

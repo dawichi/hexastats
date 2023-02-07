@@ -67,6 +67,7 @@ export interface ParticipantDto {
 export interface GameDto {
     matchId: string
     participantNumber: number
+    gameCreation: number
     gameDuration: number
     gameMode: string
     teams: Team[]
