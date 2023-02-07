@@ -48,6 +48,7 @@ export class CacheInterceptor implements NestInterceptor {
      * @returns
      */
     private async gamesFlow(server: string, name: string, cachedData: GameDto[]): Promise<GameDto[] | null> {
+        this.logger.log(`Games flow for ${server}:${name}, ${cachedData.length} games in cache`)
         const { puuid } = await this.riotService.getBasicInfo(server, name)
         const { is_last, last_game_id } = await this.riotService.isLastGame(server, puuid, cachedData[0].matchId)
 
@@ -56,18 +57,17 @@ export class CacheInterceptor implements NestInterceptor {
         const lastGamesPlayed = await this.riotService.getGameIds(puuid, server, 10, 0)
         const lastGameIndex = lastGamesPlayed.indexOf(last_game_id)
 
-        // Last game is not in cache -> +10 games were played since last time -> load new ones
-        if (lastGameIndex === -1) return null
+        // Last game is not in cache OR +10 games were played since last time -> load new ones
+        if (lastGameIndex === -1 || lastGameIndex > 9) return null
 
-        // Last game is in cache -> load the games (1-9) that were played since last time
-        const gameIdsPending = lastGamesPlayed.slice(0, lastGameIndex + 1)
+        // Load the games (1-9) that were played since last time
+        const lastTenGameIDs = await this.riotService.getGameIds(puuid, server, 10, 0)
+        const lastGameIDsStored = cachedData.map(game => game.matchId)
+        const gameIdsPending = lastTenGameIDs.filter(id => !lastGameIDsStored.includes(id))
         const newGames = await this.riotService.getGamesDetail(puuid, server, gameIdsPending)
 
-        // HACK: to avoid having too many games in cache
-        if (cachedData.length > 50) {
-            // remove the oldest 10 games
-            cachedData = cachedData.slice(0, 40)
-        }
+        this.logger.log(`${gameIdsPending.length} new games added`)
+        this.databaseService.addOne(`${server}:${name}:games`, [...newGames, ...cachedData])
         return [...newGames, ...cachedData]
     }
 

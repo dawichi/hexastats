@@ -284,7 +284,6 @@ export class RiotService {
      * @returns The game IDs list
      */
     async getGameIds(puuid: string, server: string, gamesLimit: number, offset: number): Promise<string[]> {
-        this.logger.log(`Getting data from last ${gamesLimit} games`)
         server = serverRegion(server)
         const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${offset}&count=${gamesLimit}`
 
@@ -301,6 +300,7 @@ export class RiotService {
      * @returns The list of games info
      */
     async getGamesDetail(puuid: string, server: string, matchIds: string[]): Promise<GameDto[]> {
+        this.logger.log(`Getting data from ${matchIds.length} games`)
         // Accumulate the promises of each game
         const promises: Promise<RiotGameDto>[] = matchIds.map((game_id: string) => {
             const url = `https://${serverRegion(server)}.api.riotgames.com/lol/match/v5/matches/${game_id}`
