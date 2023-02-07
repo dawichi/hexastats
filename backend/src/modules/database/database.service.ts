@@ -98,4 +98,19 @@ export class DatabaseService {
         this.logger.log(`REDIS: Found ${keys.length} keys!`)
         return keys.length
     }
+
+    /**
+     * ## TEST delete last game played
+     */
+    async deleteLast(key: string): Promise<void> {
+        key = key.toLowerCase()
+        this.logger.log(`REDIS: Deleting last game played from ${key}...`)
+
+        const data: RedisRecordDto = await this.redis.get(key)
+
+        if (data) {
+            data.data = data.data.slice(1)
+            await this.redis.set(key, data)
+        }
+    }
 }

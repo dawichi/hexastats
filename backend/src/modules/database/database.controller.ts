@@ -77,4 +77,23 @@ export class DatabaseController {
         this.logger.log('Clear all data from redis')
         return this.databaseService.deleteAll()
     }
+
+    /**
+     * ## Reset all database registers
+     * @returns Confirmation that the database was deleted
+     */
+    @Get('/deleteLast/:key')
+    @ApiOperation({
+        summary: 'Delete last value in the array',
+        description: 'Delete last value in the array',
+    })
+    @ApiParam({
+        name: 'key',
+        description: 'Key to get the data from',
+        type: String,
+    })
+    async deleteLast(@Param('key') key: string): Promise<true> {
+        await this.databaseService.deleteLast(key)
+        return true
+    }
 }
