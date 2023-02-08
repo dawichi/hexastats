@@ -13,7 +13,7 @@ import type { FriendDto } from '$lib/types/Friend.dto'
  * @returns {ChampDto} Modified accumulated data object
  */
 function accChamp(acc: ChampDto, cur: ChampDto): ChampDto {
-    const avg = (a: number, b: number, n: number) => parseFloat(((a * n + b) / (n + 1)).toFixed(2))
+    const avg = (a: number, b: number, n: number) => parseFloat(((a * n + b) / (n + 1)).toFixed(1))
 
     const props_max = ['maxKills', 'maxDeaths']
     const props_increment = ['doubleKills', 'tripleKills', 'quadraKills', 'pentaKills', 'winrate']
@@ -61,7 +61,7 @@ function accChamp(acc: ChampDto, cur: ChampDto): ChampDto {
  * @returns The kda value
  */
 function kda(kills: number, deaths: number, assists: number) {
-    return parseInt((deaths ? (kills + assists) / deaths : kills + assists).toFixed(2))
+    return parseFloat((deaths ? (kills + assists) / deaths : kills + assists).toFixed(1))
 }
 
 /**
