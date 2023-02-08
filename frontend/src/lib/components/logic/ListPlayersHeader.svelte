@@ -21,7 +21,7 @@
     }
 </script>
 
-{#if $page.url.pathname !== '/' && $page.url.pathname !== '/summoners'}
+{#if $page.url.pathname !== '/'}
     <div class="flex flex-wrap items-center border border-x-0 border-t-0 py-2">
         <div class="mr-3 flex flex-col items-center justify-center">
             <span class="px-2">Add more</span>

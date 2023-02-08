@@ -10,7 +10,7 @@
     export let game: GameDto
 </script>
 
-<div class="columns-2 p-1">
+<div class="animate__animated animate__fadeIn columns-2 p-1">
     {#each game.participants as participant}
         <span class="flex items-center">
             <img class="rounded" src={RiotService.champImage(participant.champ.championName)} alt="champion" style="width: 24px; height: 24px;" />
