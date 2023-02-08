@@ -5,10 +5,11 @@
 -->
 <script lang="ts">
     import type { ParticipantDto } from '$lib/types/player/Game.dto'
+    import type { GameDto } from '$lib/types'
+
     import { styles } from '$lib/config'
     import { RiotService } from '$lib/services/Riot.service'
     import SummonersGrid from './SummonersGrid.svelte'
-    import type { GameDto } from '$lib/types'
     import { classNames } from '$lib/utils'
     import { formatDate } from '$lib/utils/formatDate'
 
@@ -30,55 +31,66 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
     class={classNames(
-        `${styles.shadow} ${styles.scale}`, // base styles
+        `${styles.background} ${styles.shadow} ${styles.scale}`, // base styles
         `transition ${expanded ? 'h-96' : 'h-32'}`, //expandable
-        'mx-4 my-2 grid cursor-pointer grid-cols-3 rounded-lg border-8 border-y-0 border-r-0', //adjustment
-        rowStyle(), //row color
+        'mx-4 my-2 cursor-pointer rounded-lg', //adjustment
     )}
     on:click={() => (expanded = !expanded)}
 >
-    <div class="relative text-white">
-        <div class="t-0 l-0 absolute h-full w-full bg-cover bg-top" style="background-image: url({RiotService.champSplash(participant.champ.championName)})" />
-        <div class="t-0 l-0 absolute h-full w-full" style="background-image: linear-gradient(to top right, #000000bd , #ffffff00)" />
-        <div class="absolute top-2 left-3">
-            <img src={RiotService.teamPositionIcon(participant.teamPosition)} alt="champ" style="width: 42px; height: 42px;" />
+    <div
+        class={classNames(
+            `transition ${expanded ? 'h-96' : 'h-32'}`, //expandable
+            'grid grid-cols-3 rounded-lg border-8 border-y-0 border-r-0', //adjustment
+            rowStyle(), //row color
+        )}
+    >
+        <div class="relative text-white">
+            <div
+                class="t-0 l-0 absolute h-full w-full bg-cover bg-top"
+                style="background-image: url({RiotService.champSplash(participant.champ.championName)})"
+            />
+            <div class="t-0 l-0 absolute h-full w-full" style="background-image: linear-gradient(to top right, #000000bd , #ffffff00)" />
+            <div class="absolute top-2 left-3">
+                <img src={RiotService.teamPositionIcon(participant.teamPosition)} alt="champ" style="width: 42px; height: 42px;" />
+            </div>
+            <span class="absolute top-3 left-14 text-center text-xl">{participant.champ.champLevel}</span>
+            <span class="absolute bottom-1 left-2 text-sm">{formatDate(game.gameCreation, game.gameDuration)}</span>
+            <span class="absolute bottom-5 left-2">{game.gameMode}</span>
+            <span class="absolute bottom-1 right-2">
+                {(game.gameDuration / 60).toFixed(0)}:{(game.gameDuration % 60).toFixed(0).padStart(2, '0')}
+            </span>
         </div>
-        <span class="absolute top-3 left-14 text-center text-xl">{participant.champ.champLevel}</span>
-        <span class="absolute bottom-1 left-2 text-sm">{formatDate(game.gameCreation, game.gameDuration)}</span>
-        <span class="absolute bottom-5 left-2">{game.gameMode}</span>
-        <span class="absolute bottom-1 right-2">
-            {(game.gameDuration / 60).toFixed(0)}:{(game.gameDuration % 60).toFixed(0).padStart(2, '0')}
-        </span>
-    </div>
-    <div class="relative flex flex-col items-center text-center">
-        <div class="absolute top-1 bottom-1 left-3">
-            <div class="flex h-full flex-col justify-around">
-                <img class="rounded" src={participant.spells[0]} alt="spell 2" style="width: 32px; height: 32px;" />
-                <img class="rounded" src={participant.spells[1]} alt="spell 1" style="width: 32px; height: 32px;" />
-                <img class="rounded" src={participant.ward} alt="guard" style="width: 32px; height: 32px;" />
+        <div class="relative flex flex-col items-center text-center">
+            <div class="absolute top-1 bottom-1 left-3">
+                <div class="flex h-full flex-col justify-around">
+                    <img class="rounded" src={participant.spells[0]} alt="spell 2" style="width: 32px; height: 32px;" />
+                    <img class="rounded" src={participant.spells[1]} alt="spell 1" style="width: 32px; height: 32px;" />
+                    <img class="rounded" src={participant.ward} alt="guard" style="width: 32px; height: 32px;" />
+                </div>
+            </div>
+
+            <p>
+                <span>{participant.kda.kills}</span> /
+                <span>{participant.kda.deaths}</span> /
+                <span>{participant.kda.assists}</span>
+                <span class="ml-6 text-sm">{calc_kda(participant.kda.kills, participant.kda.deaths, participant.kda.assists)} kda</span>
+            </p>
+
+            <div class="mt-4 ml-4">
+                <div class="grid grid-cols-3 gap-2">
+                    {#each [0, 1, 2, 3, 4, 5] as itemId}
+                        <span>
+                            {#if participant.items[itemId]}
+                                <img class="rounded" src={participant.items[itemId]} alt="item" style="width: 36px; height: 36px;" />
+                            {:else}
+                                <div class="rounded bg-gradient-to-br from-zinc-500 to-zinc-800" style="width: 36px; height: 36px;" />
+                            {/if}
+                        </span>
+                    {/each}
+                </div>
             </div>
         </div>
-        <p>
-            <span>{participant.kda.kills}</span> /
-            <span>{participant.kda.deaths}</span> /
-            <span>{participant.kda.assists}</span>
-            <span class="ml-6 text-sm">{calc_kda(participant.kda.kills, participant.kda.deaths, participant.kda.assists)} kda</span>
-        </p>
-        <div class="mt-4 ml-4">
-            <div class="grid grid-cols-3 gap-2">
-                {#each [0, 1, 2, 3, 4, 5] as itemId}
-                    <span>
-                        {#if participant.items[itemId]}
-                            <img class="rounded" src={participant.items[itemId]} alt="item" style="width: 36px; height: 36px;" />
-                        {:else}
-                            <div class="rounded bg-gradient-to-br from-zinc-500 to-zinc-800" style="width: 36px; height: 36px;" />
-                        {/if}
-                    </span>
-                {/each}
-            </div>
-        </div>
-    </div>
-    <div>
+
         <SummonersGrid {game} />
     </div>
 </div>

@@ -16,16 +16,16 @@
     export let player: SummonerDto
 </script>
 
-<div class="relative rounded-lg bg-cover bg-center shadow" style="background-image: url({RiotService.champSplash(player.masteries[0].name)})">
+<div class="relative rounded-lg bg-contain shadow" style="background-image: url({RiotService.champSplash(player.masteries[0].name)})">
     <span class="absolute top-3 left-5">{player.games.length} games loaded</span>
-    <section class="bg-orange-50/80 pb-12 dark:bg-zinc-900/80">
+    <section class="bg-orange-50/80 px-4 dark:bg-zinc-900/80">
         <header class="py-5">
             <RankStructure {player} />
         </header>
 
         <div class="grid grid-cols-3">
             <section>
-                <div class="{styles.background} {styles.card} m-2 mb-4">
+                <div class="{styles.foreground} {styles.card} m-2 mb-4">
                     <h2 class="pt-3 text-center text-2xl">Champions</h2>
                     <div class="grid grid-cols-4 p-2 text-center">
                         <span>Champ</span>
@@ -36,12 +36,12 @@
                     <hr class="m-2" />
                     <ListChamps {player} />
                 </div>
-                <div class="{styles.background} {styles.card} m-2 mb-4">
+                <div class="{styles.foreground} {styles.card} m-2 mb-4">
                     <h2 class="pt-3 text-center text-2xl">Positions</h2>
                     <hr class="m-2" />
                     <ListPositions {player} />
                 </div>
-                <div class="{styles.background} {styles.card} m-2 mb-4">
+                <div class="{styles.foreground} {styles.card} m-2 mb-4">
                     <h2 class="pt-3 text-center text-2xl">Friends</h2>
                     <hr class="m-2" />
                     <ListFriends {player} />
