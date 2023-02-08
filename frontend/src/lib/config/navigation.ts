@@ -4,8 +4,8 @@ export const navigation: {
     path: string
 }[] = [
     {
-        name: 'Summoners',
-        path: '/summoners',
+        name: 'History',
+        path: '/history',
     },
     {
         name: 'Stats',
