@@ -61,7 +61,7 @@ The project is consisted in:
 
 Hexastats is a web app to visualize your metrics from League of Legends.  
 * Last games performance, winrates, graphs and more! 🔥  
-* It allows you to enter multiple usernames, giving you a fast, visual and interactive way to compare data between players.
+* Enter multiple usernames, comparing data between players in a fast, visual and interactive way!
 
 [![Hexastats][showcase-1]][hexastats-url]
 
