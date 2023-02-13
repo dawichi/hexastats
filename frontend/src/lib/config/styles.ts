@@ -4,7 +4,9 @@ export const styles = {
     active: 'bg-indigo-400 dark:bg-indigo-700',
     card: 'rounded shadow hover:shadow-lg dark:shadow-zinc-700 hover:dark:shadow-indigo-700',
     border: 'border border-indigo-400 dark:border-indigo-700',
-    shadow: 'hover:shadow-lg dark:shadow-indigo-400',
+    shadow: 'hover:shadow-lg dark:shadow-zinc-400',
+    shadowwin: 'hover:shadow-lg dark:shadow-green-400',
+    shadowlose: 'hover:shadow-lg dark:shadow-red-400',
     scale: 'transition-transform hover:scale-105',
     stat: {
         games: 'py-1 px-2 bg-green-300 dark:bg-green-800',

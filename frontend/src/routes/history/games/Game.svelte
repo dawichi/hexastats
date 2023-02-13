@@ -10,7 +10,7 @@
     import { styles } from '$lib/config'
     import { RiotService } from '$lib/services/Riot.service'
     import SummonersGrid from './SummonersGrid.svelte'
-    import { classNames } from '$lib/utils'
+    import { classNames, parse_k_num } from '$lib/utils'
     import { formatDate } from '$lib/utils/formatDate'
 
     export let game: GameDto
@@ -25,18 +25,26 @@
 
     function rowStyle(): string {
         if (game.gameDuration < 300) {
-            return 'border-zinc-500 bg-zinc-500/10 dark:bg-zinc-500/10'
+            return 'border-zinc-500 bg-zinc-500/20 dark:bg-zinc-500/20'
         }
-        return participant.win ? 'border-green-500 bg-green-500/10 dark:bg-green-500/10' : 'border-red-500 bg-red-500/10 dark:bg-red-500/10'
+        return participant.win ? 'border-green-500 bg-green-500/20 dark:bg-green-500/20' : 'border-red-500 bg-red-500/20 dark:bg-red-500/20'
+    }
+
+    function cardShadow(): string {
+        if (game.gameDuration < 300) {
+            return `${styles.shadow}`
+        }
+        return participant.win ? `${styles.shadowwin}` : `${styles.shadowlose}`
     }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
     class={classNames(
-        `${styles.background} ${styles.shadow}`, // base styles
+        `${styles.background} ${styles.shadow},`, // base style
         `transition ${expanded ? 'h-96' : 'h-32'}`, //expandable
         'mx-4 my-2 cursor-pointer rounded-lg', //adjustment
+        cardShadow(), //card shadow color styles
     )}
     on:click={() => (expanded = !expanded)}
 >
@@ -68,12 +76,17 @@
         <!-- [_,Center,Right] block -->
         {#if !expanded}
             <div class="animate__animated animate__fadeIn relative flex flex-col items-center text-center">
-                <div class="absolute top-1 bottom-1 left-3">
+                <div class="absolute top-1 bottom-1 left-3 grid grid-cols-2 px-0.5">
                     <div class="flex h-full flex-col justify-around">
                         <img class="rounded" src={participant.spells[0]} alt="spell 2" style="width: 32px; height: 32px;" />
                         <img class="rounded" src={participant.spells[1]} alt="spell 1" style="width: 32px; height: 32px;" />
                         <img class="rounded" src={participant.ward} alt="guard" style="width: 32px; height: 32px;" />
                     </div>
+                    <div class="absolute bottom-1 right-0">
+                        <img class="rounded" src={participant.spells[99]} alt="sperk 1" style="width: 26px; height: 26px;" />
+                        <img class="rounded" src={participant.spells[99]} alt="sperk 2" style="width: 26px; height: 26px;" />
+                    </div>
+
                 </div>
 
                 <p>
@@ -102,16 +115,25 @@
         {:else}
             <div class="animate__animated animate__fadeIn col-span-2 flex flex-col justify-around overflow-hidden rounded-lg bg-white dark:bg-zinc-900">
                 {#each game.participants as participant, idx}
-                    <div class="flex h-full items-center border-y border-t-0 border-zinc-700 {idx < 5 ? 'bg-blue-400/20' : 'bg-red-400/20'}">
-                        <img
+                    <div class="flex h-full items-center border-y border-t-0 border-zinc-700 {idx < 5 ? 'bg-blue-400/30' : 'bg-red-400/30'}">
+                        <div class="relative">
+                            <img
                             class="mx-1 rounded"
                             src={RiotService.champImage(participant.champ.championName)}
                             alt="champion"
                             style="width: 32px; height: 32px;"
-                        />
-                        <div class="flex flex-col">
-                            <img class="rounded" src={participant.spells[0]} alt="spell 2" style="width: 16px; height: 16px;" />
-                            <img class="rounded" src={participant.spells[1]} alt="spell 1" style="width: 16px; height: 16px;" />
+                            />
+                            <span class="absolute top-0 bg-zinc-700 text-xs rounded-lg">{participant.champ.champLevel}</span>
+                        </div>
+                        <div class= "grid grid-cols-2">
+                            <div class="flex flex-col">
+                                <img class="rounded" src={participant.spells[0]} alt="spell 2" style="width: 16px; height: 16px;" />
+                                <img class="rounded" src={participant.spells[1]} alt="spell 1" style="width: 16px; height: 16px;" />
+                            </div>
+                            <div class="flex flex-col">
+                                <img class="rounded" src={participant.spells[99]} alt="sperk 1" style="width: 16px; height: 16px;" />
+                                <img class="rounded" src={participant.spells[99]} alt="sperk 2" style="width: 16px; height: 16px;" />
+                            </div>
                         </div>
                         <span class="ml-1 h-5 w-20 overflow-hidden text-ellipsis whitespace-nowrap text-sm">
                             {participant.summonerName}
@@ -123,13 +145,33 @@
                         </div>
 
                         <!-- DAMAGE DEALT -->
-                        <div title="Damage dealt: {participant.champ.damageDealt}" class="ml-2 h-2 w-20 rounded bg-zinc-300 dark:bg-zinc-600">
-                            <div class="h-2 rounded bg-red-400" style="width: {(participant.champ.damageDealt / MAX_DMG_DEALT) * 100}%" />
+                        <div class="flex flex-col items-center">
+                            <span class="text-xs">{parse_k_num(participant.champ.damageDealt)}</span>
+                            <div title="Damage dealt: {participant.champ.damageDealt}" class="ml-2 h-2 w-20 rounded bg-zinc-300 dark:bg-zinc-600">
+                                <div class="h-2 rounded bg-red-400" style="width: {(participant.champ.damageDealt / MAX_DMG_DEALT) * 100}%" />
+                            </div>
                         </div>
-
+                            
                         <!-- DAMAGE TAKEN -->
-                        <div title="Damage taken: {participant.champ.damageTaken}" class="ml-2 h-2 w-20 rounded bg-zinc-300 dark:bg-zinc-600">
-                            <div class="h-2 rounded bg-blue-400" style="width: {(participant.champ.damageTaken / MAX_DMG_TAKEN) * 100}%" />
+                        <div class="flex flex-col items-center">
+                            <span class="text-xs">{parse_k_num(participant.champ.damageTaken)}</span>
+                            <div title="Damage taken: {participant.champ.damageTaken}" class="ml-2 h-2 w-20 rounded bg-zinc-300 dark:bg-zinc-600">
+                                <div class="h-2 rounded bg-blue-400" style="width: {(participant.champ.damageTaken / MAX_DMG_TAKEN) * 100}%" />
+                            </div>
+                        </div>
+                            
+                        <!-- items of each player -->
+                        <div class="ml-2 grid grid-cols-7">
+                            {#each [0, 1, 2, 3, 4, 5] as itemId}
+                                <span>
+                                    {#if participant.items[itemId]}
+                                        <img class="ml-1 rounded" src={participant.items[itemId]} alt="item" style="width: 28px; height: 28px;" />
+                                    {:else}
+                                        <div class="ml-1 rounded bg-gradient-to-br from-zinc-500 to-zinc-800" style="width: 28px; height: 28px;" />
+                                    {/if}
+                                </span>
+                            {/each}
+                            <img class="ml-1 rounded" src={participant.ward} alt="guard" style="width: 28px; height: 28px;" />
                         </div>
                     </div>
                 {/each}
