@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios'
 import { BadRequestException, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
+import { perkUrl, runeUrl } from 'src/common/utils/runeUrl'
 import { serverRegion, spellUrl, winrate } from '../../common/utils'
 import { validateGameType } from '../../common/validators'
 import { GameDto, MasteryDto, RankDto } from '../../types'
@@ -269,6 +270,10 @@ export class RiotService {
                     itemUrl(participant.item5),
                 ],
                 spells: [spellUrl(participant.summoner1Id), spellUrl(participant.summoner2Id)],
+                perks: [
+                    perkUrl(participant.perks.styles[0].style),
+                    runeUrl(participant.perks.styles[0].selections[0].perk, participant.perks.styles[0].style),
+                ],
             })),
         }
     }

@@ -83,8 +83,8 @@
                         <img class="rounded" src={participant.ward} alt="guard" style="width: 32px; height: 32px;" />
                     </div>
                     <div class="absolute bottom-1 right-0">
-                        <img class="rounded" src={participant.spells[99]} alt="sperk 1" style="width: 26px; height: 26px;" />
-                        <img class="rounded" src={participant.spells[99]} alt="sperk 2" style="width: 26px; height: 26px;" />
+                        <img class="rounded" src={participant.perks[1]} alt="main runes" style="width: 32px; height: 32px;" />
+                        <img class="rounded" src={participant.perks[0]} alt="secondary runes" style="width: 32px; height: 32px;" />
                     </div>
 
                 </div>
@@ -131,8 +131,8 @@
                                 <img class="rounded" src={participant.spells[1]} alt="spell 1" style="width: 16px; height: 16px;" />
                             </div>
                             <div class="flex flex-col">
-                                <img class="rounded" src={participant.spells[99]} alt="sperk 1" style="width: 16px; height: 16px;" />
-                                <img class="rounded" src={participant.spells[99]} alt="sperk 2" style="width: 16px; height: 16px;" />
+                                <img class="rounded" src={participant.perks[1]} alt="main runes" style="width: 16px; height: 16px;" />
+                                <img class="rounded" src={participant.perks[0]} alt="secondary runes" style="width: 16px; height: 16px;" />
                             </div>
                         </div>
                         <span class="ml-1 h-5 w-20 overflow-hidden text-ellipsis whitespace-nowrap text-sm">
