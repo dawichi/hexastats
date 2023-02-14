@@ -58,6 +58,7 @@ export interface ParticipantDto {
     ward: string
     items: Array<string>
     spells: Array<string>
+    perks: Array<string>
 }
 
 /**

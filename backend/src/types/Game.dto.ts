@@ -196,6 +196,15 @@ class Participant {
         ],
     })
     spells: Array<string>
+
+    @ApiProperty({
+        description: 'URL to the images of the runes used',
+        example: [
+            'https://ddragon.canisback.com/img/perk-images/Styles/7200_Domination.png',
+            'https://ddragon.canisback.com/img/perk-images/Styles/Domination/Electrocute/Electrocute.png',
+        ],
+    })
+    perks: Array<string>
 }
 
 export class Game {
