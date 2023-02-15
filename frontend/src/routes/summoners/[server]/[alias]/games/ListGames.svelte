@@ -9,7 +9,7 @@
     import { SummonerService } from '$lib/services/Summoner.service'
     import { playersContext } from '$lib/context/players'
     import Game from './Game.svelte'
-    import MockGame from './MockGame.svelte'
+    import MockGame from '$lib/components/mocks/MockGame.svelte'
 
     export let player: SummonerDto
 

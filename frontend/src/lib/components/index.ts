@@ -17,3 +17,4 @@ export { default as RankStructure } from './common/RankStructure.svelte'
 
 // Mocks
 export { default as MockImage } from './mocks/MockImage.svelte'
+export { default as MockGame } from './mocks/MockGame.svelte'
