@@ -23,14 +23,14 @@
 
     const calc_kda = (kills: number, deaths: number, assists: number) => (deaths ? ((kills + assists) / deaths).toFixed(1) : kills + assists)
 
-    function rowStyle(): string {
+    function rowStyle(game: GameDto, participant: ParticipantDto): string {
         if (game.gameDuration < 300) {
             return 'border-zinc-500 bg-zinc-500/20 dark:bg-zinc-500/20'
         }
         return participant.win ? 'border-green-500 bg-green-500/20 dark:bg-green-500/20' : 'border-red-500 bg-red-500/20 dark:bg-red-500/20'
     }
 
-    function cardShadow(): string {
+    function cardShadow(game: GameDto, participant: ParticipantDto): string {
         if (game.gameDuration < 300) {
             return `${styles.shadow}`
         }
@@ -44,7 +44,7 @@
         `${styles.background} ${styles.shadow},`, // base style
         `transition ${expanded ? 'h-96' : 'h-32'}`, //expandable
         'mx-4 my-2 cursor-pointer rounded-lg', //adjustment
-        cardShadow(), //card shadow color styles
+        cardShadow(game, participant), //card shadow color styles
     )}
     on:click={() => (expanded = !expanded)}
 >
@@ -52,7 +52,7 @@
         class={classNames(
             `transition ${expanded ? 'h-96' : 'h-32'}`, //expandable
             'grid grid-cols-3 rounded-lg border-8 border-y-0 border-r-0', //adjustment
-            rowStyle(), //row color
+            rowStyle(game, participant), //row color
         )}
     >
         <!-- [Left,_,_] block -->
