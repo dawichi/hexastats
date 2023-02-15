@@ -24,21 +24,51 @@
         loadingGames = true
         try {
             const newGames = await SummonerService.addGames(player.server, player.alias)
-            playersContext.update(players => players.map(p => (p.alias === player.alias ? {
-                ...p,
-                games: [...p.games, ...newGames]
-            } : p)))
+            playersContext.update(players =>
+                players.map(_player =>
+                    _player.alias === player.alias
+                        ? {
+                              ..._player,
+                              games: [..._player.games, ...newGames],
+                          }
+                        : _player,
+                ),
+            )
         } catch (error) {
             console.error(error)
         }
         loadingGames = false
+        filteredGames = player.games
+        activeFilter = ''
     }
 
     // Utils
+    let filteredGames = player.games
+    let activeFilter = ''
+    const gameModes = [...new Set(player.games.map(game => game.gameMode))]
+    const champsPlayed = [...new Set(player.games.map(game => game.participants[game.participantNumber].champ.championName))]
+
+    function filterBy(gameMode: string) {
+        if (activeFilter === gameMode) {
+            filteredGames = player.games
+            activeFilter = ''
+            return
+        }
+        activeFilter = gameMode
+        filteredGames = player.games.filter(game => game.gameMode === gameMode)
+    }
 </script>
 
 <div>
-    {#each player.games as game}
+    {#each gameModes as gameMode}
+        <button
+            on:click={() => filterBy(gameMode)}
+            class="{styles.card} {styles.scale} mx-4 my-2 cursor-pointer {activeFilter === gameMode ? 'bg-indigo-900' : 'bg-indigo-600'} p-3 px-6 text-white"
+            >{gameMode}</button
+        >
+    {/each}
+
+    {#each filteredGames as game}
         <Game {game} participant={game.participants[game.participantNumber]} />
     {/each}
 
