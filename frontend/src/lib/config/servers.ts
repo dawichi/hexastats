@@ -7,7 +7,7 @@ export const servers: string[] = ['euw', 'lan', 'las', 'na', 'kr', 'eune', 'tr',
  * @returns The region of the server. Default is euw1
  */
 export const validateServer = (server: string): string => {
-    const servers: {[key: string]: string} = {
+    const servers: Record<string, string> = {
         euw: 'euw1',
         lan: 'la1',
         las: 'la2',

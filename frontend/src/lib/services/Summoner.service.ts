@@ -1,4 +1,4 @@
-import { servers, validateServer } from '$lib/config'
+import { validateServer } from '$lib/config'
 import type { GameDto, SummonerDto } from '$lib/types'
 
 import { PUBLIC_IS_DEVELOPMENT } from '$env/static/public'
@@ -17,12 +17,12 @@ export class SummonerService {
     /**
      * ## Requests summoner data from the backend API
      *
-     * @param server_idx The index of server in servers array
+     * @param server The server to request the data from
      * @param summonerName The summoner name to request the data from
      * @returns The summoner data
      */
-    static async getData(server_idx: number, summonerName: string): Promise<SummonerDto> {
-        const okServer = validateServer(servers[server_idx])
+    static async getData(server: string, summonerName: string): Promise<SummonerDto> {
+        const okServer = validateServer(server)
 
         const playerData = await fetch(`${backendUrl}summoners/${okServer}/${summonerName}`)
         const playerMasteries = await fetch(`${backendUrl}summoners/${okServer}/${summonerName}/masteries`)

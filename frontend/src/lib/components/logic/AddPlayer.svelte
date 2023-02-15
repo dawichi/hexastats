@@ -37,7 +37,7 @@
         error = false
         generalContext.update(x => ({ ...x, loadingPlayer: true }))
         try {
-            const playerData = await SummonerService.getData(serverIdx, username)
+            const playerData = await SummonerService.getData(servers[serverIdx], username)
             playersContext.update(players => [...players, playerData])
 
             // Add new "recently searched player" to the local storage
