@@ -4,10 +4,6 @@ export const navigation: {
     path: string
 }[] = [
     {
-        name: 'History',
-        path: '/history',
-    },
-    {
         name: 'Stats',
         path: '/stats',
     },
@@ -23,8 +19,8 @@ export const navigation: {
     //     name: 'Graphs',
     //     path: '/graphs',
     // },
-    // {
-    //     name: 'Compare',
-    //     path: '/compare',
-    // },
+    {
+        name: 'Compare',
+        path: '/compare',
+    },
 ]
