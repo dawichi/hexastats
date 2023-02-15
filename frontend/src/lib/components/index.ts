@@ -5,6 +5,7 @@ export { default as Navbar } from './layout/Navbar.svelte'
 
 // Logic
 export { default as AddPlayer } from './logic/AddPlayer.svelte'
+export { default as SearchPlayer } from './logic/SearchPlayer.svelte'
 export { default as EmptyPlayers } from './logic/EmptyPlayers.svelte'
 export { default as ListPlayers } from './logic/ListPlayers.svelte'
 export { default as ListPlayersHeader } from './logic/ListPlayersHeader.svelte'
