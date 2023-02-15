@@ -41,6 +41,13 @@ export class SummonerService {
         }
     }
 
+    static async existPlayer(server: string, summonerName: string): Promise<boolean> {
+        const okServer = validateServer(server)
+        const playerData = await fetch(`${backendUrl}summoners/${okServer}/${summonerName}`)
+
+        return playerData.ok ? true : false
+    }
+
     /**
      * ## Requests 10 extra games from the backend API
      *
