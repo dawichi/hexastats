@@ -5,17 +5,12 @@
 -->
 <script lang="ts">
     import type { SummonerDto } from '$lib/types'
-    import { styles } from '$lib/config'
-    import { SummonerService } from '$lib/services/Summoner.service'
-    import { playersContext } from '$lib/context/players'
     import Game from './Game.svelte'
-    import MockGame from '$lib/components/mocks/MockGame.svelte'
+    import { styles } from '$lib/config'
+    import { MockGame } from '$lib/components'
+    import { SummonerService } from '$lib/services/Summoner.service'
 
     export let player: SummonerDto
-
-    // Context
-    let _players: SummonerDto[] = []
-    playersContext.subscribe(players => (_players = players))
 
     // Load games logic
     let loadingGames: boolean = false
@@ -24,16 +19,7 @@
         loadingGames = true
         try {
             const newGames = await SummonerService.addGames(player.server, player.alias)
-            playersContext.update(players =>
-                players.map(_player =>
-                    _player.alias === player.alias
-                        ? {
-                              ..._player,
-                              games: [..._player.games, ...newGames],
-                          }
-                        : _player,
-                ),
-            )
+            player.games = [...player.games, ...newGames]
         } catch (error) {
             console.error(error)
         }
