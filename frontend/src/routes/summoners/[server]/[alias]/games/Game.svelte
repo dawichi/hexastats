@@ -23,36 +23,31 @@
 
     const calc_kda = (kills: number, deaths: number, assists: number) => (deaths ? ((kills + assists) / deaths).toFixed(1) : kills + assists)
 
-    function rowStyle(game: GameDto, participant: ParticipantDto): string {
+    function rowStyle(game: GameDto, participant: ParticipantDto): { row: string; btn: string } {
         if (game.gameDuration < 300) {
-            return 'border-zinc-500 bg-zinc-500/20 dark:bg-zinc-500/20'
+            return {
+                row: 'border-zinc-500 bg-zinc-500/20',
+                btn: 'bg-zinc-500',
+            }
         }
-        return participant.win ? 'border-green-500 bg-green-500/20 dark:bg-green-500/20' : 'border-red-500 bg-red-500/20 dark:bg-red-500/20'
+        return participant.win ? { row: 'border-green-500 bg-green-500/20', btn: 'bg-green-500' } : { row: 'border-red-500 bg-red-500/20', btn: 'bg-red-500' }
     }
 
     function cardShadow(game: GameDto, participant: ParticipantDto): string {
         if (game.gameDuration < 300) {
-            return `${styles.shadow}`
+            return `${styles.game.shadowDraw}`
         }
-        return participant.win ? `${styles.shadowwin}` : `${styles.shadowlose}`
+        return participant.win ? `${styles.game.shadowWin}` : `${styles.game.shadowLose}`
     }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<button
-    class={classNames(
-        `${styles.background} ${styles.shadow},`, // base style
-        `transition ${expanded ? 'h-96' : 'h-32'}`, //expandable
-        'mx-2 cursor-pointer rounded-lg', //adjustment
-        cardShadow(game, participant), //card shadow color styles
-    )}
-    on:click={() => (expanded = !expanded)}
->
+<div class="{styles.background} transition {expanded ? 'h-96' : 'h-32'} mx-2 rounded-lg {cardShadow(game, participant)}">
     <div
         class={classNames(
             `transition ${expanded ? 'h-96' : 'h-32'}`, //expandable
-            'grid grid-cols-3 rounded-lg border-8 border-y-0 border-r-0', //adjustment
-            rowStyle(game, participant), //row color
+            'relative grid grid-cols-3 rounded-lg border-8 border-y-0 border-r-0 pr-6', //adjustment
+            rowStyle(game, participant).row, //row color
         )}
     >
         <!-- [Left,_,_] block -->
@@ -171,8 +166,15 @@
                 {/each}
             </div>
         {/if}
+
+        <button
+            on:click={() => (expanded = !expanded)}
+            class="absolute right-0 top-0 bottom-0 w-4 cursor-pointer rounded-tr-lg rounded-br-lg {rowStyle(game, participant).btn}"
+        >
+            <i class="bi text-white {expanded ? 'bi-caret-up-fill' : 'bi-caret-down-fill'}" />
+        </button>
     </div>
-</button>
+</div>
 
 <style>
     .transition {
