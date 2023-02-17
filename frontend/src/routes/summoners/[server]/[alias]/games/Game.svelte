@@ -39,11 +39,11 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div
+<button
     class={classNames(
         `${styles.background} ${styles.shadow},`, // base style
         `transition ${expanded ? 'h-96' : 'h-32'}`, //expandable
-        'mx-4 my-2 cursor-pointer rounded-lg', //adjustment
+        'mx-2 my-1 w-full cursor-pointer rounded-lg', //adjustment
         cardShadow(game, participant), //card shadow color styles
     )}
     on:click={() => (expanded = !expanded)}
@@ -75,57 +75,53 @@
 
         <!-- [_,Center,Right] block -->
         {#if !expanded}
-            <div class="animate__animated animate__fadeIn relative flex flex-col items-center text-center">
-                <div class="absolute top-1 bottom-1 left-3 grid grid-cols-2 px-0.5">
-                    <div class="flex h-full flex-col justify-around">
-                        <img class="rounded" src={participant.spells[0]} alt="spell 2" style="width: 32px; height: 32px;" />
-                        <img class="rounded" src={participant.spells[1]} alt="spell 1" style="width: 32px; height: 32px;" />
-                        <img class="rounded" src={participant.ward} alt="guard" style="width: 32px; height: 32px;" />
-                    </div>
-                    <div class="absolute bottom-1 right-0">
-                        <img class="rounded" src={participant.perks[1]} alt="main runes" style="width: 32px; height: 32px;" />
-                        <img class="rounded" src={participant.perks[0]} alt="secondary runes" style="width: 32px; height: 32px;" />
-                    </div>
+            <div class="animate__animated animate__fadeIn relative col-span-2 flex items-center justify-between px-2 text-center">
+                <article class="grid grid-cols-2 gap-x-1 gap-y-2">
+                    {#each [participant.spells[0], participant.perks[1], participant.spells[1], participant.perks[0]] as src}
+                        <img class="rounded" {src} alt="spell 2" style="width: 32px; height: 32px;" />
+                    {/each}
+                </article>
 
-                </div>
+                <article>
+                    <p><strong>{calc_kda(participant.kda.kills, participant.kda.deaths, participant.kda.assists)}</strong> KDA</p>
+                    <p><strong>{participant.farm.cs}</strong> CS (<strong>{((participant.farm.cs * 60) / game.gameDuration).toFixed(1)}</strong>/min)</p>
+                    <p><strong>{participant.visionScore}</strong> vision</p>
+                </article>
 
-                <p>
-                    <span>{participant.kda.kills}</span> /
-                    <span>{participant.kda.deaths}</span> /
-                    <span>{participant.kda.assists}</span>
-                    <span class="ml-6 text-sm">{calc_kda(participant.kda.kills, participant.kda.deaths, participant.kda.assists)} kda</span>
-                </p>
-
-                <div class="mt-4 ml-4">
-                    <div class="grid grid-cols-3 gap-2">
-                        {#each [0, 1, 2, 3, 4, 5] as itemId}
-                            <span>
-                                {#if participant.items[itemId]}
-                                    <img class="rounded" src={participant.items[itemId]} alt="item" style="width: 36px; height: 36px;" />
-                                {:else}
-                                    <div class="rounded bg-gradient-to-br from-zinc-500 to-zinc-800" style="width: 36px; height: 36px;" />
-                                {/if}
-                            </span>
-                        {/each}
+                <article class="flex flex-col">
+                    <p>{participant.kda.kills} / {participant.kda.deaths} / {participant.kda.assists}</p>
+                    <div class="mt-2 flex gap-1">
+                        <div class="grid grid-cols-3 gap-1">
+                            {#each [0, 1, 2, 3, 4, 5] as itemId}
+                                <span>
+                                    {#if participant.items[itemId]}
+                                        <img class="rounded" src={participant.items[itemId]} alt="item" style="width: 36px; height: 36px;" />
+                                    {:else}
+                                        <div class="rounded bg-gradient-to-br from-zinc-500 to-zinc-800" style="width: 36px; height: 36px;" />
+                                    {/if}
+                                </span>
+                            {/each}
+                        </div>
+                        <img class="rounded" src={participant.ward} alt="item" style="width: 36px; height: 36px;" />
                     </div>
-                </div>
+                </article>
+
+                <SummonersGrid {game} />
             </div>
-
-            <SummonersGrid {game} />
         {:else}
             <div class="animate__animated animate__fadeIn col-span-2 flex flex-col justify-around overflow-hidden rounded-lg bg-white dark:bg-zinc-900">
                 {#each game.participants as participant, idx}
                     <div class="flex h-full items-center border-y border-t-0 border-zinc-700 {idx < 5 ? 'bg-blue-400/30' : 'bg-red-400/30'}">
                         <div class="relative">
                             <img
-                            class="mx-1 rounded"
-                            src={RiotService.champImage(participant.champ.championName)}
-                            alt="champion"
-                            style="width: 32px; height: 32px;"
+                                class="mx-1 rounded"
+                                src={RiotService.champImage(participant.champ.championName)}
+                                alt="champion"
+                                style="width: 32px; height: 32px;"
                             />
-                            <span class="absolute top-0 bg-zinc-700 text-xs rounded-lg">{participant.champ.champLevel}</span>
+                            <span class="absolute top-0 rounded-lg bg-zinc-700 text-xs">{participant.champ.champLevel}</span>
                         </div>
-                        <div class= "grid grid-cols-2">
+                        <div class="grid grid-cols-2">
                             <div class="flex flex-col">
                                 <img class="rounded" src={participant.spells[0]} alt="spell 2" style="width: 16px; height: 16px;" />
                                 <img class="rounded" src={participant.spells[1]} alt="spell 1" style="width: 16px; height: 16px;" />
@@ -151,7 +147,7 @@
                                 <div class="h-2 rounded bg-red-400" style="width: {(participant.champ.damageDealt / MAX_DMG_DEALT) * 100}%" />
                             </div>
                         </div>
-                            
+
                         <!-- DAMAGE TAKEN -->
                         <div class="flex flex-col items-center">
                             <span class="text-xs">{parse_k_num(participant.champ.damageTaken)}</span>
@@ -159,7 +155,7 @@
                                 <div class="h-2 rounded bg-blue-400" style="width: {(participant.champ.damageTaken / MAX_DMG_TAKEN) * 100}%" />
                             </div>
                         </div>
-                            
+
                         <!-- items of each player -->
                         <div class="ml-2 grid grid-cols-7">
                             {#each [0, 1, 2, 3, 4, 5] as itemId}
@@ -178,7 +174,7 @@
             </div>
         {/if}
     </div>
-</div>
+</button>
 
 <style>
     .transition {
