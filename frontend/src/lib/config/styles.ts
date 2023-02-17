@@ -8,6 +8,11 @@ export const styles = {
     shadowwin: 'hover:shadow-lg dark:shadow-green-400',
     shadowlose: 'hover:shadow-lg dark:shadow-red-400',
     scale: 'transition-transform hover:scale-105',
+    iconSize: {
+        small: 'w-[16px] h-[16px]',
+        medium: 'w-[24px] h-[24px]',
+        large: 'w-[32px] h-[32px]',
+    },
     stat: {
         games: 'py-1 px-2 bg-green-300 dark:bg-green-800',
         winrate: 'py-1 px-2 bg-sky-300 dark:bg-sky-800',
@@ -17,4 +22,4 @@ export const styles = {
         cs: 'py-1 px-2 bg-yellow-300 dark:bg-yellow-800',
         assists: 'py-1 px-2 bg-pink-300 dark:bg-pink-800',
     },
-}
+} as const

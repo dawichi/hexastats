@@ -15,14 +15,13 @@
 
 <Container title="" description="" disableHeader>
     <div class="relative rounded-lg bg-contain shadow" style="background-image: url({RiotService.champSplash(data.masteries[0].name)})">
-        <span class="absolute top-3 left-5">{data.games.length} games loaded</span>
-        <section class="bg-orange-50/80 px-4 dark:bg-zinc-900/80">
+        <section class="bg-orange-50/80 dark:bg-zinc-900/80 md:px-4">
             <header class="py-5">
                 <RankStructure player={data} />
             </header>
 
-            <div class="grid grid-cols-3">
-                <section>
+            <div class="grid-cols-3 2xl:grid">
+                <aside class="grid lg:grid-cols-2 2xl:block">
                     <div class="{styles.foreground} {styles.card} m-2 mb-4">
                         <h2 class="pt-3 text-center text-2xl">Champions</h2>
                         <div class="grid grid-cols-4 p-2 text-center">
@@ -34,17 +33,20 @@
                         <hr class="m-2" />
                         <ListChamps player={data} />
                     </div>
-                    <div class="{styles.foreground} {styles.card} m-2 mb-4">
-                        <h2 class="pt-3 text-center text-2xl">Positions</h2>
-                        <hr class="m-2" />
-                        <ListPositions player={data} />
+                    <div class="flex flex-col">
+                        <div class="{styles.foreground} {styles.card} m-2 mb-4">
+                            <h2 class="pt-3 text-center text-2xl">Positions</h2>
+                            <hr class="m-2" />
+                            <ListPositions player={data} />
+                        </div>
+                        <div class="{styles.foreground} {styles.card} m-2 mb-4">
+                            <h2 class="pt-3 text-center text-2xl">Friends</h2>
+                            <hr class="m-2" />
+                            <ListFriends player={data} />
+                        </div>
                     </div>
-                    <div class="{styles.foreground} {styles.card} m-2 mb-4">
-                        <h2 class="pt-3 text-center text-2xl">Friends</h2>
-                        <hr class="m-2" />
-                        <ListFriends player={data} />
-                    </div>
-                </section>
+                </aside>
+
                 <section class="col-span-2">
                     <ListGames player={data} />
                 </section>
