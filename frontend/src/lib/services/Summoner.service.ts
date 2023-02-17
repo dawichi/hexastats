@@ -16,7 +16,6 @@ const backendUrl = development ? 'http://localhost:5000/' : 'https://api-hexasta
 export class SummonerService {
     /**
      * ## Requests summoner data from the backend API
-     *
      * @param server The server to request the data from
      * @param summonerName The summoner name to request the data from
      * @returns The summoner data
@@ -41,6 +40,12 @@ export class SummonerService {
         }
     }
 
+    /**
+     * ## Checks if the player exists on the server
+     * @param server Server to check if the player exists on it
+     * @param summonerName Summoner name to check if it exists
+     * @returns True if the player exists, false otherwise
+     */
     static async existPlayer(server: string, summonerName: string): Promise<boolean> {
         const okServer = validateServer(server)
         const playerData = await fetch(`${backendUrl}summoners/${okServer}/${summonerName}`)
@@ -50,7 +55,6 @@ export class SummonerService {
 
     /**
      * ## Requests 10 extra games from the backend API
-     *
      * @param server The server to request the data from
      * @param summonerName The summoner name to request the data from
      * @returns The new games data
