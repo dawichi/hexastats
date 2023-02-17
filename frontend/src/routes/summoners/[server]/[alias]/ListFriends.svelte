@@ -6,6 +6,7 @@
 <script lang="ts">
     import type { SummonerDto } from '$lib/types'
     import { ChampService } from '$lib/services/Champ.service'
+    import { rawServer } from '$lib/config'
 
     export let player: SummonerDto
 </script>
@@ -19,7 +20,7 @@
         </section>
         {#each ChampService.friendsCheck(player.games) as friend}
             <section class="grid grid-cols-3 items-center gap-2 text-sm md:text-base">
-                <span class="overflow-hidden text-ellipsis whitespace-nowrap">{friend.name}</span>
+                <a href={`/summoners/${rawServer(player.server)}/${friend.name}`} class="overflow-hidden text-ellipsis whitespace-nowrap hover:underline ">{friend.name}</a>
                 <span>
                     {friend.wins} / {friend.games}
                 </span>
