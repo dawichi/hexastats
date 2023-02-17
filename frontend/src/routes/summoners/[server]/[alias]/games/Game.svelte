@@ -85,7 +85,7 @@
                 <article>
                     <p><strong>{calc_kda(participant.kda.kills, participant.kda.deaths, participant.kda.assists)}</strong> KDA</p>
                     <p><strong>{participant.farm.cs}</strong> CS</p>
-                    <p>(<strong>{((participant.farm.cs * 60) / game.gameDuration).toFixed(1)}</strong>/min)</p>
+                    <p><strong>{((participant.farm.cs * 60) / game.gameDuration).toFixed(1)}</strong> cs/min</p>
                     <p><strong>{participant.visionScore}</strong> vision</p>
                 </article>
 
