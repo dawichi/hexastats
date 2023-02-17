@@ -54,9 +54,6 @@
         >
     {/each}
 
-    {#each filteredGames as game}
-        <Game {game} participant={game.participants[game.participantNumber]} />
-    {/each}
     <div class="grid gap-2">
         {#each filteredGames as game}
             <Game {game} participant={game.participants[game.participantNumber]} />
