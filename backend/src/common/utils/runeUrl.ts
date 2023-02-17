@@ -13,9 +13,9 @@ const runes: Record<number, string> = {
     9923: 'HailOfBlades',
     8351: 'GlacialAugment',
     8360: 'UnsealedSpellbook',
-    8358: 'MasterKey',
+    8369: 'FirstStrike',
     8005: 'PressTheAttack',
-    8008: 'LethalTempo', //'Temp',
+    8008: 'LethalTempo', //'Temp'
     8021: 'FleetFootwork',
     8010: 'Conqueror',
     8437: 'GraspOfTheUndying',
@@ -30,7 +30,7 @@ export const perkUrl = (perkId: number): string => `https://ddragon.canisback.co
 
 export function runeUrl(runeId: number, perkId: number): string {
     const exception = runeId === 8008 ? 'Temp' : ''
-    const runeGroup = perks[perkId].split('_')[1]
+    const runeGroup = perkId === 8300 ? 'Inspiration' : perks[perkId].split('_')[1]
 
     return `https://ddragon.canisback.com/img/perk-images/Styles/${runeGroup}/${runes[runeId]}/${runes[runeId]}${exception}.png`
 }
