@@ -11,11 +11,13 @@
 </script>
 
 <div class="animate__animated animate__fadeIn columns-2 p-1">
-    {#each game.participants as participant}
+    {#each game.participants as participant, idx}
         <span class="flex items-center">
             <img class="rounded" src={RiotService.champImage(participant.champ.championName)} alt="champion" style="width: 24px; height: 24px;" />
             <span class="ml-1 h-5 w-20 overflow-hidden text-ellipsis whitespace-nowrap text-sm">
-                {participant.summonerName}
+                <span class="{game.participantNumber === idx ? 'font-bold' : ''}">
+                    {participant.summonerName}
+                </span>
             </span>
         </span>
     {/each}
