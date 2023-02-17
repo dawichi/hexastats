@@ -15,6 +15,7 @@ export { default as Rank } from './common/Rank.svelte'
 export { default as Image } from './common/Image.svelte'
 export { default as ProfileImg } from './common/ProfileImg.svelte'
 export { default as RankStructure } from './common/RankStructure.svelte'
+export { default as MasteryRow } from './common/MasteryRow.svelte'
 
 // Mocks
 export { default as MockImage } from './mocks/MockImage.svelte'

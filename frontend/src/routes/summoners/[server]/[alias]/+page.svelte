@@ -2,7 +2,7 @@
 <script lang="ts">
     import type { SummonerDto } from '$lib/types'
     import { styles } from '$lib/config'
-    import { Container, RankStructure } from '$lib/components'
+    import { Container, MasteryRow, RankStructure } from '$lib/components'
     import { RiotService } from '$lib/services/Riot.service'
     import ListChamps from './ListChamps.svelte'
     import ListPositions from './ListPositions.svelte'
@@ -16,8 +16,9 @@
 <Container title="" description="" disableHeader>
     <div class="relative rounded-lg bg-contain shadow" style="background-image: url({RiotService.champSplash(data.masteries[0].name)})">
         <section class="bg-orange-50/80 dark:bg-zinc-900/80 md:px-4">
-            <header class="py-5">
+            <header class="py-5 flex flex-col lg:flex-row justify-around items-center">
                 <RankStructure player={data} />
+                <MasteryRow masteries={data.masteries} />
             </header>
 
             <div class="grid-cols-3 2xl:grid">
