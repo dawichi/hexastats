@@ -2,15 +2,30 @@
 <script lang="ts">
     import type { SummonerDto } from '$lib/types'
     import { styles } from '$lib/config'
-    import { Container, MasteryRow, RankStructure } from '$lib/components'
+    import { Container, MasteryRow, MockGame, RankStructure } from '$lib/components'
     import { RiotService } from '$lib/services/Riot.service'
     import ListChamps from './ListChamps.svelte'
     import ListPositions from './ListPositions.svelte'
     import ListFriends from './ListFriends.svelte'
     import ListGames from './games/ListGames.svelte'
+    import { SummonerService } from '$lib/services/Summoner.service'
 
     /** @type {import('./$types').PageData} */
     export let data: SummonerDto
+
+    // Load games logic
+    let loadingGames: boolean = false
+
+    async function loadMoreGames(): Promise<void> {
+        loadingGames = true
+        try {
+            const newGames = await SummonerService.addGames(data.server, data.alias)
+            data.games = [...data.games, ...newGames]
+        } catch (error) {
+            console.error(error)
+        }
+        loadingGames = false
+    }
 </script>
 
 <Container title="" description="" disableHeader>
@@ -50,6 +65,19 @@
 
                 <section class="col-span-2">
                     <ListGames player={data} />
+
+                    {#if data.games.length < 51}
+                        <div class="flex justify-center">
+                            <!-- svelte-ignore a11y-click-events-have-key-events -->
+                            {#if !loadingGames}
+                                <button on:click={loadMoreGames} class="{styles.card} {styles.scale} mx-4 my-2 cursor-pointer bg-indigo-600 p-3 px-6 text-white">
+                                    <i class="bi bi-cloud-download mr-2" /> Load 10 more games
+                                </button>
+                            {:else}
+                                <MockGame />
+                            {/if}
+                        </div>
+                    {/if}
                 </section>
             </div>
         </section>
