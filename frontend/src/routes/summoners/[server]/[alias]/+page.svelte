@@ -31,7 +31,7 @@
 <Container title="" description="" disableHeader>
     <div class="relative rounded-lg bg-contain shadow" style="background-image: url({RiotService.champSplash(data.masteries[0].name)})">
         <section class="bg-orange-50/80 dark:bg-zinc-900/80 md:px-4">
-            <header class="py-5 flex flex-col lg:flex-row justify-around items-center">
+            <header class="flex flex-col items-center justify-around py-5 lg:flex-row">
                 <RankStructure player={data} />
                 <MasteryRow masteries={data.masteries} />
             </header>
@@ -66,17 +66,22 @@
                 <section class="col-span-2">
                     <ListGames player={data} />
 
-                    {#if data.games.length < 51}
+                    {#if data.games.length < 50}
                         <div class="flex justify-center">
                             <!-- svelte-ignore a11y-click-events-have-key-events -->
                             {#if !loadingGames}
-                                <button on:click={loadMoreGames} class="{styles.card} {styles.scale} mx-4 my-2 cursor-pointer bg-indigo-600 p-3 px-6 text-white">
+                                <button
+                                    on:click={loadMoreGames}
+                                    class="{styles.card} {styles.scale} mx-4 my-2 cursor-pointer bg-indigo-600 p-3 px-6 text-white"
+                                >
                                     <i class="bi bi-cloud-download mr-2" /> Load 10 more games
                                 </button>
                             {:else}
                                 <MockGame />
                             {/if}
                         </div>
+                    {:else}
+                        <p class="p-4 text-center text-lg"><i class="bi bi-exclamation-circle" /> Currently limited to 50 games loaded</p>
                     {/if}
                 </section>
             </div>
