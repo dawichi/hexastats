@@ -13,8 +13,16 @@
     // Utils
     let filteredGames = player.games
     let activeFilter = ''
-    const gameModes = [...new Set(player.games.map(game => game.gameMode))]
     const champsPlayed = [...new Set(player.games.map(game => game.participants[game.participantNumber].champ.championName))]
+    const getGameModes = (player: SummonerDto) => [...new Set(player.games.map(game => game.gameMode))]
+
+    function getNumGamesByMode(gameMode: string, player: SummonerDto): number {
+        const gameModeCounts: Record<string, number> = {}
+        for (const gameMode of getGameModes(player)) {
+            gameModeCounts[gameMode] = player.games.filter(game => game.gameMode === gameMode).length
+        }
+        return gameModeCounts[gameMode]
+    }
 
     function filterBy(gameMode: string) {
         if (activeFilter === gameMode) {
@@ -28,13 +36,20 @@
 </script>
 
 <div>
-    {#each gameModes as gameMode}
+    {#each getGameModes(player) as gameMode}
         <button
             on:click={() => filterBy(gameMode)}
             class="{styles.card} {styles.scale} mx-4 my-2 cursor-pointer {activeFilter === gameMode ? 'bg-indigo-900' : 'bg-indigo-600'} p-3 px-6 text-white"
-            >{gameMode}</button
+            >{gameMode} ({getNumGamesByMode(gameMode, player)})</button
         >
     {/each}
+    <div class="flex items-center justify-center gap-2 px-4">
+        <hr class="w-full" />
+        <span class="whitespace-nowrap">
+            Games: {player.games.length}
+        </span>
+        <hr class="w-full" />
+    </div>
 
     <div class="grid gap-2">
         {#each filteredGames as game}
