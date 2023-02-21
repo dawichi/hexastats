@@ -47,7 +47,7 @@ export class DatabaseService {
      */
     async deleteOne(key: string): Promise<boolean> {
         this.logger.log(`REDIS: Deleting ${key}...`)
-        await this.redis.del(key.toLowerCase())
+        await this.redis.del(key)
         return true
     }
 
@@ -58,7 +58,7 @@ export class DatabaseService {
      * @returns Data stored in the key
      */
     async getOne(key: string): Promise<RedisRecordDto> {
-        const data: RedisRecordDto = await this.redis.get(key.toLowerCase())
+        const data: RedisRecordDto = await this.redis.get(key)
 
         this.logger.log(data ? 'REDIS: Data found!' : 'REDIS: Data not found!')
         return data
@@ -71,7 +71,6 @@ export class DatabaseService {
      * @param summonerData Data to be stored in the key
      */
     async addOne(key: string, summonerData: GameDto[] | MasteryDto[]) {
-        key = key.toLowerCase()
         this.logger.log(`REDIS: saving ${key} data...`)
 
         // to avoid having too many games in cache
@@ -103,7 +102,6 @@ export class DatabaseService {
      * ## TEST delete last game played
      */
     async deleteLast(key: string): Promise<void> {
-        key = key.toLowerCase()
         this.logger.log(`REDIS: Deleting last game played from ${key}...`)
 
         const data: RedisRecordDto = await this.redis.get(key)

@@ -42,7 +42,7 @@ export class SummonersController {
     @ParamServer()
     @ParamSummonerName()
     getSummoner(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<PlayerDto> {
-        return this.summonersService.getSummoner(server, summonerName)
+        return this.summonersService.getSummoner(server, encodeURI(summonerName.trim()))
     }
 
     /**
@@ -58,7 +58,7 @@ export class SummonersController {
     @ParamServer()
     @ParamSummonerName()
     getLevelImage(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<InfoResponse> {
-        return this.summonersService.getLevelImage(server, summonerName)
+        return this.summonersService.getLevelImage(server, encodeURI(summonerName.trim()))
     }
 
     /**
@@ -73,7 +73,7 @@ export class SummonersController {
     @ParamServer()
     @ParamSummonerName()
     async getMasteries(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<MasteryDto[]> {
-        return this.summonersService.getMasteries(server, summonerName)
+        return this.summonersService.getMasteries(server, encodeURI(summonerName.trim()))
     }
 
     /**
@@ -88,7 +88,7 @@ export class SummonersController {
     @ParamServer()
     @ParamSummonerName()
     async getGames(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<GameDto[]> {
-        return this.summonersService.getGames(server, summonerName)
+        return this.summonersService.getGames(server, encodeURI(summonerName.trim()))
     }
 
     /**
@@ -107,6 +107,6 @@ export class SummonersController {
         @Param('summonerName') summonerName: string,
         @Param('amount', ParseIntPipe) amount: number,
     ): Promise<GameDto[]> {
-        return this.summonersService.addGames(server, summonerName, amount)
+        return this.summonersService.addGames(server, encodeURI(summonerName.trim()), amount)
     }
 }

@@ -17,7 +17,7 @@
             <div class="flex items-center justify-center">
                 <i class="bi bi-arrow-clockwise my-12 animate-spin text-6xl" />
             </div>
-            <h1 class="text-center text-2xl">Getting data for: <br /> {$navigating?.to?.url.pathname.split('/')[3]}</h1>
+            <h1 class="text-center text-2xl">Getting data for: <br /> {decodeURI($navigating?.to?.url.pathname.split('/')[3])}</h1>
         {/if}
     {:else}
         <slot />

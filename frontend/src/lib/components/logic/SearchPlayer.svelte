@@ -23,9 +23,9 @@
         loading = true
         error = false
         
-        const doesPlayerExist = await SummonerService.existPlayer(servers[serverIdx], username)
-        if (doesPlayerExist) {
-            return goto(`/summoners/${servers[serverIdx]}/${username}`)
+        const playerData = await SummonerService.existPlayer(servers[serverIdx], username)
+        if (playerData) {
+            return goto(`/summoners/${servers[serverIdx]}/${playerData.alias}`)
         }
 
         error = true

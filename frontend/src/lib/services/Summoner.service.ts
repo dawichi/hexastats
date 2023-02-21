@@ -23,9 +23,9 @@ export class SummonerService {
     static async getData(server: string, summonerName: string): Promise<SummonerDto> {
         const okServer = validateServer(server)
 
-        const playerData = await fetch(`${backendUrl}summoners/${okServer}/${summonerName}`)
-        const playerMasteries = await fetch(`${backendUrl}summoners/${okServer}/${summonerName}/masteries`)
-        const playerGames = await fetch(`${backendUrl}summoners/${okServer}/${summonerName}/games`)
+        const playerData = await fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}`)
+        const playerMasteries = await fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/masteries`)
+        const playerGames = await fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/games`)
 
         if (!playerData.ok || !playerMasteries.ok || !playerGames.ok) throw new Error('Summoner not found')
 
@@ -44,13 +44,13 @@ export class SummonerService {
      * ## Checks if the player exists on the server
      * @param server Server to check if the player exists on it
      * @param summonerName Summoner name to check if it exists
-     * @returns True if the player exists, false otherwise
+     * @returns The player basic data if it exists, null otherwise
      */
-    static async existPlayer(server: string, summonerName: string): Promise<boolean> {
+    static async existPlayer(server: string, summonerName: string): Promise<null | PlayerDto> {
         const okServer = validateServer(server)
-        const playerData = await fetch(`${backendUrl}summoners/${okServer}/${summonerName}`)
+        const playerData = await fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}`)
 
-        return playerData.ok ? true : false
+        return playerData.ok ? playerData.json() : null
     }
 
     /**
@@ -63,7 +63,7 @@ export class SummonerService {
         const NUM_GAMES_TO_ADD = 10
         const okServer = validateServer(server)
 
-        const data = await fetch(`${backendUrl}summoners/${okServer}/${summonerName}/addGames/${NUM_GAMES_TO_ADD}`)
+        const data = await fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/addGames/${NUM_GAMES_TO_ADD}`)
         if (!data.ok) {
             throw new Error('Error while requesting new games, try again...')
         }
