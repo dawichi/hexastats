@@ -24,6 +24,11 @@
         return gameModeCounts[gameMode]
     }
 
+    function getGames(player: SummonerDto) {
+        filteredGames = player.games
+        return filteredGames
+    }
+
     function filterBy(gameMode: string) {
         if (activeFilter === gameMode) {
             filteredGames = player.games
@@ -43,17 +48,26 @@
             >{gameMode} ({getNumGamesByMode(gameMode, player)})</button
         >
     {/each}
+
     <div class="flex items-center justify-center gap-2 px-4">
         <hr class="w-full" />
         <span class="whitespace-nowrap">
-            Games: {player.games.length}
+            Games loaded: {player.games.length}
         </span>
         <hr class="w-full" />
     </div>
 
     <div class="grid gap-2">
-        {#each filteredGames as game}
+        {#each getGames(player) as game}
             <Game {game} participant={game.participants[game.participantNumber]} />
         {/each}
+    </div>
+
+    <div class="flex items-center justify-center gap-2 px-4">
+        <hr class="w-full" />
+        <span class="whitespace-nowrap">
+            Games loaded: {player.games.length}
+        </span>
+        <hr class="w-full" />
     </div>
 </div>
