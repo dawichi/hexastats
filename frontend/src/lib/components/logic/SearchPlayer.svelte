@@ -18,16 +18,18 @@
     let loading = false
 
     // Search logic once the button is pressed
-    async function handleSearch() {
+    async function handleSearch(): Promise<void> {
         if (loading) return
+        loading = true
         error = false
-        try {
-            const doesPlayerExist = await SummonerService.existPlayer(servers[serverIdx], username)
-            if (!doesPlayerExist) return error = true
-            goto(`/summoners/${servers[serverIdx]}/${username}`)
-        } catch (e) {
-            error = true
+        
+        const doesPlayerExist = await SummonerService.existPlayer(servers[serverIdx], username)
+        if (doesPlayerExist) {
+            return goto(`/summoners/${servers[serverIdx]}/${username}`)
         }
+
+        error = true
+        loading = false
     }
 
     // Search button by pressing enter
