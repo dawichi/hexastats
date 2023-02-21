@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios'
-import { BadRequestException, Injectable, Logger } from '@nestjs/common'
+import { BadRequestException, ForbiddenException, HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
 import { perkUrl, runeUrl } from '../../common/utils/runeUrl'
@@ -36,7 +36,18 @@ export class RiotService {
         } catch (error) {
             this.logger.error(error)
             this.logger.error(`Error fetching data from ${url}`)
-            throw new BadRequestException('Error fetching data from Riot API. Please check console DEBUG logs')
+
+            if (error.response.status === 429)
+                throw new HttpException(
+                    {
+                        status: HttpStatus.TOO_MANY_REQUESTS,
+                        error: 'Too many requests to Riot API. Please try again later',
+                    },
+                    HttpStatus.TOO_MANY_REQUESTS,
+                )
+
+            // default error
+            throw new BadRequestException('Error fetching data from Riot API. Please check console DEBUG mmhmm logs')
         }
     }
 

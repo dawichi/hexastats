@@ -2,15 +2,20 @@
     import { page } from '$app/stores'
 </script>
 
-<div>
-    <h1>It seems there has been an error, sorry about that.</h1>
+<div class="p-4 lg:p-8 w-96 m-auto">
+    <h1 class="flex flex-col justify-center items-center">
+        <i class="bi bi-emoji-frown text-6xl mb-4"></i>
+        <p>Oh no! Something went wrong</p>
+    </h1>
+
     {#if $page?.error}
         <div class="mt-4 border-y-2 p-4">
             {#if $page?.status}
-                <p>Page status: {$page?.status}</p>
+                <p>Error {$page?.status}</p>
             {/if}
+
             {#if $page?.error?.message}
-                <p>Error message: {$page?.error?.message}</p>
+                <p>{$page?.error?.message}</p>
             {/if}
         </div>
     {/if}

@@ -27,7 +27,14 @@ export class SummonerService {
         const playerMasteries = await fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/masteries`)
         const playerGames = await fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/games`)
 
-        if (!playerData.ok || !playerMasteries.ok || !playerGames.ok) throw new Error('Summoner not found')
+        // ERRIR HANDLING
+        if (!playerData.ok || !playerMasteries.ok || !playerGames.ok) {
+            if (playerGames.status === 429) {
+                throw new Error('429')
+            }
+            throw new Error()
+        }
+
 
         const summonerData: PlayerDto = await playerData.json()
         const masteries: MasteryDto[] = await playerMasteries.json()
