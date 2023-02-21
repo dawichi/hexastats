@@ -10,7 +10,7 @@
     import { styles } from '$lib/config'
     import { RiotService } from '$lib/services/Riot.service'
     import SummonersGrid from './SummonersGrid.svelte'
-    import { classNames, parse_k_num } from '$lib/utils'
+    import { classNames, parse_k_num, tooltip } from '$lib/utils'
     import { formatDate } from '$lib/utils/formatDate'
 
     export let game: GameDto
@@ -129,23 +129,33 @@
                         </span>
 
                         <div class="ml-2 grid w-16 grid-rows-2 text-xs">
-                            <span>{participant.kda.kills} / {participant.kda.deaths} / {participant.kda.assists}</span>
+                            <span class="whitespace-nowrap">{participant.kda.kills} / {participant.kda.deaths} / {participant.kda.assists}</span>
                             <span>{calc_kda(participant.kda.kills, participant.kda.deaths, participant.kda.assists)} kda</span>
                         </div>
 
                         <!-- DAMAGE DEALT -->
                         <div class="flex flex-col items-center">
                             <span class="text-xs">{parse_k_num(participant.champ.damageDealt)}</span>
-                            <div title="Damage dealt: {participant.champ.damageDealt}" class="ml-2 h-2 w-20 rounded bg-zinc-300 dark:bg-zinc-600">
-                                <div class="h-2 rounded bg-red-400" style="width: {(participant.champ.damageDealt / MAX_DMG_DEALT) * 100}%" />
+                            <div class="ml-2 h-2 w-20 rounded bg-zinc-300 dark:bg-zinc-600">
+                                <div
+                                    title="Damage dealt: {participant.champ.damageDealt}"
+                                    class="h-2 rounded bg-red-400"
+                                    style="width: {(participant.champ.damageDealt / MAX_DMG_DEALT) * 100}%"
+                                    use:tooltip
+                                />
                             </div>
                         </div>
 
                         <!-- DAMAGE TAKEN -->
                         <div class="flex flex-col items-center">
                             <span class="text-xs">{parse_k_num(participant.champ.damageTaken)}</span>
-                            <div title="Damage taken: {participant.champ.damageTaken}" class="ml-2 h-2 w-20 rounded bg-zinc-300 dark:bg-zinc-600">
-                                <div class="h-2 rounded bg-blue-400" style="width: {(participant.champ.damageTaken / MAX_DMG_TAKEN) * 100}%" />
+                            <div class="ml-2 h-2 w-20 rounded bg-zinc-300 dark:bg-zinc-600">
+                                <div
+                                    title="Damage taken: {participant.champ.damageTaken}"
+                                    class="h-2 rounded bg-blue-400"
+                                    style="width: {(participant.champ.damageTaken / MAX_DMG_TAKEN) * 100}%"
+                                    use:tooltip
+                                />
                             </div>
                         </div>
 
