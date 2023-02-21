@@ -5,15 +5,20 @@
 -->
 <script lang="ts">
     import type { SummonerDto } from '$lib/types'
-    import Game from './Game.svelte'
+    import Game from './games/Game.svelte'
     import { styles } from '$lib/config'
+    import { MockGame } from '$lib/components'
+    import { SummonerService } from '$lib/services/Summoner.service'
+    import { playerContext } from '$lib/context/players'
 
     export let player: SummonerDto
 
     // Utils
     let filteredGames = player.games
     let activeFilter = ''
-    const champsPlayed = [...new Set(player.games.map(game => game.participants[game.participantNumber].champ.championName))]
+    // const champsPlayed = [...new Set(player.games.map(game => game.participants[game.participantNumber].champ.championName))]
+   
+    
     const getGameModes = (player: SummonerDto) => [...new Set(player.games.map(game => game.gameMode))]
 
     function getNumGamesByMode(gameMode: string, player: SummonerDto): number {
@@ -24,11 +29,6 @@
         return gameModeCounts[gameMode]
     }
 
-    function getGames(player: SummonerDto) {
-        filteredGames = player.games
-        return filteredGames
-    }
-
     function filterBy(gameMode: string) {
         if (activeFilter === gameMode) {
             filteredGames = player.games
@@ -37,6 +37,22 @@
         }
         activeFilter = gameMode
         filteredGames = player.games.filter(game => game.gameMode === gameMode)
+    }
+
+    // Load games logic
+    let loadingGames: boolean = false
+
+    async function loadMoreGames(): Promise<void> {
+        loadingGames = true
+        try {
+            const newGames = await SummonerService.addGames(player.server, player.alias)
+            filteredGames = [...filteredGames, ...newGames]
+            playerContext.update(player => ({ ...player, games: [...player.games, ...newGames] }))
+        } catch (error) {
+            console.error(error)
+        }
+        activeFilter = ''
+        loadingGames = false
     }
 </script>
 
@@ -58,7 +74,7 @@
     </div>
 
     <div class="grid gap-2">
-        {#each getGames(player) as game}
+        {#each filteredGames as game}
             <Game {game} participant={game.participants[game.participantNumber]} />
         {/each}
     </div>
@@ -71,3 +87,18 @@
         <hr class="w-full" />
     </div>
 </div>
+
+{#if player.games.length < 50}
+    <div class="flex justify-center">
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        {#if !loadingGames}
+            <button on:click={loadMoreGames} class="{styles.card} {styles.scale} mx-4 my-2 cursor-pointer bg-indigo-600 p-3 px-6 text-white">
+                <i class="bi bi-cloud-download mr-2" /> Load 10 more games
+            </button>
+        {:else}
+            <MockGame />
+        {/if}
+    </div>
+{:else}
+    <p class="p-4 text-center text-lg"><i class="bi bi-exclamation-circle" /> Currently limited to 50 games loaded</p>
+{/if}

@@ -18,6 +18,7 @@
             <h4>Record</h4>
             <h4>Winrate</h4>
         </section>
+
         {#each ChampService.friendsCheck(player.games) as friend}
             <section class="grid grid-cols-3 items-center gap-2 text-sm md:text-base">
                 <a href={`/summoners/${rawServer(player.server)}/${friend.name}`} class="overflow-hidden text-ellipsis whitespace-nowrap hover:underline ">{friend.name}</a>
@@ -35,6 +36,7 @@
         <span class="text-2xl">
             <i class="bi bi-emoji-frown" />
         </span>
+
         <p>There is games with friends loaded.</p>
     </div>
 {/if}
