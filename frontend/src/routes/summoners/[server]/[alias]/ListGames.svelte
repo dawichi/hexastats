@@ -4,21 +4,27 @@
   List all games from a player
 -->
 <script lang="ts">
-    import type { SummonerDto } from '$lib/types'
+    import type { GameDto, SummonerDto } from '$lib/types'
     import Game from './games/Game.svelte'
     import { styles } from '$lib/config'
     import { MockGame } from '$lib/components'
     import { SummonerService } from '$lib/services/Summoner.service'
-    import { playerContext } from '$lib/context/players'
+    import { filteredGamesContext, playerContext } from '$lib/context/players'
 
     export let player: SummonerDto
 
-    // Utils
-    let filteredGames = player.games
-    let activeFilter = ''
-    // const champsPlayed = [...new Set(player.games.map(game => game.participants[game.participantNumber].champ.championName))]
+    // Context
+    let _filteredGames: GameDto[] = []
+    let _activeFilter = ''
+    filteredGamesContext.subscribe(data => (_filteredGames = data.games))
+    filteredGamesContext.subscribe(data => (_activeFilter = data.activeFilter))
+    filteredGamesContext.set({
+        activeFilter: '',
+        games: player.games,
+    })
 
     const getGameModes = (player: SummonerDto) => [...new Set(player.games.map(game => game.gameMode))]
+    // const getChampsPlayed = (player: SummonerDto) => [...new Set(player.games.map(game => game.participants[game.participantNumber].champ.championName))]
 
     function getNumGamesByMode(gameMode: string, player: SummonerDto): number {
         const gameModeCounts: Record<string, number> = {}
@@ -28,14 +34,20 @@
         return gameModeCounts[gameMode]
     }
 
-    function filterBy(gameMode: string) {
-        if (activeFilter === gameMode) {
-            filteredGames = player.games
-            activeFilter = ''
-            return
+    function filterBy(filter: string) {
+        if (_activeFilter === filter) {
+            return filteredGamesContext.update(data => ({
+                activeFilter: '',
+                games: player.games
+            }))
         }
-        activeFilter = gameMode
-        filteredGames = player.games.filter(game => game.gameMode === gameMode)
+
+        filteredGamesContext.update(data => ({
+            activeFilter: filter,
+            games: getGameModes(player).includes(filter)
+                ? player.games.filter(game => game.gameMode === filter)
+                : player.games.filter(game => game.participants[game.participantNumber].champ.championName === filter),
+        }))
     }
 
     // Load games logic
@@ -45,12 +57,14 @@
         loadingGames = true
         try {
             const newGames = await SummonerService.addGames(player.server, player.alias)
-            filteredGames = [...player.games, ...newGames]
+            filteredGamesContext.update(data => ({
+                activeFilter: '',
+                games: [...player.games, ...newGames]
+            }))
             playerContext.update(player => ({ ...player, games: [...player.games, ...newGames] }))
         } catch (error) {
             console.error(error)
         }
-        activeFilter = ''
         loadingGames = false
     }
 </script>
@@ -59,7 +73,7 @@
     {#each getGameModes(player) as gameMode}
         <button
             on:click={() => filterBy(gameMode)}
-            class="{styles.card} {styles.scale} mx-4 my-2 cursor-pointer {activeFilter === gameMode ? 'bg-indigo-900' : 'bg-indigo-600'} p-3 px-6 text-white"
+            class="{styles.card} {styles.scale} mx-4 my-2 cursor-pointer {_activeFilter === gameMode ? 'bg-indigo-900' : 'bg-indigo-600'} p-3 px-6 text-white"
             >{gameMode} ({getNumGamesByMode(gameMode, player)})</button
         >
     {/each}
@@ -73,7 +87,7 @@
     </div>
 
     <div class="grid gap-2">
-        {#each filteredGames as game}
+        {#each _filteredGames as game}
             <Game {game} participant={game.participants[game.participantNumber]} server={player.server} />
         {/each}
     </div>
