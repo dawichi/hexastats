@@ -45,7 +45,7 @@
         loadingGames = true
         try {
             const newGames = await SummonerService.addGames(player.server, player.alias)
-            filteredGames = [...filteredGames, ...newGames]
+            filteredGames = [...player.games, ...newGames]
             playerContext.update(player => ({ ...player, games: [...player.games, ...newGames] }))
         } catch (error) {
             console.error(error)
