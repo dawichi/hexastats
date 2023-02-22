@@ -16,8 +16,8 @@
     {#each game.participants as participant, idx}
         <span class="flex items-center">
             <img class="{styles.iconSize.medium} rounded" src={RiotService.champImage(participant.champ.championName)} alt="champion" />
-            <span class="ml-1 h-5 w-20 text-left text-sm {game.participantNumber === idx ? 'font-bold' : ''}">
-                <a href={`/summoners/${rawServer(server)}/${participant.summonerName}`} class="overflow-hidden text-ellipsis whitespace-nowrap hover:underline">
+            <span class="ml-1 h-5 w-20 overflow-hidden text-ellipsis whitespace-nowrap text-left text-sm hover:underline">
+                <a href={`/summoners/${rawServer(server)}/${participant.summonerName}`} class={game.participantNumber === idx ? 'font-bold' : ''}>
                     {participant.summonerName}
                 </a>
             </span>

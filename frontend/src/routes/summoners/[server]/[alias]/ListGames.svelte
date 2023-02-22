@@ -74,7 +74,7 @@
 
     <div class="grid gap-2">
         {#each filteredGames as game}
-            <Game {game} server={player.server} />
+            <Game {game} participant={game.participants[game.participantNumber]} server={player.server} />
         {/each}
     </div>
 

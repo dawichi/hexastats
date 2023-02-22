@@ -14,9 +14,9 @@
     import { formatDate } from '$lib/utils/formatDate'
 
     export let game: GameDto
+    export let participant: ParticipantDto
     export let server: string
 
-    let participant = game.participants[game.participantNumber]
     let expanded = false
 
     const MAX_DMG_DEALT = Math.max(...game.participants.map(participant => participant.champ.damageDealt))
