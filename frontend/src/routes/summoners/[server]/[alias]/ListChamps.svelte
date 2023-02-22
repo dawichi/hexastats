@@ -7,17 +7,32 @@
     import type { SummonerDto } from '$lib/types'
     import { ChampService } from '$lib/services/Champ.service'
     import { RiotService } from '$lib/services/Riot.service'
+    import { filteredGamesContext } from '$lib/context/players'
 
     export let player: SummonerDto
 
+    // Context
+    let _activeFilter = ''
+    filteredGamesContext.subscribe(data => (_activeFilter = data.activeFilter))
+
     const maxGames = () => Math.max(...ChampService.champsBuilder(player.games).map(champ => champ.games))
     const maxKDA = () => Math.max(...ChampService.champsBuilder(player.games).map(champ => champ.kda))
+
+    function handleClick(championName: string) {
+        if (championName === _activeFilter) return filteredGamesContext.update(data => ({ activeFilter: '', games: player.games }))
+        filteredGamesContext.update(data => ({
+            activeFilter: championName,
+            games: player.games.filter(game => game.participants[game.participantNumber].champ.championName === championName),
+        }))
+    }
 </script>
 
 {#each ChampService.champsBuilder(player.games) as champ}
-    <div class="grid grid-cols-4 px-4 py-1">
+    <div class="grid grid-cols-4 px-4">
         <div class="flex justify-center">
-            <img class="w-12 rounded" src={RiotService.champImage(champ.name)} alt="champion" />
+            <button on:click={() => handleClick(champ.name)} class="p-1 {champ.name === _activeFilter ? 'bg-yellow-400' : ''}">
+                <img class="w-12 rounded" src={RiotService.champImage(champ.name)} alt="champion" />
+            </button>
         </div>
 
         <div class="w-full px-2">
