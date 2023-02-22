@@ -7,7 +7,7 @@
     import type { ParticipantDto } from '$lib/types/player/Game.dto'
     import type { GameDto } from '$lib/types'
 
-    import { rawServer, servers, styles } from '$lib/config'
+    import { rawServer, styles } from '$lib/config'
     import { RiotService } from '$lib/services/Riot.service'
     import SummonersGrid from './SummonersGrid.svelte'
     import { classNames, parse_k_num, tooltip } from '$lib/utils'
