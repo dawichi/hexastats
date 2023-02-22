@@ -17,8 +17,7 @@
     let filteredGames = player.games
     let activeFilter = ''
     // const champsPlayed = [...new Set(player.games.map(game => game.participants[game.participantNumber].champ.championName))]
-   
-    
+
     const getGameModes = (player: SummonerDto) => [...new Set(player.games.map(game => game.gameMode))]
 
     function getNumGamesByMode(gameMode: string, player: SummonerDto): number {
@@ -75,7 +74,7 @@
 
     <div class="grid gap-2">
         {#each filteredGames as game}
-            <Game {game} participant={game.participants[game.participantNumber]} />
+            <Game {game} server={player.server} />
         {/each}
     </div>
 
