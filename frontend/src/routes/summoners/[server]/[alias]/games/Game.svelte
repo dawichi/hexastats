@@ -7,7 +7,7 @@
     import type { ParticipantDto } from '$lib/types/player/Game.dto'
     import type { GameDto } from '$lib/types'
 
-    import { styles } from '$lib/config'
+    import { rawServer, servers, styles } from '$lib/config'
     import { RiotService } from '$lib/services/Riot.service'
     import SummonersGrid from './SummonersGrid.svelte'
     import { classNames, parse_k_num, tooltip } from '$lib/utils'
@@ -15,6 +15,7 @@
 
     export let game: GameDto
     export let participant: ParticipantDto
+    export let server: string
 
     let expanded = false
 
@@ -103,7 +104,7 @@
                 </article>
 
                 <div class="hidden lg:block">
-                    <SummonersGrid {game} />
+                    <SummonersGrid {game} {server} />
                 </div>
             </div>
         {:else}
@@ -114,6 +115,7 @@
                             <img class="{styles.iconSize.large} mx-1 rounded" src={RiotService.champImage(participant.champ.championName)} alt="champion" />
                             <span class="absolute top-0 rounded-lg bg-zinc-700 text-xs">{participant.champ.champLevel}</span>
                         </div>
+
                         <div class="grid grid-cols-2">
                             <div class="flex flex-col">
                                 <img class="{styles.iconSize.small} rounded" src={participant.spells[0]} alt="spell 2" />
@@ -124,9 +126,13 @@
                                 <img class="{styles.iconSize.small} rounded" src={participant.perks[0]} alt="secondary runes" />
                             </div>
                         </div>
-                        <span class="ml-1 h-5 w-20 overflow-hidden text-ellipsis whitespace-nowrap text-sm">
+
+                        <a
+                            href={`/summoners/${rawServer(server)}/${participant.summonerName}`}
+                            class="ml-1 h-5 w-20 overflow-hidden text-ellipsis whitespace-nowrap text-sm hover:underline "
+                        >
                             {participant.summonerName}
-                        </span>
+                        </a>
 
                         <div class="ml-2 grid w-16 grid-rows-2 text-xs">
                             <span class="whitespace-nowrap">{participant.kda.kills} / {participant.kda.deaths} / {participant.kda.assists}</span>
