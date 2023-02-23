@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Redis } from '@upstash/redis'
+import { PrintDatabaseDto } from 'src/common/types/PrintDatabase.dto'
 import { RedisRecordDto } from '../../common/types/RedisRecord.dto'
 import { GameDto, MasteryDto } from '../../types'
 
@@ -18,12 +19,11 @@ export class DatabaseService {
      *
      * @returns Array of all keys in the database
      */
-    async list(): Promise<string[]> {
-        this.logger.log('Checking all registered keys in redis...')
+    async printAll(): Promise<PrintDatabaseDto> {
         const keys = await this.redis.keys('*')
 
-        this.logger.log(`Found ${keys.length} keys!`)
-        return keys
+        this.logger.log(`REDIS: Found ${keys.length} keys!`)
+        return { total: keys.length, keys }
     }
 
     /**
@@ -88,20 +88,9 @@ export class DatabaseService {
     }
 
     /**
-     * ## GET count of keys in the database
-     */
-    async count(): Promise<number> {
-        this.logger.log('Counting all registered keys in redis...')
-        const keys = await this.redis.keys('*')
-
-        this.logger.log(`REDIS: Found ${keys.length} keys!`)
-        return keys.length
-    }
-
-    /**
      * ## TEST delete last game played
      */
-    async deleteLast(key: string): Promise<void> {
+    async deleteLast(key: string): Promise<boolean> {
         this.logger.log(`REDIS: Deleting last game played from ${key}...`)
 
         const data: RedisRecordDto = await this.redis.get(key)
@@ -110,5 +99,6 @@ export class DatabaseService {
             data.data = data.data.slice(1)
             await this.redis.set(key, data)
         }
+        return true
     }
 }

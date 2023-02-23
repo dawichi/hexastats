@@ -1,8 +1,8 @@
-import { Controller, Get, Logger, Param } from '@nestjs/common'
+import { Controller, Delete, Get, Logger, Param } from '@nestjs/common'
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { DatabaseService } from './database.service'
-import { PlayerDto } from '../../types'
 import { RedisRecordDto } from '../../common/types/RedisRecord.dto'
+import { PrintDatabaseDto } from '../../common/types/PrintDatabase.dto'
 
 @ApiTags('database')
 @Controller('database')
@@ -19,20 +19,15 @@ export class DatabaseController {
      */
     @Get('/print')
     @ApiOperation({
-        summary: 'Print all keys registered',
-        description: 'Print all keys registered in the Redis database',
+        summary: 'Print all keys stored in the database',
     })
     @ApiResponse({
         status: 200,
-        description: 'All the keys was checked',
-        type: [String],
+        type: PrintDatabaseDto,
     })
-    async checkAll(): Promise<{ total: number; keys: string[] }> {
+    async printAll(): Promise<PrintDatabaseDto> {
         this.logger.log('Check all keys in redis')
-        const keys = await this.databaseService.list()
-        const total = await this.databaseService.count()
-
-        return { total, keys }
+        return this.databaseService.printAll()
     }
 
     /**
@@ -42,12 +37,10 @@ export class DatabaseController {
     @Get('/print/:key')
     @ApiOperation({
         summary: 'Get data from a key',
-        description: 'Print all the data stored in a key',
     })
     @ApiResponse({
         status: 200,
-        description: 'Data returned',
-        type: PlayerDto,
+        type: RedisRecordDto,
     })
     @ApiParam({
         name: 'key',
@@ -63,14 +56,14 @@ export class DatabaseController {
      * ## Reset all database registers
      * @returns Confirmation that the database was deleted
      */
-    @Get('/reset')
+    @Delete('/reset')
     @ApiOperation({
-        summary: 'Clear all data',
-        description: 'Reset the Redis database, clearing all data',
+        summary: 'Clear all data | try to avoid!',
+        description: 'It flushes the whole Redis database, use it only if needed',
+        deprecated: true,
     })
     @ApiResponse({
         status: 200,
-        description: 'All data was cleaned',
         type: Boolean,
     })
     async reset(): Promise<boolean> {
@@ -82,18 +75,41 @@ export class DatabaseController {
      * ## Reset all database registers
      * @returns Confirmation that the database was deleted
      */
-    @Get('/deleteLast/:key')
+    @Delete('/delete/:key')
     @ApiOperation({
-        summary: 'Delete last value in the array',
-        description: 'Delete last value in the array',
+        summary: 'Delete all data from a key',
+    })
+    @ApiResponse({
+        status: 200,
+        type: Boolean,
+    })
+    @ApiParam({
+        name: 'key',
+        type: String,
+    })
+    async delete(@Param('key') key: string): Promise<boolean> {
+        return this.databaseService.deleteOne(key)
+    }
+
+    /**
+     * ## Reset all database registers
+     * @returns Confirmation that the database was deleted
+     */
+    @Delete('/deleteLast/:key')
+    @ApiOperation({
+        summary: 'Delete last value in the data array | Testing only',
+        deprecated: true,
+    })
+    @ApiResponse({
+        status: 200,
+        type: Boolean,
     })
     @ApiParam({
         name: 'key',
         description: 'Key to get the data from',
         type: String,
     })
-    async deleteLast(@Param('key') key: string): Promise<true> {
-        await this.databaseService.deleteLast(key)
-        return true
+    async deleteLast(@Param('key') key: string): Promise<boolean> {
+        return this.databaseService.deleteLast(key)
     }
 }
