@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios'
-import { BadRequestException, ForbiddenException, HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
+import { BadRequestException, HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
 import { perkUrl, runeUrl } from '../../common/utils/runeUrl'
