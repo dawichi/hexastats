@@ -126,13 +126,15 @@
                                 <img class="{styles.iconSize.small} rounded" src={participant.perks[0]} alt="secondary runes" />
                             </div>
                         </div>
-
-                        <a
+                        
+                        <div class="ml-1 h-5 w-20 overflow-hidden text-ellipsis whitespace-nowrap text-sm ">
+                            <a
                             href={`/summoners/${rawServer(server)}/${participant.summonerName}`}
-                            class="ml-1 h-5 w-20 overflow-hidden text-ellipsis whitespace-nowrap text-sm hover:underline "
-                        >
+                            class="hover:underline"
+                            >
                             {participant.summonerName}
                         </a>
+                    </div>
 
                         <div class="ml-2 grid w-16 grid-rows-2 text-xs">
                             <span class="whitespace-nowrap">{participant.kda.kills} / {participant.kda.deaths} / {participant.kda.assists}</span>

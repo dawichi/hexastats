@@ -56,7 +56,7 @@
 
         // Remove your own name from the list
         delete indexByName[player.games[0].participants[player.games[0].participantNumber].summonerName]
-        
+
         const result = Object.keys(indexByName)
             .map(key => ({
                 name: key,
@@ -80,18 +80,20 @@
 
         {#each buildFriends(player) as friend}
             <section class="grid grid-cols-5 items-center gap-2 text-sm md:text-base">
-                <a
-                    href={`/summoners/${rawServer(player.server)}/${friend.name}`}
-                    class="col-span-2 overflow-hidden text-ellipsis whitespace-nowrap hover:underline "
-                >
-                    {friend.name}
-                </a>
+                <div class="col-span-2">
+                    <a
+                        href={`/summoners/${rawServer(player.server)}/${friend.name}`}
+                        class="col-span-2 overflow-hidden text-ellipsis whitespace-nowrap hover:underline "
+                    >
+                        {friend.name}
+                    </a>
+                </div>
 
                 <span>
                     {friend.wins} / {friend.games}
                 </span>
 
-                <div class="col-span-2 h-2 rounded overflow-hidden bg-zinc-600">
+                <div class="col-span-2 h-2 overflow-hidden rounded bg-zinc-600">
                     <div class="flex" style="width: {(friend.games / maxGames) * 100}%">
                         <!-- GREEN BAR: represents number of wins -->
                         <div class="h-2 bg-green-400" style="width: {(friend.wins / friend.games) * 100}%" />
