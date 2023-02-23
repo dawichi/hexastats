@@ -72,16 +72,26 @@
     }
 </script>
 
-<div class="grid grid-cols-5 pb-4">
+<div class="grid grid-rows-5 p-4 gap-x-2">
+    <section class="mb-4 grid grid-cols-6 gap-2">
+        <h4>Role</h4>
+        <h4>Record</h4>
+        <h4>Winrate</h4>
+        <h4 class="col-span-3">Wins / Losses</h4>
+    </section>
     {#each buildPosition(player).positions as position}
-        <div class="flex flex-col items-center gap-2 text-center">
-            <span>{position.wins} / {position.games}</span>
-
+        <section class="grid grid-cols-6 items-center gap-2 text-sm md:text-base">
             <img src={RiotService.teamPositionIcon(position.key)} width={35} height={35} alt="position" />
-
-            {#if position.games}
-            <span class="{styleWinrate(winrate(position.wins, position.games - position.wins))}">{winrate(position.wins, position.games - position.wins)} %</span>
-            {/if}
-        </div>
+            <span>{position.wins} / {position.games}</span>
+            <span class="{position.games ? '' : 'invisible'} {styleWinrate(winrate(position.wins, position.games - position.wins))}">{winrate(position.wins, position.games - position.wins)} %</span>
+            <div class="col-span-3 h-2 rounded overflow-hidden bg-zinc-600">
+                <div class="flex" style="width: {(position.games / buildPosition(player).maxGames) * 100}%">
+                    <!-- GREEN BAR: represents number of wins -->
+                    <div class="h-2 bg-green-400" style="width: {(position.wins / position.games) * 100}%" />
+                    <!-- RED BAR: represents number of defeats -->
+                    <div class="h-2 rounded-r bg-red-400" style="width: {((position.games - position.wins) / position.games) * 100}%" />
+                </div>
+            </div>
+        </section>
     {/each}
 </div>
