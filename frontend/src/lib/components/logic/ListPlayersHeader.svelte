@@ -8,7 +8,6 @@
     import { styles } from '$lib/config'
     import { playersContext } from '$lib/context/players'
     import type { SummonerDto } from '$lib/types'
-    import { Image } from '..'
 
     // Context
     let _players: SummonerDto[] = []
