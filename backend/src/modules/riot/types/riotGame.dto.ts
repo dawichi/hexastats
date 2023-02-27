@@ -142,6 +142,7 @@ interface RiotTeamDto {
         tower: RiotObjectiveDto
     }
     teamId: number
+    win: boolean
 }
 
 export interface RiotGameDto {

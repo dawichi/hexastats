@@ -5,7 +5,7 @@ import { lastValueFrom } from 'rxjs'
 import { perkUrl, runeUrl } from '../../common/utils/runeUrl'
 import { serverRegion, spellUrl, winrate } from '../../common/utils'
 import { validateGameType } from '../../common/validators'
-import { GameDto, MasteryDto, RankDto } from '../../types'
+import { GameDto, MasteryDto, RankDto, TeamDto } from '../../types'
 import { RiotChampionsDto, RiotGameDto, RiotMasteryDto, RiotRankDto, RiotSummonerDto } from './types'
 
 export type queueTypeDto = 'ranked' | 'normal' | 'all'
@@ -224,25 +224,26 @@ export class RiotService {
     formatGame(rawGame: RiotGameDto, puuid: string): GameDto {
         const itemUrl = (id: number) => (id ? `http://ddragon.leagueoflegends.com/cdn/${this.version}/img/item/${id}.png` : null)
 
+        function parseChampionId(id: number): string | null {
+            if (id === -1) return null
+            return `http://ddragon.leagueoflegends.com/cdn/${this.version}/img/champion/${this.champions[id]}.png`
+        }
+
         return {
             matchId: rawGame.metadata.matchId,
             participantNumber: rawGame.metadata.participants.indexOf(puuid),
             gameCreation: rawGame.info.gameCreation,
             gameDuration: rawGame.info.gameDuration,
             gameMode: validateGameType(rawGame.info.queueId),
-            teams: rawGame.info.teams.map((team: any) => {
-                team = team.bans.map((ban: any) => {
-                    if (ban.championId !== -1) {
-                        ban.championId = `http://ddragon.leagueoflegends.com/cdn/${this.version}/img/champion/${
-                            this.champions[ban.championId]
-                        }.png`
-                    } else {
-                        ban.championId = null
-                    }
-                    return ban
-                })
-                return team
-            }),
+            teams: rawGame.info.teams.map(team => ({
+                teamId: team.teamId,
+                win: team.win,
+                bans: team.bans.map(ban => ({
+                    championId: parseChampionId(ban.championId),
+                    pickTurn: ban.pickTurn,
+                })),
+                objectives: team.objectives,
+            })),
             participants: rawGame.info.participants.map(participant => ({
                 summonerName: participant.summonerName,
                 win: participant.win,
