@@ -9,7 +9,10 @@
     import { SummonerService } from '$lib/services/Summoner.service'
     import { CachedPlayers } from '..'
 
-    export let cachedPlayers: string[]
+    export let cachedPlayers: Array<{
+        server: string
+        name: string
+    }>
 
     // Search params
     let username = ''
@@ -105,7 +108,9 @@
             {/if}
         </button>
 
-        <CachedPlayers summonerName={username} {cachedPlayers} />
+        <div class="col-span-2">
+            <CachedPlayers summonerName={username} {cachedPlayers} />
+        </div>
     </div>
 
     {#if error}

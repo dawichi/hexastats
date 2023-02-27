@@ -1,17 +1,26 @@
 import { error } from '@sveltejs/kit'
 
+type CachedPlayer = {
+    server: string
+    name: string
+}
+
 /** @type {import('./$types').PageLoad} */
-export async function load(): Promise<{ names: string[] }> {
+export async function load(): Promise<{ cachedPlayers: CachedPlayer[] }> {
     try {
         const response = await fetch('http://localhost:5000/database/print')
         const data = await response.json()
 
+        // keys = ['server:name', 'server:name', ...]
         const keys: string[] = data.keys.map((key: string) => {
             const [server, name] = key.split(':')
             return `${server}:${decodeURI(name)}`
         })
         return {
-            names: [...new Set(keys)],
+            cachedPlayers: [...new Set(keys)].map((key: string) => ({
+                server: key.split(':')[0],
+                name: key.split(':')[1],
+            })),
         }
     } catch (e: unknown) {
         throw error(500, 'Server is not up, try in a few minutes.')

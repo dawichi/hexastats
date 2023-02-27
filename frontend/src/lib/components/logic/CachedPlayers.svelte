@@ -4,28 +4,34 @@
   List players cached in database
 -->
 <script lang="ts">
-    import { rawServer } from "$lib/config"
-
+    import { rawServer } from '$lib/config'
 
     export let summonerName: string
-    export let cachedPlayers: string[]
+    export let cachedPlayers: Array<{
+        server: string
+        name: string
+    }>
 
-    let filteredNames: string[] = []
-
-    function filterList(alias: string): string[] {
-        console.log(alias)
-        // console.log(cachedPlayers.map(name => (name.toLowerCase().includes(alias.toLowerCase()) ? name : '')))
-
-        return cachedPlayers.map(name => (name.toLowerCase().includes(alias.toLowerCase()) ? name : ''))
+    const getServer = (summonerName: string) => cachedPlayers.find(cachedPlayer => cachedPlayer.name === summonerName)?.server ?? ''
+    const filterList = (alias: string): string[] => {
+        return cachedPlayers.map(cachedPlayer => (cachedPlayer.name.toLowerCase().includes(alias.toLowerCase()) ? cachedPlayer.name : '')).filter(Boolean)
     }
 </script>
 
-<div class="flex flex-col">
-    {#each [0, 1, 2, 3, 4] as idx}
-        <div>
-            <a href={`/summoners/${rawServer(filterList(summonerName)[idx].split(':')[0])}/${filterList(summonerName)[idx].split(':')[1]}`} class="hover:underline">
-                {filterList(summonerName)[idx].split(':')[1]}
-            </a>
+{#if summonerName !== '' && filterList(summonerName).length > 0}
+    <section>
+        <h2 class="whitespace-nowrap text-lg">Searched players:</h2>
+        <div class="flex flex-col pl-4">
+            {#each [0, 1, 2, 3, 4] as idx}
+                {#if filterList(summonerName)[idx]}
+                    <a href={`/summoners/${rawServer(getServer(filterList(summonerName)[idx]))}/${filterList(summonerName)[idx]}`} class="hover:underline">
+                        <div class="flex whitespace-nowrap">
+                            <span class="w-12">{getServer(filterList(summonerName)[idx])}</span>
+                            <span>{filterList(summonerName)[idx]}</span>
+                        </div>
+                    </a>
+                {/if}
+            {/each}
         </div>
-    {/each}
-</div>
+    </section>
+{/if}

@@ -2,7 +2,12 @@
     import { SearchPlayer } from '$lib/components'
 
     /** @type {import('./$types').PageData} */
-    export let data: { names: string[] }
+    export let data: {
+        cachedPlayers: Array<{
+            server: string
+            name: string
+        }>
+    }
 </script>
 
 <div class="animate__animated animate__fadeIn container m-auto lg:py-16">
@@ -21,5 +26,5 @@
         </div>
     </div>
 
-    <SearchPlayer cachedPlayers={data.names} />
+    <SearchPlayer cachedPlayers={data.cachedPlayers} />
 </div>
