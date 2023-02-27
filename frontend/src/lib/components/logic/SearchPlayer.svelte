@@ -7,6 +7,9 @@
     import { goto } from '$app/navigation'
     import { servers } from '$lib/config/servers'
     import { SummonerService } from '$lib/services/Summoner.service'
+    import { CachedPlayers } from '..'
+
+    export let cachedPlayers: string[]
 
     // Search params
     let username = ''
@@ -22,7 +25,7 @@
         if (loading) return
         loading = true
         error = false
-        
+
         const playerData = await SummonerService.existPlayer(servers[serverIdx], username)
         if (playerData) {
             return goto(`/summoners/${servers[serverIdx]}/${playerData.alias}`)
@@ -76,16 +79,18 @@
             {/if}
         </div>
 
+        <!-- svelte-ignore a11y-autofocus -->
         <input
             placeholder="Summoner name"
             type="text"
             class="h-12 w-full rounded border-0 bg-white p-2 shadow outline-0 ring-indigo-400 focus:ring-4 dark:bg-zinc-800"
             on:keypress={handleKeyPress}
             bind:value={username}
+            autofocus
         />
 
         <button
-            class={`p-2 h-12 rounded text-white font-bold tracking-widest bg-indigo-400 hover:bg-indigo-500 col-span-2 shadow ${
+            class={`col-span-2 h-12 rounded bg-indigo-400 p-2 font-bold tracking-widest text-white shadow hover:bg-indigo-500 ${
                 loading ? 'cursor-not-allowed opacity-50' : ''
             }`}
             on:click={handleSearch}
@@ -99,6 +104,8 @@
                 Search
             {/if}
         </button>
+
+        <CachedPlayers summonerName={username} {cachedPlayers} />
     </div>
 
     {#if error}

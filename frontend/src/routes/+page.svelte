@@ -1,5 +1,8 @@
 <script lang="ts">
     import { SearchPlayer } from '$lib/components'
+
+    /** @type {import('./$types').PageData} */
+    export let data: { names: string[] }
 </script>
 
 <div class="animate__animated animate__fadeIn container m-auto lg:py-16">
@@ -18,5 +21,5 @@
         </div>
     </div>
 
-    <SearchPlayer />
+    <SearchPlayer cachedPlayers={data.names} />
 </div>

@@ -19,7 +19,7 @@
             <span class="ml-1 h-5 w-20 overflow-hidden text-ellipsis whitespace-nowrap text-left text-sm">
                 <a
                     href={`/summoners/${rawServer(server)}/${participant.summonerName}`}
-                    class={game.participantNumber === idx ? 'font-bold hover:underline' : ''}
+                    class="hover:underline {game.participantNumber === idx ? 'font-bold' : ''}"
                 >
                     {participant.summonerName}
                 </a>
