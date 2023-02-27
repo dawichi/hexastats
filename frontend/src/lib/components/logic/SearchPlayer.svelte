@@ -76,13 +76,15 @@
             {/if}
         </div>
 
+        <!-- svelte-ignore a11y-autofocus -->
         <input
             placeholder="Summoner name"
             type="text"
             class="h-12 w-full rounded border-0 bg-white p-2 shadow outline-0 ring-indigo-400 focus:ring-4 dark:bg-zinc-800"
             on:keypress={handleKeyPress}
             bind:value={username}
-        />
+            autofocus
+            />
 
         <button
             class={`p-2 h-12 rounded text-white font-bold tracking-widest bg-indigo-400 hover:bg-indigo-500 col-span-2 shadow ${
