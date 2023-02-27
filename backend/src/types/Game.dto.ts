@@ -19,7 +19,7 @@ class Ban {
         description: 'Champion ID of the banned champion',
         example: 420,
     })
-    championId: number
+    championId: string
 
     @ApiProperty({
         description: 'Ban turn',
@@ -36,10 +36,28 @@ class Objectives {
     baron: Objective
 
     @ApiProperty({
+        description: 'Champion kills',
+        type: Objective,
+    })
+    champion: Objective
+
+    @ApiProperty({
         description: 'Dragon kills',
         type: Objective,
     })
     dragon: Objective
+
+    @ApiProperty({
+        description: 'Inhibitor kills',
+        type: Objective,
+    })
+    inhibitor: Objective
+
+    @ApiProperty({
+        description: 'Rift Herald kills',
+        type: Objective,
+    })
+    riftHerald: Objective
 
     @ApiProperty({
         description: 'Tower kills',
@@ -48,7 +66,7 @@ class Objectives {
     tower: Objective
 }
 
-class Team {
+export class Team {
     @ApiProperty({
         description: 'Team ID',
         example: 123456,
