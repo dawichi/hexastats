@@ -224,11 +224,6 @@ export class RiotService {
     formatGame(rawGame: RiotGameDto, puuid: string): GameDto {
         const itemUrl = (id: number) => (id ? `http://ddragon.leagueoflegends.com/cdn/${this.version}/img/item/${id}.png` : null)
 
-        function parseChampionId(id: number): string | null {
-            if (id === -1) return null
-            return `http://ddragon.leagueoflegends.com/cdn/${this.version}/img/champion/${this.champions[id]}.png`
-        }
-
         return {
             matchId: rawGame.metadata.matchId,
             participantNumber: rawGame.metadata.participants.indexOf(puuid),
@@ -239,8 +234,11 @@ export class RiotService {
                 teamId: team.teamId,
                 win: team.win,
                 bans: team.bans.map(ban => ({
-                    championId: parseChampionId(ban.championId),
                     pickTurn: ban.pickTurn,
+                    championId:
+                        ban.championId === -1
+                            ? null
+                            : `http://ddragon.leagueoflegends.com/cdn/${this.version}/img/champion/${this.champions[ban.championId]}.png`,
                 })),
                 objectives: team.objectives,
             })),
