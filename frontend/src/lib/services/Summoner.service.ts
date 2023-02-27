@@ -6,7 +6,7 @@ import type { PlayerDto } from '$lib/types/player/Player.dto'
 import type { MasteryDto } from '$lib/types/player/Mastery.dto'
 
 const development = PUBLIC_IS_DEVELOPMENT === 'true'
-const backendUrl = development ? 'http://localhost:5000/' : 'https://api-hexastats.vercel.app/'
+export const backendUrl = development ? 'http://localhost:5000/' : 'https://api-hexastats.vercel.app/'
 
 /**
  * ## Service to manage summoner data requests

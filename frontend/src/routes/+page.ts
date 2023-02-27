@@ -1,3 +1,4 @@
+import { backendUrl } from '$lib/services/Summoner.service'
 import { error } from '@sveltejs/kit'
 
 type CachedPlayer = {
@@ -8,7 +9,7 @@ type CachedPlayer = {
 /** @type {import('./$types').PageLoad} */
 export async function load(): Promise<{ cachedPlayers: CachedPlayer[] }> {
     try {
-        const response = await fetch('http://localhost:5000/database/print')
+        const response = await fetch(`${backendUrl}database/print`)
         const data = await response.json()
 
         // keys = ['server:name', 'server:name', ...]
