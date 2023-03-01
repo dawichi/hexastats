@@ -39,7 +39,6 @@
     // Search button by pressing enter
     const handleKeyPress = (event: KeyboardEvent): void => {
         if (event.key === 'Enter') handleSearch()
-        window.scrollTo(0, 0)
     }
 </script>
 
