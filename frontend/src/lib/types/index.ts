@@ -1,4 +1,5 @@
 // Sumoner interfaces
+export type { CachedName as CachedNameDto } from './player/CachedName'
 export type { ChampDto as ChampDto } from './player/Champ.dto'
 export type { GameDto as GameDto } from './player/Game.dto'
 export type { MasteryDto as MasteryDto } from './player/Mastery.dto'

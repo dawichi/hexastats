@@ -4,13 +4,12 @@
   List players cached in database
 -->
 <script lang="ts">
+    import type { CachedNameDto } from '$lib/types'
     import { rawServer } from '$lib/config'
+    import { ProfileImg } from '..'
 
     export let summonerName: string
-    export let cachedPlayers: Array<{
-        server: string
-        name: string
-    }>
+    export let cachedPlayers: Array<CachedNameDto>
 
     const getServer = (summonerName: string) => cachedPlayers.find(cachedPlayer => cachedPlayer.name === summonerName)?.server ?? ''
     const filterList = (alias: string): string[] => {
@@ -22,10 +21,16 @@
     <section>
         <h2 class="whitespace-nowrap text-lg">Searched players:</h2>
         <div class="flex flex-col pl-4">
-            {#each [0, 1, 2, 3, 4] as idx}
+            {#each [0, 1, 2] as idx}
                 {#if filterList(summonerName)[idx]}
                     <a href={`/summoners/${rawServer(getServer(filterList(summonerName)[idx]))}/${filterList(summonerName)[idx]}`} class="hover:underline">
-                        <div class="flex whitespace-nowrap">
+                        <div class="jus flex items-center whitespace-nowrap">
+                            <span>
+                                <ProfileImg
+                                    image={cachedPlayers.find(player => player.name === filterList(summonerName)[idx])?.image ?? ''}
+                                    level={cachedPlayers.find(player => player.name === filterList(summonerName)[idx])?.level}
+                                />
+                            </span>
                             <span class="w-12">{getServer(filterList(summonerName)[idx])}</span>
                             <span>{filterList(summonerName)[idx]}</span>
                         </div>
