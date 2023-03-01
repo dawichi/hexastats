@@ -110,6 +110,6 @@
             <i class="bi bi-emoji-frown" />
         </span>
 
-        <p>There is games with friends loaded.</p>
+        <p>There are no games with friends loaded.</p>
     </div>
 {/if}
