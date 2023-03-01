@@ -1,12 +1,10 @@
 <script lang="ts">
+    import type { CachedNameDto } from '$lib/types'
     import { SearchPlayer } from '$lib/components'
 
     /** @type {import('./$types').PageData} */
     export let data: {
-        cachedPlayers: Array<{
-            server: string
-            name: string
-        }>
+        cachedPlayers: Array<CachedNameDto>
     }
 </script>
 

@@ -4,15 +4,13 @@
   Add players to the context
 -->
 <script lang="ts">
+    import type { CachedNameDto } from '$lib/types'
     import { goto } from '$app/navigation'
     import { servers } from '$lib/config/servers'
     import { SummonerService } from '$lib/services/Summoner.service'
     import { CachedPlayers } from '..'
 
-    export let cachedPlayers: Array<{
-        server: string
-        name: string
-    }>
+    export let cachedPlayers: Array<CachedNameDto>
 
     // Search params
     let username = ''
@@ -41,6 +39,7 @@
     // Search button by pressing enter
     const handleKeyPress = (event: KeyboardEvent): void => {
         if (event.key === 'Enter') handleSearch()
+        window.scrollTo(0, 0)
     }
 </script>
 
