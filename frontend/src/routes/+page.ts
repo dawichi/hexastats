@@ -2,7 +2,7 @@ import { backendUrl } from '$lib/services/Summoner.service'
 import type { CachedNameDto } from '$lib/types'
 
 /** @type {import('./$types').PageLoad} */
-export async function load(): Promise<{ cachedPlayers: CachedNameDto[] }> {
+export async function load({ fetch }: { fetch: typeof window.fetch }): Promise<{ cachedPlayers: CachedNameDto[] }> {
     try {
         const response = await fetch(`${backendUrl}database/print`)
         const data = await response.json()
