@@ -1,11 +1,17 @@
 <script lang="ts">
     import type { CachedNameDto } from '$lib/types'
     import { SearchPlayer } from '$lib/components'
+    import { filteredCachedPlayersContext } from '$lib/context/cachedPlayers'
 
     /** @type {import('./$types').PageData} */
     export let data: {
         cachedPlayers: Array<CachedNameDto>
     }
+
+    // Context
+    let cachedPlayers: Array<CachedNameDto> = []
+    filteredCachedPlayersContext.subscribe(data => (cachedPlayers = data))
+    filteredCachedPlayersContext.set(data.cachedPlayers)
 </script>
 
 <div class="animate__animated animate__fadeIn container m-auto lg:py-16">
@@ -22,7 +28,9 @@
             <p>Analyze and visualize your League of Legends data !</p>
             <p>Fastest way to check your last games and measure your performance !</p>
         </div>
+
+        <hr class="mx-auto md:w-1/2" />
     </div>
 
-    <SearchPlayer cachedPlayers={data.cachedPlayers} />
+    <SearchPlayer />
 </div>

@@ -7,35 +7,66 @@
     import type { CachedNameDto } from '$lib/types'
     import { rawServer } from '$lib/config'
     import { ProfileImg } from '..'
+    import { backendUrl } from '$lib/services/Summoner.service'
+    import { filteredCachedPlayersContext } from '$lib/context/cachedPlayers'
 
     export let summonerName: string
-    export let cachedPlayers: Array<CachedNameDto>
 
-    const getServer = (summonerName: string) => cachedPlayers.find(cachedPlayer => cachedPlayer.name === summonerName)?.server ?? ''
-    const filterList = (alias: string): string[] => {
-        return cachedPlayers.map(cachedPlayer => (cachedPlayer.name.toLowerCase().includes(alias.toLowerCase()) ? cachedPlayer.name : '')).filter(Boolean)
+    // Context
+    let _cachedPlayers: Array<CachedNameDto> = []
+    filteredCachedPlayersContext.subscribe(data => (_cachedPlayers = data))
+
+    const namesSearched: string[] = []
+
+    function getPlayersData(summonerName: string): void {
+        if (!summonerName) {
+            return
+        }
+        
+        const filteredPlayers = _cachedPlayers.filter(p => p.name.toLowerCase().includes(summonerName.toLowerCase()))
+        if (filteredPlayers.length > 3) {
+            filteredPlayers.length = 3
+        }
+        
+        for (const player of filteredPlayers) {
+            if (player.level || namesSearched.includes(player.name)) {
+                continue
+            }
+
+            namesSearched.push(player.name)
+            fetch(`${backendUrl}summoners/${player.server}/${player.name}/level-image`)
+                .then(res => res.json())
+                .then(data => {
+                    filteredCachedPlayersContext.update(players => {
+                        const idx = players.findIndex(p => p.name === player.name)
+                        players[idx].level = data.level
+                        players[idx].image = data.image
+                        return players
+                    })
+                })
+        }
     }
+    
+    $: getPlayersData(summonerName)
 </script>
 
-{#if summonerName !== '' && filterList(summonerName).length > 0}
+{#if summonerName && _cachedPlayers.filter(p => p.name.toLowerCase().includes(summonerName.toLowerCase())).length}
     <section>
-        <h2 class="whitespace-nowrap text-lg">Searched players:</h2>
-        <div class="flex flex-col pl-4">
-            {#each [0, 1, 2] as idx}
-                {#if filterList(summonerName)[idx]}
-                    <a href={`/summoners/${rawServer(getServer(filterList(summonerName)[idx]))}/${filterList(summonerName)[idx]}`} class="hover:underline">
-                        <div class="jus flex items-center whitespace-nowrap">
-                            <span>
+        <h2 class="whitespace-nowrap pb-3 text-lg">Searched players:</h2>
+        <div class="flex flex-col gap-2 pl-4">
+            {#each _cachedPlayers.filter(p => p.name.toLowerCase().includes(summonerName.toLowerCase())).slice(0, 3) as player}
+                    <a href={`/summoners/${rawServer(player.server)}/${player.name}`} class="hover:underline">
+                        <div class="flex items-center whitespace-nowrap rounded bg-white shadow transition-transform hover:scale-105 hover:shadow-indigo-400 dark:bg-zinc-800">
+                            <span class="{player.level ? 'visible' : 'invisible'}">
                                 <ProfileImg
-                                    image={cachedPlayers.find(player => player.name === filterList(summonerName)[idx])?.image ?? ''}
-                                    level={cachedPlayers.find(player => player.name === filterList(summonerName)[idx])?.level}
+                                    image={player.image}
+                                    level={player.level}
                                 />
                             </span>
-                            <span class="w-12">{getServer(filterList(summonerName)[idx])}</span>
-                            <span>{filterList(summonerName)[idx]}</span>
+                            <span class="w-12">{player.server}</span>
+                            <span>{player.name}</span>
                         </div>
                     </a>
-                {/if}
             {/each}
         </div>
     </section>

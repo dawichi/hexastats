@@ -4,13 +4,10 @@
   Add players to the context
 -->
 <script lang="ts">
-    import type { CachedNameDto } from '$lib/types'
     import { goto } from '$app/navigation'
     import { servers } from '$lib/config/servers'
     import { SummonerService } from '$lib/services/Summoner.service'
     import { CachedPlayers } from '..'
-
-    export let cachedPlayers: Array<CachedNameDto>
 
     // Search params
     let username = ''
@@ -43,7 +40,6 @@
 </script>
 
 <div>
-    <hr class="mx-auto mt-3 p-2 md:w-1/2" />
     <div class="m-auto grid grid-cols-2 gap-4 p-5 sm:w-96">
         <div class="relative cursor-pointer select-none rounded shadow">
             <button
@@ -107,7 +103,7 @@
         </button>
 
         <div class="col-span-2">
-            <CachedPlayers summonerName={username} {cachedPlayers} />
+            <CachedPlayers summonerName={username} />
         </div>
     </div>
 
