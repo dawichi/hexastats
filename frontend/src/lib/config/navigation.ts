@@ -3,14 +3,14 @@ export const navigation: {
     name: string
     path: string
 }[] = [
-    {
-        name: 'Stats',
-        path: '/stats',
-    },
-    {
-        name: 'Mastery',
-        path: '/mastery',
-    },
+    // {
+    //     name: 'Stats',
+    //     path: '/stats',
+    // },
+    // {
+    //     name: 'Mastery',
+    //     path: '/mastery',
+    // },
     // {
     //     name: 'Multi',
     //     path: '/multiple',
@@ -19,8 +19,8 @@ export const navigation: {
     //     name: 'Graphs',
     //     path: '/graphs',
     // },
-    {
-        name: 'Compare',
-        path: '/compare',
-    },
+    // {
+    //     name: 'Compare',
+    //     path: '/compare',
+    // },
 ]
