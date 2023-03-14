@@ -29,11 +29,9 @@ export type StatRow = {
     }
 }
 
-type Position = 'TOP' | 'JUNGLE' | 'MIDDLE' | 'BOTTOM' | 'UTILITY'
-
 export interface ReportDto extends PlayerDto {
     stats_by_champ: Record<string, StatRow>
-    stats_by_position: Record<Position, StatRow>
+    stats_by_position: Record<string, StatRow>
 }
 
 export const reportsContext: Writable<ReportDto[]> = writable([])

@@ -20,10 +20,15 @@
     playerContext.subscribe(player => (_player = player))
     playerContext.set(data)
 
+    // Reports
     let _reports: ReportDto[] = []
     reportsContext.subscribe(data => (_reports = data))
 
-    const handleGenerateReport = () => reportsContext.update(reports => [...reports, generateReport(_player)])
+    let analyzed = false
+    function handleGenerateReport(): void {
+        analyzed = true
+        reportsContext.update(reports => [...reports, generateReport(_player)])
+    }
 </script>
 
 <Container title="" description="" disableHeader>
@@ -34,7 +39,19 @@
                 <MasteryRow masteries={_player.masteries} />
             </header>
 
-            <button on:click={handleGenerateReport}> Reporte </button>
+            {#if !analyzed}
+                <button
+                    class="{styles.card} {styles.scale} mx-2 my-1 cursor-pointer bg-zinc-800 py-2 px-4 text-white hover:bg-indigo-600"
+                    on:click={handleGenerateReport}
+                >
+                    Analyze
+                </button>
+            {:else}
+                <button class="{styles.card} mx-2 my-1 cursor-pointer bg-green-700 py-2 px-4 text-white">
+                    Analyzed <i class="bi bi-check" />
+                </button>
+            {/if}
+
             <div class="grid-cols-3 2xl:grid">
                 <aside class="grid lg:grid-cols-2 2xl:block">
                     <div class="{styles.foreground} {styles.card} m-2 mb-4">
