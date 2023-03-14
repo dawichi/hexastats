@@ -36,21 +36,21 @@
         </div>
 
         <div class="w-full px-2">
-            <span class="">{champ.games}</span>
+            <span class="flex justify-center">{champ.games}</span>
             <div class="h-2 rounded bg-zinc-300 dark:bg-zinc-600">
                 <div class="h-2 rounded bg-blue-400" style="width: {(champ.games / maxGames()) * 100}%" />
             </div>
         </div>
 
         <div class="w-full px-2">
-            <span class="">{champ.winrate}%</span>
+            <span class="flex justify-center">{champ.winrate}%</span>
             <div class="h-2 rounded bg-zinc-300 dark:bg-zinc-600">
                 <div class="h-2 rounded bg-red-400" style="width: {champ.winrate}%" />
             </div>
         </div>
 
         <div class="w-full px-2">
-            <span class="">{champ.kda}</span>
+            <span class="flex justify-center">{champ.kda}</span>
             <div class="h-2 rounded bg-zinc-300 dark:bg-zinc-600">
                 <div class="h-2 rounded bg-green-400" style="width: {(champ.kda / maxKDA()) * 100}%" />
             </div>
