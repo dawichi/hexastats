@@ -9,7 +9,6 @@
     import { generalContext } from '$lib/context/general'
     import { playersContext } from '$lib/context/players'
     import { SummonerService } from '$lib/services/Summoner.service'
-    import { LocalStorageService, type PlayerStoredDto } from '$lib/services/LocalStorage.service'
     import { onMount } from 'svelte'
 
     // Search params
@@ -19,11 +18,6 @@
 
     // Search helpers
     let error = false
-    let storedNames: PlayerStoredDto[] = []
-
-    onMount(() => {
-        storedNames = LocalStorageService.list()
-    })
 
     // Context
     let _players: SummonerDto[] = []
@@ -39,21 +33,11 @@
         try {
             const playerData = await SummonerService.getData(servers[serverIdx], username)
             playersContext.update(players => [...players, playerData])
-
-            // Add new "recently searched player" to the local storage
-            LocalStorageService.add({
-                serverIdx,
-                name: playerData.alias,
-                level: playerData.level,
-                image: playerData.image,
-            })
-            storedNames = LocalStorageService.list()
         } catch (e) {
             error = true
         }
         generalContext.update(x => ({ ...x, loadingPlayer: false }))
         username = ''
-        storedNames = LocalStorageService.list()
     }
 
     // Search button by pressing enter
