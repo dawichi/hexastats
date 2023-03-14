@@ -9,6 +9,8 @@
     import ListFriends from './ListFriends.svelte'
     import ListGames from './ListGames.svelte'
     import { playerContext } from '$lib/context/players'
+    import { generateReport } from '$lib/utils/generateReport'
+    import { reportsContext, type ReportDto } from '$lib/context/reports'
 
     /** @type {import('./$types').PageData} */
     export let data: SummonerDto
@@ -17,6 +19,11 @@
     let _player: SummonerDto = {} as SummonerDto
     playerContext.subscribe(player => (_player = player))
     playerContext.set(data)
+
+    let _reports: ReportDto[] = []
+    reportsContext.subscribe(data => (_reports = data))
+
+    const handleGenerateReport = () => reportsContext.update(reports => [...reports, generateReport(_player)])
 </script>
 
 <Container title="" description="" disableHeader>
@@ -27,6 +34,7 @@
                 <MasteryRow masteries={_player.masteries} />
             </header>
 
+            <button on:click={handleGenerateReport}> Reporte </button>
             <div class="grid-cols-3 2xl:grid">
                 <aside class="grid lg:grid-cols-2 2xl:block">
                     <div class="{styles.foreground} {styles.card} m-2 mb-4">
