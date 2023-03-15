@@ -1,5 +1,4 @@
-import type { PlayerDto } from '$lib/types/player/Player.dto'
-import { writable, type Writable } from 'svelte/store'
+import type { PlayerDto } from './player/Player.dto'
 
 export type StatRow = {
     games: number
@@ -29,9 +28,7 @@ export type StatRow = {
     }
 }
 
-export interface ReportDto extends PlayerDto {
+export interface Report extends PlayerDto {
     stats_by_champ: Record<string, StatRow>
     stats_by_position: Record<string, StatRow>
 }
-
-export const reportsContext: Writable<ReportDto[]> = writable([])

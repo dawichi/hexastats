@@ -1,8 +1,7 @@
-import type { ReportDto, StatRow } from '$lib/context/reports'
-import type { SummonerDto } from '$lib/types'
+import type { ReportDto, StatRowDto, SummonerDto } from '$lib/types'
 
 export function generateReport(player: SummonerDto): ReportDto {
-    const base: StatRow = {
+    const base: StatRowDto = {
         games: 0,
         wins: 0,
         kda: {
@@ -29,7 +28,7 @@ export function generateReport(player: SummonerDto): ReportDto {
             visionScore: 0,
         },
     }
-    const stats_by_position: Record<string, StatRow> = {
+    const stats_by_position: Record<string, StatRowDto> = {
         TOP: { ...base },
         JUNGLE: { ...base },
         MIDDLE: { ...base },

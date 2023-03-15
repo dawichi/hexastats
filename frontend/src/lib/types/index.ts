@@ -6,3 +6,6 @@ export type { MasteryDto as MasteryDto } from './player/Mastery.dto'
 export type { RankDto as RankDto } from './player/Rank.dto'
 export type { SummonerDto as SummonerDto } from './player/Summoner'
 export type { FriendDto } from './Friend.dto'
+
+// Reports
+export type { StatRow as StatRowDto, Report as ReportDto } from './reports.dto'

@@ -10,7 +10,7 @@
     import ListGames from './ListGames.svelte'
     import { playerContext } from '$lib/context/players'
     import { generateReport } from '$lib/utils/generateReport'
-    import { reportsContext, type ReportDto } from '$lib/context/reports'
+    import { LocalStorageService } from '$lib/services/LocalStorage.service'
 
     /** @type {import('./$types').PageData} */
     export let data: SummonerDto
@@ -21,13 +21,11 @@
     playerContext.set(data)
 
     // Reports
-    let _reports: ReportDto[] = []
-    reportsContext.subscribe(data => (_reports = data))
-
     let analyzed = false
     function handleGenerateReport(): void {
-        analyzed = true
-        reportsContext.update(reports => [...reports, generateReport(_player)])
+        // analyzed = true
+        // LocalStorageService.reports.add(generateReport(_player))
+        console.log(generateReport(_player).stats_by_position['MIDDLE'])
     }
 </script>
 

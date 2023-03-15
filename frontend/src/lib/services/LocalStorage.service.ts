@@ -1,30 +1,32 @@
-export type PlayerStoredDto = {
-    serverIdx: number
-    name: string
-    level: number
-    image: string
-}
+import type { ReportDto } from '$lib/types'
 
-const key = 'players'
+enum Keys {
+    PLAYERS = 'players',
+    REPORTS = 'reports',
+}
 
 /**
  * ## Service to manage the localStorage data
  */
-export class LocalStorageService {
-    static list(): PlayerStoredDto[] {
-        return JSON.parse(localStorage.getItem(key) ?? '[]')
+class Reports {
+    static list(): Array<ReportDto> {
+        return JSON.parse(localStorage.getItem(Keys.REPORTS) ?? '[]')
     }
 
-    static add(player: PlayerStoredDto): void {
-        const list = LocalStorageService.list()
+    static add(report: ReportDto): void {
+        const list = Reports.list()
 
         // If the new player was present, remove it
-        const idx = list.findIndex((p) => p.name === player.name)
-        if (idx !== -1) list.splice(idx, 1)
+        // const idx = list.findIndex((p) => p.name === player.name)
+        // if (idx !== -1) list.splice(idx, 1)
 
-        // Max store 4 names
+        // Max store 4 reports
         if (list.length > 3) list.pop()
-        
-        localStorage.setItem(key, JSON.stringify([player, ...list]))
+
+        localStorage.setItem(Keys.REPORTS, JSON.stringify([report, ...list]))
     }
+}
+
+export const LocalStorageService = {
+    reports: Reports,
 }
