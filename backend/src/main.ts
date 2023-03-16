@@ -9,17 +9,11 @@ const port = process.env.PORT || 5000
 const logger = new Logger('Init')
 
 async function bootstrap() {
-    // Validate the environment variables
-    const errors = validateEnv()
-
-    if (errors.length > 0) {
-        errors.forEach(error => logger.error(error))
-        process.exit(1)
-    }
+    validateEnv()
 
     // Is redis cache active?
     const configService = new ConfigService()
-    const IS_REDIS_DISABLED: boolean = configService.get<string>('UPSTASH_REDIS_REST_DISABLE') === 'true'
+    const IS_REDIS_DISABLED = configService.get<string>('UPSTASH_REDIS_REST_DISABLE') === 'true'
 
     if (IS_REDIS_DISABLED) {
         logger.warn('Redis cache is disabled. The API will be slower.')
