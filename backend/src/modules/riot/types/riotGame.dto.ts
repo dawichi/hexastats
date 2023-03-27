@@ -1,4 +1,4 @@
-interface RiotParticipantDto {
+interface RiotParticipant {
     assists: number
     baronKills: number
     bountyLevel: number
@@ -123,29 +123,29 @@ interface RiotParticipantDto {
     }
 }
 
-interface RiotObjectiveDto {
+interface RiotObjective {
     first: boolean
     kills: number
 }
 
-interface RiotTeamDto {
-    bans: {
+interface RiotTeam {
+    bans: Array<{
         championId: number
         pickTurn: number
-    }[]
+    }>
     objectives: {
-        baron: RiotObjectiveDto
-        champion: RiotObjectiveDto
-        dragon: RiotObjectiveDto
-        inhibitor: RiotObjectiveDto
-        riftHerald: RiotObjectiveDto
-        tower: RiotObjectiveDto
+        baron: RiotObjective
+        champion: RiotObjective
+        dragon: RiotObjective
+        inhibitor: RiotObjective
+        riftHerald: RiotObjective
+        tower: RiotObjective
     }
     teamId: number
     win: boolean
 }
 
-export interface RiotGameDto {
+export interface RiotGame {
     metadata: {
         dataVersion: string
         matchId: string
@@ -162,9 +162,9 @@ export interface RiotGameDto {
         gameType: string
         gameVersion: string
         mapId: number
-        participants: RiotParticipantDto[]
+        participants: RiotParticipant[]
         platformId: string
         queueId: number
-        teams: RiotTeamDto[]
+        teams: RiotTeam[]
     }
 }

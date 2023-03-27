@@ -2,7 +2,7 @@
  * ## Riot Champions DTO
  * https://ddragon.leagueoflegends.com/cdn/13.1.1/data/en_US/champion.json
  */
-export interface RiotChampionsDto {
+export interface RiotChampions {
     type: string
     format: string
     version: string

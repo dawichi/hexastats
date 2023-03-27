@@ -1,4 +1,4 @@
-export interface RiotRankDto {
+export interface RiotRank {
     leagueId: string
     queueType: string
     tier: string
