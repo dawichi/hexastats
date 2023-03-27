@@ -1,6 +1,7 @@
 import { applyDecorators } from '@nestjs/common'
 import { ApiQuery } from '@nestjs/swagger'
 
+// UNUSED
 export function QueryGamesLimit() {
     return applyDecorators(
         ApiQuery({
@@ -13,6 +14,7 @@ export function QueryGamesLimit() {
     )
 }
 
+// UNUSED
 export function QueryQueueType() {
     return applyDecorators(
         ApiQuery({

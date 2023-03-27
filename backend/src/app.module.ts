@@ -5,12 +5,12 @@ import { ConfigModule } from '@nestjs/config'
 import { RiotModule } from './modules/riot/riot.module'
 
 @Module({
-    imports: [ConfigModule.forRoot(), SummonersModule, RiotModule],
+    imports: [ConfigModule.forRoot(), RiotModule, SummonersModule],
     controllers: [],
     providers: [],
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
-        consumer.apply(LoggerMiddleware).forRoutes('summoners', 'database')
+        consumer.apply(LoggerMiddleware).forRoutes('*')
     }
 }
