@@ -2,32 +2,14 @@ import { Controller, Get, Param, ParseIntPipe, UseInterceptors } from '@nestjs/c
 import { SummonersService } from './summoners.service'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { ApiCustomResponse, ParamServer, ParamSummonerName } from '../../common/decorators'
-import { GameDto, MasteryDto, PlayerDto } from '../../types'
-import { InfoResponse } from '../../common/types/InfoResponse.dto'
 import { CacheInterceptor } from '../../common/handlers/cache.interceptor'
+import { GameDto, MasteryDto, PlayerDto, RankDataDto } from '../../common/types'
 
 @ApiTags('summoners')
 @Controller('summoners')
 @UseInterceptors(CacheInterceptor)
 export class SummonersController {
     constructor(private readonly summonersService: SummonersService) {}
-
-    // @ApiOperation({
-    //     summary: 'Get player info',
-    //     description: 'Returns the player (summoner data and ranking information)',
-    // })
-    // @ParamServer()
-    // @ParamSummonerName()
-    // @QueryGamesLimit()
-    // @QueryQueueType()
-    // getSummoner(
-    //     @Param('server') server: string,
-    //     @Param('summonerName') summonerName: string,
-    //     @Query('gamesLimit') gamesLimit = 10,
-    //     @Query('queueType') queueType: 'ranked' | 'normal' | 'all' = 'all',
-    // ) {
-    //     return this.summonersService.getSummoner(server, summonerName, gamesLimit, queueType)
-    // }
 
     /**
      * ## Get name, level and image
@@ -38,10 +20,10 @@ export class SummonersController {
         summary: 'Get summoner data and ranking infor',
         description: 'Returns the basic data along with the ranking information',
     })
-    @ApiCustomResponse(PlayerDto)
+    @ApiCustomResponse(RankDataDto)
     @ParamServer()
     @ParamSummonerName()
-    getSummoner(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<PlayerDto> {
+    getSummoner(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<RankDataDto> {
         return this.summonersService.getSummoner(server, encodeURI(summonerName.trim()))
     }
 
@@ -54,10 +36,10 @@ export class SummonersController {
         summary: 'Get level and image',
         description: 'Returns the name, level and image',
     })
-    @ApiCustomResponse(InfoResponse)
+    @ApiCustomResponse(PlayerDto)
     @ParamServer()
     @ParamSummonerName()
-    getLevelImage(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<InfoResponse> {
+    getLevelImage(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<PlayerDto> {
         return this.summonersService.getLevelImage(server, encodeURI(summonerName.trim()))
     }
 
@@ -98,6 +80,7 @@ export class SummonersController {
     @ApiOperation({
         summary: 'Get games',
         description: 'Returns an array of games',
+        deprecated: true,
     })
     @ApiCustomResponse([GameDto])
     @ParamServer()

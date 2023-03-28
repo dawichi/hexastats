@@ -1,8 +1,6 @@
-import { Injectable, Logger } from '@nestjs/common'
+import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { Redis } from '@upstash/redis'
-import { PrintDatabaseDto } from 'src/common/types/PrintDatabase.dto'
-import { RedisRecordDto } from '../../common/types/RedisRecord.dto'
-import { GameDto, MasteryDto } from '../../types'
+import { GameDto, MasteryDto, PrintDatabaseDto, RedisRecordGamesDto, RedisRecordMasteriesDto } from '../../common/types'
 
 @Injectable()
 export class DatabaseService {
@@ -57,10 +55,30 @@ export class DatabaseService {
      * @param key Key to be searched
      * @returns Data stored in the key
      */
-    async getOne(key: string): Promise<RedisRecordDto> {
-        const data: RedisRecordDto = await this.redis.get(key)
+    async getGames(server: string, summonerName: string): Promise<RedisRecordGamesDto> {
+        const key = `${server}:${summonerName}:games`
+        const data: RedisRecordGamesDto = await this.redis.get(key)
 
-        this.logger.log(data ? 'REDIS: Data found!' : 'REDIS: Data not found!')
+        if (!data) {
+            this.logger.warn(`Data not found! Key: ${key}`)
+        }
+
+        return data
+    }
+
+    /**
+     * ## GET data from a key
+     *
+     * @param key Key to be searched
+     * @returns Data stored in the key
+     */
+    async getMasteries(server: string, summonerName: string): Promise<RedisRecordMasteriesDto> {
+        const key = `${server}:${summonerName}:masteries`
+        const data: RedisRecordMasteriesDto = await this.redis.get(key)
+
+        if (!data) {
+            this.logger.warn(`Data not found! Key: ${key}`)
+        }
         return data
     }
 
@@ -79,7 +97,7 @@ export class DatabaseService {
             summonerData = summonerData.slice(0, 50)
         }
 
-        const newRecord: RedisRecordDto = {
+        const newRecord = {
             ttl: Date.now(),
             data: summonerData,
         }
@@ -93,7 +111,7 @@ export class DatabaseService {
     async deleteLast(key: string): Promise<boolean> {
         this.logger.log(`REDIS: Deleting last game played from ${key}...`)
 
-        const data: RedisRecordDto = await this.redis.get(key)
+        const data: RedisRecordGamesDto | RedisRecordMasteriesDto = await this.redis.get(key)
 
         if (data) {
             data.data = data.data.slice(1)

@@ -1,11 +1,11 @@
 import { HttpService } from '@nestjs/axios'
-import { BadRequestException, HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
+import { BadRequestException, HttpException, HttpStatus, Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
 import { perkUrl, runeUrl } from '../../common/utils/runeUrl'
 import { serverRegion, spellUrl, winrate } from '../../common/utils'
 import { validateGameType } from '../../common/validators'
-import { GameDto, MasteryDto, RankDto, TeamDto } from '../../types'
+import { GameDto, MasteryDto, RankDto } from '../../common/types'
 import { RiotChampionsDto, RiotGameDto, RiotMasteryDto, RiotRankDto, RiotSummonerDto } from './types'
 
 export type queueTypeDto = 'ranked' | 'normal' | 'all'
@@ -15,6 +15,13 @@ export class RiotService {
     private readonly apiKey = this.configService.get<string>('RIOT_API_KEY')
     private readonly headers = { headers: { 'X-Riot-Token': this.apiKey } }
     private readonly logger = new Logger(this.constructor.name)
+    private readonly URLs = {
+        summoner: (server: string, name: string) => `https://${server}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${name}`,
+        masteries: (server: string, summoner_id: string) =>
+            `https://${server}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/${summoner_id}`,
+        rank: (server: string, summoner_id: string) =>
+            `https://${server}.api.riotgames.com/lol/league/v4/entries/by-summoner/${summoner_id}`,
+    }
 
     // These properties doesnt usually change, so they are generated in the constructor and stored instead of fetching them every time
     version: string
@@ -22,33 +29,6 @@ export class RiotService {
 
     constructor(private readonly configService: ConfigService, private readonly httpService: HttpService) {
         this.init()
-    }
-
-    /**
-     * Util function to fetch data from Riot API
-     * @param url URL to fetch from
-     * @returns Data from the Riot API
-     */
-    private async httpGet<T>(url: string): Promise<T> {
-        try {
-            this.logger.debug(`Fetching ${url}`)
-            return (await lastValueFrom(this.httpService.get(url, this.headers))).data
-        } catch (error) {
-            this.logger.error(error)
-            this.logger.error(`Error fetching data from ${url}`)
-
-            if (error.response.status === 429)
-                throw new HttpException(
-                    {
-                        status: HttpStatus.TOO_MANY_REQUESTS,
-                        error: 'Too many requests to Riot API. Please try again later',
-                    },
-                    HttpStatus.TOO_MANY_REQUESTS,
-                )
-
-            // default error
-            throw new BadRequestException('Error fetching data from Riot API. Please check console DEBUG mmhmm logs')
-        }
     }
 
     /**
@@ -78,8 +58,37 @@ export class RiotService {
         })
     }
 
-    private baseUrl(server: string): string {
-        return `https://${server}.api.riotgames.com/lol/`
+    /**
+     * Util function to fetch data from Riot API
+     * @param url URL to fetch from
+     * @returns Data from the Riot API
+     */
+    private async httpGet<T>(url: string): Promise<T> {
+        try {
+            this.logger.debug(`Fetching ${url}`)
+            return (await lastValueFrom(this.httpService.get(url, this.headers))).data
+        } catch (error) {
+            this.logger.error(error)
+            this.logger.error(`Error fetching data from ${url}`)
+
+            if (error.response.status === 429)
+                throw new HttpException(
+                    {
+                        status: HttpStatus.TOO_MANY_REQUESTS,
+                        error: 'Too many requests to Riot API. Please try again later',
+                    },
+                    HttpStatus.TOO_MANY_REQUESTS,
+                )
+
+            if (error.response.status === 404)
+                throw new NotFoundException({
+                    status: HttpStatus.NOT_FOUND,
+                    error: 'Something was not found in the Riot API',
+                })
+
+            // default error
+            throw new BadRequestException('Error fetching data from Riot API. Please check console DEBUG mmhmm logs')
+        }
     }
 
     /**
@@ -87,9 +96,7 @@ export class RiotService {
      * To use other methods, you need to get the summoner id first
      */
     async getBasicInfo(server: string, summonerName: string): Promise<RiotSummonerDto> {
-        const url = `https://${server}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}`
-
-        return this.httpGet<RiotSummonerDto>(url)
+        return this.httpGet<RiotSummonerDto>(this.URLs.summoner(server, summonerName))
     }
 
     /**
@@ -101,18 +108,25 @@ export class RiotService {
      */
     async getMasteries(summonerName: string, server: string, masteriesLimit: number): Promise<MasteryDto[]> {
         const summoner_id = (await this.getBasicInfo(server, summonerName)).id
-        const url = `${this.baseUrl(server)}champion-mastery/v4/champion-masteries/by-summoner/${summoner_id}`
-        const allMasteries = await this.httpGet<RiotMasteryDto[]>(url)
+        const allMasteries = await this.httpGet<RiotMasteryDto[]>(this.URLs.masteries(server, summoner_id))
 
         // This response cointains all (+140) champions, so we take the {masteriesLimit} first ones
-        const masteries: MasteryDto[] = []
-
         this.logger.log(`Found ${allMasteries.length} masteries`)
 
         // Slice result if exceeds the limit
         if ((masteriesLimit ?? 0) < allMasteries.length) {
             allMasteries.length = masteriesLimit
         }
+
+        return allMasteries.map(mastery => ({
+            name: this.champions[mastery.championId],
+            image: `http://ddragon.leagueoflegends.com/cdn/${this.version}/img/champion/${this.champions[mastery.championId]}.png`,
+            level: mastery.championLevel,
+            points: mastery.championPoints,
+            chestGranted: mastery.chestGranted,
+        }))
+
+        const masteries = []
 
         for (let i = 0; i < allMasteries.length; i++) {
             const champ_name = this.champions[allMasteries[i].championId]
@@ -144,8 +158,7 @@ export class RiotService {
         flex: RankDto
     }> {
         this.logger.log('Getting classification data in ranked queues')
-        const url = `${this.baseUrl(server)}league/v4/entries/by-summoner/${summoner_id}`
-        const rank_data = await this.httpGet<RiotRankDto[]>(url)
+        const rank_data = await this.httpGet<RiotRankDto[]>(this.URLs.rank(server, summoner_id))
         const league_default = {
             rank: 'Unranked',
             image: 'unranked.png',
@@ -223,67 +236,44 @@ export class RiotService {
      */
     formatGame(rawGame: RiotGameDto, puuid: string): GameDto {
         const itemUrl = (id: number) => (id ? `http://ddragon.leagueoflegends.com/cdn/${this.version}/img/item/${id}.png` : null)
+        const idx = rawGame.metadata.participants.indexOf(puuid)
 
         return {
             matchId: rawGame.metadata.matchId,
-            participantNumber: rawGame.metadata.participants.indexOf(puuid),
+            win: rawGame.info.participants[idx].win,
+            participantNumber: idx,
             gameCreation: rawGame.info.gameCreation,
             gameDuration: rawGame.info.gameDuration,
             gameMode: validateGameType(rawGame.info.queueId),
-            teams: rawGame.info.teams.map(team => ({
-                teamId: team.teamId,
-                win: team.win,
-                bans: team.bans.map(ban => ({
-                    pickTurn: ban.pickTurn,
-                    championId:
-                        ban.championId === -1
-                            ? null
-                            : `http://ddragon.leagueoflegends.com/cdn/${this.version}/img/champion/${this.champions[ban.championId]}.png`,
-                })),
-                objectives: team.objectives,
-            })),
+            teamPosition: rawGame.info.participants[idx].teamPosition,
+            visionScore: rawGame.info.participants[idx].visionScore,
+            champLevel: rawGame.info.participants[idx].champLevel,
+            kda: {
+                assists: rawGame.info.participants[idx].assists,
+                deaths: rawGame.info.participants[idx].deaths,
+                kills: rawGame.info.participants[idx].kills,
+            },
+            cs: rawGame.info.participants[idx].neutralMinionsKilled + rawGame.info.participants[idx].totalMinionsKilled,
+            ward: itemUrl(rawGame.info.participants[idx].item6 || 2052),
+            items: [
+                itemUrl(rawGame.info.participants[idx].item0),
+                itemUrl(rawGame.info.participants[idx].item1),
+                itemUrl(rawGame.info.participants[idx].item2),
+                itemUrl(rawGame.info.participants[idx].item3),
+                itemUrl(rawGame.info.participants[idx].item4),
+                itemUrl(rawGame.info.participants[idx].item5),
+            ],
+            spells: [spellUrl(rawGame.info.participants[idx].summoner1Id), spellUrl(rawGame.info.participants[idx].summoner2Id)],
+            perks: [
+                perkUrl(rawGame.info.participants[idx].perks.styles[0].style),
+                runeUrl(
+                    rawGame.info.participants[idx].perks.styles[0].selections[0].perk,
+                    rawGame.info.participants[idx].perks.styles[0].style,
+                ),
+            ],
             participants: rawGame.info.participants.map(participant => ({
                 summonerName: participant.summonerName,
-                win: participant.win,
-                timePlayed: participant.timePlayed,
-                teamPosition: participant.teamPosition,
-                visionScore: participant.visionScore,
-                champ: {
-                    champLevel: participant.champLevel,
-                    championName: participant.championName,
-                    largestMultiKill: participant.largestMultiKill,
-                    damageDealt: participant.totalDamageDealtToChampions,
-                    damageTaken: participant.totalDamageTaken,
-                },
-                kda: {
-                    assists: participant.assists,
-                    deaths: participant.deaths,
-                    kills: participant.kills,
-                },
-                multiKill: {
-                    doubles: participant.doubleKills,
-                    triples: participant.tripleKills,
-                    quadras: participant.quadraKills,
-                    pentas: participant.pentaKills,
-                },
-                farm: {
-                    gold: participant.goldEarned,
-                    cs: participant.neutralMinionsKilled + participant.totalMinionsKilled,
-                },
-                ward: itemUrl(participant.item6 || 2052),
-                items: [
-                    itemUrl(participant.item0),
-                    itemUrl(participant.item1),
-                    itemUrl(participant.item2),
-                    itemUrl(participant.item3),
-                    itemUrl(participant.item4),
-                    itemUrl(participant.item5),
-                ],
-                spells: [spellUrl(participant.summoner1Id), spellUrl(participant.summoner2Id)],
-                perks: [
-                    perkUrl(participant.perks.styles[0].style),
-                    runeUrl(participant.perks.styles[0].selections[0].perk, participant.perks.styles[0].style),
-                ],
+                championName: participant.championName,
             })),
         }
     }

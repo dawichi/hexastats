@@ -1,8 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
-import { GameDto, MasteryDto, PlayerDto } from '../../types'
-import { InfoResponse } from '../../common/types/InfoResponse.dto'
+import { GameDto, MasteryDto, PlayerDto, RankDataDto } from '../../common/types'
 import { RiotService } from '../../modules/riot/riot.service'
 import { DatabaseService } from '../database/database.service'
 
@@ -16,7 +15,7 @@ export class SummonersService {
     /**
      * /summoners/:server/:summonerName
      */
-    async getSummoner(server: string, summonerName: string): Promise<PlayerDto> {
+    async getSummoner(server: string, summonerName: string): Promise<RankDataDto> {
         const data = await this.riotService.getBasicInfo(server, summonerName)
         const { solo, flex } = await this.riotService.getRankData(data.id, server)
 
@@ -35,14 +34,14 @@ export class SummonersService {
     /**
      * /summoners/:server/:summonerName/level-image
      */
-    async getLevelImage(server: string, summonerName: string): Promise<InfoResponse> {
+    async getLevelImage(server: string, summonerName: string): Promise<PlayerDto> {
         const data = await this.riotService.getBasicInfo(server, summonerName)
 
-        this.logger.log(`Returning ${data.name} lv ${data.summonerLevel}`)
         return {
-            name: data.name,
-            level: data.summonerLevel,
+            alias: data.name,
+            server,
             image: `https://ddragon.leagueoflegends.com/cdn/${this.riotService.version}/img/profileicon/${data.profileIconId}.png`,
+            level: data.summonerLevel,
         }
     }
 
@@ -71,7 +70,7 @@ export class SummonersService {
      */
     async addGames(server: string, summonerName: string, amount: number): Promise<GameDto[]> {
         const { puuid } = await this.riotService.getBasicInfo(server, summonerName)
-        const { data } = await this.databaseService.getOne(`${server}:${summonerName}:games`)
+        const { data } = await this.databaseService.getGames(server, summonerName)
 
         const new_games = await this.riotService.getGameIds(puuid, server, amount, data.length)
         const new_games_data = await this.riotService.getGamesDetail(puuid, server, new_games)
