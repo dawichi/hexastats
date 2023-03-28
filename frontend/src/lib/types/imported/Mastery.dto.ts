@@ -5,3 +5,4 @@ export interface Mastery {
     points: number
     chestGranted: boolean
 }
+

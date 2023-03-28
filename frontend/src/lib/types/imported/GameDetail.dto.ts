@@ -49,10 +49,11 @@ interface Participant {
 
 export interface GameDetail {
     matchId: string
-    participantNumber: number
     gameCreation: number
     gameDuration: number
+    participantNumber: number
     gameMode: string
     teams: Team[]
     participants: Participant[]
 }
+
