@@ -80,7 +80,7 @@ export class CacheInterceptor implements NestInterceptor {
         if (redisData && validateTTL(redisData?.ttl)) {
             if (/masteries/.test(path)) {
                 this.logger.log('Returning masteries directly from redis')
-                return of(redisData)
+                return of(redisData.data)
             }
 
             // The request is about games, which implies a more complex logic flow than masteries

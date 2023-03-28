@@ -35,9 +35,9 @@
         // Fill the positions
         player.games.map(game => {
             // Don't use ?? as it comes as '' instead of null or undefined
-            const position = game.participants[game.participantNumber].teamPosition || 'MIDDLE'
+            const position = game.teamPosition || 'MIDDLE'
             positions[position].games++
-            positions[position].wins += game.participants[game.participantNumber].win ? 1 : 0
+            positions[position].wins += game.win ? 1 : 0
         })
 
         // Check the maximum number of games

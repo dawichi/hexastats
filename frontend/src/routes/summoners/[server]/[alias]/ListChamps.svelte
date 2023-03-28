@@ -22,7 +22,7 @@
         if (championName === _activeFilter) return filteredGamesContext.update(data => ({ activeFilter: '', games: player.games }))
         filteredGamesContext.update(data => ({
             activeFilter: championName,
-            games: player.games.filter(game => game.participants[game.participantNumber].champ.championName === championName),
+            games: player.games.filter(game => game.participants[game.participantNumber].championName === championName),
         }))
     }
 </script>

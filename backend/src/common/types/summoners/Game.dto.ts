@@ -91,9 +91,21 @@ export class Game {
     champLevel: number
 
     @ApiProperty({
+        description: 'Champ Name',
+        example: 'Aatrox',
+    })
+    championName: string
+
+    @ApiProperty({
         description: 'KDA values',
     })
     kda: Kda
+
+    @ApiProperty({
+        description: 'gold earned',
+        example: 420,
+    })
+    gold: number
 
     @ApiProperty({
         description: 'CS value',
@@ -143,81 +155,4 @@ export class Game {
         type: [ParticipantTitle],
     })
     participants: ParticipantTitle[]
-}
-
-const example: Game = {
-    matchId: 'EUW1_6324747333',
-    win: false,
-    gameCreation: 1679400614423,
-    participantNumber: 5,
-    gameDuration: 1331,
-    gameMode: 'ARAM',
-    teamPosition: '',
-    visionScore: 0,
-    champLevel: 18,
-    kda: {
-        assists: 25,
-        deaths: 8,
-        kills: 9,
-    },
-    cs: 25,
-    ward: 'http://ddragon.leagueoflegends.com/cdn/13.6.1/img/item/2052.png',
-    items: [
-        'http://ddragon.leagueoflegends.com/cdn/13.6.1/img/item/6655.png',
-        'http://ddragon.leagueoflegends.com/cdn/13.6.1/img/item/3102.png',
-        'http://ddragon.leagueoflegends.com/cdn/13.6.1/img/item/3089.png',
-        'http://ddragon.leagueoflegends.com/cdn/13.6.1/img/item/3020.png',
-        'http://ddragon.leagueoflegends.com/cdn/13.6.1/img/item/4630.png',
-        'http://ddragon.leagueoflegends.com/cdn/13.6.1/img/item/1026.png',
-    ],
-    spells: [
-        'http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/SummonerFlash.png',
-        'http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/SummonerSnowball.png',
-    ],
-    perks: [
-        'https://ddragon.canisback.com/img/perk-images/Styles/7200_Domination.png',
-        'https://ddragon.canisback.com/img/perk-images/Styles/Domination/DarkHarvest/DarkHarvest.png',
-    ],
-    participants: [
-        {
-            summonerName: 'Teddy Big Plays',
-            championName: 'Ryze',
-        },
-        {
-            summonerName: 'Ninno47',
-            championName: 'Ezreal',
-        },
-        {
-            summonerName: 'SAN PELLEGRlNO',
-            championName: 'AurelionSol',
-        },
-        {
-            summonerName: 'Emchupii',
-            championName: 'Xayah',
-        },
-        {
-            summonerName: 'agusboto',
-            championName: 'Rumble',
-        },
-        {
-            summonerName: 'Chibis',
-            championName: 'Malzahar',
-        },
-        {
-            summonerName: 'MrKentzy',
-            championName: 'Chogath',
-        },
-        {
-            summonerName: 'Kernirino',
-            championName: 'Vi',
-        },
-        {
-            summonerName: 'Dawichii',
-            championName: 'Teemo',
-        },
-        {
-            summonerName: 'alexwwe',
-            championName: 'Evelynn',
-        },
-    ],
 }

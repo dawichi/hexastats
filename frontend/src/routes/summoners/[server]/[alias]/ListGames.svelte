@@ -46,7 +46,7 @@
             activeFilter: filter,
             games: getGameModes(player).includes(filter)
                 ? player.games.filter(game => game.gameMode === filter)
-                : player.games.filter(game => game.participants[game.participantNumber].champ.championName === filter),
+                : player.games.filter(game => game.championName === filter),
         }))
     }
 
@@ -88,7 +88,7 @@
 
     <div class="grid gap-2">
         {#each _filteredGames as game}
-            <Game {game} participant={game.participants[game.participantNumber]} server={player.server} />
+            <Game {game} server={player.server} />
         {/each}
     </div>
 

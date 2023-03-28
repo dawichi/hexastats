@@ -4,7 +4,7 @@
   List all friends from a player
 -->
 <script lang="ts">
-    import type { FriendDto, SummonerDto } from '$lib/types'
+    import type { SummonerDto } from '$lib/types'
     import { rawServer } from '$lib/config'
 
     export let player: SummonerDto
@@ -19,7 +19,11 @@
      * @param games The games to build the stats from
      * @returns The list stats
      */
-    function buildFriends(player: SummonerDto): FriendDto[] {
+    function buildFriends(player: SummonerDto): Array<{
+        name: string
+        games: number
+        wins: number
+    }> {
         const indexByName: Record<
             string,
             {
@@ -37,11 +41,11 @@
 
                 if (!indexByName[player.summonerName]) {
                     indexByName[player.summonerName] = {
-                        wins: player.win ? 1 : 0,
+                        wins: game.win ? 1 : 0,
                         games: 1,
                     }
                 } else {
-                    indexByName[player.summonerName].wins += player.win ? 1 : 0
+                    indexByName[player.summonerName].wins += game.win ? 1 : 0
                     indexByName[player.summonerName].games += 1
                 }
             }

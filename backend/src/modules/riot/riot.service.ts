@@ -248,12 +248,14 @@ export class RiotService {
             teamPosition: rawGame.info.participants[idx].teamPosition,
             visionScore: rawGame.info.participants[idx].visionScore,
             champLevel: rawGame.info.participants[idx].champLevel,
+            championName: rawGame.info.participants[idx].championName,
             kda: {
                 assists: rawGame.info.participants[idx].assists,
                 deaths: rawGame.info.participants[idx].deaths,
                 kills: rawGame.info.participants[idx].kills,
             },
             cs: rawGame.info.participants[idx].neutralMinionsKilled + rawGame.info.participants[idx].totalMinionsKilled,
+            gold: rawGame.info.participants[idx].goldEarned,
             ward: itemUrl(rawGame.info.participants[idx].item6 || 2052),
             items: [
                 itemUrl(rawGame.info.participants[idx].item0),

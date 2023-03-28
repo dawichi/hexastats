@@ -37,7 +37,7 @@
                 <MasteryRow masteries={_player.masteries} />
             </header>
 
-            {#if !analyzed}
+            <!-- {#if !analyzed}
                 <button
                     class="{styles.card} {styles.scale} mx-2 my-1 cursor-pointer bg-zinc-800 py-2 px-4 text-white hover:bg-indigo-600"
                     on:click={handleGenerateReport}
@@ -48,7 +48,7 @@
                 <button class="{styles.card} mx-2 my-1 cursor-pointer bg-green-700 py-2 px-4 text-white">
                     Analyzed <i class="bi bi-check" />
                 </button>
-            {/if}
+            {/if} -->
 
             <div class="grid-cols-3 2xl:grid">
                 <aside class="grid lg:grid-cols-2 2xl:block">
