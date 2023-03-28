@@ -11,3 +11,4 @@ export interface RankStructure {
     solo: Rank
     flex: Rank
 }
+

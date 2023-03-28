@@ -10,3 +10,4 @@ export interface Player {
 export interface RankData extends Player {
     rank: RankStructure
 }
+
