@@ -16,13 +16,5 @@ export interface ChampDto {
     cs: number
     csmin: number
     gold: number
-    maxKills: number
-    maxDeaths: number
-    avgDamageDealt: number
-    avgDamageTaken: number
     visionScore: number
-    doubleKills: number
-    tripleKills: number
-    quadraKills: number
-    pentaKills: number
 }

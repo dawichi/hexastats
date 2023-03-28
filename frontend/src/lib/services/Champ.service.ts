@@ -1,6 +1,5 @@
 import { RiotService } from './Riot.service'
 import type { ChampDto, GameDto } from '$lib/types'
-import type { FriendDto } from '$lib/types/Friend.dto'
 
 /**
  * ## Accumulates the game information from a champion
@@ -81,30 +80,23 @@ const perMin = (value: number, time: number) => parseFloat(((60 * value) / time)
  * @returns The stats for the champ of that game
  */
 function parseChamp(game: GameDto): ChampDto {
-    const player = game.participants[game.participantNumber]
-    const { kills, deaths, assists } = player.kda
+    const { kills, deaths, assists } = game.kda
 
     return {
-        name: player.champ.championName,
-        image: RiotService.champImage(player.champ.championName),
+        name: game.championName,
+        image: RiotService.champImage(game.championName),
         games: 1,
-        winrate: player.win ? 1 : 0,
+        winrate: game.win ? 1 : 0,
         assists,
         deaths,
         kills,
         kda: kda(kills, deaths, assists),
-        cs: player.farm.cs,
-        csmin: perMin(player.farm.cs, game.gameDuration),
-        gold: player.farm.gold,
+        cs: game.cs,
+        csmin: perMin(game.cs, game.gameDuration),
+        gold: game.gold,
         maxKills: kills,
         maxDeaths: deaths,
-        avgDamageDealt: player.champ.damageDealt,
-        avgDamageTaken: player.champ.damageTaken,
-        visionScore: player.visionScore,
-        doubleKills: player.multiKill.doubles,
-        tripleKills: player.multiKill.triples,
-        quadraKills: player.multiKill.quadras,
-        pentaKills: player.multiKill.pentas,
+        visionScore: game.visionScore,
     }
 }
 
@@ -126,7 +118,7 @@ export class ChampService {
         } = {}
         // First, index the games by champ name, accumulating the stats
         for (const game of games) {
-            const champName = game.participants[game.participantNumber].champ.championName
+            const champName = game.participants[game.participantNumber].championName
             acc[champName] = acc[champName] ? accChamp(acc[champName], parseChamp(game)) : parseChamp(game)
         }
 

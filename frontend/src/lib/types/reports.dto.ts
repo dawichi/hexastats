@@ -1,4 +1,4 @@
-import type { PlayerDto } from './player/Player.dto'
+import type { RankData } from './imported/Player.dto'
 
 export type StatRow = {
     games: number
@@ -28,7 +28,7 @@ export type StatRow = {
     }
 }
 
-export interface Report extends PlayerDto {
+export interface Report extends RankData {
     stats_by_champ: Record<string, StatRow>
     stats_by_position: Record<string, StatRow>
 }

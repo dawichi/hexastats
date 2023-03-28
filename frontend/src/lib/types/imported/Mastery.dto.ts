@@ -1,4 +1,4 @@
-export interface MasteryDto {
+export interface Mastery {
     name: string
     image: string
     level: number

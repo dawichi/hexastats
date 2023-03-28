@@ -1,9 +1,7 @@
 import { validateServer } from '$lib/config'
-import type { GameDto, SummonerDto } from '$lib/types'
+import type { GameDto, MasteryDto, PlayerDto, RankDataDto, SummonerDto } from '$lib/types'
 
 import { PUBLIC_IS_DEVELOPMENT } from '$env/static/public'
-import type { PlayerDto } from '$lib/types/player/Player.dto'
-import type { MasteryDto } from '$lib/types/player/Mastery.dto'
 
 const development = PUBLIC_IS_DEVELOPMENT === 'true'
 export const backendUrl = development ? 'http://localhost:5000/' : 'https://api-hexastats.vercel.app/'
@@ -23,9 +21,11 @@ export class SummonerService {
     static async getData(server: string, summonerName: string): Promise<SummonerDto> {
         const okServer = validateServer(server)
 
-        const playerData = await fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}`)
-        const playerMasteries = await fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/masteries`)
-        const playerGames = await fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/games`)
+        const [playerData, playerMasteries, playerGames] = await Promise.all([
+            fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}`),
+            fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/masteries`),
+            fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/games`),
+        ])
 
         // ERRIR HANDLING
         if (!playerData.ok || !playerMasteries.ok || !playerGames.ok) {
@@ -35,8 +35,7 @@ export class SummonerService {
             throw new Error()
         }
 
-
-        const summonerData: PlayerDto = await playerData.json()
+        const summonerData: RankDataDto = await playerData.json()
         const masteries: MasteryDto[] = await playerMasteries.json()
         const games: GameDto[] = await playerGames.json()
 
