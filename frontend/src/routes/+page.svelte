@@ -1,15 +1,16 @@
 <script lang="ts">
-    import type { CachedNameDto } from '$lib/types'
+    import type { PlayerDto
+     } from '$lib/types'
     import { SearchPlayer } from '$lib/components'
     import { filteredCachedPlayersContext } from '$lib/context/cachedPlayers'
 
     /** @type {import('./$types').PageData} */
     export let data: {
-        cachedPlayers: Array<CachedNameDto>
+        cachedPlayers: Array<PlayerDto>
     }
 
     // Context
-    let cachedPlayers: Array<CachedNameDto> = []
+    let cachedPlayers: Array<PlayerDto> = []
     filteredCachedPlayersContext.subscribe(data => (cachedPlayers = data))
     filteredCachedPlayersContext.set(data.cachedPlayers)
 </script>

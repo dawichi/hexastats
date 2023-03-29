@@ -1,8 +1,8 @@
 import { backendUrl } from '$lib/services/Summoner.service'
-import type { CachedNameDto } from '$lib/types'
+import type { PlayerDto } from '$lib/types'
 
 /** @type {import('./$types').PageLoad} */
-export async function load({ fetch }: { fetch: typeof window.fetch }): Promise<{ cachedPlayers: CachedNameDto[] }> {
+export async function load({ fetch }: { fetch: typeof window.fetch }): Promise<{ cachedPlayers: Array<PlayerDto> }> {
     try {
         const response = await fetch(`${backendUrl}database/print`)
         const data = await response.json()
@@ -16,7 +16,7 @@ export async function load({ fetch }: { fetch: typeof window.fetch }): Promise<{
         return {
             cachedPlayers: [...new Set(keys)].map((key: string) => ({
                 server: key.split(':')[0],
-                name: key.split(':')[1],
+                alias: key.split(':')[1],
                 image: '',
                 level: 0,
             })),

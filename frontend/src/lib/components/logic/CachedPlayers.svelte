@@ -4,7 +4,7 @@
   List players cached in database
 -->
 <script lang="ts">
-    import type { CachedNameDto } from '$lib/types'
+    import type { PlayerDto } from '$lib/types'
     import { rawServer } from '$lib/config'
     import { ProfileImg } from '..'
     import { backendUrl } from '$lib/services/Summoner.service'
@@ -13,7 +13,7 @@
     export let summonerName: string
 
     // Context
-    let _cachedPlayers: Array<CachedNameDto> = []
+    let _cachedPlayers: Array<PlayerDto> = []
     filteredCachedPlayersContext.subscribe(data => (_cachedPlayers = data))
 
     const namesSearched: string[] = []
@@ -47,6 +47,7 @@
         }
     }
     
+    // reload the function each time summonerName changes
     $: getPlayersData(summonerName)
 </script>
 
