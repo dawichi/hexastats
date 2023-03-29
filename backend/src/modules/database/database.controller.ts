@@ -1,7 +1,7 @@
 import { Controller, Delete, Get, Logger, NotFoundException, Param } from '@nestjs/common'
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { ParamServer, ParamSummonerName } from 'src/common/decorators'
-import { PrintDatabaseDto, RedisRecordGamesDto, RedisRecordMasteriesDto } from 'src/common/types'
+import { ParamServer, ParamSummonerName } from '../../common/decorators'
+import { PrintDatabaseDto, RedisRecordGamesDto, RedisRecordMasteriesDto } from '../../common/types'
 import { DatabaseService } from './database.service'
 
 @ApiTags('database')
