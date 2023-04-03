@@ -11,6 +11,6 @@ import { RiotModule } from './modules/riot/riot.module'
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
-        consumer.apply(LoggerMiddleware).forRoutes('*')
+        consumer.apply(LoggerMiddleware).forRoutes('summoners', 'database')
     }
 }
