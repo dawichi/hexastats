@@ -16,6 +16,8 @@
     export let game: GameDto
     export let server: string
 
+    const riotService = RiotService.getInstance()
+
     let expanded = false
 
     function rowStyle(game: GameDto): { row: string; btn: string } {
@@ -50,11 +52,11 @@
             <div class="relative text-xs text-white sm:text-base transition {expanded ? 'h-80' : 'h-32'}">
                 <div
                     class="t-0 l-0 absolute h-full w-full bg-cover bg-top"
-                    style="background-image: url({RiotService.champSplash(game.championName)})"
+                    style="background-image: url({riotService.champSplash(game.championName)})"
                 />
                 <div class="t-0 l-0 absolute h-full w-full" style="background-image: linear-gradient(to top right, #000000bd , #ffffff00)" />
                 <div class="absolute top-2 left-3">
-                    <img src={RiotService.teamPositionIcon(game.teamPosition)} alt="champ" style="width: 42px; height: 42px;" />
+                    <img src={riotService.teamPositionIcon(game.teamPosition)} alt="champ" style="width: 42px; height: 42px;" />
                 </div>
                 <span class="absolute top-3 left-14 text-center text-xl">{game.champLevel}</span>
                 <span class="absolute bottom-1 left-2 sm:text-sm">{formatDate(game.gameCreation, game.gameDuration)}</span>

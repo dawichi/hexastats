@@ -4,10 +4,19 @@
  * So this service provides a centralized way to get the correct URL for each asset.
  */
 export class RiotService {
-    private readonly baseUrl: string = 'https://ddragon.leagueoflegends.com/cdn/'
+    private static instance: RiotService
+    public version: string
 
-    constructor(private version: string) {
+    constructor(version: string) {
         this.version = version
+    }
+
+    public static getInstance(version = '13.7.1'): RiotService {
+        if (!RiotService.instance) {
+            console.log('Creating RiotService instance')
+            RiotService.instance = new RiotService(version)
+        }
+        return RiotService.instance
     }
 
     /**

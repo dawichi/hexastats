@@ -12,6 +12,8 @@
     import { kda } from '$lib/utils'
     import { RiotService } from '$lib/services/Riot.service'
 
+    const riotService = RiotService.getInstance()
+
     export let game: GameDto
     export let server: string
 </script>
@@ -55,7 +57,7 @@
     <div class="hidden columns-2 p-1 lg:block">
         {#each game.participants as participant, idx}
             <span class="flex items-center">
-                <img class="{styles.iconSize.medium} rounded" src={RiotService.champImage(participant.championName)} alt="champion" />
+                <img class="{styles.iconSize.medium} rounded" src={riotService.champImage(participant.championName)} alt="champion" />
                 <span class="ml-1 h-5 w-20 overflow-hidden text-ellipsis whitespace-nowrap text-left text-sm">
                     <a
                         href={`/summoners/${rawServer(server)}/${participant.summonerName}`}

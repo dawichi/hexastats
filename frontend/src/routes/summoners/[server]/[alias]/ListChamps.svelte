@@ -15,6 +15,8 @@
     let _activeFilter = ''
     filteredGamesContext.subscribe(data => (_activeFilter = data.activeFilter))
 
+    const riotService = RiotService.getInstance()
+
     const maxGames = () => Math.max(...ChampService.champsBuilder(player.games).map(champ => champ.games))
     const maxKDA = () => Math.max(...ChampService.champsBuilder(player.games).map(champ => champ.kda))
 
@@ -31,7 +33,7 @@
     <div class="grid grid-cols-4 px-4">
         <div class="flex justify-center">
             <button on:click={() => handleClick(champ.name)} class="p-1 {champ.name === _activeFilter ? 'bg-yellow-400' : ''}">
-                <img class="w-12 rounded" src={RiotService.champImage(champ.name)} alt="champion" />
+                <img class="w-12 rounded" src={riotService.champImage(champ.name)} alt="champion" />
             </button>
         </div>
 

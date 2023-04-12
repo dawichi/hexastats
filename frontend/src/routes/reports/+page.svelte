@@ -12,6 +12,8 @@
         reports = LocalStorageService.reports.list()
         console.log(LocalStorageService.reports.list())
     })
+
+    const riotService = RiotService.getInstance()
 </script>
 
 <div>
@@ -127,7 +129,7 @@
 
             {#each Object.keys(reports[0].stats_by_position) as key}
                 <div class="grid grid-cols-6 items-center gap-2 text-sm md:text-base">
-                    <img src={RiotService.teamPositionIcon(key)} width={35} height={35} alt="position" />
+                    <img src={riotService.teamPositionIcon(key)} width={35} height={35} alt="position" />
                     <span>{reports[0].stats_by_position[key].wins} / {reports[0].stats_by_position[key].games}</span>
 
                     <div class="grid grid-cols-4">

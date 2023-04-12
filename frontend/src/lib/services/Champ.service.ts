@@ -81,10 +81,11 @@ const perMin = (value: number, time: number) => parseFloat(((60 * value) / time)
  */
 function parseChamp(game: GameDto): ChampDto {
     const { kills, deaths, assists } = game.kda
+    const riotService = RiotService.getInstance()
 
     return {
         name: game.championName,
-        image: RiotService.champImage(game.championName),
+        image: riotService.champImage(game.championName),
         games: 1,
         winrate: game.win ? 1 : 0,
         assists,

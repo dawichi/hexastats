@@ -9,6 +9,8 @@
 
     export let player: SummonerDto
 
+    const riotService = RiotService.getInstance()
+
     type Position = {
         key: 'TOP' | 'JUNGLE' | 'MIDDLE' | 'BOTTOM' | 'UTILITY'
         games: number
@@ -81,7 +83,7 @@
     </section>
     {#each buildPosition(player).positions as position}
         <section class="grid grid-cols-6 items-center gap-2 text-sm md:text-base">
-            <img src={RiotService.teamPositionIcon(position.key)} width={35} height={35} alt="position" />
+            <img src={riotService.teamPositionIcon(position.key)} width={35} height={35} alt="position" />
             <span>{position.wins} / {position.games}</span>
             <span class="{position.games ? '' : 'invisible'} {styleWinrate(winrate(position.wins, position.games - position.wins))}">{winrate(position.wins, position.games - position.wins)} %</span>
             <div class="col-span-3 h-2 rounded overflow-hidden bg-zinc-600">

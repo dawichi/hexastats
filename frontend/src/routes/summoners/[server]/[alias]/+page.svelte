@@ -2,15 +2,17 @@
 <script lang="ts">
     import type { SummonerDto } from '$lib/types'
     import { styles } from '$lib/config'
+    // components
     import { Container, MasteryRow, RankStructure } from '$lib/components'
+    // services
     import { RiotService } from '$lib/services/Riot.service'
+    import { playerContext } from '$lib/context/players'
+    // Sub-Components
     import ListChamps from './ListChamps.svelte'
     import ListPositions from './ListPositions.svelte'
     import ListFriends from './ListFriends.svelte'
     import ListGames from './ListGames.svelte'
-    import { playerContext } from '$lib/context/players'
-    import { generateReport } from '$lib/utils/generateReport'
-    import { LocalStorageService } from '$lib/services/LocalStorage.service'
+    import { generalContext } from '$lib/context/general'
 
     /** @type {import('./$types').PageData} */
     export let data: SummonerDto
@@ -20,35 +22,19 @@
     playerContext.subscribe(player => (_player = player))
     playerContext.set(data)
 
-    // Reports
-    let analyzed = false
-    function handleGenerateReport(): void {
-        // analyzed = true
-        // LocalStorageService.reports.add(generateReport(_player))
-        console.log(generateReport(_player).stats_by_position['MIDDLE'])
-    }
+    let version: string = ''
+    generalContext.subscribe(value => (version = value.version))
+
+    const riotService = new RiotService(version)
 </script>
 
 <Container title="" description="" disableHeader>
-    <div class="relative rounded-lg bg-contain shadow" style="background-image: url({RiotService.champSplash(_player.masteries[0].name)})">
+    <div class="relative rounded-lg bg-contain shadow" style="background-image: url({riotService.champSplash(_player.masteries[0].name)})">
         <section class="bg-orange-50/80 dark:bg-zinc-900/80 md:px-4">
             <header class="flex flex-col items-center justify-around py-5 lg:flex-row">
                 <RankStructure player={_player} />
                 <MasteryRow masteries={_player.masteries} />
             </header>
-
-            <!-- {#if !analyzed}
-                <button
-                    class="{styles.card} {styles.scale} mx-2 my-1 cursor-pointer bg-zinc-800 py-2 px-4 text-white hover:bg-indigo-600"
-                    on:click={handleGenerateReport}
-                >
-                    Analyze
-                </button>
-            {:else}
-                <button class="{styles.card} mx-2 my-1 cursor-pointer bg-green-700 py-2 px-4 text-white">
-                    Analyzed <i class="bi bi-check" />
-                </button>
-            {/if} -->
 
             <div class="grid-cols-3 2xl:grid">
                 <aside class="grid lg:grid-cols-2 2xl:block">
