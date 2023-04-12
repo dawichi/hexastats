@@ -12,7 +12,6 @@
     import ListPositions from './ListPositions.svelte'
     import ListFriends from './ListFriends.svelte'
     import ListGames from './ListGames.svelte'
-    import { generalContext } from '$lib/context/general'
 
     /** @type {import('./$types').PageData} */
     export let data: SummonerDto
@@ -22,10 +21,7 @@
     playerContext.subscribe(player => (_player = player))
     playerContext.set(data)
 
-    let version: string = ''
-    generalContext.subscribe(value => (version = value.version))
-
-    const riotService = new RiotService(version)
+    const riotService = RiotService.getInstance()
 </script>
 
 <Container title="" description="" disableHeader>

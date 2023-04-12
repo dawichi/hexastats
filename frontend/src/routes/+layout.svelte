@@ -3,14 +3,6 @@
     import { styles } from '$lib/config/styles'
     import { Footer, Navbar } from '$lib/components'
     import { navigating } from '$app/stores'
-    import { generalContext } from '$lib/context/general'
-    
-    /** @type {import('./$types').PageData} */
-    export let data: {
-        version: string
-    }
-
-    generalContext.update(x => ({ ...x, version: data.version }))
 </script>
 
 <header>
