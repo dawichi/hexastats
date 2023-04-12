@@ -1,18 +1,14 @@
 <script lang="ts">
-    import type { PlayerDto
-     } from '$lib/types'
+    import type { PlayerDto } from '$lib/types'
     import { SearchPlayer } from '$lib/components'
-    import { filteredCachedPlayersContext } from '$lib/context/cachedPlayers'
+    import { generalContext } from '$lib/context/general'
 
     /** @type {import('./$types').PageData} */
     export let data: {
         cachedPlayers: Array<PlayerDto>
     }
 
-    // Context
-    let cachedPlayers: Array<PlayerDto> = []
-    filteredCachedPlayersContext.subscribe(data => (cachedPlayers = data))
-    filteredCachedPlayersContext.set(data.cachedPlayers)
+    generalContext.update(x => ({ ...x, cachedPlayers: data.cachedPlayers }))
 </script>
 
 <div class="animate__animated animate__fadeIn container m-auto lg:py-16">

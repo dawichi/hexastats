@@ -8,14 +8,16 @@
     import { rawServer } from '$lib/config'
     import { ProfileImg } from '..'
     import { backendUrl } from '$lib/services/Summoner.service'
-    import { filteredCachedPlayersContext } from '$lib/context/cachedPlayers'
+    import { generalContext } from '$lib/context/general'
 
+    // This is the text in the input
     export let summonerName: string
 
-    // Context
-    let _cachedPlayers: Array<PlayerDto> = []
-    filteredCachedPlayersContext.subscribe(data => (_cachedPlayers = data))
+    // This is the list of names that will be displayed
+    let cachedPlayers: Array<PlayerDto> = []
+    generalContext.subscribe(value => (cachedPlayers = value.cachedPlayers))
 
+    // This is the list of names that have already been searched, so we don't search them again
     const namesSearched: string[] = []
 
     function getPlayersData(summonerName: string): void {
@@ -23,13 +25,13 @@
             return
         }
         
-        const filteredPlayers = _cachedPlayers.filter(p => p.alias.toLowerCase().includes(summonerName.toLowerCase()))
+        const filteredPlayers = cachedPlayers.filter(p => p.alias.toLowerCase().includes(summonerName.toLowerCase()))
         if (filteredPlayers.length > 3) {
             filteredPlayers.length = 3
         }
         
         for (const player of filteredPlayers) {
-            if (player.level || namesSearched.includes(player.alias)) {
+            if (namesSearched.includes(player.alias)) {
                 continue
             }
 
@@ -37,11 +39,12 @@
             fetch(`${backendUrl}summoners/${player.server}/${player.alias}/level-image`)
                 .then(res => res.json())
                 .then(data => {
-                    filteredCachedPlayersContext.update(players => {
-                        const idx = players.findIndex(p => p.alias === player.alias)
-                        players[idx].level = data.level
-                        players[idx].image = data.image
-                        return players
+                    cachedPlayers = cachedPlayers.map(p => {
+                        if (p.alias === player.alias) {
+                            p.level = data.level
+                            p.image = data.image
+                        }
+                        return p
                     })
                 })
         }
@@ -51,11 +54,11 @@
     $: getPlayersData(summonerName)
 </script>
 
-{#if summonerName && _cachedPlayers.filter(p => p.alias.toLowerCase().includes(summonerName.toLowerCase())).length}
+{#if summonerName && cachedPlayers.filter(p => p.alias.toLowerCase().includes(summonerName.toLowerCase())).length}
     <section>
         <h2 class="whitespace-nowrap pb-3 text-lg">Searched players:</h2>
         <div class="flex flex-col gap-2 pl-4">
-            {#each _cachedPlayers.filter(p => p.alias.toLowerCase().includes(summonerName.toLowerCase())).slice(0, 3) as player}
+            {#each cachedPlayers.filter(p => p.alias.toLowerCase().includes(summonerName.toLowerCase())).slice(0, 3) as player}
                     <a href={`/summoners/${rawServer(player.server)}/${player.alias}`} class="hover:underline">
                         <div class="flex items-center whitespace-nowrap rounded bg-white shadow transition-transform hover:scale-105 hover:shadow-indigo-400 dark:bg-zinc-800">
                             <span class="{player.level ? 'visible' : 'invisible'}">
