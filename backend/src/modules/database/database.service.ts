@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { Redis } from '@upstash/redis'
 import { GameDto, MasteryDto, PrintDatabaseDto, RedisRecordGamesDto, RedisRecordMasteriesDto } from '../../common/types'
 
