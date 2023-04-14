@@ -1,7 +1,6 @@
 <!--
   @component
-  ## AddPlayer component
-  Add players to the context
+  ## SearchPlayer component
 -->
 <script lang="ts">
     import { goto } from '$app/navigation'
