@@ -51,7 +51,7 @@ export class CacheInterceptor implements NestInterceptor {
         const gameIdsPending = lastTenGameIDs.filter(id => !lastGameIDsStored.includes(id))
         const newGames = await this.riotService.getGamesDetail(puuid, server, gameIdsPending)
 
-        this.logger.log(`${gameIdsPending.length} new games added to existing ${cachedData.length}}`)
+        this.logger.log(`${gameIdsPending.length} new games added to existing ${cachedData.length}`)
         this.databaseService.addOne(`${server}:${name}:games`, [...newGames, ...cachedData])
         return [...newGames, ...cachedData]
     }
