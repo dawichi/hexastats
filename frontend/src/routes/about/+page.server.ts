@@ -2,10 +2,10 @@ import type { ContributorDto } from './contributor.dto'
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load() {
-    const names = ['dawichi', 'Brr1-99', 'alexxwe']
+    const usernames = ['dawichi', 'Brr1-99', 'alexxwe']
     const contributors: ContributorDto[] = []
 
-    for (const contributor of names) {
+    for (const contributor of usernames) {
         const res = await fetch(`https://api.github.com/users/${contributor}`)
         const data = await res.json()
         contributors.push({
