@@ -1,6 +1,15 @@
 import os
 import re
 
+'''
+This script is used to migrate the DTOs from the backend to the frontend.
+
+It reads the `backend_path` DTOs and formats them before writing them to the `frontend_path`.
+This is needed because in NestJS, DTOs are classes using decorators, while in the frontend, they are basic interfaces.
+
+The use of the script allows to have a single source of truth for the DTOs, and to avoid having to maintain two different versions of the same DTO.
+'''
+
 EXCEPTION_FILES = ["index.ts"]
 # EXCEPTION_FILES = os.getenv("EXCEPTION_FILES")
 
