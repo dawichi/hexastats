@@ -114,32 +114,22 @@ export class Game {
     cs: number
 
     @ApiProperty({
-        description: 'URLs to the image of the ward',
-        example: 'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3340.png',
+        description: 'ID of the trinket used',
+        example: 3340,
     })
-    ward: string
+    ward: number
 
     @ApiProperty({
-        description: 'URLs to the images of the items used',
-        example: [
-            'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3157.png',
-            'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/6655.png',
-            'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/4645.png',
-            'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3020.png',
-            'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3165.png',
-            'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3089.png',
-        ],
+        description: 'IDs of the items used',
+        example: [3157, 6655, 4645, 3020, 3165, 3089],
     })
-    items: Array<string>
+    items: Array<number>
 
     @ApiProperty({
-        description: 'URL to the images of the spells used',
-        example: [
-            'http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/SummonerFlash.png',
-            'http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/SummonerHaste.png',
-        ],
+        description: 'IDs of the spells used',
+        example: [8021, 8021],
     })
-    spells: Array<string>
+    spells: Array<number>
 
     @ApiProperty({
         description: 'URL to the images of the runes used',

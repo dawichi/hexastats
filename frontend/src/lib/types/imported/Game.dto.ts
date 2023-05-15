@@ -23,9 +23,9 @@ export interface Game {
     kda: Kda
     gold: number
     cs: number
-    ward: string
-    items: Array<string>
-    spells: Array<string>
+    ward: number
+    items: Array<number>
+    spells: Array<number>
     perks: Array<string>
     participants: ParticipantTitle[]
 }

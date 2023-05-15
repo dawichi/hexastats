@@ -16,12 +16,13 @@
 
     export let game: GameDto
     export let server: string
+
 </script>
 
 <div class="animate__animated animate__fadeIn relative col-span-2 flex items-center justify-between px-2 text-center">
     <!-- SPELLS, RUNES -->
     <article class="grid grid-cols-2 gap-x-1 gap-y-2">
-        {#each [game.spells[0], game.perks[1], game.spells[1], game.perks[0]] as src}
+        {#each [riotService.spellUrl(game.spells[0]), game.perks[1], riotService.spellUrl(game.spells[1]), game.perks[0]] as src}
             <img class="{styles.iconSize.large} rounded" {src} alt="spell 2" />
         {/each}
     </article>
@@ -39,17 +40,17 @@
         <p>{game.kda.kills} / {game.kda.deaths} / {game.kda.assists}</p>
         <div class="mt-2 flex gap-1">
             <div class="grid grid-cols-3 gap-1">
-                {#each [0, 1, 2, 3, 4, 5] as itemId}
+                {#each [0, 1, 2, 3, 4, 5] as n}
                     <span>
-                        {#if game.items[itemId]}
-                            <img class="{styles.iconSize.large} rounded" src={game.items[itemId]} alt="item" />
+                        {#if game.items[n]}
+                            <img class="{styles.iconSize.large} rounded" src={riotService.itemURL(game.items[n])} alt="item" />
                         {:else}
                             <div class="{styles.iconSize.large} rounded bg-gradient-to-br from-zinc-500 to-zinc-800" />
                         {/if}
                     </span>
                 {/each}
             </div>
-            <img class="{styles.iconSize.large} rounded" src={game.ward} alt="item" />
+            <img class="{styles.iconSize.large} rounded" src={riotService.itemURL(game.ward)} alt="item" />
         </div>
     </article>
 

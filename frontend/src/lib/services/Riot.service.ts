@@ -20,6 +20,44 @@ export class RiotService {
     }
 
     /**
+     * ## URL to the item / ward image
+     * @param itemId The id of the item
+     * @returns The URL to the image
+     */
+    itemURL(itemId: number): string {
+        return `https://ddragon.leagueoflegends.com/cdn/${this.version}/img/item/${itemId}.png`
+    }
+
+    /**
+     * ## Get the spell image URL
+     *
+     * @param spellId The id of the spell
+     * @returns The url of the image
+     */
+    spellUrl(spellId: number): string {
+        const spells: Record<number, string> = {
+            21: 'Barrier',
+            1: 'Boost',
+            14: 'Dot',
+            3: 'Exhaust',
+            4: 'Flash',
+            6: 'Haste',
+            7: 'Heal',
+            13: 'Mana',
+            30: 'PoroRecall',
+            31: 'PoroThrow',
+            11: 'Smite',
+            39: 'SnowURFSnowball_Mark',
+            32: 'Snowball',
+            12: 'Teleport',
+            54: '_UltBookPlaceholder',
+            55: '_UltBookSmitePlaceholder',
+        }
+
+        return `http://ddragon.leagueoflegends.com/cdn/${this.version}/img/spell/Summoner${spells[spellId] ?? 'Flash'}.png`
+    }
+
+    /**
      * ## URL to the champ image
      * @param champName The name of the champ
      */

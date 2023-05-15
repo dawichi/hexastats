@@ -3,7 +3,7 @@ import { BadRequestException, HttpException, HttpStatus, Injectable, Logger, Not
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
 import { perkUrl, runeUrl } from '../../common/utils/runeUrl'
-import { serverRegion, spellUrl, winrate } from '../../common/utils'
+import { serverRegion, winrate } from '../../common/utils'
 import { validateGameType } from '../../common/validators'
 import { GameDto, MasteryDto, RankDto } from '../../common/types'
 import { RiotChampionsDto, RiotGameDto, RiotMasteryDto, RiotRankDto, RiotSummonerDto } from './types'
@@ -235,7 +235,6 @@ export class RiotService {
      * @returns The info parsed
      */
     formatGame(rawGame: RiotGameDto, puuid: string): GameDto {
-        const itemUrl = (id: number) => (id ? `http://ddragon.leagueoflegends.com/cdn/${this.version}/img/item/${id}.png` : null)
         const idx = rawGame.metadata.participants.indexOf(puuid)
 
         return {
@@ -256,16 +255,16 @@ export class RiotService {
             },
             cs: rawGame.info.participants[idx].neutralMinionsKilled + rawGame.info.participants[idx].totalMinionsKilled,
             gold: rawGame.info.participants[idx].goldEarned,
-            ward: itemUrl(rawGame.info.participants[idx].item6 || 2052),
+            ward: rawGame.info.participants[idx].item6 || 2052,
             items: [
-                itemUrl(rawGame.info.participants[idx].item0),
-                itemUrl(rawGame.info.participants[idx].item1),
-                itemUrl(rawGame.info.participants[idx].item2),
-                itemUrl(rawGame.info.participants[idx].item3),
-                itemUrl(rawGame.info.participants[idx].item4),
-                itemUrl(rawGame.info.participants[idx].item5),
+                rawGame.info.participants[idx].item0,
+                rawGame.info.participants[idx].item1,
+                rawGame.info.participants[idx].item2,
+                rawGame.info.participants[idx].item3,
+                rawGame.info.participants[idx].item4,
+                rawGame.info.participants[idx].item5,
             ],
-            spells: [spellUrl(rawGame.info.participants[idx].summoner1Id), spellUrl(rawGame.info.participants[idx].summoner2Id)],
+            spells: [rawGame.info.participants[idx].summoner1Id, rawGame.info.participants[idx].summoner2Id],
             perks: [
                 perkUrl(rawGame.info.participants[idx].perks.styles[0].style),
                 runeUrl(
