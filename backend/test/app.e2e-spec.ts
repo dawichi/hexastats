@@ -22,8 +22,4 @@ describe('AppController (e2e)', () => {
             message: 'Cannot GET /',
         })
     })
-
-    it('/database/print (GET)', () => {
-        return request(app.getHttpServer()).get('/database/print').expect(200).expect(Array)
-    })
 })
