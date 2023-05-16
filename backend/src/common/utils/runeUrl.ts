@@ -1,36 +1,37 @@
 const perks: Record<number, string> = {
-    8100: '7200_Domination',
-    8300: '7203_Whimsy',
-    8000: '7201_Precision',
-    8400: '7204_Resolve',
-    8200: '7202_Sorcery',
+    8100: '7200_domination',
+    8000: '7201_precision',
+    8200: '7202_sorcery',
+    8300: '7203_whimsy',
+    8400: '7204_resolve',
 }
 
 const runes: Record<number, string> = {
-    8112: 'Electrocute',
-    8124: 'Predator',
-    8128: 'DarkHarvest',
-    9923: 'HailOfBlades',
-    8351: 'GlacialAugment',
-    8360: 'UnsealedSpellbook',
-    8369: 'FirstStrike',
-    8005: 'PressTheAttack',
-    8008: 'LethalTempo', //'Temp'
-    8021: 'FleetFootwork',
-    8010: 'Conqueror',
-    8437: 'GraspOfTheUndying',
-    8439: 'VeteranAftershock',
-    8465: 'Guardian',
-    8214: 'SummonAery',
-    8229: 'ArcaneComet',
-    8230: 'PhaseRush',
+    8112: 'electrocute',
+    8124: 'predator',
+    8128: 'darkharvest',
+    9923: 'hailofblades',
+    8351: 'glacialaugment',
+    8360: 'unsealedspellbook',
+    8369: 'firststrike',
+    8005: 'presstheattack',
+    8008: 'lethaltempo', //'temp'
+    8021: 'fleetfootwork',
+    8010: 'conqueror',
+    8437: 'graspoftheundying',
+    8439: 'veteranaftershock',
+    8465: 'guardian',
+    8214: 'summonaery',
+    8229: 'arcanecomet',
+    8230: 'phaserush',
 }
 
 /**
  * @param perkId The id of the perk
  * @returns The url of the perk image
  */
-export const perkUrl = (perkId: number): string => `https://ddragon.canisback.com/img/perk-images/Styles/${perks[perkId]}.png`
+export const perkUrl = (perkId: number): string => `https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/
+global/default/v1/perk-images/styles/${perks[perkId]}.png`
 
 /**
  * @param runeId Rune ID
@@ -38,8 +39,10 @@ export const perkUrl = (perkId: number): string => `https://ddragon.canisback.co
  * @returns The url of the rune image
  */
 export function runeUrl(runeId: number, perkId: number): string {
-    const exception = runeId === 8008 ? 'Temp' : ''
-    const runeGroup = perkId === 8300 ? 'Inspiration' : perks[perkId].split('_')[1]
+    const exception = runeId === 8008 ? 'temp' : ''
+    const runeGroup = perkId === 8300 ? 'inspiration' : perks[perkId].split('_')[1]
 
-    return `https://ddragon.canisback.com/img/perk-images/Styles/${runeGroup}/${runes[runeId]}/${runes[runeId]}${exception}.png`
+    return `https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/styles/${runeGroup}/${runes[runeId]}/${runes[runeId]}${exception}.png`
+
+    //return `https://ddragon.canisback.com/img/perk-images/Styles/${runeGroup}/${runes[runeId]}/${runes[runeId]}${exception}.png`??
 }
