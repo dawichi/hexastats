@@ -134,8 +134,8 @@ export class Game {
     @ApiProperty({
         description: 'URL to the images of the runes used',
         example: [
-            'https://ddragon.canisback.com/img/perk-images/Styles/7200_Domination.png',
-            'https://ddragon.canisback.com/img/perk-images/Styles/Domination/Electrocute/Electrocute.png',
+            'https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/styles/7200_domination.png',
+            'https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/styles/domination/electrocute/electrocute.png',
         ],
     })
     perks: Array<string>
