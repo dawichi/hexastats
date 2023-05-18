@@ -12,11 +12,10 @@
     import { kda } from '$lib/utils'
     import { RiotService } from '$lib/services/Riot.service'
 
-    const riotService = RiotService.getInstance()
-
     export let game: GameDto
     export let server: string
 
+    const riotService = RiotService.getInstance()
 </script>
 
 <div class="animate__animated animate__fadeIn relative col-span-2 flex items-center justify-between px-2 text-center">
@@ -43,7 +42,11 @@
                 {#each [0, 1, 2, 3, 4, 5] as n}
                     <span>
                         {#if game.items[n]}
-                            <img class="{styles.iconSize.large} rounded" src={riotService.itemURL(game.items[n])} alt="item" />
+                            <img
+                                class="{styles.iconSize.large} rounded"
+                                src="https://ddragon.leagueoflegends.com/cdn/{riotService.version}/img/item/{game.items[n]}.png"
+                                alt="item"
+                            />
                         {:else}
                             <div class="{styles.iconSize.large} rounded bg-gradient-to-br from-zinc-500 to-zinc-800" />
                         {/if}
