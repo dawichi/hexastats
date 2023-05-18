@@ -161,19 +161,19 @@ class Participant {
 
     @ApiProperty({
         description: 'URLs to the image of the ward',
-        example: 'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3340.png',
+        example: 'https://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3340.png',
     })
     ward: string
 
     @ApiProperty({
         description: 'URLs to the images of the items used',
         example: [
-            'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3157.png',
-            'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/6655.png',
-            'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/4645.png',
-            'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3020.png',
-            'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3165.png',
-            'http://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3089.png',
+            'https://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3157.png',
+            'https://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/6655.png',
+            'https://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/4645.png',
+            'https://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3020.png',
+            'https://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3165.png',
+            'https://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3089.png',
         ],
     })
     items: Array<string>
@@ -181,8 +181,8 @@ class Participant {
     @ApiProperty({
         description: 'URL to the images of the spells used',
         example: [
-            'http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/SummonerFlash.png',
-            'http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/SummonerHaste.png',
+            'https://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/SummonerFlash.png',
+            'https://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/SummonerHaste.png',
         ],
     })
     spells: Array<string>
