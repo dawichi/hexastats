@@ -42,11 +42,7 @@
                 {#each [0, 1, 2, 3, 4, 5] as n}
                     <span>
                         {#if game.items[n]}
-                            <img
-                                class="{styles.iconSize.large} rounded"
-                                src="https://ddragon.leagueoflegends.com/cdn/{riotService.version}/img/item/{game.items[n]}.png"
-                                alt="item"
-                            />
+                            <img class="{styles.iconSize.large} rounded" src={riotService.itemURL(game.items[n])} alt="item" />
                         {:else}
                             <div class="{styles.iconSize.large} rounded bg-gradient-to-br from-zinc-500 to-zinc-800" />
                         {/if}
