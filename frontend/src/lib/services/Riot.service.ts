@@ -54,7 +54,7 @@ export class RiotService {
             55: '_UltBookSmitePlaceholder',
         }
 
-        return `http://ddragon.leagueoflegends.com/cdn/${this.version}/img/spell/Summoner${spells[spellId] ?? 'Flash'}.png`
+        return `https://ddragon.leagueoflegends.com/cdn/${this.version}/img/spell/Summoner${spells[spellId] ?? 'Flash'}.png`
     }
 
     /**
