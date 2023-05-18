@@ -2,7 +2,7 @@
     import { page } from '$app/stores'
 </script>
 
-<div class="p-4 lg:p-8 w-96 m-auto">
+<div class="px-4 py-24 lg:p-8 w-96 m-auto">
     <h1 class="flex flex-col justify-center items-center">
         <i class="bi bi-emoji-frown text-6xl mb-4"></i>
         <p>Oh no! Something went wrong</p>
