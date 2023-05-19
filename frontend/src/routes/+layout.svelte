@@ -5,26 +5,28 @@
     import { navigating } from '$app/stores'
 </script>
 
-<header>
-    <Navbar />
-</header>
+<div class="flex h-screen flex-col">
+    <header>
+        <Navbar />
+    </header>
 
-<main class="min-h-screen pb-20 dark:text-white {styles.background}">
-    <!-- <ListPlayersHeader /> -->
+    <main class="flex-grow pb-20 dark:text-white {styles.background}">
+        <!-- <ListPlayersHeader /> -->
 
-    {#if $navigating}
-        {#if $navigating?.to?.url.pathname.includes('summoners')}
-            <div class="flex items-center justify-center">
-                <i class="bi bi-arrow-clockwise my-12 animate-spin text-6xl" />
-            </div>
-            <h1 class="text-center text-2xl">Getting data for: <br /> {decodeURI($navigating?.to?.url.pathname.split('/')[3])}</h1>
+        {#if $navigating}
+            {#if $navigating?.to?.url.pathname.includes('summoners')}
+                <div class="flex items-center justify-center">
+                    <i class="bi bi-arrow-clockwise my-12 animate-spin text-6xl" />
+                </div>
+                <h1 class="text-center text-2xl">Getting data for: <br /> {decodeURI($navigating?.to?.url.pathname.split('/')[3])}</h1>
+            {/if}
+        {:else}
+            <slot />
         {/if}
-    {:else}
-        <slot />
-    {/if}
-</main>
+    </main>
 
-<Footer />
+    <Footer />
+</div>
 
 <style>
     header {

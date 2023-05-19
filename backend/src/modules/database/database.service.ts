@@ -91,10 +91,10 @@ export class DatabaseService {
     async addOne(key: string, summonerData: GameDto[] | MasteryDto[]) {
         this.logger.log(`REDIS: saving ${key} data...`)
 
-        // to avoid having too many games in cache
-        if (summonerData.length > 50) {
-            this.logger.log(`> 50 games in cache (${summonerData.length}), removing the oldest 10`)
-            summonerData = summonerData.slice(0, 50)
+        // to avoid having too many games in cache (limit aprox 800)
+        if (summonerData.length > 690) {
+            this.logger.log(`> 690 games in cache (${summonerData.length}), removing the oldest 10`)
+            summonerData = summonerData.slice(0, 690)
         }
 
         const newRecord = {

@@ -120,7 +120,7 @@ export class RiotService {
 
         return allMasteries.map(mastery => ({
             name: this.champions[mastery.championId],
-            image: `http://ddragon.leagueoflegends.com/cdn/${this.version}/img/champion/${this.champions[mastery.championId]}.png`,
+            image: `https://ddragon.leagueoflegends.com/cdn/${this.version}/img/champion/${this.champions[mastery.championId]}.png`,
             level: mastery.championLevel,
             points: mastery.championPoints,
             chestGranted: mastery.chestGranted,
@@ -133,7 +133,7 @@ export class RiotService {
 
             masteries.push({
                 name: champ_name,
-                image: `http://ddragon.leagueoflegends.com/cdn/${this.version}/img/champion/${champ_name}.png`,
+                image: `https://ddragon.leagueoflegends.com/cdn/${this.version}/img/champion/${champ_name}.png`,
                 level: allMasteries[i].championLevel,
                 points: allMasteries[i].championPoints,
                 chestGranted: allMasteries[i].chestGranted,
