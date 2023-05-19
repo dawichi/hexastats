@@ -101,7 +101,7 @@
     </div>
 </div>
 
-{#if player.games.length < 50}
+{#if player.games.length < 690}
     <div class="flex justify-center">
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         {#if !loadingGames}
@@ -113,5 +113,5 @@
         {/if}
     </div>
 {:else}
-    <p class="p-4 text-center text-lg"><i class="bi bi-exclamation-circle" /> Currently limited to 50 games loaded</p>
+    <p class="p-4 text-center text-lg"><i class="bi bi-exclamation-circle" /> Currently limited to 690 games loaded</p>
 {/if}
