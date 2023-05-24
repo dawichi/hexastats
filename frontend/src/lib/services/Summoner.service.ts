@@ -27,7 +27,7 @@ export class SummonerService {
             fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/games`),
         ])
 
-        // ERRIR HANDLING
+        // ERROR HANDLING
         if (!playerData.ok || !playerMasteries.ok || !playerGames.ok) {
             if (playerGames.status === 429) {
                 throw new Error('429')
