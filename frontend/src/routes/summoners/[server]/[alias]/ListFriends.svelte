@@ -51,9 +51,9 @@
             }
         }
 
-        // Remove all players you only played with once
+        // Remove all players you only played with once/twice
         for (const friend in indexByName) {
-            if (indexByName[friend].games === 1) {
+            if (indexByName[friend].games < 3) {
                 delete indexByName[friend]
             }
         }
