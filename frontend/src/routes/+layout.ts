@@ -6,5 +6,5 @@ export async function load({ fetch }: { fetch: typeof window.fetch }): Promise<v
         const response = await fetch(url)
         const versions: Array<string> = await response.json()
         const riotService = RiotService.getInstance(versions[0])
-        console.log(`[layout.ts] riotService.version: ${riotService.version}`)
+        console.log(`Using Riot version ${riotService.version}`)
 }
