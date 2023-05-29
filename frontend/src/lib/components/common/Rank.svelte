@@ -9,12 +9,26 @@
 
     export let title: string
     export let rankdata: RankDto
+    const colors: Record<string, Array<string>> = {
+        W: ['green', 'Win'],
+        L: ['red', 'Lose'],
+        N: ['zinc', 'Not played'],
+    }
 </script>
 
 <div class="text-center text-sm">
     <h3>{title}</h3>
     <h4 class="text-xs">
-        {rankdata.rank} ({rankdata.lp})
+        {rankdata.rank}
+    </h4>
+    <h4 class="text-xs">
+        {#if rankdata.promos && rankdata.rank != 'Unranked'}
+            {#each rankdata.promos.split('') as letter}
+                <span title={colors[letter][1]} class="rounded bg-{colors[letter][0]}-600 px-1 text-white">{letter}</span>
+            {/each}
+        {:else}
+            {rankdata.lp} LP
+        {/if}
     </h4>
     <div class="relative m-auto h-14 w-14 rounded">
         <img src="/images/leagues/{rankdata.image}" alt="rank" />

@@ -125,21 +125,6 @@ export class RiotService {
             points: mastery.championPoints,
             chestGranted: mastery.chestGranted,
         }))
-
-        const masteries = []
-
-        for (let i = 0; i < allMasteries.length; i++) {
-            const champ_name = this.champions[allMasteries[i].championId]
-
-            masteries.push({
-                name: champ_name,
-                image: `https://ddragon.leagueoflegends.com/cdn/${this.version}/img/champion/${champ_name}.png`,
-                level: allMasteries[i].championLevel,
-                points: allMasteries[i].championPoints,
-                chestGranted: allMasteries[i].chestGranted,
-            })
-        }
-        return masteries
     }
 
     /**
@@ -166,6 +151,7 @@ export class RiotService {
             win: 0,
             lose: 0,
             winrate: 0,
+            promos: 'NNN',
         }
 
         // Is unranked in both queues
@@ -183,6 +169,7 @@ export class RiotService {
             win: rank_data[i].wins,
             lose: rank_data[i].losses,
             winrate: winrate(rank_data[i]['wins'], rank_data[i]['losses']),
+            promos: rank_data[i]?.miniSeries?.progress ?? '',
         })
 
         const soloFirst = rank_data[0].queueType == 'RANKED_SOLO_5x5'

@@ -36,6 +36,12 @@ export class Rank {
         example: 50,
     })
     winrate: number
+
+    @ApiProperty({
+        description: 'State of the players promotion games',
+        example: 'WLN',
+    })
+    promos: string
 }
 
 export class RankStructure {
