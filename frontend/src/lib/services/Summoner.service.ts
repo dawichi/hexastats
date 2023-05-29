@@ -18,7 +18,7 @@ export class SummonerService {
      * @param summonerName The summoner name to request the data from
      * @returns The summoner data
      */
-    static async getData(server: string, summonerName: string): Promise<SummonerDto> {
+    static async getData(server: string, summonerName: string, fetch: typeof window.fetch): Promise<SummonerDto> {
         const okServer = validateServer(server)
 
         const [playerData, playerMasteries, playerGames] = await Promise.all([
