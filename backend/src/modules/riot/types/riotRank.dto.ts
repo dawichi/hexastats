@@ -12,4 +12,7 @@ export interface RiotRank {
     inactive: boolean
     freshBlood: boolean
     hotStreak: boolean
+    miniSeries: {
+        progress: string
+    }
 }
