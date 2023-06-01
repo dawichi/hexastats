@@ -1,13 +1,24 @@
 import { applyDecorators } from '@nestjs/common'
 import { ApiQuery } from '@nestjs/swagger'
 
-// UNUSED
-export function QueryGamesLimit() {
+export function QueryLimit() {
     return applyDecorators(
         ApiQuery({
-            name: 'gamesLimit',
+            name: 'limit',
             description: 'Limit of last games played to load. Empty defaults to 10',
             example: 10,
+            type: Number,
+            required: false,
+        }),
+    )
+}
+
+export function QueryOffset() {
+    return applyDecorators(
+        ApiQuery({
+            name: 'offset',
+            description: 'Offset of last games played to load. Empty defaults to 10',
+            example: 0,
             type: Number,
             required: false,
         }),

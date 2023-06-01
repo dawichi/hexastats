@@ -55,11 +55,11 @@ export class SummonersService {
     /**
      * /summoners/:server/:summonerName/games
      */
-    async getGames(server: string, summonerName: string): Promise<GameDto[]> {
+    async getGames(server: string, summonerName: string, limit: number, offset: number): Promise<GameDto[]> {
         const { puuid } = await this.riotService.getBasicInfo(server, summonerName)
 
         // Get the list of game IDs
-        const games_list = await this.riotService.getGameIds(puuid, server, 10, 0)
+        const games_list = await this.riotService.getGameIds(puuid, server, limit, offset)
 
         // Get the game data
         return this.riotService.getGamesDetail(puuid, server, games_list)
