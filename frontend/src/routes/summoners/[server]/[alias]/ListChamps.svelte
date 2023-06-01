@@ -32,7 +32,7 @@
 {#each ChampService.champsBuilder(player.games) as champ}
     <div class="grid grid-cols-4 px-4">
         <div class="flex justify-center">
-            <button on:click={() => handleClick(champ.name)} class="p-1 {champ.name === _activeFilter ? 'bg-yellow-400' : ''}">
+            <button on:click={() => handleClick(champ.name)} class="p-1 {champ.name === _activeFilter ? 'rounded-sm bg-yellow-400 transition-transform scale-110' : 'transition-transform hover:scale-125'}">
                 <img class="w-12 rounded" src={riotService.champImage(champ.name)} alt="champion" />
             </button>
         </div>
