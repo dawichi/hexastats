@@ -8,7 +8,7 @@ export function QueryLimit() {
             description: 'Limit of last games played to load. Empty defaults to 10',
             example: 10,
             type: Number,
-            required: false,
+            required: true,
         }),
     )
 }
@@ -20,7 +20,7 @@ export function QueryOffset() {
             description: 'Offset of last games played to load. Empty defaults to 10',
             example: 0,
             type: Number,
-            required: false,
+            required: true,
         }),
     )
 }
