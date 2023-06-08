@@ -7,7 +7,6 @@
  * @returns the query param to use
  */
 export const validateGameType = (queueId: number): string => {
-    console.log(queueId)
     const gameType: { [key: number]: string } = {
         400: 'Normal',
         420: 'Ranked Solo',
