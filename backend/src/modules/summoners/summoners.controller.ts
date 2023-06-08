@@ -74,29 +74,9 @@ export class SummonersController {
     async getGames(
         @Param('server') server: string,
         @Param('summonerName') summonerName: string,
-        @Query('limit', ParseIntPipe) limit = 10,
-        @Query('offset', ParseIntPipe) offset = 0,
+        @Query('limit', ParseIntPipe) limit: number,
+        @Query('offset', ParseIntPipe) offset: number,
     ): Promise<GameDto[]> {
         return this.summonersService.getGames(server, encodeURI(summonerName.trim()), limit, offset)
-    }
-
-    /**
-     * ## Add new games to the stored ones
-     */
-    @Get('/:server/:summonerName/addGames/:amount')
-    @ApiOperation({
-        summary: 'Get games',
-        description: 'Returns an array of games',
-        deprecated: true,
-    })
-    @ApiCustomResponse([GameDto])
-    @ParamServer()
-    @ParamSummonerName()
-    async addGames(
-        @Param('server') server: string,
-        @Param('summonerName') summonerName: string,
-        @Param('amount', ParseIntPipe) amount: number,
-    ): Promise<GameDto[]> {
-        return this.summonersService.addGames(server, encodeURI(summonerName.trim()), amount)
     }
 }
