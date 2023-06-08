@@ -1,9 +1,10 @@
-import { Controller, Get, Param, ParseIntPipe, Query, UseInterceptors } from '@nestjs/common'
+import { Controller, Get, Param, Query, UseInterceptors } from '@nestjs/common'
 import { SummonersService } from './summoners.service'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { ApiCustomResponse, ParamServer, ParamSummonerName, QueryLimit, QueryOffset } from '../../common/decorators'
 import { CacheInterceptor } from '../../common/handlers/cache.interceptor'
 import { GameDto, MasteryDto, PlayerDto, RankDataDto } from '../../common/types'
+import { LimitPipe, OffsetPipe } from '../../common/pipes'
 
 @ApiTags('summoners')
 @Controller('summoners')
@@ -74,8 +75,8 @@ export class SummonersController {
     async getGames(
         @Param('server') server: string,
         @Param('summonerName') summonerName: string,
-        @Query('limit', ParseIntPipe) limit: number,
-        @Query('offset', ParseIntPipe) offset: number,
+        @Query('limit', LimitPipe) limit: number,
+        @Query('offset', OffsetPipe) offset: number,
     ): Promise<GameDto[]> {
         return this.summonersService.getGames(server, encodeURI(summonerName.trim()), limit, offset)
     }
