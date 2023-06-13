@@ -8,10 +8,10 @@
     import { RiotService } from '$lib/services/Riot.service'
     import { playerContext } from '$lib/context/players'
     // Sub-Components
-    import ListChamps from './ListChamps.svelte'
-    import ListPositions from './ListPositions.svelte'
-    import ListFriends from './ListFriends.svelte'
-    import ListGames from './ListGames.svelte'
+    import ListChamps from '../ListChamps.svelte'
+    import ListPositions from '../ListPositions.svelte'
+    import ListFriends from '../ListFriends.svelte'
+    import ListGames from '../ListGames.svelte'
 
     /** @type {import('./$types').PageData} */
     export let data: SummonerDto

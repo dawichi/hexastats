@@ -14,17 +14,26 @@ export const backendUrl = development ? 'http://localhost:5000/' : 'https://api-
 export class SummonerService {
     /**
      * ## Requests summoner data from the backend API
-     * @param server The server to request the data from
-     * @param summonerName The summoner name to request the data from
-     * @returns The summoner data
      */
-    static async getData(server: string, summonerName: string, fetch: typeof window.fetch): Promise<SummonerDto> {
+    static async getData({
+        server,
+        summonerName,
+        limit,
+        offset,
+        fetch,
+    }: {
+        server: string
+        summonerName: string
+        limit: number
+        offset: number
+        fetch: typeof window.fetch
+    }): Promise<SummonerDto> {
         const okServer = validateServer(server)
 
         const [playerData, playerMasteries, playerGames] = await Promise.all([
             fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}`),
             fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/masteries`),
-            fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/games?offset=0&limit=10`),
+            fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/games?offset=${offset}&limit=${limit}`),
         ])
 
         // ERROR HANDLING
@@ -48,8 +57,6 @@ export class SummonerService {
 
     /**
      * ## Checks if the player exists on the server
-     * @param server Server to check if the player exists on it
-     * @param summonerName Summoner name to check if it exists
      * @returns The player basic data if it exists, null otherwise
      */
     static async existPlayer(server: string, summonerName: string): Promise<null | PlayerDto> {
@@ -61,8 +68,6 @@ export class SummonerService {
 
     /**
      * ## Requests 10 extra games from the backend API
-     * @param server The server to request the data from
-     * @param summonerName The summoner name to request the data from
      * @returns The new games data
      */
     static async addGames(server: string, summonerName: string): Promise<GameDto[]> {
