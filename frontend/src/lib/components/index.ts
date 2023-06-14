@@ -14,6 +14,7 @@ export { default as CachedPlayers } from './logic/CachedPlayers.svelte'
 // Common
 export { default as Rank } from './common/Rank.svelte'
 export { default as Image } from './common/Image.svelte'
+export { default as Spinner } from './common/Spinner.svelte'
 export { default as ProfileImg } from './common/ProfileImg.svelte'
 export { default as RankStructure } from './common/RankStructure.svelte'
 export { default as MasteryRow } from './common/MasteryRow.svelte'
