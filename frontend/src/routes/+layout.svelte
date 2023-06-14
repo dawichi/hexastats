@@ -3,6 +3,7 @@
     import { styles } from '$lib/config/styles'
     import { Footer, Navbar } from '$lib/components'
     import { navigating } from '$app/stores'
+    import Spinner from '$lib/components/common/Spinner.svelte'
 </script>
 
 <div class="flex h-screen flex-col">
@@ -15,9 +16,7 @@
 
         {#if $navigating}
             {#if $navigating?.to?.url.pathname.includes('summoners')}
-                <div class="flex items-center justify-center">
-                    <i class="bi bi-arrow-clockwise my-12 animate-spin text-6xl" />
-                </div>
+                <Spinner />
                 <h1 class="text-center text-2xl">Getting data for: <br /> {decodeURI($navigating?.to?.url.pathname.split('/')[3])}</h1>
             {/if}
         {:else}
