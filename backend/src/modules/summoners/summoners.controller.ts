@@ -8,7 +8,7 @@ import { LimitPipe, OffsetPipe } from '../../common/pipes'
 
 @ApiTags('summoners')
 @Controller('summoners')
-@UseInterceptors(CacheInterceptor)
+// @UseInterceptors(CacheInterceptor)
 export class SummonersController {
     constructor(private readonly summonersService: SummonersService) {}
 
