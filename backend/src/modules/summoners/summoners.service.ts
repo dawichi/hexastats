@@ -48,8 +48,8 @@ export class SummonersService {
     /**
      * /summoners/:server/:summonerName/masteries
      */
-    async getMasteries(server: string, summonerName: string): Promise<MasteryDto[]> {
-        return this.riotService.getMasteries(summonerName, server, 12)
+    async getMasteries(server: string, summonerName: string, limit: number): Promise<MasteryDto[]> {
+        return this.riotService.getMasteries(summonerName, server, limit)
     }
 
     /**
