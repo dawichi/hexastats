@@ -12,10 +12,11 @@ export type queueTypeDto = 'ranked' | 'normal' | 'all'
 
 @Injectable()
 export class RiotService {
-    private readonly apiKey = this.configService.get<string>('RIOT_API_KEY')
-    private readonly headers = { headers: { 'X-Riot-Token': this.apiKey } }
-    private readonly logger = new Logger(this.constructor.name)
-    private readonly URLs = {
+    // Constants
+    private readonly API_KEY = this.configService.get<string>('RIOT_API_KEY')
+    private readonly HEADERS = { headers: { 'X-Riot-Token': this.API_KEY } }
+    private readonly LOGGER = new Logger(this.constructor.name)
+    private readonly URLS = {
         summoner: (server: string, name: string) => `https://${server}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${name}`,
         masteries: (server: string, summoner_id: string) =>
             `https://${server}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/${summoner_id}`,
@@ -24,8 +25,8 @@ export class RiotService {
     }
 
     // These properties doesnt usually change, so they are generated in the constructor and stored instead of fetching them every time
-    version: string
-    private champions: Record<string, string> = {}
+    version: string // current version of the game
+    private champions: Record<string, string> = {} // {champ_id => champ_name}
 
     constructor(private readonly configService: ConfigService, private readonly httpService: HttpService) {
         this.init()
@@ -38,7 +39,7 @@ export class RiotService {
      *  2. Generate the table [champ_id => champ_name]
      */
     private async init(): Promise<void> {
-        this.logger.debug('RiotService constructor - catching version and champions')
+        this.LOGGER.debug('RiotService constructor - catching version and champions')
         /**
          * 1. Get the latest version of the game
          */
@@ -65,11 +66,10 @@ export class RiotService {
      */
     private async httpGet<T>(url: string): Promise<T> {
         try {
-            this.logger.debug(`Fetching ${url}`)
-            return (await lastValueFrom(this.httpService.get(url, this.headers))).data
+            this.LOGGER.debug(`Fetching ${url}`)
+            return (await lastValueFrom(this.httpService.get(url, this.HEADERS))).data
         } catch (error) {
-            this.logger.error(error)
-            this.logger.error(`Error fetching data from ${url}`)
+            this.LOGGER.error(`Fetching ${url}`, error)
 
             if (error.response.status === 429)
                 throw new HttpException(
@@ -96,7 +96,7 @@ export class RiotService {
      * To use other methods, you need to get the summoner id first
      */
     async getBasicInfo(server: string, summonerName: string): Promise<RiotSummonerDto> {
-        return this.httpGet<RiotSummonerDto>(this.URLs.summoner(server, summonerName))
+        return this.httpGet<RiotSummonerDto>(this.URLS.summoner(server, summonerName))
     }
 
     /**
@@ -108,10 +108,10 @@ export class RiotService {
      */
     async getMasteries(summonerName: string, server: string, masteriesLimit: number): Promise<MasteryDto[]> {
         const summoner_id = (await this.getBasicInfo(server, summonerName)).id
-        const allMasteries = await this.httpGet<RiotMasteryDto[]>(this.URLs.masteries(server, summoner_id))
+        const allMasteries = await this.httpGet<RiotMasteryDto[]>(this.URLS.masteries(server, summoner_id))
 
         // This response cointains all (+140) champions, so we take the {masteriesLimit} first ones
-        this.logger.log(`Found ${allMasteries.length} masteries`)
+        this.LOGGER.log(`Found ${allMasteries.length} masteries, returning ${masteriesLimit}`)
 
         // Slice result if exceeds the limit
         if ((masteriesLimit ?? 0) < allMasteries.length) {
@@ -142,8 +142,8 @@ export class RiotService {
         solo: RankDto
         flex: RankDto
     }> {
-        this.logger.log('Getting classification data in ranked queues')
-        const rank_data = await this.httpGet<RiotRankDto[]>(this.URLs.rank(server, summoner_id))
+        this.LOGGER.log('Getting classification data in ranked queues')
+        const rank_data = await this.httpGet<RiotRankDto[]>(this.URLS.rank(server, summoner_id))
         const league_default = {
             rank: 'Unranked',
             image: 'unranked.png',
@@ -198,17 +198,17 @@ export class RiotService {
      * @returns [is_last, last_game_id]
      */
     async isLastGame(server: string, puuid: string, matchId: string): Promise<{ is_last: boolean; last_game_id: string }> {
-        this.logger.log(`Is ${matchId} the last played game?`)
+        this.LOGGER.log(`Is ${matchId} the last played game?`)
         server = serverRegion(server)
 
         // Get the IDs of the games
         const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=1`
-        const gameIDs_list: string[] = (await lastValueFrom(this.httpService.get(url, this.headers))).data
+        const gameIDs_list: string[] = (await lastValueFrom(this.httpService.get(url, this.HEADERS))).data
 
         // Check if the match is the last played game
         const is_last = gameIDs_list[0] === matchId
 
-        this.logger.log(is_last ? 'Yes, it is' : 'No, it is not')
+        this.LOGGER.log(is_last ? 'Yes, it is' : 'No, it is not')
         return {
             is_last,
             last_game_id: gameIDs_list[0],
@@ -293,7 +293,7 @@ export class RiotService {
      * @returns The list of games info
      */
     async getGamesDetail(puuid: string, server: string, matchIds: string[]): Promise<GameDto[]> {
-        this.logger.log(`Getting data from ${matchIds.length} games`)
+        this.LOGGER.log(`Getting data from ${matchIds.length} games`)
         // Accumulate the promises of each game
         const promises: Promise<RiotGameDto>[] = matchIds.map((game_id: string) => {
             const url = `https://${serverRegion(server)}.api.riotgames.com/lol/match/v5/matches/${game_id}`
