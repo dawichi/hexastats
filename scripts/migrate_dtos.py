@@ -32,7 +32,7 @@ for backend_file in backend_files:
                 unique_class = []
                 flag = True
                 unique_class.append(line)
-            elif line.startswith("}"):
+            elif line.startswith("}") and flag:
                 unique_class.append(line)
                 flag = False
                 classes.append(unique_class)
