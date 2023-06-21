@@ -11,7 +11,7 @@
     import ListChamps from '../ListChamps.svelte'
     import ListPositions from '../ListPositions.svelte'
     import ListFriends from '../ListFriends.svelte'
-    import ListGames from '../ListGames.svelte'
+    import ListGames from './ListGames.svelte'
 
     /** @type {import('./$types').PageData} */
     export let data: SummonerDto
@@ -43,18 +43,18 @@
                             <span>KDA</span>
                         </div>
                         <hr class="m-2" />
-                        <ListChamps player={_player} />
+                        <!-- <ListChamps player={_player} /> -->
                     </div>
                     <div class="flex flex-col">
                         <div class="{styles.foreground} {styles.card} m-2 mb-4">
                             <h2 class="pt-3 text-center text-2xl">Positions</h2>
                             <hr class="m-2" />
-                            <ListPositions player={_player} />
+                            <!-- <ListPositions player={_player} /> -->
                         </div>
                         <div class="{styles.foreground} {styles.card} m-2 mb-4">
                             <h2 class="pt-3 text-center text-2xl">Friends</h2>
                             <hr class="m-2" />
-                            <ListFriends player={_player} />
+                            <!-- <ListFriends player={_player} /> -->
                         </div>
                     </div>
                 </aside>

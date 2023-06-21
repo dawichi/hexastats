@@ -7,7 +7,7 @@
     import type { GameDto, SummonerDto } from '$lib/types'
     import Game from './games/Game.svelte'
     import { styles } from '$lib/config'
-    import { MockGame } from '$lib/components'
+    import { MockGame, Pagination } from '$lib/components'
     import { SummonerService } from '$lib/services/Summoner.service'
     import { filteredGamesContext, playerContext } from '$lib/context/players'
 
@@ -49,34 +49,16 @@
                 : player.games.filter(game => game.championName === filter),
         }))
     }
-
-    // Load games logic
-    let loadingGames: boolean = false
-
-    async function loadMoreGames(): Promise<void> {
-        loadingGames = true
-        try {
-            const newGames = await SummonerService.addGames(player.server, player.alias)
-            filteredGamesContext.update(data => ({
-                activeFilter: '',
-                games: [...player.games, ...newGames]
-            }))
-            playerContext.update(player => ({ ...player, games: [...player.games, ...newGames] }))
-        } catch (error) {
-            console.error(error)
-        }
-        loadingGames = false
-    }
 </script>
 
 <div>
-    {#each getGameModes(player) as gameMode}
+    <!-- {#each getGameModes(player) as gameMode}
         <button
             on:click={() => filterBy(gameMode)}
             class="{styles.card} {styles.scale} mx-4 my-2 cursor-pointer {_activeFilter === gameMode ? 'bg-indigo-900' : 'bg-indigo-600'} p-3 px-6 text-white"
             >{gameMode} ({getNumGamesByMode(gameMode, player)})</button
         >
-    {/each}
+    {/each} -->
 
     <div class="flex items-center justify-center gap-2 px-4">
         <hr class="w-full" />
@@ -92,26 +74,5 @@
         {/each}
     </div>
 
-    <div class="flex items-center justify-center gap-2 px-4">
-        <hr class="w-full" />
-        <span class="whitespace-nowrap">
-            Games loaded: {player.games.length}
-        </span>
-        <hr class="w-full" />
-    </div>
+    <Pagination />
 </div>
-
-{#if player.games.length < 690}
-    <div class="flex justify-center">
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        {#if !loadingGames}
-            <button on:click={loadMoreGames} class="{styles.card} {styles.scale} mx-4 my-2 cursor-pointer bg-indigo-600 p-3 px-6 text-white">
-                <i class="bi bi-cloud-download mr-2" /> Load 10 more games
-            </button>
-        {:else}
-            <MockGame />
-        {/if}
-    </div>
-{:else}
-    <p class="p-4 text-center text-lg"><i class="bi bi-exclamation-circle" /> Currently limited to 690 games loaded</p>
-{/if}
