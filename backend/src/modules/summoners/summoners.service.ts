@@ -1,16 +1,21 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
-import { GameDto, MasteryDto, PlayerDto, RankDataDto } from '../../common/types'
+import { ChampStatsDto, FriendDto, GameDto, MasteryDto, PlayerDto, PositionStatsDto, RankDataDto, StatsDto } from '../../common/types'
 import { RiotService } from '../../modules/riot/riot.service'
 import { DatabaseService } from '../database/database.service'
+import { MathService } from '../math/math.service'
 
 @ApiTags('summoners')
 @Injectable()
 export class SummonersService {
     private readonly logger = new Logger(this.constructor.name)
 
-    constructor(private readonly riotService: RiotService, private readonly databaseService: DatabaseService) {}
+    constructor(
+        private readonly riotService: RiotService,
+        private readonly databaseService: DatabaseService,
+        private readonly mathService: MathService,
+    ) {}
 
     /**
      * /summoners/:server/:summonerName
@@ -63,6 +68,23 @@ export class SummonersService {
 
         // Get the game data
         return this.riotService.getGamesDetail(puuid, server, games_list)
+    }
+
+    /**
+     * /summoners/:server/:summonerName/stats
+     */
+    async getStats(server: string, summonerName: string): Promise<StatsDto> {
+        const games = await this.getGames(server, summonerName, 10, 0)
+        const friends: FriendDto[] = this.mathService.getFriends(games)
+        //const statsByChamp: ChampStatsDto[] = this.mathService.getStatsByChamp(games)
+        //const statsByPosition: PositionStatsDto[] = this.mathService.getStatsByPosition(games)
+
+        return {
+            numOfGames: games.length,
+            friends,
+            statsByChamp: [],
+            statsByPosition: [],
+        }
     }
 
     /**
