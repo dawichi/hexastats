@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { FriendDto, GameDto } from 'src/common/types'
+import { ChampStatsDto, FriendDto, GameDto } from 'src/common/types'
+import { kda } from 'src/common/utils'
 
 @Injectable()
 export class MathService {
@@ -61,5 +62,53 @@ export class MathService {
             .sort((a, b) => b.games - a.games)
 
         return result
+    }
+
+    /**
+     * ## Builds the champs stats based on the games
+     * From the games data, it allows to build the stats for each champ.
+     *
+     * @param games The games to build the stats from
+     * @returns The champs stats
+     */
+    getStatsByChamp(games: GameDto[]): Array<ChampStatsDto> {
+        // Index to accumulate the stats
+        const indexByName: Record<string, ChampStatsDto> = {}
+
+        // Calculate the average of two properties based on the number of games
+        const avg = (a: number, b: number, num_of_games: number) => parseFloat(((a * num_of_games + b) / (num_of_games + 1)).toFixed(1))
+
+        // Iterate all games
+        for (const game of games) {
+            const key = game.championName
+
+            // 1. Champ not indexed yet -> create it
+            if (!indexByName[key]) {
+                indexByName[key] = {
+                    championName: key,
+                    games: 1,
+                    wins: game.win ? 1 : 0,
+                    kda: kda(game.kda.kills, game.kda.deaths, game.kda.assists),
+                }
+                continue
+            }
+
+            // 2. Champ already indexed -> update it
+            indexByName[key].games += 1
+            indexByName[key].wins += game.win ? 1 : 0
+            indexByName[key].kda = avg(indexByName[key].kda, kda(game.kda.kills, game.kda.deaths, game.kda.assists), indexByName[key].games)
+        }
+
+        // Then, convert the index to an array
+        const champs: ChampStatsDto[] = Object.keys(indexByName)
+            .map(key => indexByName[key])
+            .sort((a, b) => b.games - a.games)
+
+        // Trim the array to the top 7 champs
+        if (champs.length > 7) {
+            champs.length = 7
+        }
+
+        return champs
     }
 }

@@ -76,13 +76,13 @@ export class SummonersService {
     async getStats(server: string, summonerName: string): Promise<StatsDto> {
         const games = await this.getGames(server, summonerName, 10, 0)
         const friends: FriendDto[] = this.mathService.getFriends(games)
-        //const statsByChamp: ChampStatsDto[] = this.mathService.getStatsByChamp(games)
+        const statsByChamp: ChampStatsDto[] = this.mathService.getStatsByChamp(games)
         //const statsByPosition: PositionStatsDto[] = this.mathService.getStatsByPosition(games)
 
         return {
             numOfGames: games.length,
             friends,
-            statsByChamp: [],
+            statsByChamp,
             statsByPosition: [],
         }
     }

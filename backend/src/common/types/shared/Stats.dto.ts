@@ -34,13 +34,13 @@ export class ChampStats {
     games: number
 
     @ApiProperty({
-        description: 'Winrate with that champ',
+        description: 'Wins with that champ',
         example: '',
     })
-    winRate: number
+    wins: number
 
     @ApiProperty({
-        description: 'Wins with that champ',
+        description: 'Average KDA ',
         example: '2',
     })
     kda: number
