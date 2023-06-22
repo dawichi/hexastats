@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { ChampStatsDto, FriendDto, GameDto } from 'src/common/types'
+import { ChampStatsDto, FriendDto, GameDto, PositionStatsDto } from 'src/common/types'
 import { kda } from 'src/common/utils'
 
 @Injectable()
@@ -110,5 +110,32 @@ export class MathService {
         }
 
         return champs
+    }
+
+    /**
+     * ## Builds the position stats based on the games
+     * From the games data, it allows to build the stats.
+     *
+     * @param games The games to build the stats from
+     * @returns The position stats
+     */
+    getStatsByPosition(games: GameDto[]): PositionStatsDto[] {
+        // Index to accumulate the stats
+        const indexByPosition: Record<string, PositionStatsDto> = {
+            TOP: { games: 0, wins: 0, position: 'TOP' },
+            JUNGLE: { games: 0, wins: 0, position: 'JUNGLE' },
+            MIDDLE: { games: 0, wins: 0, position: 'MIDDLE' },
+            BOTTOM: { games: 0, wins: 0, position: 'BOTTOM' },
+            UTILITY: { games: 0, wins: 0, position: 'UTILITY' },
+        }
+
+        for (const game of games) {
+            // Don't use ?? as it comes as '' instead of null or undefined
+            const key = game.teamPosition || 'MIDDLE'
+
+            indexByPosition[key].games++
+            indexByPosition[key].wins += game.win ? 1 : 0
+        }
+        return Object.keys(indexByPosition).map(key => indexByPosition[key])
     }
 }

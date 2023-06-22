@@ -64,12 +64,6 @@ export class PositionStats {
         example: '8',
     })
     wins: number
-
-    @ApiProperty({
-        description: 'Winrate by position',
-        example: '',
-    })
-    winRate: number
 }
 
 export class Stats {
