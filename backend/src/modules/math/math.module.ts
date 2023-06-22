@@ -7,4 +7,4 @@ import { MathController } from './math.controller'
     exports: [MathService],
     controllers: [MathController],
 })
-export class DatabaseModule {}
+export class MathModule {}
