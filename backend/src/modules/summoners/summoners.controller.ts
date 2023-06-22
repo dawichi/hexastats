@@ -2,7 +2,7 @@ import { Controller, Get, Param, Query } from '@nestjs/common'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { SummonersService } from './summoners.service'
 import { ApiCustomResponse, ParamServer, ParamSummonerName, QueryLimit, QueryOffset } from '../../common/decorators'
-import { GameDto, MasteryDto, PlayerDto, RankDataDto } from '../../common/types'
+import { GameDto, MasteryDto, PlayerDto, RankDataDto, StatsDto } from '../../common/types'
 import { LimitPipe, OffsetPipe } from '../../common/pipes'
 
 @ApiTags('summoners')
@@ -17,7 +17,7 @@ export class SummonersController {
     @ApiCustomResponse(RankDataDto)
     @ParamServer()
     @ParamSummonerName()
-    getSummoner(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<RankDataDto> {
+    async getSummoner(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<RankDataDto> {
         return this.summonersService.getSummoner(server, encodeURI(summonerName.trim()))
     }
 
@@ -28,7 +28,7 @@ export class SummonersController {
     @ApiCustomResponse(PlayerDto)
     @ParamServer()
     @ParamSummonerName()
-    getLevelImage(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<PlayerDto> {
+    async getLevelImage(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<PlayerDto> {
         return this.summonersService.getLevelImage(server, encodeURI(summonerName.trim()))
     }
 
@@ -61,5 +61,16 @@ export class SummonersController {
         @Query('offset', OffsetPipe) offset: number,
     ): Promise<GameDto[]> {
         return this.summonersService.getGames(server, encodeURI(summonerName.trim()), limit, offset)
+    }
+
+    @Get('/:server/:summonerName/stats')
+    @ApiOperation({
+        summary: 'Get stats',
+    })
+    @ApiCustomResponse([StatsDto])
+    @ParamServer()
+    @ParamSummonerName()
+    async getStats(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<StatsDto> {
+        return this.summonersService.getStats(server, encodeURI(summonerName.trim()))
     }
 }
