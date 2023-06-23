@@ -1,7 +1,7 @@
-import { Controller, Delete, Get, Logger, NotFoundException, Param } from '@nestjs/common'
+import { Controller, Delete, Get, Logger, Param } from '@nestjs/common'
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { ParamServer, ParamSummonerName } from '../../common/decorators'
-import { PrintDatabaseDto, RedisRecordGamesDto, RedisRecordMasteriesDto } from '../../common/types'
+import { PrintDatabaseDto, StatsDto } from '../../common/types'
 import { DatabaseService } from './database.service'
 
 @ApiTags('database')
@@ -26,54 +26,25 @@ export class DatabaseController {
         type: PrintDatabaseDto,
     })
     async printAll(): Promise<PrintDatabaseDto> {
-        this.logger.log('Check all keys in redis')
-        return this.databaseService.printAll()
+        return this.databaseService.keys()
     }
 
     /**
      * ## Get masteries
      * @returns Confirmation that the database was deleted
      */
-    @Get('/print/:server/:summonerName/masteries')
+    @Get('/print/:server/:summonerName/stats')
     @ApiOperation({
-        summary: 'Get masteries',
+        summary: 'Get saved stats',
     })
     @ApiResponse({
         status: 200,
-        type: RedisRecordMasteriesDto,
+        type: StatsDto,
     })
     @ParamServer()
     @ParamSummonerName()
-    async getMasteries(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<RedisRecordMasteriesDto> {
-        const data = await this.databaseService.getGames(server, summonerName)
-
-        if (!data) {
-            throw new NotFoundException(`Masteries not found! Key: ${server}:${summonerName}:games`)
-        }
-        return this.databaseService.getMasteries(server, summonerName)
-    }
-
-    /**
-     * ## Get games
-     * @returns Confirmation that the database was deleted
-     */
-    @Get('/print/:server/:summonerName/games')
-    @ApiOperation({
-        summary: 'Get games',
-    })
-    @ApiResponse({
-        status: 200,
-        type: RedisRecordGamesDto,
-    })
-    @ParamServer()
-    @ParamSummonerName()
-    async getGames(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<RedisRecordGamesDto> {
-        const data = await this.databaseService.getGames(server, summonerName)
-
-        if (!data) {
-            throw new NotFoundException(`Games not found! Key: ${server}:${summonerName}:games`)
-        }
-        return this.databaseService.getGames(server, summonerName)
+    async getStats(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<StatsDto> {
+        return this.databaseService.getStats(server, summonerName)
     }
 
     /**
@@ -135,6 +106,7 @@ export class DatabaseController {
         type: String,
     })
     async deleteLast(@Param('key') key: string): Promise<boolean> {
-        return this.databaseService.deleteLast(key)
+        // return this.databaseService.deleteLast(key)
+        throw new Error('Not implemented')
     }
 }

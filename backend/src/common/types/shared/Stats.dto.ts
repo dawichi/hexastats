@@ -68,10 +68,10 @@ export class PositionStats {
 
 export class Stats {
     @ApiProperty({
-        description: 'Number of games',
-        example: '10',
+        description: 'Games used to calculate the stats',
+        example: '["EUW1_6464675439", "EUW1_6464675439"]',
     })
-    numOfGames: number
+    gamesUsed: string[]
 
     @ApiProperty({
         description: 'Friends Data',

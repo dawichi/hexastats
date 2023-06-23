@@ -1,85 +1,56 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Redis } from '@upstash/redis'
-import { GameDto, MasteryDto, PrintDatabaseDto, RedisRecordGamesDto, RedisRecordMasteriesDto } from '../../common/types'
+import { PrintDatabaseDto, StatsDto } from '../../common/types'
 
 @Injectable()
 export class DatabaseService {
-    private readonly logger: Logger
-    private readonly redis: Redis
-
-    constructor() {
-        this.redis = Redis.fromEnv()
-        this.logger = new Logger(this.constructor.name)
-    }
+    private readonly LOGGER: Logger = new Logger(this.constructor.name)
+    private readonly REDIS: Redis = Redis.fromEnv()
 
     /**
-     * ## LIST all the database keys registered
-     *
-     * @returns Array of all keys in the database
+     * /database/print
      */
-    async printAll(): Promise<PrintDatabaseDto> {
-        const keys = await this.redis.keys('*')
+    async keys(): Promise<PrintDatabaseDto> {
+        const keys = await this.REDIS.keys('*')
 
-        this.logger.log(`REDIS: Found ${keys.length} keys!`)
+        this.LOGGER.log(`REDIS: Found ${keys.length} keys!`)
         return { total: keys.length, keys }
     }
 
     /**
-     * ## DELETE ALL database registers
-     *
-     * @returns Confirmation that the database was deleted
+     * /database/print/:server/:summonerName/stats
+     */
+    async getStats(server: string, summonerName: string): Promise<StatsDto | null> {
+        const key = `${server}:${summonerName}:stats`
+        const data: StatsDto = await this.REDIS.get(key)
+
+        if (!data) {
+            this.LOGGER.warn(`Stats not found! Key: ${key}`)
+            return null
+        }
+
+        this.LOGGER.log(`REDIS: Found data for ${server}:${summonerName} -> ${data.gamesUsed.length} games!`)
+        return data
+    }
+
+    /**
+     * /database/reset
      */
     async deleteAll(): Promise<boolean> {
-        const keys = await this.redis.keys('*')
+        const keys = await this.REDIS.keys('*')
 
-        this.logger.log(`REDIS: Deleting ${keys.length} keys...`)
-        await this.redis.flushdb()
+        this.LOGGER.log(`REDIS: Deleting all ${keys.length} keys...`)
+        await this.REDIS.flushdb()
         return true
     }
 
     /**
-     * ## DELETE ONE key from the database
-     *
-     * @param key Key to be deleted
-     * @returns Confirmation that the register was deleted
+     * /database/delete/:key
      */
     async deleteOne(key: string): Promise<boolean> {
-        this.logger.log(`REDIS: Deleting ${key}...`)
-        await this.redis.del(key)
+        this.LOGGER.log(`REDIS: Deleting single key ${key}...`)
+        await this.REDIS.del(key)
         return true
-    }
-
-    /**
-     * ## GET data from a key
-     *
-     * @param key Key to be searched
-     * @returns Data stored in the key
-     */
-    async getGames(server: string, summonerName: string): Promise<RedisRecordGamesDto> {
-        const key = `${server}:${summonerName}:games`
-        const data: RedisRecordGamesDto = await this.redis.get(key)
-
-        if (!data) {
-            this.logger.warn(`Data not found! Key: ${key}`)
-        }
-
-        return data
-    }
-
-    /**
-     * ## GET data from a key
-     *
-     * @param key Key to be searched
-     * @returns Data stored in the key
-     */
-    async getMasteries(server: string, summonerName: string): Promise<RedisRecordMasteriesDto> {
-        const key = `${server}:${summonerName}:masteries`
-        const data: RedisRecordMasteriesDto = await this.redis.get(key)
-
-        if (!data) {
-            this.logger.warn(`Data not found! Key: ${key}`)
-        }
-        return data
     }
 
     /**
@@ -88,35 +59,31 @@ export class DatabaseService {
      * @param key Key to be stored
      * @param summonerData Data to be stored in the key
      */
-    async addOne(key: string, summonerData: GameDto[] | MasteryDto[]) {
-        this.logger.log(`REDIS: saving ${key} data...`)
+    async set(key: string, stats: StatsDto) {
+        this.LOGGER.log(`REDIS: saving ${key} data -> ${stats.gamesUsed.length} games`)
 
         // to avoid having too many games in cache (limit aprox 800)
-        if (summonerData.length > 690) {
-            this.logger.log(`> 690 games in cache (${summonerData.length}), removing the oldest 10`)
-            summonerData = summonerData.slice(0, 690)
-        }
+        // TODO: the limit with the stats probably is incredible higher (2k? 3k?)
+        // if (summonerData.length > 690) {
+        //     this.LOGGER.log(`> 690 games in cache (${summonerData.length}), removing the oldest 10`)
+        //     summonerData = summonerData.slice(0, 690)
+        // }
 
-        const newRecord = {
-            ttl: Date.now(),
-            data: summonerData,
-        }
-
-        await this.redis.set(key, newRecord)
+        await this.REDIS.set(key, stats)
     }
 
     /**
      * ## TEST delete last game played
      */
-    async deleteLast(key: string): Promise<boolean> {
-        this.logger.log(`REDIS: Deleting last game played from ${key}...`)
+    // async deleteLast(key: string): Promise<boolean> {
+    //     this.LOGGER.log(`REDIS: Deleting last game played from ${key}...`)
 
-        const data: RedisRecordGamesDto | RedisRecordMasteriesDto = await this.redis.get(key)
+    //     const data: RedisRecordGamesDto | RedisRecordMasteriesDto = await this.REDIS.get(key)
 
-        if (data) {
-            data.data = data.data.slice(1)
-            await this.redis.set(key, data)
-        }
-        return true
-    }
+    //     if (data) {
+    //         data.data = data.data.slice(1)
+    //         await this.REDIS.set(key, data)
+    //     }
+    //     return true
+    // }
 }
