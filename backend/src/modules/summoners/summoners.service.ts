@@ -86,23 +86,4 @@ export class SummonersService {
             statsByPosition,
         }
     }
-
-    /**
-     * /summoners/:server/:summonerName/addGames/:amount
-     */
-    async addGames(server: string, summonerName: string, amount: number): Promise<GameDto[]> {
-        const { puuid } = await this.riotService.getBasicInfo(server, summonerName)
-        const { data } = await this.databaseService.getGames(server, summonerName)
-
-        const new_games = await this.riotService.getGameIds(puuid, server, amount, data.length)
-        const new_games_data = await this.riotService.getGamesDetail(puuid, server, new_games)
-
-        this.logger.log(`Adding ${new_games_data.length} games to stored ${data.length} games`)
-        const isGameData = (data: GameDto[] | MasteryDto[]): data is GameDto[] => 'matchId' in data[0]
-
-        if (isGameData(data)) {
-            await this.databaseService.addOne(`${server}:${summonerName}:games`, [...data, ...new_games_data])
-        }
-        return new_games_data
-    }
 }
