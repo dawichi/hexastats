@@ -13,7 +13,7 @@ The use of the script allows to have a single source of truth for the DTOs, and 
 EXCEPTION_FILES = ["index.ts"]
 # EXCEPTION_FILES = os.getenv("EXCEPTION_FILES")
 
-backend_path = './backend/src/common/types/summoners'
+backend_path = './backend/src/common/types/shared'
 frontend_path = './frontend/src/lib/types/imported'
 
 backend_files = [f for f in os.listdir(backend_path) if f not in EXCEPTION_FILES]
