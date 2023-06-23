@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { ChampStatsDto, FriendDto, GameDto, PositionStatsDto } from 'src/common/types'
-import { kda } from 'src/common/utils'
+import { ChampStatsDto, FriendDto, GameDto, PositionStatsDto } from '../../common/types'
+import { kda } from '../../common/utils'
 
 @Injectable()
 export class MathService {
