@@ -18,8 +18,9 @@ export interface PositionStats {
 }
 
 export interface Stats {
-    numOfGames: number
+    gamesUsed: string[]
     friends: Friend[]
     statsByChamp: ChampStats[]
     statsByPosition: PositionStats[]
 }
+
