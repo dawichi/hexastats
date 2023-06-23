@@ -1,12 +1,14 @@
-import { Controller, Get, Param, Query } from '@nestjs/common'
+import { Controller, Get, Param, Query, UseInterceptors } from '@nestjs/common'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { SummonersService } from './summoners.service'
 import { ApiCustomResponse, ParamServer, ParamSummonerName, QueryLimit, QueryOffset } from '../../common/decorators'
 import { GameDto, MasteryDto, PlayerDto, RankDataDto, StatsDto } from '../../common/types'
 import { LimitPipe, OffsetPipe } from '../../common/pipes'
+import { CacheInterceptor } from 'src/common/handlers/cache.interceptor'
 
 @ApiTags('summoners')
 @Controller('summoners')
+// @UseInterceptors(CacheInterceptor)
 export class SummonersController {
     constructor(private readonly summonersService: SummonersService) {}
 

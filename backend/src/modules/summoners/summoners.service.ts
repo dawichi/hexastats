@@ -80,7 +80,7 @@ export class SummonersService {
         const statsByPosition: PositionStatsDto[] = this.mathService.getStatsByPosition(games)
 
         return {
-            numOfGames: games.length,
+            gamesUsed: games.map(game => game.matchId),
             friends,
             statsByChamp,
             statsByPosition,

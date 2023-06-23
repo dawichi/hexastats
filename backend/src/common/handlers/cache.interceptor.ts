@@ -16,15 +16,15 @@ import { validateTTL } from '../validators'
  */
 @Injectable()
 export class CacheInterceptor implements NestInterceptor {
-    private readonly logger = new Logger(this.constructor.name)
-    private readonly disabled: boolean = false
+    private readonly LOGGER = new Logger(this.constructor.name)
+    private readonly REDIS_DISABLED: boolean = false
 
     constructor(
         private readonly riotService: RiotService,
         private readonly configService: ConfigService,
         private readonly databaseService: DatabaseService,
     ) {
-        this.disabled = configService.get<string>('UPSTASH_REDIS_REST_DISABLE') === 'true'
+        this.REDIS_DISABLED = configService.get<string>('UPSTASH_REDIS_REST_DISABLE') === 'true'
     }
 
     /**
@@ -33,7 +33,7 @@ export class CacheInterceptor implements NestInterceptor {
      * -------------------------------
      */
     private async gamesFlow(server: string, name: string, cachedData: GameDto[]): Promise<GameDto[] | null> {
-        this.logger.log(`Games flow for ${server}:${name}, ${cachedData.length} games in cache`)
+        this.LOGGER.log(`Games flow for ${server}:${name}, ${cachedData.length} games in cache`)
         const { puuid } = await this.riotService.getBasicInfo(server, name)
         const { is_last, last_game_id } = await this.riotService.isLastGame(server, puuid, cachedData[0].matchId)
 
@@ -51,8 +51,8 @@ export class CacheInterceptor implements NestInterceptor {
         const gameIdsPending = lastTenGameIDs.filter(id => !lastGameIDsStored.includes(id))
         const newGames = await this.riotService.getGamesDetail(puuid, server, gameIdsPending)
 
-        this.logger.log(`${gameIdsPending.length} new games added to existing ${cachedData.length}`)
-        this.databaseService.addOne(`${server}:${name}:games`, [...newGames, ...cachedData])
+        this.LOGGER.log(`${gameIdsPending.length} new games added to existing ${cachedData.length}`)
+        // this.databaseService.set(`${server}:${name}:games`, [...newGames, ...cachedData])
         return [...newGames, ...cachedData]
     }
 
@@ -67,37 +67,35 @@ export class CacheInterceptor implements NestInterceptor {
         const [a, b, server, name, endpoint] = path.split('/')
         const key = `${server}:${name}:${endpoint}`
 
-        // If (redis is disabled) or (not a masteries/games request), just pass it through
-        if (this.disabled || !/masteries|games/.test(path)) {
+        if (this.REDIS_DISABLED || !/stats/.test(path)) {
+            // Skip the interceptor
             return next.handle().pipe()
         }
 
-        this.logger.log(`Intercepted! Checking data for: ${key}`)
-        const redisData = /masteries/.test(path)
-            ? await this.databaseService.getMasteries(server, name)
-            : await this.databaseService.getGames(server, name)
+        this.LOGGER.log(`Intercepted! Checking data for: ${key}`)
+        const redisData = await this.databaseService.getStats(server, name)
 
-        if (redisData && validateTTL(redisData?.ttl)) {
+        if (redisData && redisData) {
             if (/masteries/.test(path)) {
-                this.logger.log('Returning masteries directly from redis')
-                return of(redisData.data)
+                this.LOGGER.log('Returning masteries directly from redis')
+                return of(redisData)
             }
 
             // The request is about games, which implies a more complex logic flow than masteries
-            const result = await this.gamesFlow(server, name, redisData.data as GameDto[])
+            // const result = await this.gamesFlow(server, name, redisData as GameDto[])
 
-            if (result) {
-                return of(result)
-            }
+            // if (result) {
+            //     return of(result)
+            // }
         }
 
         // If we reach this point, it means that the data is not in redis, or the TTL is expired
         // So we continue with the process and using the tap operator, we save the data to redis AFTER the request is done
         return next.handle().pipe(
             tap(data => {
-                this.databaseService.addOne(key, data)
-                this.logger.log(`Saved to redis: ${key}`)
-                this.logger.log('Done')
+                this.databaseService.set(key, data)
+                this.LOGGER.log(`Saved to redis: ${key}`)
+                this.LOGGER.log('Done')
             }),
         )
     }
