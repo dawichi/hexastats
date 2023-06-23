@@ -1,5 +1,5 @@
 import { validateServer } from '$lib/config'
-import type { GameDto, MasteryDto, PlayerDto, RankDataDto, SummonerDto } from '$lib/types'
+import type { GameDto, MasteryDto, PlayerDto, RankDataDto, StatsDto, SummonerDto } from '$lib/types'
 
 import { PUBLIC_IS_DEVELOPMENT } from '$env/static/public'
 
@@ -56,6 +56,25 @@ export class SummonerService {
     }
 
     /**
+     * ## Requests summoner stats from the backend API
+     */
+    static async getStats({ server, summonerName, fetch }: { server: string; summonerName: string; fetch: typeof window.fetch }): Promise<StatsDto> {
+        const okServer = validateServer(server)
+
+        const statsData = await fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/stats`)
+
+        // ERROR HANDLING
+        if (!statsData.ok) {
+            if (statsData.status === 429) {
+                throw new Error('429')
+            }
+            throw new Error()
+        }
+
+        return statsData.json()
+    }
+
+    /**
      * ## Checks if the player exists on the server
      * @returns The player basic data if it exists, null otherwise
      */
@@ -64,20 +83,5 @@ export class SummonerService {
         const playerData = await fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}`)
 
         return playerData.ok ? playerData.json() : null
-    }
-
-    /**
-     * ## Requests 10 extra games from the backend API
-     * @returns The new games data
-     */
-    static async addGames(server: string, summonerName: string): Promise<GameDto[]> {
-        const NUM_GAMES_TO_ADD = 10
-        const okServer = validateServer(server)
-
-        const data = await fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/addGames/${NUM_GAMES_TO_ADD}`)
-        if (!data.ok) {
-            throw new Error('Error while requesting new games, try again...')
-        }
-        return data.json()
     }
 }

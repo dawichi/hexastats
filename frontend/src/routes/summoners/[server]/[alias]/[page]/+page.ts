@@ -4,13 +4,26 @@ import { error } from '@sveltejs/kit'
 /** @type {import('./$types').PageLoad} */
 export async function load({ fetch, params }: { fetch: typeof window.fetch; params: { server: string; alias: string; page: number } }) {
     try {
-        return await SummonerService.getData({
+        const games_per_page = 10
+
+        const player = await SummonerService.getData({
             server: params.server,
             summonerName: params.alias,
-            limit: 10,
-            offset: params.page * 10 - 10,
+            limit: games_per_page,
+            offset: params.page * games_per_page - games_per_page,
             fetch,
         })
+
+        const stats = await SummonerService.getStats({
+            server: params.server,
+            summonerName: params.alias,
+            fetch,
+        })
+
+        return {
+            player,
+            stats,
+        }
     } catch (e: unknown) {
         const err = e as Error
 
