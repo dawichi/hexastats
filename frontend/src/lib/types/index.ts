@@ -12,3 +12,9 @@ export type { Summoner as SummonerDto } from './Summoner'
 
 // Reports
 export type { StatRow as StatRowDto, Report as ReportDto } from './reports.dto'
+
+// Stats
+export type { Friend as FriendDto } from './imported/Stats.dto'
+export type { ChampStats as ChampStatsDto } from './imported/Stats.dto'
+export type { PositionStats as PositionStatsDto } from './imported/Stats.dto'
+export type { Stats as StatsDto } from './imported/Stats.dto'
