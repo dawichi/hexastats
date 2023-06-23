@@ -4,7 +4,6 @@ import { SummonersService } from './summoners.service'
 import { ApiCustomResponse, ParamServer, ParamSummonerName, QueryLimit, QueryOffset } from '../../common/decorators'
 import { GameDto, MasteryDto, PlayerDto, RankDataDto, StatsDto } from '../../common/types'
 import { LimitPipe, OffsetPipe } from '../../common/pipes'
-import { CacheInterceptor } from 'src/common/handlers/cache.interceptor'
 
 @ApiTags('summoners')
 @Controller('summoners')
