@@ -128,18 +128,15 @@ export class MathService {
     }
 
     /**
-     * ## Merges two statsDto
+     * ## Merges two statsDto objects
      * Each statsDto object was calculated depending on a different number of games
      * so we need to analyze its weight, not merge them directly.
      *
-     * @param statsA The first array of games to build the stats from
-     * @param statsB The second array of games to build the stats from
+     * @param statsA The base stats object
+     * @param statsB The stats object to merge into the base
      * @returns The stats merged and recalculated
      */
     mergeStats(statsA: StatsDto, statsB: StatsDto): StatsDto {
-        const games = statsA.gamesUsed.length + statsB.gamesUsed.length
-        const statsByChamp: ChampStatsDto[] = statsA.statsByChamp
-
         // POSITIONS
         for (const [idx, position_B] of statsB.statsByPosition.entries()) {
             statsA.statsByPosition[idx].games += position_B.games
@@ -147,27 +144,28 @@ export class MathService {
         }
 
         // FRIENDS
-        for (const fr of statsB.friends) {
-            const idx = statsA.friends.findIndex(x => x.name === fr.name)
+        for (const friendB of statsB.friends) {
+            const friendA = statsA.friends.find(f => f.name === friendB.name)
 
-            if (idx != -1) {
-                statsA.friends[idx].games += fr.games
-                statsA.friends[idx].wins += fr.wins
+            if (!friendA) {
+                statsA.friends.push(friendB)
             } else {
-                statsA.friends.push(fr)
+                friendA.games += friendB.games
+                friendA.wins += friendB.wins
             }
         }
 
         // CHAMPS
-        for (const ch of statsB.statsByChamp) {
-            const idx = statsByChamp.findIndex(x => x.championName === ch.championName)
+        for (const champB of statsB.statsByChamp) {
+            const champA = statsA.statsByChamp.find(c => c.championName === champB.championName)
 
-            if (idx != -1) {
-                statsByChamp[idx].games += ch.games
-                statsByChamp[idx].wins += ch.wins
-                statsByChamp[idx].kda = (statsByChamp[idx].kda * statsByChamp.length + ch.kda * statsB.statsByChamp.length) / games
+            if (!champA) {
+                statsA.statsByChamp.push(champB)
             } else {
-                statsByChamp.push(ch)
+                champA.kda = Number(((champA.kda * champA.games + champB.kda * champB.games) / (champA.games + champB.games)).toFixed(1))
+                // This needs to be done after the kda calculation, because it depends on it
+                champA.games += champB.games
+                champA.wins += champB.wins
             }
         }
 
