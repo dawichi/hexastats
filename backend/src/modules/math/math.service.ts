@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { ChampStatsDto, FriendDto, GameDto, PositionStatsDto } from '../../common/types'
+import { ChampStatsDto, FriendDto, GameDto, PositionStatsDto, StatsDto } from '../../common/types'
 import { kda } from '../../common/utils'
 
 @Injectable()
@@ -40,13 +40,6 @@ export class MathService {
                     indexByName[player.summonerName].wins += game.win ? 1 : 0
                     indexByName[player.summonerName].games += 1
                 }
-            }
-        }
-
-        // Remove all players you only played with once/twice
-        for (const friend in indexByName) {
-            if (indexByName[friend].games < 3) {
-                delete indexByName[friend]
             }
         }
 

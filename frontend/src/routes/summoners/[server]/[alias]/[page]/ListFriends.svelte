@@ -10,6 +10,9 @@
 
     export let friends: Array<FriendDto>
 
+    // Remove all players you only played with once/twice
+    friends = friends.filter(friend => friend.games > 2)
+
     const [x, y, server, summoner, page_num] = $page.url.pathname.split("/")
 
     const maxGames = () => Math.max(...friends.map(friend => friend.games))
