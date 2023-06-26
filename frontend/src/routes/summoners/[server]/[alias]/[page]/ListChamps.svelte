@@ -11,6 +11,11 @@
 
     export let champs: Array<ChampStatsDto>
 
+    // Trim the array to the top 7 champs
+    if (champs.length > 7) {
+        champs.length = 7
+    }
+
     // Context
     let _activeFilter = ''
     filteredGamesContext.subscribe(data => (_activeFilter = data.activeFilter))

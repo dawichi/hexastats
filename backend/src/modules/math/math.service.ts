@@ -97,11 +97,6 @@ export class MathService {
             .map(key => indexByName[key])
             .sort((a, b) => b.games - a.games)
 
-        // Trim the array to the top 7 champs
-        if (champs.length > 7) {
-            champs.length = 7
-        }
-
         return champs
     }
 
