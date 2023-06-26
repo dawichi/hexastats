@@ -126,4 +126,57 @@ export class MathService {
         }
         return Object.keys(indexByPosition).map(key => indexByPosition[key])
     }
+
+    /**
+     * ## Builds the position stats based on the games
+     * From the games data, it allows to build the stats.
+     *
+     * @param statsA The first array of games to build the stats from
+     * @param statsB The second array of games to build the stats from
+     * @returns The stats merged and recalculated
+     */
+    mergeStats(statsA: StatsDto, statsB: StatsDto): StatsDto {
+        const games = statsA.gamesUsed.length + statsB.gamesUsed.length
+        const gamesUsed = statsA.gamesUsed.concat(statsB.gamesUsed)
+        const friends: FriendDto[] = statsA.friends
+        const statsByChamp: ChampStatsDto[] = statsA.statsByChamp
+        const statsByPosition: PositionStatsDto[] = statsA.statsByPosition
+
+        for (let i = 0; i < statsB.statsByPosition.length; i++) {
+            const friend = statsB.statsByPosition[i]
+
+            statsByPosition[i].games += friend.games
+            statsByPosition[i].wins += friend.wins
+        }
+
+        for (const fr of statsB.friends) {
+            const idx = friends.findIndex(x => x.name === fr.name)
+
+            if (idx != -1) {
+                friends[idx].games += fr.games
+                friends[idx].wins += fr.wins
+            } else {
+                friends.push(fr)
+            }
+        }
+
+        for (const ch of statsB.statsByChamp) {
+            const idx = statsByChamp.findIndex(x => x.championName === ch.championName)
+
+            if (idx != -1) {
+                statsByChamp[idx].games += ch.games
+                statsByChamp[idx].wins += ch.wins
+                statsByChamp[idx].kda = (statsByChamp[idx].kda * statsByChamp.length + ch.kda * statsB.statsByChamp.length) / games
+            } else {
+                statsByChamp.push(ch)
+            }
+        }
+
+        return {
+            gamesUsed,
+            friends,
+            statsByChamp,
+            statsByPosition,
+        }
+    }
 }
