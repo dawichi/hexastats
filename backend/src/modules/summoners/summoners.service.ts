@@ -9,7 +9,7 @@ import { MathService } from '../math/math.service'
 @ApiTags('summoners')
 @Injectable()
 export class SummonersService {
-    private readonly logger = new Logger(this.constructor.name)
+    private readonly LOGGER = new Logger(this.constructor.name)
 
     constructor(
         private readonly riotService: RiotService,
@@ -77,8 +77,16 @@ export class SummonersService {
         const gamesFromDB = await this.databaseService.getStats(server, summonerName)
 
         if (gamesFromDB) {
-            return gamesFromDB
+            const { puuid } = await this.riotService.getBasicInfo(server, summonerName)
+            const { is_last, last_game_id } = await this.riotService.isLastGame(server, puuid, gamesFromDB.gamesUsed[0])
+
+            if (is_last) {
+                this.LOGGER.log(`${last_game_id} is last game -> returning cached data`)
+                return gamesFromDB
+            }
+            this.LOGGER.log(`${last_game_id} is NOT last game -> updating cached data with new games`)
         }
+
         const games = await this.getGames(server, summonerName, 10, 0)
         const friends: FriendDto[] = this.mathService.getFriends(games)
         const statsByChamp: ChampStatsDto[] = this.mathService.getStatsByChamp(games)
