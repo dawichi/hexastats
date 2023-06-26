@@ -74,16 +74,25 @@ export class SummonersService {
      * /summoners/:server/:summonerName/stats
      */
     async getStats(server: string, summonerName: string): Promise<StatsDto> {
+        const gamesFromDB = await this.databaseService.getStats(server, summonerName)
+
+        if (gamesFromDB) {
+            return gamesFromDB
+        }
         const games = await this.getGames(server, summonerName, 10, 0)
         const friends: FriendDto[] = this.mathService.getFriends(games)
         const statsByChamp: ChampStatsDto[] = this.mathService.getStatsByChamp(games)
         const statsByPosition: PositionStatsDto[] = this.mathService.getStatsByPosition(games)
 
-        return {
+        const output = {
             gamesUsed: games.map(game => game.matchId),
             friends,
             statsByChamp,
             statsByPosition,
         }
+
+        await this.databaseService.set(`${server}:${summonerName}:stats`, output)
+
+        return output
     }
 }
