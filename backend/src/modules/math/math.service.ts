@@ -138,28 +138,23 @@ export class MathService {
      */
     mergeStats(statsA: StatsDto, statsB: StatsDto): StatsDto {
         const games = statsA.gamesUsed.length + statsB.gamesUsed.length
-        const gamesUsed = statsA.gamesUsed.concat(statsB.gamesUsed)
-        const friends: FriendDto[] = statsA.friends
         const statsByChamp: ChampStatsDto[] = statsA.statsByChamp
-        const statsByPosition: PositionStatsDto[] = statsA.statsByPosition
 
         // POSITIONS
-        for (let i = 0; i < statsB.statsByPosition.length; i++) {
-            const friend = statsB.statsByPosition[i]
-
-            statsByPosition[i].games += friend.games
-            statsByPosition[i].wins += friend.wins
+        for (const [idx, position_B] of statsB.statsByPosition.entries()) {
+            statsA.statsByPosition[idx].games += position_B.games
+            statsA.statsByPosition[idx].wins += position_B.wins
         }
 
         // FRIENDS
         for (const fr of statsB.friends) {
-            const idx = friends.findIndex(x => x.name === fr.name)
+            const idx = statsA.friends.findIndex(x => x.name === fr.name)
 
             if (idx != -1) {
-                friends[idx].games += fr.games
-                friends[idx].wins += fr.wins
+                statsA.friends[idx].games += fr.games
+                statsA.friends[idx].wins += fr.wins
             } else {
-                friends.push(fr)
+                statsA.friends.push(fr)
             }
         }
 
@@ -176,11 +171,6 @@ export class MathService {
             }
         }
 
-        return {
-            gamesUsed,
-            friends,
-            statsByChamp,
-            statsByPosition,
-        }
+        return statsA
     }
 }
