@@ -128,8 +128,9 @@ export class MathService {
     }
 
     /**
-     * ## Builds the position stats based on the games
-     * From the games data, it allows to build the stats.
+     * ## Merges two statsDto
+     * Each statsDto object was calculated depending on a different number of games
+     * so we need to analyze its weight, not merge them directly.
      *
      * @param statsA The first array of games to build the stats from
      * @param statsB The second array of games to build the stats from
@@ -142,6 +143,7 @@ export class MathService {
         const statsByChamp: ChampStatsDto[] = statsA.statsByChamp
         const statsByPosition: PositionStatsDto[] = statsA.statsByPosition
 
+        // POSITIONS
         for (let i = 0; i < statsB.statsByPosition.length; i++) {
             const friend = statsB.statsByPosition[i]
 
@@ -149,6 +151,7 @@ export class MathService {
             statsByPosition[i].wins += friend.wins
         }
 
+        // FRIENDS
         for (const fr of statsB.friends) {
             const idx = friends.findIndex(x => x.name === fr.name)
 
@@ -160,6 +163,7 @@ export class MathService {
             }
         }
 
+        // CHAMPS
         for (const ch of statsB.statsByChamp) {
             const idx = statsByChamp.findIndex(x => x.championName === ch.championName)
 
