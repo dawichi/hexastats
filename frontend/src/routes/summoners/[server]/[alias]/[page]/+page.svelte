@@ -12,6 +12,7 @@
     import ListPositions from './ListPositions.svelte'
     import ListFriends from './ListFriends.svelte'
     import ListGames from './ListGames.svelte'
+    import Stats from './Stats.svelte'
 
     /** @type {import('./$types').PageData} */
     export let data: {
@@ -31,31 +32,9 @@
                 <MasteryRow masteries={data.player.masteries} />
             </header>
 
-            <div class="grid-cols-3 2xl:grid">
-                <aside class="grid lg:grid-cols-2 2xl:block">
-                    <div class="{styles.foreground} {styles.card} m-2 mb-4">
-                        <h2 class="pt-3 text-center text-2xl">Champions</h2>
-                        <div class="grid grid-cols-4 p-2 text-center">
-                            <span>Champ</span>
-                            <span>Games</span>
-                            <span>Winrate</span>
-                            <span>KDA</span>
-                        </div>
-                        <hr class="m-2" />
-                        <ListChamps champs={data.stats.statsByChamp} />
-                    </div>
-                    <div class="flex flex-col">
-                        <div class="{styles.foreground} {styles.card} m-2 mb-4">
-                            <h2 class="pt-3 text-center text-2xl">Positions</h2>
-                            <hr class="m-2" />
-                            <ListPositions positions={data.stats.statsByPosition} />
-                        </div>
-                        <div class="{styles.foreground} {styles.card} m-2 mb-4">
-                            <h2 class="pt-3 text-center text-2xl">Friends</h2>
-                            <hr class="m-2" />
-                            <ListFriends player={data.player} friends={data.stats.friends} />
-                        </div>
-                    </div>
+            <div class="grid-cols-3 lg:cols-2 2xl:grid">
+                <aside class="grid 2xl:block justify-center mx-auto" style="max-width: 50vw;">
+                    <Stats stats={data.stats} />
                 </aside>
 
                 <section class="col-span-2">
