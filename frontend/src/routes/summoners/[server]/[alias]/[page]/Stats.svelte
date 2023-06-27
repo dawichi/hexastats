@@ -11,7 +11,7 @@
 
     let loading = false
 
-    const [x, y, server, summoner, page_num] = $page.url.pathname.split('/')
+    const [x, y, server, alias, page_num] = $page.url.pathname.split('/')
     const summonerService = SummonerService.getInstance()
 
     async function handleMoreGames() {
@@ -19,20 +19,26 @@
         if (loading) return
 
         loading = true
-        stats = await summonerService.addStats(server, `${decodeURI(summoner)}`)
+        stats = await summonerService.addStats(server, `${decodeURI(alias)}`)
         loading = false
     }
 </script>
 
-<div class="{styles.foreground} {styles.card} relative m-2 p-4">
+<div class="{styles.foreground} {styles.card} relative md:m-2 p-4">
     <h2 class="text-2xl">Stats</h2>
     <span class="text-sm">based in {stats.gamesUsed.length} games </span>
 
-    <button on:click={handleMoreGames} class="absolute top-3 right-3 rounded bg-indigo-500 px-2 text-sm text-white hover:bg-indigo-600">
+    <div>
+        <a href="/summoners/{server}/{alias}/stats" class="absolute top-3 right-3 rounded bg-indigo-500 px-2 text-white hover:bg-indigo-600">
+            SEE MORE STATS <i class="bi bi-bar-chart-fill"></i>
+        </a>
+    </div>
+
+    <button on:click={handleMoreGames} class="block rounded bg-indigo-500 px-2 text-white hover:bg-indigo-600">
         {#if loading}
             <i class="bi bi-arrow-clockwise animate block animate-spin" />
         {:else}
-            Add +10 games
+            ADD +10
         {/if}
     </button>
 
