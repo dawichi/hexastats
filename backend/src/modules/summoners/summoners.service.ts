@@ -92,7 +92,7 @@ export class SummonersService {
         const statsByChamp: ChampStatsDto[] = this.mathService.getStatsByChamp(games)
         const statsByPosition: PositionStatsDto[] = this.mathService.getStatsByPosition(games)
 
-        const output = {
+        const output: StatsDto = {
             gamesUsed: games.map(game => game.matchId),
             friends,
             statsByChamp,
@@ -102,5 +102,30 @@ export class SummonersService {
         await this.databaseService.set(`${server}:${summonerName}:stats`, output)
 
         return output
+    }
+
+    /**
+     * /summoners/:server/:summonerName/stats/add
+     */
+    async addStats(server: string, summonerName: string): Promise<StatsDto> {
+        const currentStats = await this.getStats(server, summonerName)
+
+        const games = await this.getGames(server, summonerName, 10, currentStats.gamesUsed.length)
+        const friends: FriendDto[] = this.mathService.getFriends(games)
+        const statsByChamp: ChampStatsDto[] = this.mathService.getStatsByChamp(games)
+        const statsByPosition: PositionStatsDto[] = this.mathService.getStatsByPosition(games)
+
+        const newStats: StatsDto = {
+            gamesUsed: games.map(game => game.matchId),
+            friends,
+            statsByChamp,
+            statsByPosition,
+        }
+
+        const mergedStats: StatsDto = this.mathService.mergeStats(currentStats, newStats)
+
+        await this.databaseService.set(`${server}:${summonerName}:stats`, mergedStats)
+
+        return mergedStats
     }
 }
