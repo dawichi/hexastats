@@ -2,23 +2,19 @@ import { SummonerService } from '$lib/services/Summoner.service'
 import { error } from '@sveltejs/kit'
 
 /** @type {import('./$types').PageLoad} */
-export async function load({ fetch, params }: { fetch: typeof window.fetch; params: { server: string; alias: string; page: number } }) {
+export async function load({ params }: { params: { server: string; alias: string; page: number } }) {
     try {
+        const summonerService = SummonerService.getInstance()
         const games_per_page = 10
 
-        const player = await SummonerService.getData({
+        const player = await summonerService.getData({
             server: params.server,
             summonerName: params.alias,
             limit: games_per_page,
             offset: params.page * games_per_page - games_per_page,
-            fetch,
         })
 
-        const stats = await SummonerService.getStats({
-            server: params.server,
-            summonerName: params.alias,
-            fetch,
-        })
+        const stats = await summonerService.getStats(params.server, params.alias)
 
         return {
             player,

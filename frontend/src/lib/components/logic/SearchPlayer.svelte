@@ -17,13 +17,15 @@
     let error = false
     let loading = false
 
+    const summonerService = SummonerService.getInstance()
+
     // Search logic once the button is pressed
     async function handleSearch(): Promise<void> {
         if (loading) return
         loading = true
         error = false
 
-        const playerData = await SummonerService.existPlayer(servers[serverIdx], username)
+        const playerData = await summonerService.existPlayer(servers[serverIdx], username)
         if (playerData) {
             return goto(`/summoners/${servers[serverIdx]}/${playerData.alias}`)
         }

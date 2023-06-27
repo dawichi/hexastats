@@ -5,12 +5,12 @@
   @param player - the player data. Use NULL to display a placeholder
 -->
 <script lang="ts">
-    import type { SummonerDto } from '$lib/types'
+    import type { RankDataDto } from '$lib/types'
     import { MockImage } from '..'
     import ProfileImg from './ProfileImg.svelte'
     import Rank from './Rank.svelte'
 
-    export let player: SummonerDto | null = null
+    export let player: RankDataDto | null = null
 </script>
 
 {#if player}

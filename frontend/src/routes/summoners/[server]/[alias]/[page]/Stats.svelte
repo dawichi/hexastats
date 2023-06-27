@@ -12,13 +12,14 @@
     let loading = false
 
     const [x, y, server, summoner, page_num] = $page.url.pathname.split('/')
+    const summonerService = SummonerService.getInstance()
 
     async function handleMoreGames() {
         // Prevent multiple requests
         if (loading) return
 
         loading = true
-        stats = await SummonerService.addStats(server, summoner)
+        stats = await summonerService.addStats(server, summoner)
         loading = false
     }
 </script>
