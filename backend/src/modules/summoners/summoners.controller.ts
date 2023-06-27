@@ -74,4 +74,15 @@ export class SummonersController {
     async getStats(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<StatsDto> {
         return this.summonersService.getStats(server, encodeURI(summonerName.trim()))
     }
+
+    @Get('/:server/:summonerName/stats/add')
+    @ApiOperation({
+        summary: 'Generate new stats with + 10 extra games',
+    })
+    @ApiCustomResponse([StatsDto])
+    @ParamServer()
+    @ParamSummonerName()
+    async addStats(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<StatsDto> {
+        return this.summonersService.addStats(server, encodeURI(summonerName.trim()))
+    }
 }
