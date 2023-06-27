@@ -11,11 +11,6 @@
 
     export let champs: Array<ChampStatsDto>
 
-    // Trim the array to the top 7 champs
-    if (champs.length > 7) {
-        champs.length = 7
-    }
-
     // Context
     let _activeFilter = ''
     filteredGamesContext.subscribe(data => (_activeFilter = data.activeFilter))
@@ -43,7 +38,7 @@
         <span>Winrate</span>
         <span>KDA</span>
     </div>
-    {#each champs as champ}
+    {#each champs.sort((a, b) => b.games - a.games).slice(0, 7) as champ}
         <div class="grid grid-cols-4 px-4">
             <div class="flex justify-center">
                 <button class="p-1 transition-transform hover:scale-125">

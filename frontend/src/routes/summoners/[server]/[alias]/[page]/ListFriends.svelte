@@ -10,9 +10,6 @@
 
     export let friends: Array<FriendDto>
 
-    // Remove all players you only played with once/twice
-    friends = friends.filter(friend => friend.games > 2)
-
     const [x, y, server, summoner, page_num] = $page.url.pathname.split("/")
 
     const maxGames = () => Math.max(...friends.map(friend => friend.games))
@@ -29,7 +26,7 @@
                 <h4 class="col-span-2">Wins / Losses</h4>
             </section>
     
-            {#each friends as friend}
+            {#each friends.filter(friend => friend.games > 2).sort((a, b) => b.games - a.games) as friend}
                 <section class="grid grid-cols-5 items-center gap-2 text-sm md:text-base">
                     <div class="col-span-2">
                         <a
