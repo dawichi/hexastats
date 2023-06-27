@@ -31,6 +31,11 @@ export class MathService {
             for (let i = initialTeamMate; i < lastTeamMate; i++) {
                 const player = game.participants[i]
 
+                if (!player) {
+                    this.LOGGER.warn(`No player found for index ${i} in game ${game.matchId} -> must be a personal game`)
+                    continue
+                }
+
                 if (!indexByName[player.summonerName]) {
                     indexByName[player.summonerName] = {
                         wins: game.win ? 1 : 0,
@@ -137,6 +142,9 @@ export class MathService {
      * @returns The stats merged and recalculated
      */
     mergeStats(statsA: StatsDto, statsB: StatsDto): StatsDto {
+        // GAMES
+        statsA.gamesUsed = [...statsA.gamesUsed, ...statsB.gamesUsed]
+
         // POSITIONS
         for (const [idx, position_B] of statsB.statsByPosition.entries()) {
             statsA.statsByPosition[idx].games += position_B.games
@@ -162,7 +170,7 @@ export class MathService {
             if (!champA) {
                 statsA.statsByChamp.push(champB)
             } else {
-                champA.kda = Number(((champA.kda * champA.games + champB.kda * champB.games) / (champA.games + champB.games)).toFixed(1))
+                champA.kda = parseInt(((champA.kda * champA.games + champB.kda * champB.games) / (champA.games + champB.games)).toFixed(1))
                 // This needs to be done after the kda calculation, because it depends on it
                 champA.games += champB.games
                 champA.wins += champB.wins
