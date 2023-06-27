@@ -18,7 +18,7 @@
         if (loading) return
 
         loading = true
-        stats = await SummonerService.addStats(server, summoner)
+        stats = await SummonerService.addStats(server, `${decodeURI(summoner)}`)
         loading = false
     }
 </script>
