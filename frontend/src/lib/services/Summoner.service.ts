@@ -12,6 +12,16 @@ export const backendUrl = development ? 'http://localhost:5000/' : 'https://api-
  * Provides caching and an improved management of the data.
  */
 export class SummonerService {
+    private static handleError(response: Response) {
+        // ERROR HANDLING
+        if (!response.ok) {
+            if (response.status === 429) {
+                throw new Error('429')
+            }
+            throw new Error()
+        }
+    }
+
     /**
      * ## Requests summoner data from the backend API
      */
@@ -36,13 +46,9 @@ export class SummonerService {
             fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/games?offset=${offset}&limit=${limit}`),
         ])
 
-        // ERROR HANDLING
-        if (!playerData.ok || !playerMasteries.ok || !playerGames.ok) {
-            if (playerGames.status === 429) {
-                throw new Error('429')
-            }
-            throw new Error()
-        }
+        this.handleError(playerData)
+        this.handleError(playerMasteries)
+        this.handleError(playerGames)
 
         const summonerData: RankDataDto = await playerData.json()
         const masteries: MasteryDto[] = await playerMasteries.json()
@@ -60,17 +66,18 @@ export class SummonerService {
      */
     static async getStats({ server, summonerName, fetch }: { server: string; summonerName: string; fetch: typeof window.fetch }): Promise<StatsDto> {
         const okServer = validateServer(server)
-
         const statsData = await fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/stats`)
+        this.handleError(statsData)
+        return statsData.json()
+    }
 
-        // ERROR HANDLING
-        if (!statsData.ok) {
-            if (statsData.status === 429) {
-                throw new Error('429')
-            }
-            throw new Error()
-        }
-
+    /**
+     * ## Requests to add new +10 extra stats from the API
+     */
+    static async addStats(server: string, summonerName: string): Promise<StatsDto> {
+        const okServer = validateServer(server)
+        const statsData = await fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/stats/add`)
+        this.handleError(statsData)
         return statsData.json()
     }
 
@@ -81,7 +88,6 @@ export class SummonerService {
     static async existPlayer(server: string, summonerName: string): Promise<null | PlayerDto> {
         const okServer = validateServer(server)
         const playerData = await fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}`)
-
         return playerData.ok ? playerData.json() : null
     }
 }
