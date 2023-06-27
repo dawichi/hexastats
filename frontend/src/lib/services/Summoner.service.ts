@@ -43,7 +43,7 @@ export class SummonerService {
         const [playerData, playerMasteries, playerGames] = await Promise.all([
             fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}`),
             fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/masteries`),
-            fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/games?offset=${offset}&limit=${limit}`),
+            fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/games?offset=${offset}&limit=${limit}&queueType=all`),
         ])
 
         this.handleError(playerData)
