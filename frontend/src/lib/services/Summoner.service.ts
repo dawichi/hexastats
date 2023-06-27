@@ -57,7 +57,7 @@ export class SummonerService {
         const [playerData, playerMasteries, playerGames] = await Promise.all([
             this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}`),
             this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/masteries`),
-            this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/games?offset=${offset}&limit=${limit}`),
+            this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/games?offset=${offset}&limit=${limit}&queueType=all`),
         ])
 
         this.handleError(playerData)

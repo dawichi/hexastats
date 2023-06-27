@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { ChampStatsDto, FriendDto, GameDto, MasteryDto, PlayerDto, PositionStatsDto, RankDataDto, StatsDto } from '../../common/types'
-import { RiotService } from '../../modules/riot/riot.service'
+import { RiotService, queueTypeDto } from '../../modules/riot/riot.service'
 import { DatabaseService } from '../database/database.service'
 import { MathService } from '../math/math.service'
 
@@ -60,11 +60,11 @@ export class SummonersService {
     /**
      * /summoners/:server/:summonerName/games
      */
-    async getGames(server: string, summonerName: string, limit: number, offset: number): Promise<GameDto[]> {
+    async getGames(server: string, summonerName: string, limit: number, offset: number, queueType: queueTypeDto): Promise<GameDto[]> {
         const { puuid } = await this.riotService.getBasicInfo(server, summonerName)
 
         // Get the list of game IDs
-        const games_list = await this.riotService.getGameIds(puuid, server, limit, offset)
+        const games_list = await this.riotService.getGameIds(puuid, server, limit, offset, queueType)
 
         // Get the game data
         return this.riotService.getGamesDetail(puuid, server, games_list)
@@ -87,7 +87,7 @@ export class SummonersService {
             this.LOGGER.log(`${last_game_id} is NOT last game -> updating cached data with new games`)
         }
 
-        const games = await this.getGames(server, summonerName, 10, 0)
+        const games = await this.getGames(server, summonerName, 10, 0, 'all')
         const friends: FriendDto[] = this.mathService.getFriends(games)
         const statsByChamp: ChampStatsDto[] = this.mathService.getStatsByChamp(games)
         const statsByPosition: PositionStatsDto[] = this.mathService.getStatsByPosition(games)
@@ -110,7 +110,7 @@ export class SummonersService {
     async addStats(server: string, summonerName: string): Promise<StatsDto> {
         const currentStats = await this.getStats(server, summonerName)
 
-        const games = await this.getGames(server, summonerName, 10, currentStats.gamesUsed.length)
+        const games = await this.getGames(server, summonerName, 10, currentStats.gamesUsed.length, 'all')
         const friends: FriendDto[] = this.mathService.getFriends(games)
         const statsByChamp: ChampStatsDto[] = this.mathService.getStatsByChamp(games)
         const statsByPosition: PositionStatsDto[] = this.mathService.getStatsByPosition(games)
