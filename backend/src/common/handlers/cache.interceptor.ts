@@ -39,14 +39,14 @@ export class CacheInterceptor implements NestInterceptor {
 
         // Last game is already cached, so just return them
         if (is_last) return cachedData
-        const lastGamesPlayed = await this.riotService.getGameIds(puuid, server, 10, 0)
+        const lastGamesPlayed = await this.riotService.getGameIds(puuid, server, 10, 0, 'all')
         const lastGameIndex = lastGamesPlayed.indexOf(last_game_id)
 
         // Last game is not in cache OR +10 games were played since last time -> load new ones
         if (lastGameIndex === -1 || lastGameIndex > 9) return null
 
         // Load the games (1-9) that were played since last time
-        const lastTenGameIDs = await this.riotService.getGameIds(puuid, server, 10, 0)
+        const lastTenGameIDs = await this.riotService.getGameIds(puuid, server, 10, 0, 'all')
         const lastGameIDsStored = cachedData.map(game => game.matchId)
         const gameIdsPending = lastTenGameIDs.filter(id => !lastGameIDsStored.includes(id))
         const newGames = await this.riotService.getGamesDetail(puuid, server, gameIdsPending)

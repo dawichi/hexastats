@@ -276,9 +276,14 @@ export class RiotService {
      * @param offset The number of games to skip
      * @returns The game IDs list
      */
-    async getGameIds(puuid: string, server: string, gamesLimit: number, offset: number): Promise<string[]> {
+    async getGameIds(puuid: string, server: string, gamesLimit: number, offset: number, queueType: queueTypeDto): Promise<string[]> {
         server = serverRegion(server)
-        const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${offset}&count=${gamesLimit}`
+        const queueTypeFilter: Record<string, string> = {
+            ranked: '&type=ranked',
+            normal: '&type=normal',
+            all: '',
+        }
+        const url = `https://${server}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${offset}&count=${gamesLimit}${queueTypeFilter[queueType]}`
 
         return this.httpGet<string[]>(url)
     }

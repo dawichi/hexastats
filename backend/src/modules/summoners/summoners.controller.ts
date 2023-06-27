@@ -1,13 +1,13 @@
-import { Controller, Get, Param, Query, UseInterceptors } from '@nestjs/common'
+import { Controller, Get, Param, Query } from '@nestjs/common'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { SummonersService } from './summoners.service'
-import { ApiCustomResponse, ParamServer, ParamSummonerName, QueryLimit, QueryOffset } from '../../common/decorators'
+import { ApiCustomResponse, ParamServer, ParamSummonerName, QueryLimit, QueryOffset, QueryQueueType } from '../../common/decorators'
 import { GameDto, MasteryDto, PlayerDto, RankDataDto, StatsDto } from '../../common/types'
-import { LimitPipe, OffsetPipe } from '../../common/pipes'
+import { LimitPipe, OffsetPipe, QueueTypePipe } from '../../common/pipes'
+import { queueTypeDto } from '../riot/riot.service'
 
 @ApiTags('summoners')
 @Controller('summoners')
-// @UseInterceptors(CacheInterceptor)
 export class SummonersController {
     constructor(private readonly summonersService: SummonersService) {}
 
@@ -55,13 +55,15 @@ export class SummonersController {
     @ParamSummonerName()
     @QueryLimit()
     @QueryOffset()
+    @QueryQueueType()
     async getGames(
         @Param('server') server: string,
         @Param('summonerName') summonerName: string,
         @Query('limit', LimitPipe) limit: number,
         @Query('offset', OffsetPipe) offset: number,
+        @Query('queueType', QueueTypePipe) queueType: queueTypeDto,
     ): Promise<GameDto[]> {
-        return this.summonersService.getGames(server, encodeURI(summonerName.trim()), limit, offset)
+        return this.summonersService.getGames(server, encodeURI(summonerName.trim()), limit, offset, queueType)
     }
 
     @Get('/:server/:summonerName/stats')
