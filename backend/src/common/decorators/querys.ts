@@ -25,15 +25,14 @@ export function QueryOffset() {
     )
 }
 
-// UNUSED
 export function QueryQueueType() {
     return applyDecorators(
         ApiQuery({
             name: 'queueType',
-            description: 'Specify a queue type to check only a specific type of game. Empty checks both.',
-            enum: ['normal', 'ranked'],
+            description: 'Specify a queue type to check only a specific type of game.',
+            enum: ['normal', 'ranked', 'all'],
             example: 'ranked',
-            required: false,
+            required: true,
         }),
     )
 }
