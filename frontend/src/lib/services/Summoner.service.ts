@@ -1,5 +1,5 @@
 import { validateServer } from '$lib/config'
-import type { GameDto, MasteryDto, PlayerDto, RankDataDto, StatsDto, SummonerDto } from '$lib/types'
+import type { GameDto, MasteryDto, RankDataDto, StatsDto, SummonerDto } from '$lib/types'
 
 import { PUBLIC_IS_DEVELOPMENT } from '$env/static/public'
 
@@ -12,7 +12,23 @@ export const backendUrl = development ? 'http://localhost:5000/' : 'https://api-
  * Provides caching and an improved management of the data.
  */
 export class SummonerService {
-    private static handleError(response: Response) {
+    private static instance: SummonerService
+    public readonly Sveltefetch: typeof window.fetch
+    
+    constructor(fetch: typeof window.fetch) {
+        // This fetch is the svelteKit fetch, not the browser one
+        this.Sveltefetch = fetch
+    }
+
+    public static getInstance(Sveltefetch: typeof window.fetch = fetch): SummonerService {
+        if (!SummonerService.instance) {
+            console.log('Creating SummonerService instance')
+            SummonerService.instance = new SummonerService(Sveltefetch)
+        }
+        return SummonerService.instance
+    }
+
+    private handleError(response: Response) {
         // ERROR HANDLING
         if (!response.ok) {
             if (response.status === 429) {
@@ -25,25 +41,23 @@ export class SummonerService {
     /**
      * ## Requests summoner data from the backend API
      */
-    static async getData({
+    async getData({
         server,
         summonerName,
         limit,
         offset,
-        fetch,
     }: {
         server: string
         summonerName: string
         limit: number
         offset: number
-        fetch: typeof window.fetch
     }): Promise<SummonerDto> {
         const okServer = validateServer(server)
 
         const [playerData, playerMasteries, playerGames] = await Promise.all([
-            fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}`),
-            fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/masteries`),
-            fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/games?offset=${offset}&limit=${limit}`),
+            this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}`),
+            this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/masteries`),
+            this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/games?offset=${offset}&limit=${limit}`),
         ])
 
         this.handleError(playerData)
@@ -61,12 +75,23 @@ export class SummonerService {
         }
     }
 
+    
+    /**
+     * ## Requests only masteries from the backend API
+     */
+    async getMasteries(server: string, summonerName: string): Promise<MasteryDto[]> {
+        const okServer = validateServer(server)
+        const masteries = await this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/masteries`)
+        this.handleError(masteries)
+        return masteries.json()
+    }
+
     /**
      * ## Requests summoner stats from the backend API
      */
-    static async getStats({ server, summonerName, fetch }: { server: string; summonerName: string; fetch: typeof window.fetch }): Promise<StatsDto> {
+    async getStats(server: string, summonerName: string): Promise<StatsDto> {
         const okServer = validateServer(server)
-        const statsData = await fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/stats`)
+        const statsData = await this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/stats`)
         this.handleError(statsData)
         return statsData.json()
     }
@@ -74,9 +99,9 @@ export class SummonerService {
     /**
      * ## Requests to add new +10 extra stats from the API
      */
-    static async addStats(server: string, summonerName: string): Promise<StatsDto> {
+    async addStats(server: string, summonerName: string): Promise<StatsDto> {
         const okServer = validateServer(server)
-        const statsData = await fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/stats/add`)
+        const statsData = await this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/stats/add`)
         this.handleError(statsData)
         return statsData.json()
     }
@@ -85,9 +110,9 @@ export class SummonerService {
      * ## Checks if the player exists on the server
      * @returns The player basic data if it exists, null otherwise
      */
-    static async existPlayer(server: string, summonerName: string): Promise<null | PlayerDto> {
+    async existPlayer(server: string, summonerName: string): Promise<null | RankDataDto> {
         const okServer = validateServer(server)
-        const playerData = await fetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}`)
+        const playerData = await this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}`)
         return playerData.ok ? playerData.json() : null
     }
 }

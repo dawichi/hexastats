@@ -13,7 +13,7 @@ export class RiotService {
 
     public static getInstance(version = '13.7.1'): RiotService {
         if (!RiotService.instance) {
-            console.log('Creating RiotService instance')
+            console.log(`Creating RiotService instance -> version ${version}`)
             RiotService.instance = new RiotService(version)
         }
         return RiotService.instance
