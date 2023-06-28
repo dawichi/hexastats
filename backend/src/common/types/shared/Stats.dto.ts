@@ -40,10 +40,46 @@ export class ChampStats {
     wins: number
 
     @ApiProperty({
-        description: 'Average KDA ',
+        description: 'Average KDA',
         example: '2',
     })
     kda: number
+
+    @ApiProperty({
+        description: 'Average Gold',
+        example: '2',
+    })
+    goldMin: number
+
+    @ApiProperty({
+        description: 'Average CS',
+        example: '2',
+    })
+    csMin: number
+
+    @ApiProperty({
+        description: 'Average Vision',
+        example: '2',
+    })
+    visionMin: number
+
+    @ApiProperty({
+        description: 'Average Kill Participation',
+        example: '2',
+    })
+    killParticipation: number
+
+    @ApiProperty({
+        description: 'Average Damage Dealt',
+        example: '2',
+    })
+    damageDealt: number
+
+    @ApiProperty({
+        description: 'Average Damage Taken',
+        example: '2',
+    })
+    damageTaken: number
 }
 
 export class PositionStats {

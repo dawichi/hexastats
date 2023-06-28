@@ -79,6 +79,7 @@ export class MathService {
         // Iterate all games
         for (const game of games) {
             const key = game.championName
+            const perMin = (x: number) => Number(((x * 60) / game.gameDuration).toFixed(1))
 
             // 1. Champ not indexed yet -> create it
             if (!indexByName[key]) {
@@ -87,15 +88,28 @@ export class MathService {
                     games: 1,
                     wins: game.win ? 1 : 0,
                     kda: kda(game.kda.kills, game.kda.deaths, game.kda.assists),
+                    goldMin: perMin(game.gold),
+                    csMin: perMin(game.cs),
+                    visionMin: perMin(game.visionScore),
+                    killParticipation: 1,
+                    damageDealt: 1,
+                    damageTaken: 1,
                 }
                 continue
             }
 
             // 2. Champ already indexed -> update it
             indexByName[key].kda = avg(indexByName[key].kda, kda(game.kda.kills, game.kda.deaths, game.kda.assists), indexByName[key].games)
+            indexByName[key].wins += game.win ? 1 : 0
+            indexByName[key].goldMin = avg(indexByName[key].goldMin, perMin(game.gold), indexByName[key].games)
+            indexByName[key].csMin = avg(indexByName[key].csMin, perMin(game.cs), indexByName[key].games)
+            indexByName[key].visionMin = avg(indexByName[key].visionMin, perMin(game.visionScore), indexByName[key].games)
+            // indexByName[key].killParticipation
+            // indexByName[key].damageDealt
+            // indexByName[key].damageTaken
+
             // This needs to be done after the kda calculation, because it depends on it
             indexByName[key].games += 1
-            indexByName[key].wins += game.win ? 1 : 0
         }
 
         // Then, convert the index to an array
