@@ -74,7 +74,7 @@ export class MathService {
         const indexByName: Record<string, ChampStatsDto> = {}
 
         // Calculate the average of two properties based on the number of games
-        const avg = (a: number, b: number, num_of_games: number) => parseFloat(((a * num_of_games + b) / (num_of_games + 1)).toFixed(1))
+        const avg = (a: number, b: number, num_of_games: number) => parseFloat(((a * num_of_games + b) / (num_of_games + 1)).toFixed(2))
 
         // Iterate all games
         for (const game of games) {
@@ -92,9 +92,10 @@ export class MathService {
             }
 
             // 2. Champ already indexed -> update it
+            indexByName[key].kda = avg(indexByName[key].kda, kda(game.kda.kills, game.kda.deaths, game.kda.assists), indexByName[key].games)
+            // This needs to be done after the kda calculation, because it depends on it
             indexByName[key].games += 1
             indexByName[key].wins += game.win ? 1 : 0
-            indexByName[key].kda = avg(indexByName[key].kda, kda(game.kda.kills, game.kda.deaths, game.kda.assists), indexByName[key].games)
         }
 
         // Then, convert the index to an array
@@ -170,7 +171,7 @@ export class MathService {
             if (!champA) {
                 statsA.statsByChamp.push(champB)
             } else {
-                champA.kda = parseInt(((champA.kda * champA.games + champB.kda * champB.games) / (champA.games + champB.games)).toFixed(1))
+                champA.kda = Number(((champA.kda * champA.games + champB.kda * champB.games) / (champA.games + champB.games)).toFixed(2))
                 // This needs to be done after the kda calculation, because it depends on it
                 champA.games += champB.games
                 champA.wins += champB.wins

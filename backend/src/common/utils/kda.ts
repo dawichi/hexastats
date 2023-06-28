@@ -8,5 +8,5 @@
  * @returns The kda value
  */
 export function kda(kills: number, deaths: number, assists: number) {
-    return parseFloat((deaths ? (kills + assists) / deaths : kills + assists).toFixed(1))
+    return parseFloat((deaths ? (kills + assists) / deaths : kills + assists).toFixed(2))
 }
