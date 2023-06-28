@@ -1,67 +1,53 @@
 <script lang="ts">
-    import { page } from "$app/stores"
-    import { Container } from "$lib/components"
-    import { styles } from "$lib/config"
-    import { RiotService } from "$lib/services/Riot.service"
-    import type { StatsDto } from "$lib/types"
-    import { winrate } from "$lib/utils"
+    import { page } from '$app/stores'
+    import { Container } from '$lib/components'
+    import { styles } from '$lib/config'
+    import { RiotService } from '$lib/services/Riot.service'
+    import type { StatsDto } from '$lib/types'
+    import { winrate } from '$lib/utils'
 
     /** @type {import('./$types').PageData} */
     export let data: {
         stats: StatsDto
     }
-    
+
     const [x, y, server, alias, page_num] = $page.url.pathname.split('/')
-    
+
     const riotService = RiotService.getInstance()
 
-    const maxGames = () => Math.max(...data.stats.statsByChamp.map(champ => champ.games))
-    const maxKDA = () => Math.max(...data.stats.statsByChamp.sort((a, b) => b.games - a.games).map(champ => champ.kda).slice(0, 7))
+    const replaceTitles: Record<string, string> = {
+        championName: 'Champ',
+    }
 </script>
 
-<Container title="" description="" disableHeader>
+<Container disableHeader>
     <a href="/summoners/{server}/{alias}/1" class="rounded bg-indigo-500 px-4 py-1 text-white hover:bg-indigo-600">
-        <i class="bi bi-arrow-90deg-left pr-2"></i> BACK
+        <i class="bi bi-arrow-90deg-left pr-2" /> BACK
     </a>
-    <div class="{styles.foreground} {styles.card} p-4">
-        <h2 class="pt-3 text-center text-2xl">Champions</h2>
-        <hr class="m-2" />
-        <div class="grid grid-cols-4 p-2 text-center">
-            <span>Champ</span>
-            <span>Games</span>
-            <span>Winrate</span>
-            <span>KDA</span>
-        </div>
 
-        {#each data.stats.statsByChamp.sort((a, b) => b.games - a.games).slice(0, 7) as champ}
-            <div class="grid grid-cols-4 px-4">
-                <div class="flex justify-center">
-                    <button class="p-1 transition-transform hover:scale-125">
-                        <img class="w-12 rounded" src={riotService.champImage(champ.championName)} alt="champion" />
-                    </button>
-                </div>
-    
-                <div class="w-full px-2">
-                    <span class="flex justify-center">{champ.games}</span>
-                    <div class="h-2 rounded bg-zinc-300 dark:bg-zinc-600">
-                        <div class="h-2 rounded bg-blue-400" style="width: {(champ.games / maxGames()) * 100}%" />
-                    </div>
-                </div>
-    
-                <div class="w-full px-2">
-                    <span class="flex justify-center">{winrate(champ.wins, champ.games - champ.wins)}%</span>
-                    <div class="h-2 rounded bg-zinc-300 dark:bg-zinc-600">
-                        <div class="h-2 rounded bg-red-400" style="width: {winrate(champ.wins, champ.games - champ.wins)}%" />
-                    </div>
-                </div>
-    
-                <div class="w-full px-2">
-                    <span class="flex justify-center">{champ.kda}</span>
-                    <div class="h-2 rounded bg-zinc-300 dark:bg-zinc-600">
-                        <div class="h-2 rounded bg-green-400" style="width: {(champ.kda / maxKDA()) * 100}%" />
-                    </div>
-                </div>
-            </div>
+    <!-- CHAMPS TABLE -->
+    <table class="{styles.foreground} {styles.card} mt-4">
+        <tr>
+            {#each Object.keys(data.stats.statsByChamp[0]) as prop_key}
+                <td class="p-2">
+                    {replaceTitles[prop_key] ?? prop_key.charAt(0).toUpperCase() + prop_key.slice(1)}
+                </td>
+            {/each}
+        </tr>
+        {#each Object.entries(data.stats.statsByChamp) as [idx, _]}
+            <tr>
+                {#each Object.entries(data.stats.statsByChamp[parseInt(idx)]) as [key, value]}
+                    <td class="px-2 py-1">
+                        {#if key === 'championName'}
+                            <img class="w-12 rounded" src={riotService.champImage(value)} alt="champion" />
+                        {:else if key === 'wins'}
+                            {winrate(value, data.stats.statsByChamp[parseInt(idx)].games - value)}%
+                        {:else}
+                            {value}
+                        {/if}
+                    </td>
+                {/each}
+            </tr>
         {/each}
-    </div>
+    </table>
 </Container>
