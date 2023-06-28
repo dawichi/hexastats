@@ -26,7 +26,7 @@
 
 <div class="{styles.foreground} {styles.card} relative md:m-2 p-4">
     <h2 class="text-2xl">Stats</h2>
-    <span class="text-sm">based in {stats.gamesUsed.length} games </span>
+    <span class="text-sm">based in last {stats.gamesUsed.length} games</span>
 
     <div>
         <a href="/summoners/{server}/{alias}/stats" class="absolute top-3 right-3 rounded bg-indigo-500 px-2 text-white hover:bg-indigo-600">
@@ -34,7 +34,7 @@
         </a>
     </div>
 
-    <button on:click={handleMoreGames} class="block rounded bg-indigo-500 px-2 text-white hover:bg-indigo-600">
+    <button on:click={handleMoreGames} class="block rounded bg-indigo-500 mt-2 px-2 text-white hover:bg-indigo-600">
         {#if loading}
             <i class="bi bi-arrow-clockwise animate block animate-spin" />
         {:else}
@@ -42,7 +42,7 @@
         {/if}
     </button>
 
-    <div class="mt-4 grid grid-cols-1 gap-4">
+    <div class="grid grid-cols-1 gap-4">
         <!-- CHAMPION STATS -->
         <ListChamps champs={stats.statsByChamp} />
 
