@@ -9,6 +9,12 @@ export interface ChampStats {
     games: number
     wins: number
     kda: number
+    goldMin: number
+    csMin: number
+    visionMin: number
+    killParticipation: number
+    damageDealt: number
+    damageTaken: number
 }
 
 export interface PositionStats {
