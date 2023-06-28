@@ -4,8 +4,8 @@
   Displays the content centered with a title and a subtitle
 -->
 <script lang="ts">
-    export let title: string
-    export let description: string
+    export let title: string = ''
+    export let description: string = ''
     export let disableHeader: boolean = false
 </script>
 

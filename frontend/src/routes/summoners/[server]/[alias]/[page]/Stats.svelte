@@ -3,7 +3,7 @@
     import { page } from '$app/stores'
     import { styles } from '$lib/config'
     import { SummonerService } from '$lib/services/Summoner.service'
-    import ListChamps from './ListChamps.svelte'
+    import { ListChamps } from '$lib/components'
     import ListFriends from './ListFriends.svelte'
     import ListPositions from './ListPositions.svelte'
 
