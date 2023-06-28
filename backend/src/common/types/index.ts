@@ -10,6 +10,7 @@ export { Friend as FriendDto } from './shared/Stats.dto'
 export { ChampStats as ChampStatsDto } from './shared/Stats.dto'
 export { PositionStats as PositionStatsDto } from './shared/Stats.dto'
 export { Stats as StatsDto } from './shared/Stats.dto'
+export { Record as RecordDto } from './shared/Record.dto'
 
 // redis/
 // export { RedisRecordGames as RedisRecordGamesDto } from './redis/RedisRecord.dto'

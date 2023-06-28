@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { ChampStatsDto, FriendDto, GameDto, PositionStatsDto, StatsDto } from '../../common/types'
+import { ChampStatsDto, FriendDto, GameDto, PositionStatsDto, RecordDto, StatsDto } from '../../common/types'
 import { kda } from '../../common/utils'
 
 @Injectable()
@@ -145,6 +145,44 @@ export class MathService {
             indexByPosition[key].wins += game.win ? 1 : 0
         }
         return Object.keys(indexByPosition).map(key => indexByPosition[key])
+    }
+
+    /**
+     * ## Builds the record stats based on the games
+     * From the games data, it allows to build the stats.
+     *
+     * @param games The games to build the stats from
+     * @returns The record stats
+     */
+    getRecords(games: GameDto[]): RecordDto {
+        const BaseRecordValue = { value: 0, matchId: '' }
+        const out: RecordDto = {
+            kda: BaseRecordValue,
+            kills: BaseRecordValue,
+            deaths: BaseRecordValue,
+            assists: BaseRecordValue,
+            gold: BaseRecordValue,
+            goldPerMin: BaseRecordValue,
+            cs: BaseRecordValue,
+            csPerMin: BaseRecordValue,
+            vision: BaseRecordValue,
+            visionPerMin: BaseRecordValue,
+            matchDuration: BaseRecordValue,
+            doubleKills: BaseRecordValue,
+            tripleKills: BaseRecordValue,
+            quadraKills: BaseRecordValue,
+            pentaKills: BaseRecordValue,
+        }
+
+        for (const game of games) {
+            out.kills = game.kda.kills > out.kills.value ? { value: game.kda.kills, matchId: game.matchId } : out.kills
+            out.assists = game.kda.assists > out.assists.value ? { value: game.kda.assists, matchId: game.matchId } : out.assists
+            out.deaths = game.kda.deaths > out.deaths.value ? { value: game.kda.deaths, matchId: game.matchId } : out.deaths
+            out.gold = game.gold > out.gold.value ? { value: game.gold, matchId: game.matchId } : out.gold
+            out.vision = game.visionScore > out.vision.value ? { value: game.visionScore, matchId: game.matchId } : out.vision
+            out.cs = game.cs > out.cs.value ? { value: game.cs, matchId: game.matchId } : out.cs
+        }
+        return out
     }
 
     /**
