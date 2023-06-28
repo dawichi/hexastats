@@ -6,27 +6,14 @@
 <script lang="ts">
     import type { ChampStatsDto } from '$lib/types'
     import { RiotService } from '$lib/services/Riot.service'
-    import { filteredGamesContext } from '$lib/context/players'
     import { winrate } from '$lib/utils'
 
     export let champs: Array<ChampStatsDto>
 
-    // Context
-    let _activeFilter = ''
-    filteredGamesContext.subscribe(data => (_activeFilter = data.activeFilter))
-
     const riotService = RiotService.getInstance()
 
     const maxGames = () => Math.max(...champs.map(champ => champ.games))
-    const maxKDA = () => Math.max(...champs.map(champ => champ.kda))
-
-    // function handleClick(championName: string) {
-    //     if (championName === _activeFilter) return filteredGamesContext.update(data => ({ activeFilter: '', games: player.games }))
-    //     filteredGamesContext.update(data => ({
-    //         activeFilter: championName,
-    //         games: player.games.filter(game => game.participants[game.participantNumber].championName === championName),
-    //     }))
-    // }
+    const maxKDA = () => Math.max(...champs.sort((a, b) => b.games - a.games).map(champ => champ.kda).slice(0, 7))
 </script>
 
 <div>
