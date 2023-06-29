@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { ChampStatsDto, FriendDto, GameDto, PositionStatsDto, RecordDto, StatsDto } from '../../common/types'
+import { ChampStatsDto, FriendDto, GameDto, PositionStatsDto, RecordsDto, StatsDto } from '../../common/types'
 import { kda } from '../../common/utils'
 
 @Injectable()
@@ -154,9 +154,9 @@ export class MathService {
      * @param games The games to build the stats from
      * @returns The record stats
      */
-    getRecords(games: GameDto[]): RecordDto {
+    getRecords(games: GameDto[]): RecordsDto {
         const BaseRecordValue = { value: 0, matchId: '' }
-        const out: RecordDto = {
+        const out: RecordsDto = {
             kda: BaseRecordValue,
             kills: BaseRecordValue,
             deaths: BaseRecordValue,
@@ -217,6 +217,8 @@ export class MathService {
         }
 
         // CHAMPS
+        const mergeValues = (a: number, b: number, aN: number, bN: number) => Number(((a * aN + b * bN) / (aN + bN)).toFixed(2))
+
         for (const champB of statsB.statsByChamp) {
             const champA = statsA.statsByChamp.find(c => c.championName === champB.championName)
 
@@ -224,10 +226,19 @@ export class MathService {
                 statsA.statsByChamp.push(champB)
             } else {
                 champA.kda = Number(((champA.kda * champA.games + champB.kda * champB.games) / (champA.games + champB.games)).toFixed(2))
+                champA.goldMin = mergeValues(champA.goldMin, champB.goldMin, champA.games, champB.games)
+                champA.csMin = mergeValues(champA.csMin, champB.csMin, champA.games, champB.games)
+                champA.visionMin = mergeValues(champA.visionMin, champB.visionMin, champA.games, champB.games)
+
                 // This needs to be done after the kda calculation, because it depends on it
                 champA.games += champB.games
                 champA.wins += champB.wins
             }
+        }
+
+        // RECORDS
+        for (const key of Object.keys(statsA.records) as Array<keyof RecordsDto>) {
+            statsA.records[key] = statsA.records[key].value > statsB.records[key].value ? statsA.records[key] : statsB.records[key]
         }
 
         return statsA
