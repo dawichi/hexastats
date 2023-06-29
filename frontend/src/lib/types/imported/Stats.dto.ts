@@ -23,9 +23,12 @@ export interface PositionStats {
     wins: number
 }
 
-interface RecordValue {
+export interface RecordValue {
     value: number
     matchId: string
+    championName: string
+    gameMode: string
+    gameCreation: number
 }
 
 export interface Records {
@@ -39,7 +42,7 @@ export interface Records {
     csPerMin: RecordValue
     vision: RecordValue
     visionPerMin: RecordValue
-    matchDuration: RecordValue
+    gameDuration: RecordValue
     doubleKills: RecordValue
     tripleKills: RecordValue
     quadraKills: RecordValue

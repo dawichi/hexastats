@@ -102,7 +102,7 @@ export class PositionStats {
     wins: number
 }
 
-class RecordValue {
+export class RecordValue {
     @ApiProperty({
         description: 'Max value of the stat',
         example: 4,
@@ -114,6 +114,24 @@ class RecordValue {
         example: 4,
     })
     matchId: string
+
+    @ApiProperty({
+        description: 'Name of the champion to use in the image',
+        example: 'Aatrox',
+    })
+    championName: string
+
+    @ApiProperty({
+        description: 'Game mode of the record',
+        example: 'ARAM',
+    })
+    gameMode: string
+
+    @ApiProperty({
+        description: 'Date of the game in miliseconds',
+        example: 123456,
+    })
+    gameCreation: number
 }
 
 export class Records {
@@ -127,7 +145,7 @@ export class Records {
     csPerMin: RecordValue
     vision: RecordValue
     visionPerMin: RecordValue
-    matchDuration: RecordValue
+    gameDuration: RecordValue
     doubleKills: RecordValue
     tripleKills: RecordValue
     quadraKills: RecordValue

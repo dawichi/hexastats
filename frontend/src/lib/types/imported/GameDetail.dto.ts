@@ -1,5 +1,3 @@
-import type { Kda } from './Game.dto'
-
 interface Objective {
     type: string
     first: boolean
@@ -37,7 +35,9 @@ interface Participant {
     summonerName: string
     visionScore: number
     champ: ChampData
-    kda: Kda
+    kills: number
+    deaths: number
+    assists: number
     multiKill: MultiKill
     gold: number
     cs: number

@@ -3,12 +3,6 @@ interface ParticipantTitle {
     championName: string
 }
 
-export interface Kda {
-    assists: number
-    deaths: number
-    kills: number
-}
-
 export interface Game {
     matchId: string
     gameCreation: number
@@ -20,7 +14,9 @@ export interface Game {
     visionScore: number
     champLevel: number
     championName: string
-    kda: Kda
+    kills: number
+    deaths: number
+    assists: number
     gold: number
     cs: number
     ward: number

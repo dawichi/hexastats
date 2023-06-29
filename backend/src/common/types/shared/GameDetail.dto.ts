@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Kda } from './Game.dto'
 
 class Objective {
     @ApiProperty({
@@ -138,9 +137,22 @@ class Participant {
     champ: ChampData
 
     @ApiProperty({
-        description: 'KDA values',
+        description: 'Kills',
+        example: 4,
     })
-    kda: Kda
+    kills: number
+
+    @ApiProperty({
+        description: 'Deaths',
+        example: 2,
+    })
+    deaths: number
+
+    @ApiProperty({
+        description: 'Assists',
+        example: 0,
+    })
+    assists: number
 
     @ApiProperty({
         description: 'Multiple kills values',

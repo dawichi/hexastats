@@ -14,26 +14,6 @@ class ParticipantTitle {
     championName: string
 }
 
-export class Kda {
-    @ApiProperty({
-        description: 'Assists',
-        example: 0,
-    })
-    assists: number
-
-    @ApiProperty({
-        description: 'Deaths',
-        example: 2,
-    })
-    deaths: number
-
-    @ApiProperty({
-        description: 'Kills',
-        example: 4,
-    })
-    kills: number
-}
-
 export class Game {
     @ApiProperty({
         description: 'ID of the match',
@@ -97,9 +77,22 @@ export class Game {
     championName: string
 
     @ApiProperty({
-        description: 'KDA values',
+        description: 'Kills',
+        example: 4,
     })
-    kda: Kda
+    kills: number
+
+    @ApiProperty({
+        description: 'Deaths',
+        example: 2,
+    })
+    deaths: number
+
+    @ApiProperty({
+        description: 'Assists',
+        example: 0,
+    })
+    assists: number
 
     @ApiProperty({
         description: 'gold earned',
