@@ -155,7 +155,7 @@ export class MathService {
      * @returns The record stats
      */
     getRecords(games: GameDto[]): RecordsDto {
-        const BaseRecordValue = { value: 0, matchId: '', championName: '', gameMode: '', gameCreation: 0 }
+        const BaseRecordValue = { value: 0, matchId: '', championName: '', gameMode: '', gameCreation: 0, gameDuration: 0 }
         const out: RecordsDto = {
             kda: BaseRecordValue,
             kills: BaseRecordValue,
@@ -183,6 +183,7 @@ export class MathService {
                 championName: game.championName,
                 gameMode: game.gameMode,
                 gameCreation: game.gameCreation,
+                gameDuration: game.gameDuration,
             })
 
             // Iterate over the keys of the out object

@@ -132,6 +132,12 @@ export class RecordValue {
         example: 123456,
     })
     gameCreation: number
+
+    @ApiProperty({
+        description: 'Duration of the game in miliseconds',
+        example: 123456,
+    })
+    gameDuration: number
 }
 
 export class Records {

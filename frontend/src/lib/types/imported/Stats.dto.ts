@@ -29,6 +29,7 @@ export interface RecordValue {
     championName: string
     gameMode: string
     gameCreation: number
+    gameDuration: number
 }
 
 export interface Records {
