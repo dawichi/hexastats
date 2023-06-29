@@ -6,9 +6,9 @@
     import { SummonerService } from '$lib/services/Summoner.service'
     import type { StatsDto } from '$lib/types'
     import { winrate } from '$lib/utils'
-    import { prop_dev } from 'svelte/internal'
     import ListFriends from '../[page]/ListFriends.svelte'
     import ListPositions from '../[page]/ListPositions.svelte'
+    import RecordCard from './RecordCard.svelte'
 
     /** @type {import('./$types').PageData} */
     export let data: {
@@ -36,6 +36,24 @@
         loading = true
         data.stats = await summonerService.addStats(server, `${decodeURI(alias)}`)
         loading = false
+    }
+
+    /**
+     * Highlights table cells based on the stat requirements
+     * @param num the value of the cell
+     * @param type the type of stat
+     */
+     const tint = (num: number, type: string): string => {
+        const tints: Record<string, (x: number) => string> = {
+            games: (x: number) => (x >= 50 ? 'bg-green-200 dark:bg-green-700' : ''),
+            winrate: (x: number) => (x >= 55 ? 'bg-sky-200 dark:bg-sky-700' : ''),
+            kda: (x: number) => (x >= 3 ? 'bg-purple-200 dark:bg-purple-700 p-1' : ''),
+            kills: (x: number) => (x >= 10 ? 'bg-red-200 dark:bg-red-700 p-1' : ''),
+            deaths: (x: number) => (x <= 5 ? 'bg-zinc-300 dark:bg-zinc-400 p-1' : ''),
+            assists: (x: number) => (x >= 10 ? 'bg-pink-200 dark:bg-pink-700 p-1' : ''),
+            csmin: (x: number) => (x >= 7 ? 'bg-yellow-200 dark:bg-yellow-700 p-1' : ''),
+        }
+        return tints[type]?.(num) ?? ''
     }
 </script>
 
@@ -116,27 +134,23 @@
             ADD +10
         {/if}
     </button>
+
     <!-- WRAPPER: RECORDS -->
-    <div class="grid gap-4 p-2">
-       <p>{data.stats.records.kda.value}</p>
-       <p>{data.stats.records.kda.matchId}</p>
-
-       <p>{data.stats.records.kills.value}</p>
-       <p>{data.stats.records.kills.matchId}</p>
-
-       <p>{data.stats.records.deaths.value}</p>
-       <p>{data.stats.records.deaths.matchId}</p>
-
-       <p>{data.stats.records.assists.value}</p>
-       <p>{data.stats.records.assists.matchId}</p>
-
-       <p>{data.stats.records.gold.value}</p>
-       <p>{data.stats.records.gold.matchId}</p>
-
-       <p>{data.stats.records.cs.value}</p>
-       <p>{data.stats.records.cs.matchId}</p>
-
-       <p>{data.stats.records.vision.value}</p>
-       <p>{data.stats.records.vision.matchId}</p>
+    <div class="flex gap-4 p-2">
+        <RecordCard data={data.stats.records.kda} title="KDA" />
+        <RecordCard data={data.stats.records.kills} title="Kills" />
+        <RecordCard data={data.stats.records.deaths} title="Deaths" />
+        <RecordCard data={data.stats.records.assists} title="Assists" />
+        <RecordCard data={data.stats.records.gold} title="Gold" />
+        <RecordCard data={data.stats.records.goldPerMin} title="Gold/min" />
+        <RecordCard data={data.stats.records.cs} title="CS" />
+        <RecordCard data={data.stats.records.csPerMin} title="CS/min" />
+        <RecordCard data={data.stats.records.vision} title="Vision" />
+        <RecordCard data={data.stats.records.visionPerMin} title="Vision/min" />
+        <RecordCard data={data.stats.records.gameDuration} title="game duration" />
+        <RecordCard data={data.stats.records.doubleKills} title="x2" />
+        <RecordCard data={data.stats.records.tripleKills} title="x3" />
+        <RecordCard data={data.stats.records.quadraKills} title="x4" />
+        <RecordCard data={data.stats.records.pentaKills} title="x5" />
     </div>
 </Container>
