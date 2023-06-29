@@ -87,7 +87,7 @@ export class MathService {
                     championName: key,
                     games: 1,
                     wins: game.win ? 1 : 0,
-                    kda: kda(game.kda.kills, game.kda.deaths, game.kda.assists),
+                    kda: kda(game.kills, game.deaths, game.assists),
                     goldMin: perMin(game.gold),
                     csMin: perMin(game.cs),
                     visionMin: perMin(game.visionScore),
@@ -99,7 +99,7 @@ export class MathService {
             }
 
             // 2. Champ already indexed -> update it
-            indexByName[key].kda = avg(indexByName[key].kda, kda(game.kda.kills, game.kda.deaths, game.kda.assists), indexByName[key].games)
+            indexByName[key].kda = avg(indexByName[key].kda, kda(game.kills, game.deaths, game.assists), indexByName[key].games)
             indexByName[key].wins += game.win ? 1 : 0
             indexByName[key].goldMin = avg(indexByName[key].goldMin, perMin(game.gold), indexByName[key].games)
             indexByName[key].csMin = avg(indexByName[key].csMin, perMin(game.cs), indexByName[key].games)
@@ -155,7 +155,7 @@ export class MathService {
      * @returns The record stats
      */
     getRecords(games: GameDto[]): RecordsDto {
-        const BaseRecordValue = { value: 0, matchId: '' }
+        const BaseRecordValue = { value: 0, matchId: '', championName: '', gameMode: '', gameCreation: 0 }
         const out: RecordsDto = {
             kda: BaseRecordValue,
             kills: BaseRecordValue,
@@ -167,7 +167,7 @@ export class MathService {
             csPerMin: BaseRecordValue,
             vision: BaseRecordValue,
             visionPerMin: BaseRecordValue,
-            matchDuration: BaseRecordValue,
+            gameDuration: BaseRecordValue,
             doubleKills: BaseRecordValue,
             tripleKills: BaseRecordValue,
             quadraKills: BaseRecordValue,
@@ -175,13 +175,35 @@ export class MathService {
         }
 
         for (const game of games) {
-            out.kills = game.kda.kills > out.kills.value ? { value: game.kda.kills, matchId: game.matchId } : out.kills
-            out.assists = game.kda.assists > out.assists.value ? { value: game.kda.assists, matchId: game.matchId } : out.assists
-            out.deaths = game.kda.deaths > out.deaths.value ? { value: game.kda.deaths, matchId: game.matchId } : out.deaths
-            out.gold = game.gold > out.gold.value ? { value: game.gold, matchId: game.matchId } : out.gold
-            out.vision = game.visionScore > out.vision.value ? { value: game.visionScore, matchId: game.matchId } : out.vision
-            out.cs = game.cs > out.cs.value ? { value: game.cs, matchId: game.matchId } : out.cs
+            const perMin = (x: number) => Number(((x * 60) / game.gameDuration).toFixed(1))
+            // Helper function to create the value object
+            const mockValue = (value: number) => ({
+                value,
+                matchId: game.matchId,
+                championName: game.championName,
+                gameMode: game.gameMode,
+                gameCreation: game.gameCreation,
+            })
+
+            // Iterate over the keys of the out object
+            for (const key of Object.keys(out) as Array<keyof RecordsDto>) {
+                // NOTE: Some RecordsDto's keys are not === like GameDto's keys
+                // To avoid problems, we need to check if the key is a valid key for game too
+                if (Object.keys(game).includes(key) && Number(game[key as keyof GameDto]) > out[key].value) {
+                    out[key] = mockValue(Number(game[key as keyof GameDto]))
+                }
+            }
+
+            // Now the exception props that need to be handled manually
+            const game_kda = kda(game.kills, game.deaths, game.assists)
+
+            out.kda = game_kda > out.kda.value ? mockValue(game_kda) : out.kda
+            out.goldPerMin = perMin(game.gold) > out.goldPerMin.value ? mockValue(perMin(game.gold)) : out.goldPerMin
+            out.csPerMin = perMin(game.cs) > out.csPerMin.value ? mockValue(perMin(game.cs)) : out.csPerMin
+            out.visionPerMin = perMin(game.visionScore) > out.visionPerMin.value ? mockValue(perMin(game.visionScore)) : out.visionPerMin
+            out.gameDuration = game.gameDuration > out.gameDuration.value ? mockValue(game.gameDuration) : out.gameDuration
         }
+
         return out
     }
 
