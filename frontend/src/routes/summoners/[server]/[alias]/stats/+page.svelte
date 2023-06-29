@@ -136,7 +136,7 @@
     </button>
 
     <!-- WRAPPER: RECORDS -->
-    <div class="flex gap-4 p-2">
+    <div class="grid grid-cols-6 gap-4 p-2">
         <RecordCard data={data.stats.records.kda} title="KDA" />
         <RecordCard data={data.stats.records.kills} title="Kills" />
         <RecordCard data={data.stats.records.deaths} title="Deaths" />
