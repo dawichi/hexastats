@@ -28,7 +28,7 @@
 
     <!-- KDA, CS, VISION -->
     <article>
-        <p><strong>{kda(game.kda.kills, game.kda.deaths, game.kda.assists)}</strong> KDA</p>
+        <p><strong>{kda(game.kills, game.deaths, game.assists)}</strong> KDA</p>
         <p><strong>{game.cs}</strong> CS</p>
         <p><strong>{((game.cs * 60) / game.gameDuration).toFixed(1)}</strong> cs/min</p>
         <p><strong>{game.visionScore}</strong> vision</p>
@@ -36,7 +36,7 @@
 
     <!-- ITEMS -->
     <article class="hidden flex-col sm:flex">
-        <p>{game.kda.kills} / {game.kda.deaths} / {game.kda.assists}</p>
+        <p>{game.kills} / {game.deaths} / {game.assists}</p>
         <div class="mt-2 flex gap-1">
             <div class="grid grid-cols-3 gap-1">
                 {#each [0, 1, 2, 3, 4, 5] as n}
