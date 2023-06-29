@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
-import { ChampStatsDto, FriendDto, GameDto, MasteryDto, PlayerDto, PositionStatsDto, RankDataDto, StatsDto } from '../../common/types'
+import { GameDto, MasteryDto, PlayerDto, RankDataDto, StatsDto } from '../../common/types'
 import { RiotService, queueTypeDto } from '../../modules/riot/riot.service'
 import { DatabaseService } from '../database/database.service'
 import { MathService } from '../math/math.service'
@@ -88,15 +88,13 @@ export class SummonersService {
         }
 
         const games = await this.getGames(server, summonerName, 10, 0, 'all')
-        const friends: FriendDto[] = this.mathService.getFriends(games)
-        const statsByChamp: ChampStatsDto[] = this.mathService.getStatsByChamp(games)
-        const statsByPosition: PositionStatsDto[] = this.mathService.getStatsByPosition(games)
 
         const output: StatsDto = {
             gamesUsed: games.map(game => game.matchId),
-            friends,
-            statsByChamp,
-            statsByPosition,
+            friends: this.mathService.getFriends(games),
+            statsByChamp: this.mathService.getStatsByChamp(games),
+            statsByPosition: this.mathService.getStatsByPosition(games),
+            records: this.mathService.getRecords(games),
         }
 
         await this.databaseService.set(`${server}:${summonerName}:stats`, output)
@@ -111,15 +109,13 @@ export class SummonersService {
         const currentStats = await this.getStats(server, summonerName)
 
         const games = await this.getGames(server, summonerName, 10, currentStats.gamesUsed.length, 'all')
-        const friends: FriendDto[] = this.mathService.getFriends(games)
-        const statsByChamp: ChampStatsDto[] = this.mathService.getStatsByChamp(games)
-        const statsByPosition: PositionStatsDto[] = this.mathService.getStatsByPosition(games)
 
         const newStats: StatsDto = {
             gamesUsed: games.map(game => game.matchId),
-            friends,
-            statsByChamp,
-            statsByPosition,
+            friends: this.mathService.getFriends(games),
+            statsByChamp: this.mathService.getStatsByChamp(games),
+            statsByPosition: this.mathService.getStatsByPosition(games),
+            records: this.mathService.getRecords(games),
         }
 
         const mergedStats: StatsDto = this.mathService.mergeStats(currentStats, newStats)
