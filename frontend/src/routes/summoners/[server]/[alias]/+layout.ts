@@ -11,9 +11,11 @@ export async function load({ params }: { params: { server: string; alias: string
     }
 
     const masteries = await summonerService.getMasteries(params.server, params.alias)
+    const stats = await summonerService.getStats(params.server, params.alias)
 
     return {
         player,
         masteries,
+        stats,
     }
 }
