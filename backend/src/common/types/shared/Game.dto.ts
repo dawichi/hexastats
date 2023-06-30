@@ -95,6 +95,30 @@ export class Game {
     assists: number
 
     @ApiProperty({
+        description: 'Double kills in the game',
+        example: 2,
+    })
+    doubleKills: number
+
+    @ApiProperty({
+        description: 'Triple kills in the game',
+        example: 3,
+    })
+    tripleKills: number
+
+    @ApiProperty({
+        description: 'Quadra kills in the game',
+        example: 4,
+    })
+    quadraKills: number
+
+    @ApiProperty({
+        description: 'Penta kills in the game',
+        example: 5,
+    })
+    pentaKills: number
+
+    @ApiProperty({
         description: 'gold earned',
         example: 420,
     })
