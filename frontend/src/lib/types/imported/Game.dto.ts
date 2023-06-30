@@ -17,9 +17,16 @@ export interface Game {
     kills: number
     deaths: number
     assists: number
+    doubleKills: number
+    tripleKills: number
+    quadraKills: number
+    pentaKills: number
     gold: number
     cs: number
     ward: number
+    killParticipation: number
+    damageDealt: number
+    damageTaken: number
     items: Array<number>
     spells: Array<number>
     perks: Array<string>

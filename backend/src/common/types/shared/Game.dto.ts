@@ -137,6 +137,24 @@ export class Game {
     ward: number
 
     @ApiProperty({
+        description: 'Kill Participation',
+        example: 0.5,
+    })
+    killParticipation: number
+
+    @ApiProperty({
+        description: 'Damage dealt to enemies',
+        example: 20_000,
+    })
+    damageDealt: number
+
+    @ApiProperty({
+        description: 'Damage received',
+        example: 20_000,
+    })
+    damageTaken: number
+
+    @ApiProperty({
         description: 'IDs of the items used',
         example: [3157, 6655, 4645, 3020, 3165, 3089],
     })
