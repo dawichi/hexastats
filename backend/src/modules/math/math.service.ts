@@ -203,6 +203,7 @@ export class MathService {
             out.csPerMin = perMin(game.cs) > out.csPerMin.value ? mockValue(perMin(game.cs)) : out.csPerMin
             out.visionPerMin = perMin(game.visionScore) > out.visionPerMin.value ? mockValue(perMin(game.visionScore)) : out.visionPerMin
             out.gameDuration = game.gameDuration > out.gameDuration.value ? mockValue(game.gameDuration) : out.gameDuration
+            out.vision = game.visionScore > out.vision.value ? mockValue(game.visionScore) : out.vision
         }
 
         return out
