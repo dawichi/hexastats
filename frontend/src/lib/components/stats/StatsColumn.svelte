@@ -1,11 +1,9 @@
 <script lang="ts">
     import type { StatsDto } from '$lib/types'
-    import { page } from '$app/stores'
     import { styles } from '$lib/config'
-    import { SummonerService } from '$lib/services/Summoner.service'
-    import { ListChamps } from '$lib/components'
-    import ListFriends from './ListFriends.svelte'
-    import ListPositions from './ListPositions.svelte'
+    import ListFriends from './_ListFriends.svelte'
+    import ListPositions from './_ListPositions.svelte'
+    import ListChamps from './_ListChamps.svelte'
 
     export let stats: StatsDto
 </script>
