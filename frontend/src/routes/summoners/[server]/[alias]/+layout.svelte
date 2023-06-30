@@ -2,10 +2,8 @@
 <script lang="ts">
     import type { MasteryDto, RankDataDto, StatsDto } from '$lib/types'
     import { navigating } from '$app/stores'
-    import { ChampStats, Container, MasteryRow, RankStructure, Spinner } from '$lib/components'
+    import { ChampStats, Container, MasteryRow, RankStructure, RecordCard, Spinner, StatsColumn } from '$lib/components'
     import { RiotService } from '$lib/services/Riot.service'
-    import Stats from './[page]/Stats.svelte'
-    import RecordCard from './RecordCard.svelte'
     import { SummonerService } from '$lib/services/Summoner.service'
 
     /** @type {import('./$types').LayoutData} */
@@ -18,7 +16,7 @@
     let tabSelected: 'games' | 'champions' | 'records' = 'games'
     let loading = false
 
-    const tabClass = "bg-indigo-400 hover:bg-indigo-800 text-white py-2 rounded-t-lg transition"
+    const tabClass = 'bg-zinc-400 hover:bg-zinc-700 text-white py-2 rounded-t-lg transition'
 
     const riotService = RiotService.getInstance()
     const summonerService = SummonerService.getInstance()
@@ -34,24 +32,26 @@
 </script>
 
 <Container title="" description="" disableHeader>
-    <div class="relative rounded-lg bg-contain shadow" style="background-image: url({riotService.champSplash(data.masteries[0].name)})">
-        <section class="bg-orange-50/80 dark:bg-zinc-900/80 md:px-4">
+    <!-- HEADER BLOCK: RANK & MASTERIES -->
+    <section class="relative rounded-lg bg-contain shadow" style="background-image: url({riotService.champSplash(data.masteries[0].name)})">
+        <div class="bg-orange-50/80 dark:bg-zinc-900/80 md:px-4">
             <header class="flex flex-col items-center justify-around py-5 lg:flex-row">
                 <RankStructure player={data.player} />
                 <MasteryRow masteries={data.masteries} />
             </header>
-        </section>
-    </div>
+        </div>
+    </section>
 
-    <div class="grid-cols-3 lg:cols-2 2xl:grid py-8">
-        <aside class="grid 2xl:block justify-center mx-auto">
-            <div class="flex justify justify-between px-2">
+    <!-- MAIN BLOCK UNDER IT -->
+    <div class="grid-cols-3 py-8 2xl:grid">
+        <aside class="mx-auto grid justify-center 2xl:block">
+            <div class="justify flex justify-between px-2">
                 <div>
                     <h2 class="text-2xl">Stats</h2>
                     <span class="text-sm">based in last {data.stats.gamesUsed.length} games</span>
                 </div>
-    
-                <button on:click={handleMoreGames} class="block rounded bg-indigo-500 mt-2 px-2 text-white hover:bg-indigo-600 w-40">
+
+                <button on:click={handleMoreGames} class="mt-2 block w-40 rounded bg-indigo-500 px-2 text-white hover:bg-indigo-600">
                     {#if loading}
                         <i class="bi bi-arrow-clockwise animate block animate-spin" />
                     {:else}
@@ -59,15 +59,19 @@
                     {/if}
                 </button>
             </div>
-            <Stats stats={data.stats} />
+            <StatsColumn stats={data.stats} />
         </aside>
-    
+
         <!-- TABS -->
         <section class="col-span-2">
-            <div class="grid grid-cols-3 gap-4 border-b-8 border-b-indigo-800">
-                <button on:click={() => tabSelected = 'games'} class="{tabClass} {tabSelected === 'games' ? 'bg-indigo-800 scale-y-120' : ''}">Games list</button>
-                <button on:click={() => tabSelected = 'champions'} class="{tabClass} {tabSelected === 'champions' ? 'bg-indigo-800' : ''}">Champion stats</button>
-                <button on:click={() => tabSelected = 'records'} class="{tabClass} {tabSelected === 'records' ? 'bg-indigo-800' : ''}">Records</button>
+            <div class="grid grid-cols-3 gap-4 border-b-8 border-b-zinc-800 mb-2">
+                <button on:click={() => (tabSelected = 'games')} class="{tabClass} {tabSelected === 'games' ? 'scale-y-120 bg-zinc-800' : ''}"
+                    >Games list</button
+                >
+                <button on:click={() => (tabSelected = 'champions')} class="{tabClass} {tabSelected === 'champions' ? 'bg-zinc-800' : ''}"
+                    >Champion stats</button
+                >
+                <button on:click={() => (tabSelected = 'records')} class="{tabClass} {tabSelected === 'records' ? 'bg-zinc-800' : ''}">Records</button>
             </div>
 
             <!-- TAB 1 -->
@@ -110,4 +114,3 @@
         </section>
     </div>
 </Container>
-
