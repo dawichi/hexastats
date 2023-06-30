@@ -12,7 +12,7 @@
     export let masteries: MasteryDto[]
 </script>
 
-<div class="grid w-96 grid-cols-6">
+<div class="grid sm:w-96 grid-cols-6">
     {#each masteries.slice(0,6) as mastery}
         <div class="p-2 text-center">
             <span class="whitespace-nowrap">{parse_k_num(mastery.points, 0, true)}</span>

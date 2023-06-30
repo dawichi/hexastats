@@ -2,7 +2,7 @@
 <script lang="ts">
     import type { MasteryDto, RankDataDto, StatsDto } from '$lib/types'
     import { navigating } from '$app/stores'
-    import { ChampStats, Container, MasteryRow, RankStructure, RecordCard, Spinner, StatsColumn } from '$lib/components'
+    import { Button, ChampStats, Container, MasteryRow, RankStructure, RecordCard, Spinner, StatsColumn } from '$lib/components'
     import { RiotService } from '$lib/services/Riot.service'
     import { SummonerService } from '$lib/services/Summoner.service'
 
@@ -35,7 +35,7 @@
     <!-- HEADER BLOCK: RANK & MASTERIES -->
     <section class="relative rounded-lg bg-contain shadow" style="background-image: url({riotService.champSplash(data.masteries[0].name)})">
         <div class="bg-orange-50/80 dark:bg-zinc-900/80 md:px-4">
-            <header class="flex flex-col items-center justify-around py-5 lg:flex-row">
+            <header class="flex flex-col items-center justify-around gap-y-4 py-5 lg:flex-row">
                 <RankStructure player={data.player} />
                 <MasteryRow masteries={data.masteries} />
             </header>
@@ -44,27 +44,21 @@
 
     <!-- MAIN BLOCK UNDER IT -->
     <div class="grid-cols-3 py-8 2xl:grid">
-        <aside class="mx-auto grid justify-center 2xl:block">
-            <div class="justify flex justify-between px-2">
+        <aside class="mx-auto grid justify-center 2xl:block pb-16">
+            <div class="justify flex justify-between p-2">
                 <div>
-                    <h2 class="text-2xl">Stats</h2>
+                    <h2 class="text-2xl">{data.player.alias}'s Stats</h2>
                     <span class="text-sm">based in last {data.stats.gamesUsed.length} games</span>
                 </div>
 
-                <button on:click={handleMoreGames} class="mt-2 block w-40 rounded bg-indigo-500 px-2 text-white hover:bg-indigo-600">
-                    {#if loading}
-                        <i class="bi bi-arrow-clockwise animate block animate-spin" />
-                    {:else}
-                        ADD 10 GAMES
-                    {/if}
-                </button>
+                <Button onClick={handleMoreGames} isLoading={loading}>ADD 10 GAMES</Button>
             </div>
             <StatsColumn stats={data.stats} />
         </aside>
 
         <!-- TABS -->
         <section class="col-span-2">
-            <div class="grid grid-cols-3 gap-4 border-b-8 border-b-zinc-800 mb-2">
+            <div class="mb-2 grid grid-cols-3 gap-4 border-b-8 border-b-zinc-800">
                 <button on:click={() => (tabSelected = 'games')} class="{tabClass} {tabSelected === 'games' ? 'scale-y-120 bg-zinc-800' : ''}"
                     >Games list</button
                 >
@@ -93,7 +87,7 @@
 
             <!-- TAB 3 -->
             {#if tabSelected === 'records'}
-                <div class="grid grid-cols-4 gap-4 p-2">
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-2">
                     <RecordCard data={data.stats.records.kda} title="KDA" />
                     <RecordCard data={data.stats.records.kills} title="Kills" />
                     <RecordCard data={data.stats.records.deaths} title="Deaths" />
