@@ -19,6 +19,7 @@ export { default as RankStructure } from './common/RankStructure.svelte'
 export { default as MasteryRow } from './common/MasteryRow.svelte'
 export { default as Pagination } from './common/Pagination.svelte'
 export { default as ListChamps } from './common/ListChamps.svelte'
+export { default as ChampStats } from './common/ChampStats.svelte'
 
 // Mocks
 export { default as MockImage } from './mocks/MockImage.svelte'
