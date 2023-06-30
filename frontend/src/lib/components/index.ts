@@ -11,6 +11,7 @@ export { default as ListPlayersHeader } from './logic/ListPlayersHeader.svelte'
 export { default as CachedPlayers } from './logic/CachedPlayers.svelte'
 
 // Common
+export { default as Button } from './common/Button.svelte'
 export { default as Rank } from './common/Rank.svelte'
 export { default as Image } from './common/Image.svelte'
 export { default as Spinner } from './common/Spinner.svelte'
