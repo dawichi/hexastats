@@ -5,7 +5,7 @@
     import { RiotService } from '$lib/services/Riot.service'
     import { SummonerService } from '$lib/services/Summoner.service'
     import type { StatsDto } from '$lib/types'
-    import { winrate } from '$lib/utils'
+    import { parse_k_num, winrate } from '$lib/utils'
     import ListFriends from '../[page]/ListFriends.svelte'
     import ListPositions from '../[page]/ListPositions.svelte'
     import RecordCard from './RecordCard.svelte'
@@ -23,7 +23,7 @@
 
     const replaceTitles: Record<string, string> = {
         championName: 'Champ',
-        wins:'Winrate',
+        wins: 'Winrate',
         killParticipation: 'KillP%',
         damageDealt: 'DmgDealt',
         damageTaken: 'DmgTaken',
@@ -43,9 +43,9 @@
      * @param num the value of the cell
      * @param type the type of stat
      */
-     const tint = (num: number, type: string): string => {
+    const tint = (num: number, type: string): string => {
         const tints: Record<string, (x: number) => string> = {
-            games: (x: number) => (x >= 50 ? 'bg-green-200 dark:bg-green-700' : ''),
+            games: (x: number) => (x >= 10 ? 'bg-green-200 dark:bg-green-700' : ''),
             winrate: (x: number) => (x >= 55 ? 'bg-sky-200 dark:bg-sky-700' : ''),
             kda: (x: number) => (x >= 3 ? 'bg-purple-200 dark:bg-purple-700 p-1' : ''),
             kills: (x: number) => (x >= 10 ? 'bg-red-200 dark:bg-red-700 p-1' : ''),
@@ -57,13 +57,12 @@
     }
 </script>
 
-
 <Container disableHeader>
     <a href="/summoners/{server}/{alias}/1" class="rounded bg-indigo-500 px-4 py-1 text-white hover:bg-indigo-600">
         <i class="bi bi-arrow-90deg-left pr-2" /> BACK
     </a>
 
-    <button on:click={handleMoreGames} class="block rounded bg-indigo-500 mt-2 px-2 text-white hover:bg-indigo-600">
+    <button on:click={handleMoreGames} class="mt-2 block rounded bg-indigo-500 px-2 text-white hover:bg-indigo-600">
         {#if loading}
             <i class="bi bi-arrow-clockwise animate block animate-spin" />
         {:else}
@@ -71,14 +70,14 @@
         {/if}
     </button>
 
-    <h2 class="text-3xl text-center">{alias}'s Stats</h2>
-    <p class="text-sm text-center pb-4">based in last  {data.stats.gamesUsed.length} games</p>
+    <h2 class="text-center text-3xl">{alias}'s Stats</h2>
+    <p class="pb-4 text-center text-sm">based in last {data.stats.gamesUsed.length} games</p>
     <hr />
 
     <!-- WRAPPER: STATS -->
     <div class="grid grid-cols-3 gap-4 p-2">
         <!-- LEFT COLUMN: POSITIONS AND FRIENDS -->
-        <aside class="gap-4 flex flex-col">
+        <aside class="flex flex-col gap-4">
             <!-- POSITIONS LIST -->
             <div class="{styles.foreground} {styles.card}">
                 <ListPositions positions={data.stats.statsByPosition} />
@@ -88,11 +87,11 @@
                 <ListFriends friends={data.stats.friends} />
             </div>
         </aside>
-    
+
         <!-- RIGHT COLUMN: CHAMPS TABLE -->
         <div class="{styles.foreground} {styles.card} col-span-2 px-2 pb-2">
-            <h3 class="text-2xl text-center pt-3">All your played champs ({Object.keys(data.stats.statsByChamp).length})</h3>
-            <hr class="m-2"/>
+            <h3 class="pt-3 text-center text-2xl">All your played champs ({Object.keys(data.stats.statsByChamp).length})</h3>
+            <hr class="m-2" />
             <table>
                 <tr>
                     {#each Object.keys(data.stats.statsByChamp[0]) as prop_key}
@@ -108,9 +107,17 @@
                                 {#if key === 'championName'}
                                     <img class="w-12 rounded" src={riotService.champImage(value)} alt="champion" />
                                 {:else if key === 'wins'}
+                                <span class='{tint(winrate(value, data.stats.statsByChamp[parseInt(idx)].games - value), 'winrate')}'>
                                     {winrate(value, data.stats.statsByChamp[parseInt(idx)].games - value)}%
+                                </span>
+                                {:else if key === 'killParticipation'}
+                                    {Math.round(value*100)} %
+                                    {:else if ['damageDealt', 'damageTaken'].includes(key)}
+                                        {parse_k_num(value)}
                                 {:else}
-                                    {value}
+                                    <span class='{tint(value, key)}'>
+                                        {value}
+                                    </span>
                                 {/if}
                             </td>
                         {/each}
@@ -120,14 +127,14 @@
         </div>
     </div>
 
-    <br/>
-    <br/>
-    <br/>
-    <h2 class="text-3xl text-center">{alias}'s Records</h2>
-    <p class="text-sm text-center pb-4">based in last {data.stats.gamesUsed.length} games</p>
+    <br />
+    <br />
+    <br />
+    <h2 class="text-center text-3xl">{alias}'s Records</h2>
+    <p class="pb-4 text-center text-sm">based in last {data.stats.gamesUsed.length} games</p>
     <hr />
 
-    <button on:click={handleMoreGames} class="block rounded bg-indigo-500 mt-2 px-2 text-white hover:bg-indigo-600">
+    <button on:click={handleMoreGames} class="mt-2 block rounded bg-indigo-500 px-2 text-white hover:bg-indigo-600">
         {#if loading}
             <i class="bi bi-arrow-clockwise animate block animate-spin" />
         {:else}

@@ -223,6 +223,12 @@ export class RiotService {
      */
     formatGame(rawGame: RiotGameDto, puuid: string): GameDto {
         const idx = rawGame.metadata.participants.indexOf(puuid)
+        const [initialTeamMate, lastTeamMate] = idx > 4 ? [5, 9] : [0, 4]
+
+        const teamKills: number = rawGame.info.participants
+            .slice(initialTeamMate, lastTeamMate + 1)
+            .map(p => p.kills)
+            .reduce((acc, val) => acc + val)
 
         return {
             matchId: rawGame.metadata.matchId,
@@ -245,6 +251,9 @@ export class RiotService {
             cs: rawGame.info.participants[idx].neutralMinionsKilled + rawGame.info.participants[idx].totalMinionsKilled,
             gold: rawGame.info.participants[idx].goldEarned,
             ward: rawGame.info.participants[idx].item6 || 2052,
+            killParticipation: (rawGame.info.participants[idx].kills + rawGame.info.participants[idx].assists) / teamKills,
+            damageDealt: rawGame.info.participants[idx].totalDamageDealtToChampions,
+            damageTaken: rawGame.info.participants[idx].totalDamageTaken,
             items: [
                 rawGame.info.participants[idx].item0,
                 rawGame.info.participants[idx].item1,

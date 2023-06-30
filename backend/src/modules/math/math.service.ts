@@ -91,9 +91,9 @@ export class MathService {
                     goldMin: perMin(game.gold),
                     csMin: perMin(game.cs),
                     visionMin: perMin(game.visionScore),
-                    killParticipation: 1,
-                    damageDealt: 1,
-                    damageTaken: 1,
+                    killParticipation: Number(game.killParticipation.toFixed(2)),
+                    damageDealt: game.damageDealt,
+                    damageTaken: game.damageTaken,
                 }
                 continue
             }
@@ -104,9 +104,9 @@ export class MathService {
             indexByName[key].goldMin = avg(indexByName[key].goldMin, perMin(game.gold), indexByName[key].games)
             indexByName[key].csMin = avg(indexByName[key].csMin, perMin(game.cs), indexByName[key].games)
             indexByName[key].visionMin = avg(indexByName[key].visionMin, perMin(game.visionScore), indexByName[key].games)
-            // indexByName[key].killParticipation
-            // indexByName[key].damageDealt
-            // indexByName[key].damageTaken
+            indexByName[key].killParticipation = avg(indexByName[key].killParticipation, game.killParticipation, indexByName[key].games)
+            indexByName[key].damageDealt = avg(indexByName[key].damageDealt, game.damageDealt, indexByName[key].games)
+            indexByName[key].damageTaken = avg(indexByName[key].damageTaken, game.damageTaken, indexByName[key].games)
 
             // This needs to be done after the kda calculation, because it depends on it
             indexByName[key].games += 1
@@ -253,6 +253,9 @@ export class MathService {
                 champA.goldMin = mergeValues(champA.goldMin, champB.goldMin, champA.games, champB.games)
                 champA.csMin = mergeValues(champA.csMin, champB.csMin, champA.games, champB.games)
                 champA.visionMin = mergeValues(champA.visionMin, champB.visionMin, champA.games, champB.games)
+                champA.killParticipation = mergeValues(champA.killParticipation, champB.killParticipation, champA.games, champB.games)
+                champA.damageDealt = mergeValues(champA.damageDealt, champB.damageDealt, champA.games, champB.games)
+                champA.damageTaken = mergeValues(champA.damageTaken, champB.damageTaken, champA.games, champB.games)
 
                 // This needs to be done after the kda calculation, because it depends on it
                 champA.games += champB.games
@@ -262,7 +265,7 @@ export class MathService {
 
         // RECORDS
         for (const key of Object.keys(statsA.records) as Array<keyof RecordsDto>) {
-            statsA.records[key] = statsA.records[key].value > statsB.records[key].value ? statsA.records[key] : statsB.records[key]
+            statsA.records[key] = statsA.records[key].value >= statsB.records[key].value ? statsA.records[key] : statsB.records[key]
         }
 
         return statsA
