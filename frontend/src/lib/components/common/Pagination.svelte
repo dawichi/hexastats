@@ -3,11 +3,16 @@
 
     const [x, y, server, summoner, page_num] = $page.url.pathname.split('/')
     const color = 'rounded bg-indigo-400 px-4 py-1 shadow-md hover:bg-indigo-600 hover:shadow-indigo-500'
+
+    function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
 </script>
 
 <div class="flex items-center justify-between py-4 px-8">
     {#if Number(page_num) > 1}
-        <a class="${color} rounded" href="/summoners/{server}/{summoner}/{Number(page_num) - 1}">
+        <a class="${color} rounded" href="/summoners/{server}/{summoner}/{Number(page_num) - 1}" on:click={scrollToTop}>
             <i class="bi bi-arrow-left" />
             Previous
         </a>
@@ -26,8 +31,8 @@
 
     <div />
 
-    <a class="${color} rounded" href="/summoners/{server}/{summoner}/{Number(page_num) + 1}">
+    <a class="${color} rounded" href="/summoners/{server}/{summoner}/{Number(page_num) + 1}" on:click={scrollToTop}>
         Next
         <i class="bi bi-arrow-right" />
     </a>
-</div>
+</div> 

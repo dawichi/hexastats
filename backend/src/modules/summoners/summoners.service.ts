@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
-import { GameDto, MasteryDto, PlayerDto, RankDataDto, StatsDto } from '../../common/types'
+import { GameDetailDto, GameDto, MasteryDto, PlayerDto, RankDataDto, StatsDto } from '../../common/types'
 import { RiotService, queueTypeDto } from '../../modules/riot/riot.service'
 import { DatabaseService } from '../database/database.service'
 import { MathService } from '../math/math.service'
@@ -68,6 +68,15 @@ export class SummonersService {
 
         // Get the game data
         return this.riotService.getGamesDetail(puuid, server, games_list)
+    }
+
+    /**
+     * /summoners/:server/:summonerName/games):matchId
+     */
+    async getGameDetail(server: string, summonerName: string, matchId: string): Promise<GameDetailDto> {
+        const { puuid } = await this.riotService.getBasicInfo(server, summonerName)
+
+        return this.riotService.getGameDetail(puuid, server, matchId)
     }
 
     /**
