@@ -22,8 +22,8 @@ class Objective {
 
 class Ban {
     @ApiProperty({
-        description: 'Champion ID of the banned champion',
-        example: 420,
+        description: 'Champion banned',
+        example: 'http://ddragon.leagueoflegends.com/cdn/13.13.1/img/champion/Varus.png',
     })
     championId: string
 
@@ -63,13 +63,13 @@ class Team {
 class ChampData {
     @ApiProperty({
         description: 'Champion level',
-        example: 'Aatrox',
+        example: 12,
     })
     champLevel: number
 
     @ApiProperty({
         description: 'Champion Name',
-        example: 12,
+        example: 'Aatrox',
     })
     championName: string
 
@@ -120,8 +120,8 @@ class MultiKill {
 
 class Participant {
     @ApiProperty({
-        description: 'Name of the champion used',
-        example: 'Aatrox',
+        description: 'Name of the player',
+        example: 'Dawichii',
     })
     summonerName: string
 
@@ -173,31 +173,21 @@ class Participant {
 
     @ApiProperty({
         description: 'URLs to the image of the ward',
-        example: 'https://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3340.png',
+        example: 3340,
     })
-    ward: string
+    ward: number
 
     @ApiProperty({
         description: 'URLs to the images of the items used',
-        example: [
-            'https://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3157.png',
-            'https://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/6655.png',
-            'https://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/4645.png',
-            'https://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3020.png',
-            'https://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3165.png',
-            'https://ddragon.leagueoflegends.com/cdn/12.21.1/img/item/3089.png',
-        ],
+        example: [3157, 6655, 4645, 3020, 3165, 3089],
     })
-    items: Array<string>
+    items: Array<number>
 
     @ApiProperty({
         description: 'URL to the images of the spells used',
-        example: [
-            'https://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/SummonerFlash.png',
-            'https://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/SummonerHaste.png',
-        ],
+        example: [8021, 8021],
     })
-    spells: Array<string>
+    spells: Array<number>
 
     @ApiProperty({
         description: 'URL to the images of the runes used',

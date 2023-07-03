@@ -5,7 +5,7 @@ import { lastValueFrom } from 'rxjs'
 import { perkUrl, runeUrl } from '../../common/utils/runeUrl'
 import { serverRegion, winrate } from '../../common/utils'
 import { validateGameType } from '../../common/validators'
-import { GameDto, MasteryDto, RankDto } from '../../common/types'
+import { GameDetailDto, GameDto, MasteryDto, RankDto } from '../../common/types'
 import { RiotChampionsDto, RiotGameDto, RiotMasteryDto, RiotRankDto, RiotSummonerDto } from './types'
 
 export type queueTypeDto = 'ranked' | 'normal' | 'all'
@@ -278,6 +278,79 @@ export class RiotService {
     }
 
     /**
+     * ## Format GameDetail
+     * Format the raw data of a game to our custom schema
+     * @param rawGame The raw data of the game as Riot returns
+     * @returns The info parsed
+     */
+    formatGameDetail(rawGame: RiotGameDto, puuid: string): GameDetailDto {
+        const idx = rawGame.metadata.participants.indexOf(puuid)
+
+        return {
+            matchId: rawGame.metadata.matchId,
+            gameCreation: rawGame.info.gameCreation,
+            gameDuration: rawGame.info.gameDuration,
+            participantNumber: idx,
+            gameMode: rawGame.info.gameMode,
+            teams: rawGame.info.teams.map(team => ({
+                teamId: team.teamId,
+                win: team.win,
+                bans: team.bans.map(ban => ({
+                    pickTurn: ban.pickTurn,
+                    championId:
+                        ban.championId === -1
+                            ? null
+                            : `http://ddragon.leagueoflegends.com/cdn/${this.version}/img/champion/${this.champions[ban.championId]}.png`,
+                })),
+                objectives: Object.entries(team.objectives).map(([type, value]) => ({ type, ...value })),
+            })),
+
+            participants: rawGame.info.participants.map(participant => ({
+                summonerName: participant.summonerName,
+                win: participant.win,
+                timePlayed: participant.timePlayed,
+                teamPosition: participant.teamPosition,
+                visionScore: participant.visionScore,
+                champ: {
+                    champLevel: participant.champLevel,
+                    championName: participant.championName,
+                    largestMultiKill: participant.largestMultiKill,
+                    damageDealt: participant.totalDamageDealtToChampions,
+                    damageTaken: participant.totalDamageTaken,
+                },
+                assists: participant.assists,
+                deaths: participant.deaths,
+                kills: participant.kills,
+                multiKill: {
+                    doubles: participant.doubleKills,
+                    triples: participant.tripleKills,
+                    quadras: participant.quadraKills,
+                    pentas: participant.pentaKills,
+                },
+                gold: participant.goldEarned,
+                cs: participant.neutralMinionsKilled + participant.totalMinionsKilled,
+                ward: rawGame.info.participants[idx].item6 || 2052,
+                items: [
+                    rawGame.info.participants[idx].item0,
+                    rawGame.info.participants[idx].item1,
+                    rawGame.info.participants[idx].item2,
+                    rawGame.info.participants[idx].item3,
+                    rawGame.info.participants[idx].item4,
+                    rawGame.info.participants[idx].item5,
+                ],
+                spells: [rawGame.info.participants[idx].summoner1Id, rawGame.info.participants[idx].summoner2Id],
+                perks: [
+                    perkUrl(rawGame.info.participants[idx].perks.styles[0].style),
+                    runeUrl(
+                        rawGame.info.participants[idx].perks.styles[0].selections[0].perk,
+                        rawGame.info.participants[idx].perks.styles[0].style,
+                    ),
+                ],
+            })),
+        }
+    }
+
+    /**
      * ## Get a list of game IDs
      * Gets the last game IDs played from a summoner
      *
@@ -322,5 +395,21 @@ export class RiotService {
         const result: GameDto[] = games.map(game => this.formatGame(game, puuid))
 
         return result
+    }
+
+    /**
+     * ## Get game detail
+     * Loads single game information
+     *
+     * @param puuid The puuid of the summoner
+     * @param server The server of the player
+     * @param matchIds The match ID
+     * @returns Single game info
+     */
+    async getGameDetail(puuid: string, server: string, matchId: string): Promise<GameDetailDto> {
+        const url = `https://${serverRegion(server)}.api.riotgames.com/lol/match/v5/matches/${matchId}`
+        const rawGame = await this.httpGet<RiotGameDto>(url)
+
+        return this.formatGameDetail(rawGame, puuid)
     }
 }
