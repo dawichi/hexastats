@@ -2,7 +2,7 @@
 <script lang="ts">
     import type { MasteryDto, RankDataDto, StatsDto } from '$lib/types'
     import { navigating } from '$app/stores'
-    import { Button, ChampStats, Container, MasteryRow, RankStructure, RecordCard, Spinner, StatsColumn } from '$lib/components'
+    import { Button, ChampStats, Container, MasteryRow, ModalGame, RankStructure, Records, Spinner, StatsColumn } from '$lib/components'
     import { RiotService } from '$lib/services/Riot.service'
     import { SummonerService } from '$lib/services/Summoner.service'
 
@@ -30,6 +30,8 @@
         loading = false
     }
 </script>
+
+<ModalGame />
 
 <Container title="" description="" disableHeader>
     <!-- HEADER BLOCK: RANK & MASTERIES -->
@@ -87,23 +89,7 @@
 
             <!-- TAB 3 -->
             {#if tabSelected === 'records'}
-                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-2">
-                    <RecordCard data={data.stats.records.kda} title="KDA" />
-                    <RecordCard data={data.stats.records.kills} title="Kills" />
-                    <RecordCard data={data.stats.records.deaths} title="Deaths" />
-                    <RecordCard data={data.stats.records.assists} title="Assists" />
-                    <RecordCard data={data.stats.records.gold} title="Gold" />
-                    <RecordCard data={data.stats.records.goldPerMin} title="Gold/min" />
-                    <RecordCard data={data.stats.records.cs} title="CS" />
-                    <RecordCard data={data.stats.records.csPerMin} title="CS/min" />
-                    <RecordCard data={data.stats.records.vision} title="Vision" />
-                    <RecordCard data={data.stats.records.visionPerMin} title="Vision/min" />
-                    <RecordCard data={data.stats.records.gameDuration} title="game duration" />
-                    <RecordCard data={data.stats.records.doubleKills} title="x2" />
-                    <RecordCard data={data.stats.records.tripleKills} title="x3" />
-                    <RecordCard data={data.stats.records.quadraKills} title="x4" />
-                    <RecordCard data={data.stats.records.pentaKills} title="x5" />
-                </div>
+                <Records player={data.player} stats={data.stats} />
             {/if}
         </section>
     </div>
