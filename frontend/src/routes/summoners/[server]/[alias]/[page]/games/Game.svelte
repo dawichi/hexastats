@@ -12,6 +12,8 @@
     import { formatDate } from '$lib/utils/formatDate'
     import GameExpanded from './GameExpanded.svelte'
     import GameCollapsed from './GameCollapsed.svelte'
+    import { modalGameContext } from '$lib/context/modalGame'
+    import { backendUrl } from '$lib/services/Summoner.service'
 
     export let game: GameDto
     export let server: string
@@ -36,6 +38,21 @@
         }
         return game.win ? `${styles.game.shadowWin}` : `${styles.game.shadowLose}`
     }
+    
+    // Prevent multiple modals
+    let loading = false
+    async function openModal(matchId: string) {
+        if (loading) return
+        loading = true
+        const response = await fetch(`${backendUrl}summoners/${server}/${game.participants[game.participantNumber].summonerName}/games/${matchId}`)
+        const data = await response.json()
+
+        modalGameContext.set({
+            isModalOpen: true,
+            game: data,
+        })
+        loading = false
+    }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -59,8 +76,9 @@
                     <img src={riotService.teamPositionIcon(game.teamPosition)} alt="champ" style="width: 42px; height: 42px;" />
                 </div>
                 <span class="absolute top-3 left-14 text-center text-xl">{game.champLevel}</span>
-                <span class="absolute bottom-1 left-2 sm:text-sm">{formatDate(game.gameCreation, game.gameDuration)}</span>
-                <span class="absolute bottom-5 left-2">{game.gameMode}</span>
+                <span class="absolute bottom-4 left-2 sm:text-sm">{formatDate(game.gameCreation, game.gameDuration)}</span>
+                <span class="absolute bottom-8 left-2">{game.gameMode}</span>
+                <span class="absolute bottom-0 left-2 text-xs">{game.matchId}</span>
                 <span class="absolute bottom-1 right-2">
                     {(game.gameDuration / 60).toFixed(0)}:{(game.gameDuration % 60).toFixed(0).padStart(2, '0')}
                 </span>
@@ -97,12 +115,12 @@
         {/if}
 
         <!-- Right button, which modifies the expanded property onclick -->
-        <!-- <button
-            on:click={() => (expanded = !expanded)}
+        <button
+            on:click={() => openModal(game.matchId)}
             class="absolute right-0 top-0 bottom-0 w-4 cursor-pointer rounded-tr-lg rounded-br-lg {rowStyle(game).btn}"
         >
             <i class="bi text-white {expanded ? 'bi-caret-up-fill' : 'bi-caret-down-fill'}" />
-        </button> -->
+        </button>
     </div>
 </div>
 

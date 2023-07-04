@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { RankDataDto, RecordValueDto, StatsDto } from '$lib/types'
+    import type { RankDataDto, StatsDto } from '$lib/types'
     import { styles } from '$lib/config'
     import { formatDate } from '$lib/utils'
     import { RiotService } from '$lib/services/Riot.service'
