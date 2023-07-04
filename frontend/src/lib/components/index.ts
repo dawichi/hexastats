@@ -18,6 +18,7 @@ export { default as Spinner } from './common/Spinner.svelte'
 export { default as ProfileImg } from './common/ProfileImg.svelte'
 export { default as RankStructure } from './common/RankStructure.svelte'
 export { default as MasteryRow } from './common/MasteryRow.svelte'
+export { default as ModalGame } from './common/ModalGame.svelte'
 export { default as Pagination } from './common/Pagination.svelte'
 export { default as ChampStats } from './common/ChampStats.svelte'
 
@@ -26,5 +27,5 @@ export { default as MockImage } from './mocks/MockImage.svelte'
 export { default as MockGame } from './mocks/MockGame.svelte'
 
 // Stats
-export { default as RecordCard } from './stats/RecordCard.svelte'
+export { default as Records } from './stats/Records.svelte'
 export { default as StatsColumn } from './stats/StatsColumn.svelte'
