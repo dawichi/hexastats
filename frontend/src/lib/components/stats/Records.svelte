@@ -4,6 +4,7 @@
     import { formatDate } from '$lib/utils'
     import { RiotService } from '$lib/services/Riot.service'
     import { modalGameContext } from '$lib/context/modalGame'
+    import { backendUrl } from '$lib/services/Summoner.service'
 
     export let player: RankDataDto
     export let stats: StatsDto
@@ -15,7 +16,7 @@
     async function openModal(matchId: string) {
         if (loading) return
         loading = true
-        const response = await fetch(`http://localhost:5000/summoners/${player.server}/${player.alias}/games/${matchId}`)
+        const response = await fetch(`${backendUrl}/summoners/${player.server}/${player.alias}/games/${matchId}`)
         const game = await response.json()
 
         modalGameContext.set({

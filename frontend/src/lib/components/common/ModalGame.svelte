@@ -4,6 +4,7 @@
   used to display a game inside a modal
 -->
 <script lang="ts">
+    import { styles } from '$lib/config'
     import { modalGameContext } from '$lib/context/modalGame'
     import type { GameDetailDto } from '$lib/types'
 
@@ -21,7 +22,10 @@
 
     // This memo the state to prevent multiple calls
     let isModalOpen = false
+    let game: GameDetailDto
     $: modalGameContext.subscribe(val => {
+        game = val.game
+
         // Skip re-render if the value is the same
         if (val.isModalOpen === isModalOpen) return
 
@@ -29,37 +33,24 @@
         isModalOpen = val.isModalOpen
         val.isModalOpen ? modal.open() : modal.close()
     })
-
-    let game: GameDetailDto
-    async function getGame() {
-        const response = await fetch(`http://localhost:5000/summoners/euw1/Dawichii/games/EUW1_6479724132`)
-        game = await response.json()
-    }
-    getGame()
 </script>
 
-{$modalGameContext.isModalOpen ? 'opened V' : 'closed X'}
-<button
-    on:click={() =>
-        modalGameContext.update(val => ({
-            ...val,
-            isModalOpen: true,
-        }))}
->
-    OPEN
-</button>
-
-<dialog data-modal-game>
+<dialog data-modal-game class="relative h-96 w-96 {styles.background} rounded p-2 text-white">
     {#if game}
         <div>
             {game.matchId}
         </div>
     {/if}
-    <button on:click={() =>
-        modalGameContext.update(val => ({
-            ...val,
-            isModalOpen: false,
-        }))}> CLOSE </button>
+    <button
+        class="absolute top-2 right-2"
+        on:click={() =>
+            modalGameContext.update(val => ({
+                ...val,
+                isModalOpen: false,
+            }))}
+    >
+        <i class="bi bi-x rounded border border-red-500 p-1 text-red-500 hover:bg-red-500 hover:text-white" />
+    </button>
 </dialog>
 
 <style>
