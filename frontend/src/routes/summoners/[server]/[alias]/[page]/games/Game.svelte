@@ -10,7 +10,6 @@
     import { RiotService } from '$lib/services/Riot.service'
     import { classNames } from '$lib/utils'
     import { formatDate } from '$lib/utils/formatDate'
-    import GameExpanded from './GameExpanded.svelte'
     import GameCollapsed from './GameCollapsed.svelte'
     import { modalGameContext } from '$lib/context/modalGame'
     import { backendUrl } from '$lib/services/Summoner.service'
@@ -107,12 +106,7 @@
 
 
 
-        <!-- Content of the game, can be expanded or collapsed (default) -->
-        {#if expanded}
-            <GameExpanded {game} {server} />
-        {:else}
-            <GameCollapsed {game} {server} />
-        {/if}
+        <GameCollapsed {game} {server} />
 
         <!-- Right button, which modifies the expanded property onclick -->
         <button
