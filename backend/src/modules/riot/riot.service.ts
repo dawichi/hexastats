@@ -329,22 +329,12 @@ export class RiotService {
                 },
                 gold: participant.goldEarned,
                 cs: participant.neutralMinionsKilled + participant.totalMinionsKilled,
-                ward: rawGame.info.participants[idx].item6 || 2052,
-                items: [
-                    rawGame.info.participants[idx].item0,
-                    rawGame.info.participants[idx].item1,
-                    rawGame.info.participants[idx].item2,
-                    rawGame.info.participants[idx].item3,
-                    rawGame.info.participants[idx].item4,
-                    rawGame.info.participants[idx].item5,
-                ],
-                spells: [rawGame.info.participants[idx].summoner1Id, rawGame.info.participants[idx].summoner2Id],
+                ward: participant.item6 || 2052,
+                items: [participant.item0, participant.item1, participant.item2, participant.item3, participant.item4, participant.item5],
+                spells: [participant.summoner1Id, participant.summoner2Id],
                 perks: [
-                    perkUrl(rawGame.info.participants[idx].perks.styles[0].style),
-                    runeUrl(
-                        rawGame.info.participants[idx].perks.styles[0].selections[0].perk,
-                        rawGame.info.participants[idx].perks.styles[0].style,
-                    ),
+                    perkUrl(participant.perks.styles[0].style),
+                    runeUrl(participant.perks.styles[0].selections[0].perk, participant.perks.styles[0].style),
                 ],
             })),
         }
