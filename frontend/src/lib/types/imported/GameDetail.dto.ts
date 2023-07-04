@@ -5,7 +5,7 @@ interface Objective {
 }
 
 interface Ban {
-    championId: string
+    championId: string | null
     pickTurn: number
 }
 
@@ -33,6 +33,8 @@ interface MultiKill {
 
 interface Participant {
     summonerName: string
+    teamPosition: string
+    win: boolean
     visionScore: number
     champ: ChampData
     kills: number
@@ -41,9 +43,9 @@ interface Participant {
     multiKill: MultiKill
     gold: number
     cs: number
-    ward: string
-    items: Array<string>
-    spells: Array<string>
+    ward: number
+    items: Array<number>
+    spells: Array<number>
     perks: Array<string>
 }
 

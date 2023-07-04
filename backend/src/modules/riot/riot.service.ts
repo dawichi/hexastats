@@ -307,9 +307,8 @@ export class RiotService {
 
             participants: rawGame.info.participants.map(participant => ({
                 summonerName: participant.summonerName,
+                teamPosition: rawGame.info.participants[idx].teamPosition,
                 win: participant.win,
-                timePlayed: participant.timePlayed,
-                teamPosition: participant.teamPosition,
                 visionScore: participant.visionScore,
                 champ: {
                     champLevel: participant.champLevel,
@@ -318,9 +317,9 @@ export class RiotService {
                     damageDealt: participant.totalDamageDealtToChampions,
                     damageTaken: participant.totalDamageTaken,
                 },
-                assists: participant.assists,
-                deaths: participant.deaths,
                 kills: participant.kills,
+                deaths: participant.deaths,
+                assists: participant.assists,
                 multiKill: {
                     doubles: participant.doubleKills,
                     triples: participant.tripleKills,

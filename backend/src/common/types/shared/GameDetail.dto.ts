@@ -25,7 +25,7 @@ class Ban {
         description: 'Champion banned',
         example: 'http://ddragon.leagueoflegends.com/cdn/13.13.1/img/champion/Varus.png',
     })
-    championId: string
+    championId: string | null
 
     @ApiProperty({
         description: 'Ban turn',
@@ -124,6 +124,18 @@ class Participant {
         example: 'Dawichii',
     })
     summonerName: string
+
+    @ApiProperty({
+        description: 'Team position',
+        example: 'TOP',
+    })
+    teamPosition: string
+
+    @ApiProperty({
+        description: 'Won the game?',
+        example: true,
+    })
+    win: boolean
 
     @ApiProperty({
         description: 'Vision score in the game',
