@@ -1,8 +1,9 @@
 import { Controller, Delete, Get, Logger, Param } from '@nestjs/common'
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { ParamServer, ParamSummonerName } from '../../common/decorators'
-import { PrintDatabaseDto, StatsDto } from '../../common/types'
+import { StatsDto } from '../../common/types'
 import { DatabaseService } from './database.service'
+import { PrintKeysDto } from './types/responses.dto'
 
 @ApiTags('database')
 @Controller('database')
@@ -23,9 +24,9 @@ export class DatabaseController {
     })
     @ApiResponse({
         status: 200,
-        type: PrintDatabaseDto,
+        type: PrintKeysDto,
     })
-    async printAll(): Promise<PrintDatabaseDto> {
+    async printAll(): Promise<PrintKeysDto> {
         return this.databaseService.keys()
     }
 

@@ -11,8 +11,3 @@ export { ChampStats as ChampStatsDto } from './shared/Stats.dto'
 export { PositionStats as PositionStatsDto } from './shared/Stats.dto'
 export { Stats as StatsDto } from './shared/Stats.dto'
 export { Records as RecordsDto } from './shared/Stats.dto'
-
-// redis/
-// export { RedisRecordGames as RedisRecordGamesDto } from './redis/RedisRecord.dto'
-// export { RedisRecordMasteries as RedisRecordMasteriesDto } from './redis/RedisRecord.dto'
-export { PrintDatabase as PrintDatabaseDto } from './redis/responses.dto'

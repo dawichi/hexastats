@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Redis } from '@upstash/redis'
-import { PrintDatabaseDto, StatsDto } from '../../common/types'
+import { StatsDto } from '../../common/types'
+import { PrintKeysDto } from './types/responses.dto'
 
 @Injectable()
 export class DatabaseService {
@@ -10,7 +11,7 @@ export class DatabaseService {
     /**
      * /database/print
      */
-    async keys(): Promise<PrintDatabaseDto> {
+    async keys(): Promise<PrintKeysDto> {
         const keys = await this.REDIS.keys('*')
 
         this.LOGGER.log(`REDIS: Found ${keys.length} keys!`)
