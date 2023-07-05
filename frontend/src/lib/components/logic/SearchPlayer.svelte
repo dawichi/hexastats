@@ -104,7 +104,7 @@
         </button>
 
         <div class="col-span-2">
-            <CachedPlayers summonerName={username} />
+            <CachedPlayers textInput={username} />
         </div>
     </div>
 

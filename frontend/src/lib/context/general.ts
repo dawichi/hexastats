@@ -1,14 +1,14 @@
 import { writable, type Writable } from 'svelte/store'
-import type { PlayerDto } from '$lib/types'
+import type { GameDetailDto, PlayerDto } from '$lib/types'
 
-export interface GeneralContextDto {
-    darkMode: boolean
-    cachedPlayers: Array<PlayerDto>
-    loadingPlayer: boolean
-}
+// Handle if the dark mode is enabled or not
+export const darkModeContext: Writable<boolean> = writable(false)
 
-export const generalContext: Writable<GeneralContextDto> = writable({
-    darkMode: false,
-    cachedPlayers: [],
-    loadingPlayer: false,
+// Caches the players for the search in SearchPlayer.svelte
+export const cachedPlayersContext = writable<Array<PlayerDto>>([])
+
+// Caches the modal used to display the game details 
+export const modalGameContext = writable({
+    isModalOpen: false,
+    game: {} as GameDetailDto,
 })

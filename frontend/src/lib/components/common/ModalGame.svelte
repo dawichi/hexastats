@@ -5,7 +5,7 @@
 -->
 <script lang="ts">
     import { styles } from '$lib/config'
-    import { modalGameContext } from '$lib/context/modalGame'
+    import { modalGameContext } from '$lib/context/general'
     import { RiotService } from '$lib/services/Riot.service'
     import type { GameDetailDto } from '$lib/types'
     import { formatDate, kda, parse_k_num, tooltip } from '$lib/utils'

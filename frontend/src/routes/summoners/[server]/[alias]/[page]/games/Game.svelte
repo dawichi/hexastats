@@ -11,7 +11,7 @@
     import { classNames } from '$lib/utils'
     import { formatDate } from '$lib/utils/formatDate'
     import GameCollapsed from './GameCollapsed.svelte'
-    import { modalGameContext } from '$lib/context/modalGame'
+    import { modalGameContext } from '$lib/context/general'
     import { backendUrl } from '$lib/services/Summoner.service'
 
     export let game: GameDto

@@ -3,7 +3,7 @@
     import { styles } from '$lib/config'
     import { formatDate } from '$lib/utils'
     import { RiotService } from '$lib/services/Riot.service'
-    import { modalGameContext } from '$lib/context/modalGame'
+    import { modalGameContext } from '$lib/context/general'
     import { backendUrl } from '$lib/services/Summoner.service'
 
     export let player: RankDataDto
