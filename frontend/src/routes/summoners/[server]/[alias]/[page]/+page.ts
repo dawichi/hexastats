@@ -1,3 +1,4 @@
+import { validateServer } from '$lib/config';
 import { SummonerService } from '$lib/services/Summoner.service'
 import { error } from '@sveltejs/kit'
 
@@ -15,7 +16,7 @@ export async function load({ params }: { params: { server: string; alias: string
         })
 
         return {
-            server: params.server,
+            server: validateServer(params.server),
             games,
         }
     } catch (e: unknown) {
