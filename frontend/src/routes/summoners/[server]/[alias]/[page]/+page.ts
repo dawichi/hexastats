@@ -7,18 +7,16 @@ export async function load({ params }: { params: { server: string; alias: string
         const summonerService = SummonerService.getInstance()
         const games_per_page = 10
 
-        const player = await summonerService.getData({
+        const games = await summonerService.getGames({
             server: params.server,
             summonerName: params.alias,
             limit: games_per_page,
             offset: params.page * games_per_page - games_per_page,
         })
 
-        const stats = await summonerService.getStats(params.server, params.alias)
-
         return {
-            player,
-            stats,
+            server: params.server,
+            games,
         }
     } catch (e: unknown) {
         const err = e as Error

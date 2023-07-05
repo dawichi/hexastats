@@ -41,7 +41,7 @@ export class SummonerService {
     /**
      * ## Requests summoner data from the backend API
      */
-    async getData({
+    async getGames({
         server,
         summonerName,
         limit,
@@ -53,26 +53,9 @@ export class SummonerService {
         offset: number
     }): Promise<SummonerDto> {
         const okServer = validateServer(server)
-
-        const [playerData, playerMasteries, playerGames] = await Promise.all([
-            this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}`),
-            this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/masteries`),
-            this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/games?offset=${offset}&limit=${limit}&queueType=all`),
-        ])
-
-        this.handleError(playerData)
-        this.handleError(playerMasteries)
+        const playerGames = await this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/games?offset=${offset}&limit=${limit}&queueType=all`)
         this.handleError(playerGames)
-
-        const summonerData: RankDataDto = await playerData.json()
-        const masteries: MasteryDto[] = await playerMasteries.json()
-        const games: GameDto[] = await playerGames.json()
-
-        return {
-            ...summonerData,
-            masteries,
-            games,
-        }
+        return playerGames.json()
     }
 
     
