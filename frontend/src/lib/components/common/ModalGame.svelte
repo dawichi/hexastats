@@ -9,9 +9,6 @@
     import { RiotService } from '$lib/services/Riot.service'
     import type { GameDetailDto } from '$lib/types'
     import { formatDate, kda, parse_k_num, tooltip } from '$lib/utils'
-    import { onMount } from 'svelte'
-    import { each } from 'svelte/internal'
-    import Game from '../../../routes/summoners/[server]/[alias]/[page]/games/Game.svelte'
 
     const riotService = RiotService.getInstance()
 
@@ -41,14 +38,14 @@
         val.isModalOpen ? modal.open() : modal.close()
     })
 
-    const bgColor = (idx: number): string => game.teams[idx < 5 ? 0 : 1].win ? 'bg-green-500/20' : 'bg-red-500/20'
+    //const bgColor = (idx: number): string => game.teams[idx < 5 ? 0 : 1].win ? 'bg-green-500/20' : 'bg-red-500/20'
 
     // const MAX_DMG_DEALT = Math.max(...game.participants.map(participant => participant.champ.damageDealt))
     // const MAX_DMG_TAKEN = Math.max(...game.participants.map(participant => participant.champ.damageTaken))
 </script>
 
 <dialog data-modal-game class="relative rounded bg-zinc-900 p-2 text-white shadow-lg shadow-zinc-700">
-    <div class="bg-zinc-900 relative p-1 flex justify-between">
+    <div class="relative flex justify-between bg-zinc-900 p-1">
         <div>
             {#if game.matchId}
                 <h2 class="text-lg font-bold">{game.participants[game.participantNumber].summonerName}</h2>
@@ -56,7 +53,7 @@
             {/if}
         </div>
         <button
-            class="h-6 w-6 border border-zinc-500 bg-zinc-700 hover:bg-red-500 text-white hover:border-red-500"
+            class="h-6 w-6 border border-zinc-500 bg-zinc-700 text-white hover:border-red-500 hover:bg-red-500"
             on:click={() =>
                 modalGameContext.update(val => ({
                     ...val,
@@ -95,7 +92,15 @@
             <!-- RIGHT COL - LIST PARTICIPANTS -->
             <section class="flex flex-col gap-2">
                 {#each game.participants as participant, idx}
-                    <div class="flex items-center gap-x-1 bg-zinc-800 p-1 {participant.win ? 'bg-green-500/20' : 'bg-red-500/20'}">
+                    <div
+                        class="flex items-center gap-x-1 p-1 {participant.isEarlySurrender
+                            ? participant.win
+                                ? 'bg-zinc-500/40'
+                                : 'bg-zinc-500/20'
+                            : participant.win
+                            ? 'bg-green-500/20'
+                            : 'bg-red-500/20'}"
+                    >
                         <div class="relative">
                             <img class="h-12 w-12" src={riotService.champImage(participant.champ.championName)} alt="champ" />
                             <span class="absolute -bottom-1 -left-1 rounded-tr bg-zinc-800 px-[2px] text-sm">{participant.champ.champLevel}</span>
@@ -107,8 +112,9 @@
                                 <img class="{styles.iconSize.medium} rounded" {src} alt="spell 2" />
                             {/each}
                         </div>
-
-                        <p class="w-32">{participant.summonerName}</p>
+                        <p class="w-32 {game.gameMode === 'CLASSIC' ? (participant.teamPosition === '' ? 'text-red-600' : 'text-white') : 'text-white'}">
+                            {participant.summonerName}
+                        </p>
 
                         <!-- KDA -->
                         <div class="w-28 text-center">
@@ -132,7 +138,9 @@
                                     <div
                                         title="Damage dealt: {participant.champ.damageDealt}"
                                         class="h-2 rounded-sm bg-red-400"
-                                        style="width: {(participant.champ.damageDealt / Math.max(...game.participants.map(participant => participant.champ.damageDealt))) * 100}%"
+                                        style="width: {(participant.champ.damageDealt /
+                                            Math.max(...game.participants.map(participant => participant.champ.damageDealt))) *
+                                            100}%"
                                         use:tooltip
                                     />
                                 </div>
@@ -144,7 +152,9 @@
                                     <div
                                         title="Damage taken: {participant.champ.damageTaken}"
                                         class="h-2 rounded-sm bg-blue-400"
-                                        style="width: {(participant.champ.damageTaken / Math.max(...game.participants.map(participant => participant.champ.damageTaken))) * 100}%"
+                                        style="width: {(participant.champ.damageTaken /
+                                            Math.max(...game.participants.map(participant => participant.champ.damageTaken))) *
+                                            100}%"
                                         use:tooltip
                                     />
                                 </div>

@@ -132,6 +132,12 @@ class Participant {
     teamPosition: string
 
     @ApiProperty({
+        description: 'Check if the game ended in early surrender',
+        example: 'false',
+    })
+    isEarlySurrender: boolean
+
+    @ApiProperty({
         description: 'Won the game?',
         example: true,
     })

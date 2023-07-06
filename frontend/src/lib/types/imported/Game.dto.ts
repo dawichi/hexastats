@@ -11,6 +11,7 @@ export interface Game {
     gameMode: string
     participantNumber: number
     teamPosition: string
+    isEarlySurrender: boolean
     visionScore: number
     champLevel: number
     championName: string

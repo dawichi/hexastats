@@ -238,6 +238,7 @@ export class RiotService {
             gameDuration: rawGame.info.gameDuration,
             gameMode: validateGameType(rawGame.info.queueId),
             teamPosition: rawGame.info.participants[idx].teamPosition,
+            isEarlySurrender: rawGame.info.participants[idx].gameEndedInEarlySurrender,
             visionScore: rawGame.info.participants[idx].visionScore,
             champLevel: rawGame.info.participants[idx].champLevel,
             championName: rawGame.info.participants[idx].championName,
@@ -307,7 +308,8 @@ export class RiotService {
 
             participants: rawGame.info.participants.map(participant => ({
                 summonerName: participant.summonerName,
-                teamPosition: rawGame.info.participants[idx].teamPosition,
+                teamPosition: participant.teamPosition,
+                isEarlySurrender: participant.gameEndedInEarlySurrender,
                 win: participant.win,
                 visionScore: participant.visionScore,
                 champ: {

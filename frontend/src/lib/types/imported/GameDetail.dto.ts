@@ -34,6 +34,7 @@ interface MultiKill {
 interface Participant {
     summonerName: string
     teamPosition: string
+    isEarlySurrender: boolean
     win: boolean
     visionScore: number
     champ: ChampData
