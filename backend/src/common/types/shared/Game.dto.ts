@@ -59,6 +59,12 @@ export class Game {
     teamPosition: string
 
     @ApiProperty({
+        description: 'Check if is a early surrender game',
+        example: 'false',
+    })
+    isEarlySurrender: boolean
+
+    @ApiProperty({
         description: 'Vision score in the game',
         example: 12,
     })

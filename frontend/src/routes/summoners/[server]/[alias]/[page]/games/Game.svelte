@@ -22,7 +22,7 @@
     let expanded = false
 
     function rowStyle(game: GameDto): { row: string; btn: string } {
-        if (game.gameDuration < 300) {
+        if (game.isEarlySurrender) {
             return {
                 row: 'border-zinc-500 bg-zinc-500/20',
                 btn: 'bg-zinc-500',
@@ -32,7 +32,7 @@
     }
 
     function cardShadow(game: GameDto): string {
-        if (game.gameDuration < 300) {
+        if (game.isEarlySurrender) {
             return `${styles.game.shadowDraw}`
         }
         return game.win ? `${styles.game.shadowWin}` : `${styles.game.shadowLose}`
