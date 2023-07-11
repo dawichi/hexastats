@@ -1,5 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Redis } from '@upstash/redis'
+import { ConfigService } from '@nestjs/config'
+
 import { StatsDto } from '../../common/types'
 import { PrintKeysDto } from './types/responses.dto'
 
@@ -7,11 +9,21 @@ import { PrintKeysDto } from './types/responses.dto'
 export class DatabaseService {
     private readonly LOGGER: Logger = new Logger(this.constructor.name)
     private readonly REDIS: Redis = Redis.fromEnv()
+    private readonly REDIS_DISABLED: boolean = false
+
+    constructor(private readonly configService: ConfigService) {
+        this.REDIS_DISABLED = configService.get<string>('UPSTASH_REDIS_REST_DISABLE') === 'true'
+    }
 
     /**
      * /database/print
      */
     async keys(): Promise<PrintKeysDto> {
+        if (this.REDIS_DISABLED) {
+            this.LOGGER.warn('REDIS: Redis is disabled, no keys returned')
+            return { total: 0, keys: [] }
+        }
+
         const keys = await this.REDIS.keys('*')
 
         this.LOGGER.log(`REDIS: Found ${keys.length} keys!`)
