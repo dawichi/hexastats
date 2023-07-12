@@ -20,7 +20,7 @@ export class DatabaseService {
      */
     async keys(): Promise<PrintKeysDto> {
         if (this.REDIS_DISABLED) {
-            this.LOGGER.warn('REDIS: Redis is disabled, no keys returned')
+            this.LOGGER.warn('REDIS: Redis is disabled')
             return { total: 0, keys: [] }
         }
 
@@ -34,11 +34,16 @@ export class DatabaseService {
      * /database/print/:server/:summonerName/stats
      */
     async getStats(server: string, summonerName: string): Promise<StatsDto | null> {
+        if (this.REDIS_DISABLED) {
+            this.LOGGER.warn('REDIS: Redis is disabled')
+            return null
+        }
+
         const key = `${server}:${summonerName}:stats`
         const data: StatsDto = await this.REDIS.get(key)
 
         if (!data) {
-            this.LOGGER.warn(`Stats not found! Key: ${key}`)
+            this.LOGGER.warn(`REDIS: Stats not found! Key: ${key}`)
             return null
         }
 
@@ -50,6 +55,11 @@ export class DatabaseService {
      * /database/reset
      */
     async deleteAll(): Promise<boolean> {
+        if (this.REDIS_DISABLED) {
+            this.LOGGER.warn('REDIS: Redis is disabled')
+            return false
+        }
+
         const keys = await this.REDIS.keys('*')
 
         this.LOGGER.log(`REDIS: Deleting all ${keys.length} keys...`)
@@ -61,6 +71,11 @@ export class DatabaseService {
      * /database/delete/:key
      */
     async deleteOne(key: string): Promise<boolean> {
+        if (this.REDIS_DISABLED) {
+            this.LOGGER.warn('REDIS: Redis is disabled')
+            return false
+        }
+
         this.LOGGER.log(`REDIS: Deleting single key ${key}...`)
         await this.REDIS.del(key)
         return true
@@ -72,7 +87,12 @@ export class DatabaseService {
      * @param key Key to be stored
      * @param summonerData Data to be stored in the key
      */
-    async set(key: string, stats: StatsDto) {
+    async set(key: string, stats: StatsDto): Promise<void> {
+        if (this.REDIS_DISABLED) {
+            this.LOGGER.warn('REDIS: Redis is disabled')
+            return
+        }
+
         this.LOGGER.log(`REDIS: saving ${key} data -> ${stats.gamesUsed.length} games`)
 
         // to avoid having too many games in cache (limit aprox 800)
