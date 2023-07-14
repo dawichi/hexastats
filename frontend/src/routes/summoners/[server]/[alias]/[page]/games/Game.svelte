@@ -8,7 +8,7 @@
 
     import { styles } from '$lib/config'
     import { RiotService } from '$lib/services/Riot.service'
-    import { classNames } from '$lib/utils'
+    import { classNames, secondsToMin } from '$lib/utils'
     import { formatDate } from '$lib/utils/formatDate'
     import GameCollapsed from './GameCollapsed.svelte'
     import { modalGameContext } from '$lib/context/general'
@@ -79,7 +79,7 @@
                 <span class="absolute bottom-8 left-2">{game.gameMode}</span>
                 <span class="absolute bottom-0 left-2 text-xs">{game.matchId}</span>
                 <span class="absolute bottom-1 right-2">
-                    {(game.gameDuration / 60).toFixed(0)}:{(game.gameDuration % 60).toFixed(0).padStart(2, '0')}
+                    {secondsToMin(game.gameDuration)}
                 </span>
             </div>
 
