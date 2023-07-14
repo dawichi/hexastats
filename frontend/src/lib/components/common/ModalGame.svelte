@@ -8,7 +8,7 @@
     import { modalGameContext } from '$lib/context/general'
     import { RiotService } from '$lib/services/Riot.service'
     import type { GameDetailDto } from '$lib/types'
-    import { formatDate, kda, parse_k_num, tooltip } from '$lib/utils'
+    import { formatDate, kda, parse_k_num, secondsToMin, tooltip } from '$lib/utils'
 
     const riotService = RiotService.getInstance()
 
@@ -85,7 +85,7 @@
                 <span class="absolute bottom-1 left-2 sm:text-sm">{formatDate(game.gameCreation, game.gameDuration)}</span>
                 <span class="absolute bottom-5 left-2 text-lg">{game.gameMode}</span>
                 <span class="absolute bottom-1 right-2">
-                    {(game.gameDuration / 60).toFixed(0)}:{(game.gameDuration % 60).toFixed(0).padStart(2, '0')}
+                    {secondsToMin(game.gameDuration)}
                 </span>
             </div>
 
