@@ -183,7 +183,12 @@ export class MathService {
             pentaKills: BaseRecordValue,
         }
 
-        const check = (left: number, right: number) => (revertRecords ? left < right : left > right)
+        const check = (left: number, right: number) => (revertRecords ? left <= right : left > right)
+
+        if (revertRecords) {
+            //Filter remakes from lowest records
+            games = games.filter(game => !game.isEarlySurrender)
+        }
 
         for (const game of games) {
             const perMin = (x: number) => Number(((x * 60) / game.gameDuration).toFixed(1))
@@ -201,7 +206,7 @@ export class MathService {
             for (const key of Object.keys(out) as Array<keyof RecordsDto>) {
                 // NOTE: Some RecordsDto's keys are not === like GameDto's keys
                 // To avoid problems, we need to check if the key is a valid key for game too
-                if (check(Object.keys(game).includes(key) && Number(game[key as keyof GameDto]), out[key].value)) {
+                if (Object.keys(game).includes(key) && check(Number(game[key as keyof GameDto]), out[key].value)) {
                     out[key] = mockValue(Number(game[key as keyof GameDto]))
                 }
             }
@@ -218,7 +223,6 @@ export class MathService {
             out.gameDuration = check(game.gameDuration, out.gameDuration.value) ? mockValue(game.gameDuration) : out.gameDuration
             out.vision = check(game.visionScore, out.vision.value) ? mockValue(game.visionScore) : out.vision
         }
-
         return out
     }
 
@@ -279,6 +283,8 @@ export class MathService {
         // RECORDS
         for (const key of Object.keys(statsA.records) as Array<keyof RecordsDto>) {
             statsA.records[key] = statsA.records[key].value >= statsB.records[key].value ? statsA.records[key] : statsB.records[key]
+            statsA.lowRecords[key] =
+                statsA.lowRecords[key].value <= statsB.lowRecords[key].value ? statsA.lowRecords[key] : statsB.lowRecords[key]
         }
 
         return statsA
