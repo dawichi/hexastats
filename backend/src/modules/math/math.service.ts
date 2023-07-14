@@ -152,10 +152,19 @@ export class MathService {
      * From the games data, it allows to build the stats.
      *
      * @param games The games to build the stats from
+     * @param revertRecords The games Record (highest or lowest)
      * @returns The record stats
      */
-    getRecords(games: GameDto[]): RecordsDto {
-        const BaseRecordValue = { value: 0, matchId: '', championName: '', gameMode: '', gameCreation: 0, gameDuration: 0 }
+    getRecords(games: GameDto[], revertRecords = false): RecordsDto {
+        const BaseRecordValue = {
+            value: revertRecords ? Infinity : 0,
+            matchId: '',
+            championName: '',
+            gameMode: '',
+            gameCreation: 0,
+            gameDuration: 0,
+        }
+
         const out: RecordsDto = {
             kda: BaseRecordValue,
             kills: BaseRecordValue,
@@ -174,6 +183,8 @@ export class MathService {
             pentaKills: BaseRecordValue,
         }
 
+        const check = (left: number, right: number) => (revertRecords ? left < right : left > right)
+
         for (const game of games) {
             const perMin = (x: number) => Number(((x * 60) / game.gameDuration).toFixed(1))
             // Helper function to create the value object
@@ -190,7 +201,7 @@ export class MathService {
             for (const key of Object.keys(out) as Array<keyof RecordsDto>) {
                 // NOTE: Some RecordsDto's keys are not === like GameDto's keys
                 // To avoid problems, we need to check if the key is a valid key for game too
-                if (Object.keys(game).includes(key) && Number(game[key as keyof GameDto]) > out[key].value) {
+                if (check(Object.keys(game).includes(key) && Number(game[key as keyof GameDto]), out[key].value)) {
                     out[key] = mockValue(Number(game[key as keyof GameDto]))
                 }
             }
@@ -198,12 +209,14 @@ export class MathService {
             // Now the exception props that need to be handled manually
             const game_kda = kda(game.kills, game.deaths, game.assists)
 
-            out.kda = game_kda > out.kda.value ? mockValue(game_kda) : out.kda
-            out.goldPerMin = perMin(game.gold) > out.goldPerMin.value ? mockValue(perMin(game.gold)) : out.goldPerMin
-            out.csPerMin = perMin(game.cs) > out.csPerMin.value ? mockValue(perMin(game.cs)) : out.csPerMin
-            out.visionPerMin = perMin(game.visionScore) > out.visionPerMin.value ? mockValue(perMin(game.visionScore)) : out.visionPerMin
-            out.gameDuration = game.gameDuration > out.gameDuration.value ? mockValue(game.gameDuration) : out.gameDuration
-            out.vision = game.visionScore > out.vision.value ? mockValue(game.visionScore) : out.vision
+            out.kda = check(game_kda, out.kda.value) ? mockValue(game_kda) : out.kda
+            out.goldPerMin = check(perMin(game.gold), out.goldPerMin.value) ? mockValue(perMin(game.gold)) : out.goldPerMin
+            out.csPerMin = check(perMin(game.cs), out.csPerMin.value) ? mockValue(perMin(game.cs)) : out.csPerMin
+            out.visionPerMin = check(perMin(game.visionScore), out.visionPerMin.value)
+                ? mockValue(perMin(game.visionScore))
+                : out.visionPerMin
+            out.gameDuration = check(game.gameDuration, out.gameDuration.value) ? mockValue(game.gameDuration) : out.gameDuration
+            out.vision = check(game.visionScore, out.vision.value) ? mockValue(game.visionScore) : out.vision
         }
 
         return out

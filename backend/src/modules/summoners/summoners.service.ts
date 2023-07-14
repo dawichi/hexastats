@@ -104,6 +104,7 @@ export class SummonersService {
             statsByChamp: this.mathService.getStatsByChamp(games),
             statsByPosition: this.mathService.getStatsByPosition(games),
             records: this.mathService.getRecords(games),
+            lowRecords: this.mathService.getRecords(games, true),
         }
 
         await this.databaseService.set(`${server}:${summonerName}:stats`, output)
@@ -125,6 +126,7 @@ export class SummonersService {
             statsByChamp: this.mathService.getStatsByChamp(games),
             statsByPosition: this.mathService.getStatsByPosition(games),
             records: this.mathService.getRecords(games),
+            lowRecords: this.mathService.getRecords(games, true),
         }
 
         const mergedStats: StatsDto = this.mathService.mergeStats(currentStats, newStats)

@@ -104,14 +104,14 @@ export class PositionStats {
 
 export class RecordValue {
     @ApiProperty({
-        description: 'Max value of the stat',
+        description: 'Max or min value of the stat',
         example: 4,
     })
     value: number
 
     @ApiProperty({
         description: 'Match ID of the record',
-        example: 4,
+        example: 'EUW1_6491757432',
     })
     matchId: string
 
@@ -188,4 +188,10 @@ export class Stats {
         type: Records,
     })
     records: Records
+
+    @ApiProperty({
+        description: 'Lowest record Data',
+        type: Records,
+    })
+    lowRecords: Records
 }

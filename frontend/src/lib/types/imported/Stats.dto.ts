@@ -56,5 +56,6 @@ export interface Stats {
     statsByChamp: ChampStats[]
     statsByPosition: PositionStats[]
     records: Records
+    lowRecords: Records
 }
 
