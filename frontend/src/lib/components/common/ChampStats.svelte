@@ -1,9 +1,10 @@
 <script lang="ts">
-    import { styles } from "$lib/config"
-    import { RiotService } from "$lib/services/Riot.service"
-    import { SummonerService } from "$lib/services/Summoner.service"
-    import type { StatsDto } from "$lib/types"
-    import { parse_k_num, winrate } from "$lib/utils"
+    import { styles } from '$lib/config'
+    import { RiotService } from '$lib/services/Riot.service'
+    import { SummonerService } from '$lib/services/Summoner.service'
+    import type { ChampStatsDto, StatsDto } from '$lib/types'
+    import { parse_k_num, winrate } from '$lib/utils'
+    import Button from './Button.svelte'
 
     export let stats: StatsDto
 
@@ -35,6 +36,26 @@
         }
         return tints[type]?.(num) ?? ''
     }
+
+    const orderByProp: {
+        prop: keyof ChampStatsDto
+        asc: boolean
+    } = {
+        prop: 'games',
+        asc: false,
+    }
+
+    const sortRows = (by: string): void => {
+        if (by === orderByProp.prop) {
+            orderByProp.asc = !orderByProp.asc
+        } else {
+            orderByProp.prop = by as keyof ChampStatsDto
+            orderByProp.asc = false
+        }
+    }
+
+    const ascDesc = (asc: boolean, a: number, b: number) => asc ? a - b : b - a
+    $: stats.statsByChamp = stats.statsByChamp.sort((a, b) => ascDesc(orderByProp.asc, Number(a[orderByProp.prop]), Number(b[orderByProp.prop])))
 </script>
 
 <div class="{styles.foreground} {styles.card} col-span-2 px-2 pb-2">
@@ -44,26 +65,31 @@
         <tr>
             {#each Object.keys(stats.statsByChamp[0]) as prop_key}
                 <td class="p-2">
-                    {replaceTitles[prop_key] ?? prop_key.charAt(0).toUpperCase() + prop_key.slice(1)}
+                    {#if prop_key !== 'championName'}
+                        <button class={prop_key === orderByProp.prop ? 'border-b-2 border-indigo-600' : ''} on:click={() => sortRows(prop_key)}>
+                            {replaceTitles[prop_key] ?? prop_key.charAt(0).toUpperCase() + prop_key.slice(1)}
+                            <i class="bi bi-arrow-{prop_key === orderByProp.prop && orderByProp.asc ? 'up' : 'down'}-short" />
+                        </button>
+                    {/if}
                 </td>
             {/each}
         </tr>
-        {#each Object.entries(stats.statsByChamp.sort((a, b) => b.games - a.games)) as [idx, _]}
+        {#each Object.entries(stats.statsByChamp) as [idx, _]}
             <tr>
                 {#each Object.entries(stats.statsByChamp[parseInt(idx)]) as [key, value]}
                     <td class="px-2 py-1">
                         {#if key === 'championName'}
                             <img class="w-12 rounded" src={riotService.champImage(value)} alt="champion" />
                         {:else if key === 'wins'}
-                        <span class='{tint(winrate(value, stats.statsByChamp[parseInt(idx)].games - value), 'winrate')}'>
-                            {winrate(value, stats.statsByChamp[parseInt(idx)].games - value)}%
-                        </span>
+                            <span class={tint(winrate(value, stats.statsByChamp[parseInt(idx)].games - value), 'winrate')}>
+                                {winrate(value, stats.statsByChamp[parseInt(idx)].games - value)}%
+                            </span>
                         {:else if key === 'killParticipation'}
-                            {Math.round(value*100)} %
-                            {:else if ['damageDealt', 'damageTaken'].includes(key)}
-                                {parse_k_num(value)}
+                            {Math.round(value * 100)} %
+                        {:else if ['damageDealt', 'damageTaken'].includes(key)}
+                            {parse_k_num(value)}
                         {:else}
-                            <span class='{tint(value, key)}'>
+                            <span class={tint(value, key)}>
                                 {value}
                             </span>
                         {/if}
