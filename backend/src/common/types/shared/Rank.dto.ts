@@ -54,4 +54,9 @@ export class RankStructure {
         description: 'Classification in flex queue',
     })
     flex: Rank
+
+    @ApiProperty({
+        description: 'Classification in Arena/Cherry queue',
+    })
+    arena: Rank
 }

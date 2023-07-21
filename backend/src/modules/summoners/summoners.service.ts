@@ -22,7 +22,7 @@ export class SummonersService {
      */
     async getSummoner(server: string, summonerName: string): Promise<RankDataDto> {
         const data = await this.riotService.getBasicInfo(server, summonerName)
-        const { solo, flex } = await this.riotService.getRankData(data.id, server)
+        const { solo, flex, arena } = await this.riotService.getRankData(data.id, server)
 
         return {
             alias: data.name,
@@ -32,6 +32,7 @@ export class SummonersService {
             rank: {
                 solo,
                 flex,
+                arena,
             },
         }
     }

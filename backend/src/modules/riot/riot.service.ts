@@ -141,10 +141,15 @@ export class RiotService {
     ): Promise<{
         solo: RankDto
         flex: RankDto
+        arena: RankDto
     }> {
         this.LOGGER.log('Getting classification data in ranked queues')
+
+        // This can be: [], [solo], [flex], [arena], [solo, flex], ...
         const rank_data = await this.httpGet<RiotRankDto[]>(this.URLS.rank(server, summoner_id))
-        const league_default = {
+
+        // Default object in case of unranked in any queue
+        const league_default: RankDto = {
             rank: 'Unranked',
             image: 'unranked.png',
             lp: 0,
@@ -154,39 +159,40 @@ export class RiotService {
             promos: 'NNN',
         }
 
-        // Is unranked in both queues
-        if (!rank_data.length) {
+        const formatRankData = (data: RiotRankDto): RankDto => {
+            const rank = data.queueType === 'CHERRY' ? 'Unranked' : data.tier ? `${data.tier} ${data.rank}` : 'Unranked'
+            const image = data.queueType === 'CHERRY' ? 'unranked.png' : data.tier ? `${data.tier.toLowerCase()}.png` : 'unranked.png'
+
             return {
-                solo: league_default,
-                flex: league_default,
+                rank,
+                image,
+                lp: data.leaguePoints,
+                win: data.wins,
+                lose: data.losses,
+                winrate: winrate(data['wins'], data['losses']),
+                promos: data?.miniSeries?.progress ?? '',
             }
         }
 
-        const buildRank = (i: number): RankDto => ({
-            rank: `${rank_data[i].tier} ${rank_data[i].rank}` ?? 'Unranked',
-            image: `${rank_data[i].tier.toLowerCase()}.png` ?? 'unranked.png',
-            lp: rank_data[i].leaguePoints,
-            win: rank_data[i].wins,
-            lose: rank_data[i].losses,
-            winrate: winrate(rank_data[i]['wins'], rank_data[i]['losses']),
-            promos: rank_data[i]?.miniSeries?.progress ?? '',
-        })
+        const out = {
+            solo: league_default,
+            flex: league_default,
+            arena: league_default,
+        }
 
-        const soloFirst = rank_data[0].queueType == 'RANKED_SOLO_5x5'
-
-        // Is ranked in only one queue: check which one
-        if (rank_data.length == 1) {
-            return {
-                solo: soloFirst ? buildRank(0) : league_default,
-                flex: soloFirst ? league_default : buildRank(0),
+        for (const queue of rank_data) {
+            if (queue.queueType === 'RANKED_SOLO_5x5') {
+                out.solo = formatRankData(queue)
+                continue
             }
+            if (queue.queueType === 'CHERRY') {
+                out.arena = formatRankData(queue)
+                continue
+            }
+            out.flex = formatRankData(queue)
         }
 
-        // If not, both have data
-        return {
-            solo: soloFirst ? buildRank(0) : buildRank(1),
-            flex: soloFirst ? buildRank(1) : buildRank(0),
-        }
+        return out
     }
 
     /**
