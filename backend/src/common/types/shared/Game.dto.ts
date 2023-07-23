@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { Augment } from './Augment.dto'
 
 class ParticipantTitle {
     @ApiProperty({
@@ -167,6 +168,14 @@ export class Game {
     items: Array<number>
 
     @ApiProperty({
+        description: 'List of 10 participants in the game with its stats',
+        type: [ParticipantTitle],
+    })
+    participants: ParticipantTitle[]
+}
+
+export class GameNormal extends Game {
+    @ApiProperty({
         description: 'IDs of the spells used',
         example: [8021, 8021],
     })
@@ -180,10 +189,11 @@ export class Game {
         ],
     })
     perks: Array<string>
+}
 
+export class GameArena extends Game {
     @ApiProperty({
-        description: 'List of 10 participants in the game with its stats',
-        type: [ParticipantTitle],
+        description: 'Augments used',
     })
-    participants: ParticipantTitle[]
+    augments: Array<Augment>
 }

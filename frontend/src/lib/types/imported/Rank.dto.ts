@@ -11,5 +11,6 @@ export interface Rank {
 export interface RankStructure {
     solo: Rank
     flex: Rank
+    arena: Rank
 }
 

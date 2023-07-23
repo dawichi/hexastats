@@ -1,6 +1,10 @@
-// summoners/
+// Game Types
 export { Game as GameDto } from './shared/Game.dto'
+export { GameArena as GameArenaDto } from './shared/Game.dto'
+export { GameNormal as GameNormalDto } from './shared/Game.dto'
 export { GameDetail as GameDetailDto } from './shared/GameDetail.dto'
+
+export { Augment as AugmentDto } from './shared/Augment.dto'
 export { Mastery as MasteryDto } from './shared/Mastery.dto'
 export { Rank as RankDto } from './shared/Rank.dto'
 export { Player as PlayerDto } from './shared/Player.dto'

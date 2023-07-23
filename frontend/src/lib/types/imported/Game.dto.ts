@@ -1,3 +1,5 @@
+import type { Augment } from './Augment.dto'
+
 interface ParticipantTitle {
     summonerName: string
     championName: string
@@ -29,8 +31,15 @@ export interface Game {
     damageDealt: number
     damageTaken: number
     items: Array<number>
+    participants: ParticipantTitle[]
+}
+
+export interface GameNormal extends Game {
     spells: Array<number>
     perks: Array<string>
-    participants: ParticipantTitle[]
+}
+
+export interface GameArena extends Game {
+    augments: Array<Augment>
 }
 
