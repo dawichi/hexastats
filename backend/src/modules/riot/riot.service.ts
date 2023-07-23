@@ -7,7 +7,7 @@ import { serverRegion, winrate } from '../../common/utils'
 import { validateGameType } from '../../common/validators'
 import { GameArenaDto, GameDetailDto, GameDto, GameNormalDto, MasteryDto, RankDto } from '../../common/types'
 import { RiotChampionsDto, RiotGameDto, RiotMasteryDto, RiotRankDto, RiotSummonerDto } from './types'
-import { augmentsData } from 'src/common/data/augments'
+import { augmentsData } from '../../common/data/augments'
 
 export type queueTypeDto = 'ranked' | 'normal' | 'all'
 

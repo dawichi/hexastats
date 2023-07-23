@@ -1,5 +1,5 @@
 import { PipeTransform, Injectable, BadRequestException } from '@nestjs/common'
-import { queueTypeDto } from 'src/modules/riot/riot.service'
+import { queueTypeDto } from '../../modules/riot/riot.service'
 
 @Injectable()
 export class QueueTypePipe implements PipeTransform {

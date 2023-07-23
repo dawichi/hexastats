@@ -1,4 +1,4 @@
-import { RiotAugmentDto } from 'src/modules/riot/types'
+import { RiotAugmentDto } from '../../modules/riot/types'
 
 // 20230723135127
 // https://utils.iesdev.com/static/json/lol/arena/13.14/augments_en_us
