@@ -1,14 +1,5 @@
 <script lang="ts">
-    import type { PlayerDto } from '$lib/types'
     import { SearchPlayer } from '$lib/components'
-    import { cachedPlayersContext } from '$lib/context/general'
-
-    /** @type {import('./$types').PageData} */
-    export let data: {
-        cachedPlayers: Array<PlayerDto>
-    }
-
-    cachedPlayersContext.set(data.cachedPlayers)
 </script>
 
 <div class="animate__animated animate__fadeIn container m-auto lg:py-16">
