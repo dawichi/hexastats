@@ -5,8 +5,9 @@ import { lastValueFrom } from 'rxjs'
 import { perkUrl, runeUrl } from '../../common/utils/runeUrl'
 import { serverRegion, winrate } from '../../common/utils'
 import { validateGameType } from '../../common/validators'
-import { GameDetailDto, GameDto, MasteryDto, RankDto } from '../../common/types'
+import { GameArenaDto, GameDetailDto, GameDto, GameNormalDto, MasteryDto, RankDto } from '../../common/types'
 import { RiotChampionsDto, RiotGameDto, RiotMasteryDto, RiotRankDto, RiotSummonerDto } from './types'
+import { augmentsData } from 'src/common/data/augments'
 
 export type queueTypeDto = 'ranked' | 'normal' | 'all'
 
@@ -227,7 +228,7 @@ export class RiotService {
      * @param rawGame The raw data of the game as Riot returns
      * @returns The info parsed
      */
-    formatGame(rawGame: RiotGameDto, puuid: string): GameDto {
+    formatGame(rawGame: RiotGameDto, puuid: string): GameNormalDto | GameArenaDto {
         const idx = rawGame.metadata.participants.indexOf(puuid)
         const [initialTeamMate, lastTeamMate] = idx > 4 ? [5, 9] : [0, 4]
 
@@ -236,7 +237,7 @@ export class RiotService {
             .map(p => p.kills)
             .reduce((acc, val) => acc + val)
 
-        return {
+        const base_game: GameDto = {
             matchId: rawGame.metadata.matchId,
             win: rawGame.info.participants[idx].win,
             participantNumber: idx,
@@ -269,6 +270,30 @@ export class RiotService {
                 rawGame.info.participants[idx].item4,
                 rawGame.info.participants[idx].item5,
             ],
+            participants: rawGame.info.participants.map(participant => ({
+                summonerName: participant.summonerName,
+                championName: participant.championName,
+            })),
+        }
+
+        if (rawGame.info.queueId === 1700) {
+            // RETURN ARENA GAME
+            return {
+                ...base_game,
+                augments: [
+                    rawGame.info.participants[idx].playerAugment1,
+                    rawGame.info.participants[idx].playerAugment2,
+                    rawGame.info.participants[idx].playerAugment3,
+                    rawGame.info.participants[idx].playerAugment4,
+                ]
+                    .filter(augment => augment !== 0)
+                    .map(id => augmentsData[id]),
+            }
+        }
+
+        // RETURN NORMAL (NO ARENA) GAME
+        return {
+            ...base_game,
             spells: [rawGame.info.participants[idx].summoner1Id, rawGame.info.participants[idx].summoner2Id],
             perks: [
                 perkUrl(rawGame.info.participants[idx].perks.styles[0].style),
@@ -277,10 +302,6 @@ export class RiotService {
                     rawGame.info.participants[idx].perks.styles[0].style,
                 ),
             ],
-            participants: rawGame.info.participants.map(participant => ({
-                summonerName: participant.summonerName,
-                championName: participant.championName,
-            })),
         }
     }
 
@@ -338,11 +359,13 @@ export class RiotService {
                 cs: participant.neutralMinionsKilled + participant.totalMinionsKilled,
                 ward: participant.item6 || 2052,
                 items: [participant.item0, participant.item1, participant.item2, participant.item3, participant.item4, participant.item5],
-                spells: [participant.summoner1Id, participant.summoner2Id],
-                perks: [
-                    perkUrl(participant.perks.styles[0].style),
-                    runeUrl(participant.perks.styles[0].selections[0].perk, participant.perks.styles[0].style),
-                ],
+                // spells: [participant.summoner1Id, participant.summoner2Id],
+                // perks: [
+                //     perkUrl(participant.perks.styles[0].style),
+                //     runeUrl(participant.perks.styles[0].selections[0].perk, participant.perks.styles[0].style),
+                // ],
+                spells: [],
+                perks: [],
             })),
         }
     }
@@ -378,7 +401,7 @@ export class RiotService {
      * @param matchIds The list of match IDs
      * @returns The list of games info
      */
-    async getGamesDetail(puuid: string, server: string, matchIds: string[]): Promise<GameDto[]> {
+    async getGamesDetail(puuid: string, server: string, matchIds: string[]): Promise<Array<GameNormalDto | GameArenaDto>> {
         this.LOGGER.log(`Getting data from ${matchIds.length} games`)
         // Accumulate the promises of each game
         const promises: Promise<RiotGameDto>[] = matchIds.map((game_id: string) => {
@@ -389,7 +412,7 @@ export class RiotService {
 
         // Run all the promises in parallel
         const games = await Promise.all(promises)
-        const result: GameDto[] = games.map(game => this.formatGame(game, puuid))
+        const result = games.map(game => this.formatGame(game, puuid))
 
         return result
     }

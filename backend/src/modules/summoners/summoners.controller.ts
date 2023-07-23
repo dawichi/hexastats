@@ -2,7 +2,7 @@ import { Controller, Get, Param, Query } from '@nestjs/common'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { SummonersService } from './summoners.service'
 import { ApiCustomResponse, ParamServer, ParamSummonerName, QueryLimit, QueryOffset, QueryQueueType } from '../../common/decorators'
-import { GameDetailDto, GameDto, MasteryDto, PlayerDto, RankDataDto, StatsDto } from '../../common/types'
+import { GameArenaDto, GameDetailDto, GameDto, GameNormalDto, MasteryDto, PlayerDto, RankDataDto, StatsDto } from '../../common/types'
 import { LimitPipe, OffsetPipe, QueueTypePipe } from '../../common/pipes'
 import { queueTypeDto } from '../riot/riot.service'
 
@@ -50,7 +50,7 @@ export class SummonersController {
     @ApiOperation({
         summary: 'Get games',
     })
-    @ApiCustomResponse([GameDto])
+    @ApiCustomResponse([GameDto]) // TODO: Change to GameNormalDto | GameArenaDto
     @ParamServer()
     @ParamSummonerName()
     @QueryLimit()
@@ -62,7 +62,7 @@ export class SummonersController {
         @Query('limit', LimitPipe) limit: number,
         @Query('offset', OffsetPipe) offset: number,
         @Query('queueType', QueueTypePipe) queueType: queueTypeDto,
-    ): Promise<GameDto[]> {
+    ): Promise<Array<GameNormalDto | GameArenaDto>> {
         return this.summonersService.getGames(server, encodeURI(summonerName.trim()), limit, offset, queueType)
     }
 

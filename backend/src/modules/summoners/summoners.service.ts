@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
-import { GameDetailDto, GameDto, MasteryDto, PlayerDto, RankDataDto, StatsDto } from '../../common/types'
+import { GameArenaDto, GameDetailDto, GameDto, GameNormalDto, MasteryDto, PlayerDto, RankDataDto, StatsDto } from '../../common/types'
 import { RiotService, queueTypeDto } from '../../modules/riot/riot.service'
 import { DatabaseService } from '../database/database.service'
 import { MathService } from '../math/math.service'
@@ -61,7 +61,13 @@ export class SummonersService {
     /**
      * /summoners/:server/:summonerName/games
      */
-    async getGames(server: string, summonerName: string, limit: number, offset: number, queueType: queueTypeDto): Promise<GameDto[]> {
+    async getGames(
+        server: string,
+        summonerName: string,
+        limit: number,
+        offset: number,
+        queueType: queueTypeDto,
+    ): Promise<Array<GameNormalDto | GameArenaDto>> {
         const { puuid } = await this.riotService.getBasicInfo(server, summonerName)
 
         // Get the list of game IDs
