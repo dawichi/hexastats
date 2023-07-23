@@ -29,6 +29,15 @@ export class RiotService {
     }
 
     /**
+     * ## URL to the augment image
+     * @param augmentName Name of the augment
+     * @returns The URL to the image
+     */
+    augmentURL(augmentName: string): string {
+        return `https://raw.communitydragon.org/latest/game/assets/ux/cherry/augments/icons/${augmentName.toLowerCase()}`
+    }
+
+    /**
      * ## Get the spell image URL
      *
      * @param spellId The id of the spell
