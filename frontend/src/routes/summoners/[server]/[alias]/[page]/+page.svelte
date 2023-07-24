@@ -1,14 +1,8 @@
 <!-- Visualize the player details -->
 <script lang="ts">
-    import { Pagination } from '$lib/components'
-    import type { GameDto } from '$lib/types'
-    import Game from './games/Game.svelte'
+    import { GameBase, Pagination } from '$lib/components'
 
-    /** @type {import('./$types').PageData} */
-    export let data: {
-        server: string
-        games: GameDto[]
-    }
+    export let data
 </script>
 
 <div>
@@ -22,7 +16,7 @@
 
     <div class="grid gap-2">
         {#each data.games as game}
-            <Game {game} server={data.server} />
+            <GameBase {game} server={data.server} />
         {/each}
     </div>
 
