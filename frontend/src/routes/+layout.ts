@@ -3,7 +3,7 @@ import { SummonerService, backendUrl } from '$lib/services/Summoner.service'
 import type { PlayerDto } from '$lib/types'
 
 /** @type {import('./$types').PageLoad} */
-export async function load({ fetch }: { fetch: typeof window.fetch }): Promise<{ error: boolean, cachedPlayers: Array<PlayerDto> }> {
+export async function load({ fetch }: { fetch: typeof window.fetch }): Promise<{ error: boolean; cachedPlayers: Array<PlayerDto> }> {
     /**
      * This layout do not return any data
      * It is used to initialize the singleton services
@@ -16,19 +16,26 @@ export async function load({ fetch }: { fetch: typeof window.fetch }): Promise<{
     const summonerService = SummonerService.getInstance(fetch)
 
     // Fetch the cached players
-    const cached_res = await fetch(`${backendUrl}database/print`)
+    try {
+        const cached_res = await fetch(`${backendUrl}database/print`)
 
-    // In case of error (backend down), notify the error through `error` flag
-    const error = !cached_res.ok
-    const cached: Array<string> = error ? [] : (await cached_res.json())?.keys
+        // In case of error (backend down), notify the error through `error` flag
+        const error = !cached_res.ok
+        const cached: Array<string> = error ? [] : (await cached_res.json())?.keys
 
-    return {
-        error,
-        cachedPlayers: cached.map((key: string) => ({
-            server: key.split(':')[0],
-            alias: key.split(':')[1],
-            image: '',
-            level: 0,
-        })),
+        return {
+            error,
+            cachedPlayers: cached.map((key: string) => ({
+                server: key.split(':')[0],
+                alias: key.split(':')[1],
+                image: '',
+                level: 0,
+            })),
+        }
+    } catch (error) {
+        return {
+            error: true,
+            cachedPlayers: [],
+        }
     }
 }

@@ -26,3 +26,8 @@ export { default as MockGame } from './mocks/MockGame.svelte'
 // Stats
 export { default as Records } from './stats/Records.svelte'
 export { default as StatsColumn } from './stats/StatsColumn.svelte'
+
+// Games
+export {default as GameNormal} from './games/GameNormal.svelte'
+export {default as GameArena} from './games/GameArena.svelte'
+export {default as GameBase} from './games/GameBase.svelte'

@@ -1,5 +1,5 @@
 import { validateServer } from '$lib/config'
-import type { GameDto, MasteryDto, RankDataDto, StatsDto, SummonerDto } from '$lib/types'
+import type { GameArenaDto, GameDto, GameNormalDto, MasteryDto, RankDataDto, StatsDto, SummonerDto } from '$lib/types'
 
 import { PUBLIC_IS_DEVELOPMENT } from '$env/static/public'
 
@@ -51,7 +51,7 @@ export class SummonerService {
         summonerName: string
         limit: number
         offset: number
-    }): Promise<SummonerDto> {
+    }): Promise<Array<GameNormalDto | GameArenaDto>> {
         const okServer = validateServer(server)
         const playerGames = await this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/games?offset=${offset}&limit=${limit}&queueType=all`)
         this.handleError(playerGames)

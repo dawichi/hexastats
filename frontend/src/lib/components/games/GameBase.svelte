@@ -4,17 +4,17 @@
   Display a game row
 -->
 <script lang="ts">
-    import type { GameDto } from '$lib/types'
+    import type { GameArenaDto, GameDto, GameNormalDto } from '$lib/types'
 
     import { styles } from '$lib/config'
     import { RiotService } from '$lib/services/Riot.service'
     import { classNames, secondsToMin } from '$lib/utils'
     import { formatDate } from '$lib/utils/formatDate'
-    import GameCollapsed from './GameCollapsed.svelte'
     import { modalGameContext } from '$lib/context/general'
     import { backendUrl } from '$lib/services/Summoner.service'
+    import { GameArena, GameNormal } from '$lib/components'
 
-    export let game: GameDto
+    export let game: GameNormalDto | GameArenaDto
     export let server: string
 
     const riotService = RiotService.getInstance()
@@ -37,7 +37,7 @@
         }
         return game.win ? `${styles.game.shadowWin}` : `${styles.game.shadowLose}`
     }
-    
+
     // Prevent multiple modals
     let loading = false
     async function openModal(matchId: string) {
@@ -52,6 +52,9 @@
         })
         loading = false
     }
+
+    // Type guard
+    const isGameNormal = (data: GameNormalDto | GameArenaDto): data is GameNormalDto => 'perks' in data
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -65,11 +68,8 @@
     >
         <!-- Left part, heaf of the row, containing the champ image and some data -->
         <div>
-            <div class="relative text-xs text-white sm:text-base transition {expanded ? 'h-80' : 'h-32'}">
-                <div
-                    class="t-0 l-0 absolute h-full w-full bg-cover bg-top"
-                    style="background-image: url({riotService.champSplash(game.championName)})"
-                />
+            <div class="relative text-xs text-white transition sm:text-base {expanded ? 'h-80' : 'h-32'}">
+                <div class="t-0 l-0 absolute h-full w-full bg-cover bg-top" style="background-image: url({riotService.champSplash(game.championName)})" />
                 <div class="t-0 l-0 absolute h-full w-full" style="background-image: linear-gradient(to top right, #000000bd , #ffffff00)" />
                 <div class="absolute top-2 left-3">
                     <img src={riotService.teamPositionIcon(game.teamPosition)} alt="champ" style="width: 42px; height: 42px;" />
@@ -82,31 +82,14 @@
                     {secondsToMin(game.gameDuration)}
                 </span>
             </div>
-
-            <!-- When expanded it shows extra data -->
-            <!-- <div class="transition {expanded ? 'h-16' : 'h-0 invisible'} grid grid-rows-2 text-white">
-                {#each game.teams as team, idx}
-                    <div class="grid grid-cols-4 {idx ? 'bg-red-400/80' : 'bg-blue-400/80'}">
-                        <div class="flex items-center justify-center gap-2">
-                            <img class="w-6" src="/icons/baron.svg" alt="baron icon" title="Barons" />
-                            <span class="w-6">{team.objectives?.baron?.kills}</span>
-                        </div>
-                        <div class="flex items-center justify-center gap-2">
-                            <img class="w-6" src="/icons/champion.svg" alt="champion icon" title="Barons" />
-                            <span class="w-6">{team.objectives?.champion?.kills}</span>
-                        </div>
-                        <div class="flex items-center justify-center gap-2">
-                            <img class="w-6" src="/icons/dragon.svg" alt="dragon icon" title="Barons" />
-                            <span class="w-6">{team.objectives?.dragon?.kills}</span>
-                        </div>
-                    </div>
-                {/each}
-            </div> -->
         </div>
 
-
-
-        <GameCollapsed {game} {server} />
+        {#if isGameNormal(game)}
+            <GameNormal {game} {server} />
+        {:else}
+            <GameArena {game} {server} />
+        {/if}
+        <!-- <GameCollapsed {game} {server} /> -->
 
         <!-- Right button, which modifies the expanded property onclick -->
         <button

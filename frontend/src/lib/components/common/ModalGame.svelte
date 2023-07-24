@@ -141,7 +141,6 @@
                                         style="width: {(participant.champ.damageDealt /
                                             Math.max(...game.participants.map(participant => participant.champ.damageDealt))) *
                                             100}%"
-                                        use:tooltip
                                     />
                                 </div>
                             </div>
@@ -155,7 +154,6 @@
                                         style="width: {(participant.champ.damageTaken /
                                             Math.max(...game.participants.map(participant => participant.champ.damageTaken))) *
                                             100}%"
-                                        use:tooltip
                                     />
                                 </div>
                                 <span class="text-xs">{parse_k_num(participant.champ.damageTaken)}</span>
