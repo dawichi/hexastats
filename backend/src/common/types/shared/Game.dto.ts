@@ -196,4 +196,14 @@ export class GameArena extends Game {
         description: 'Augments used',
     })
     augments: Array<Augment>
+
+    @ApiProperty({
+        description: 'Personal placement',
+    })
+    placement: number
+
+    @ApiProperty({
+        description: 'Personal placement',
+    })
+    subteamPlacement: number
 }

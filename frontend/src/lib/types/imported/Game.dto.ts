@@ -41,5 +41,7 @@ export interface GameNormal extends Game {
 
 export interface GameArena extends Game {
     augments: Array<Augment>
+    placement: number
+    subteamPlacement: number
 }
 

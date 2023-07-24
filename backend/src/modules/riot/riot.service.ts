@@ -288,6 +288,8 @@ export class RiotService {
                 ]
                     .filter(augment => augment !== 0)
                     .map(id => augmentsData[id]),
+                placement: rawGame.info.participants[idx].placement,
+                subteamPlacement: rawGame.info.participants[idx].subteamPlacement,
             }
         }
 
