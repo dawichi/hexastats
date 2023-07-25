@@ -17,6 +17,13 @@
     export let server: string
 
     const riotService = RiotService.getInstance()
+    
+    const groups = [
+        game.participants.slice(0, 2),
+        game.participants.slice(2, 4),
+        game.participants.slice(4, 6),
+        game.participants.slice(6, 8),
+    ]
 </script>
 
 <div class="animate__animated animate__fadeIn relative col-span-2 flex items-center justify-between px-2 text-center">
@@ -40,19 +47,23 @@
     </article>
 
     <!-- LIST OF SUMMONERS YOU PLAYED WITH -->
-    <div class="grid grid-cols-2 ">
-        {#each game.participants as participant, idx}
+    <div class="columns-2 px-1">
+        {#each groups as group, idx1}
+        <div class="py-2">
+            {#each group as participant, idx2}
             <div class="flex items-center">
                 <img class="{styles.iconSize.medium} rounded" src={riotService.champImage(participant.championName)} alt="champion" />
                 <span class="ml-1 h-5 w-20 overflow-hidden text-ellipsis whitespace-nowrap text-left text-sm">
                     <a
                         href={`/summoners/${rawServer(server)}/${participant.summonerName}`}
-                        class="hover:underline {game.participantNumber === idx ? 'font-bold' : ''}"
+                        class="hover:underline {participant.summonerName === game.participants[game.participantNumber].summonerName ? 'font-bold' : ''}"
                     >
                         {participant.summonerName}
                     </a>
                 </span>
             </div>
+            {/each}
+        </div>
         {/each}
     </div>
 </div>

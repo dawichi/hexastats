@@ -36,13 +36,13 @@
     </article>
 
     <!-- ITEMS -->
-    <article class="hidden flex-col sm:flex">
+    <article class="flex flex-col">
         <p>{game.kills} / {game.deaths} / {game.assists}</p>
         <ItemsGrid items={game.items} ward={game.ward} />
     </article>
 
     <!-- LIST OF SUMMONERS YOU PLAYED WITH -->
-    <div class="hidden columns-2 p-1 lg:block">
+    <div class="columns-2 p-1">
         {#each game.participants as participant, idx}
             <span class="flex items-center">
                 <img class="{styles.iconSize.medium} rounded" src={riotService.champImage(participant.championName)} alt="champion" />
