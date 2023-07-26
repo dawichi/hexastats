@@ -24,11 +24,14 @@ for backend_file in backend_files:
     classes: list[list[str]] = []
     imports = []
     unique_class = []
+
     with open(os.path.join(backend_path, backend_file)) as f_back:
+        print(backend_file.replace(".ts", ""))
         for idx, line in enumerate(f_back.readlines()):
             if "import" in line and "ApiProperty" not in line:
                 imports.append(line)
             if "class" in line:
+                print(f"\t - {line.split('{')[0].replace('export', '').replace('class', '').strip()}")
                 unique_class = []
                 flag = True
                 unique_class.append(line)
@@ -40,6 +43,7 @@ for backend_file in backend_files:
                 unique_class.append(line)
 
     new_lines: list[str] = []
+
     if imports:
         for imp in imports:
             new_lines.append(imp.replace("import", "import type"))
@@ -53,4 +57,3 @@ for backend_file in backend_files:
     
     with open(os.path.join(frontend_path, backend_file), "w") as f_front:
         f_front.writelines(new_lines)
-    
