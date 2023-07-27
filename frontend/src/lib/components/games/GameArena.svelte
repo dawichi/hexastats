@@ -30,7 +30,7 @@
     <!-- AUGMENTS -->
     <article class="grid grid-cols-2 gap-x-1 gap-y-2">
         {#each game.augments as augment}
-            <img title="{augment.description}" class="rounded-full bg-black {styles.iconSize.large} rounded" src={riotService.augmentURL(augment.iconLarge)} alt="item" use:tooltip />
+            <img title="{augment.tooltip}" class="rounded-full bg-black {styles.iconSize.large} rounded" src={riotService.augmentURL(augment.iconLarge)} alt="item" use:tooltip />
         {/each}
     </article>
 

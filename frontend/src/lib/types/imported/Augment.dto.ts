@@ -5,5 +5,6 @@ export interface Augment {
     iconSmall: string
     id: number
     name: string
+    tooltip: string
 }
 

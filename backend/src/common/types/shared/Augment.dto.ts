@@ -5,4 +5,5 @@ export class Augment {
     iconSmall: string
     id: number
     name: string
+    tooltip: string
 }
