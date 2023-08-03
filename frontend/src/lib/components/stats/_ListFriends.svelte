@@ -18,7 +18,7 @@
 <div>
     <h2 class="pt-3 text-center text-2xl">Friends</h2>
     <hr class="m-2" />
-    {#if friends.length}
+    {#if friends.filter(friend => friend.games > 2).length}
         <div class="p-4">
             <section class="mb-4 grid grid-cols-5 gap-2">
                 <h4 class="col-span-2">Summoner</h4>
