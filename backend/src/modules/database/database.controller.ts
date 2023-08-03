@@ -64,7 +64,6 @@ export class DatabaseController {
         type: Boolean,
     })
     async reset(): Promise<boolean> {
-        this.logger.log('Clear all data from redis')
         return this.databaseService.deleteAll()
     }
 
