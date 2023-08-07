@@ -1,3 +1,5 @@
+import type { Augment } from "./Augment.dto"
+
 interface Objective {
     type: string
     first: boolean
@@ -43,11 +45,13 @@ interface Participant {
     assists: number
     multiKill: MultiKill
     gold: number
+    placement: number
     cs: number
     ward: number
     items: Array<number>
     spells: Array<number>
     perks: Array<string>
+    augments: Array<Augment>
 }
 
 export interface GameDetail {
