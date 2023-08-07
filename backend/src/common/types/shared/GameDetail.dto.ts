@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { Augment } from './Augment.dto'
 
 class Objective {
     @ApiProperty({
@@ -196,6 +197,12 @@ class Participant {
     ward: number
 
     @ApiProperty({
+        description: 'Placement position at the end of the game',
+        example: 2,
+    })
+    placement: number
+
+    @ApiProperty({
         description: 'URLs to the images of the items used',
         example: [3157, 6655, 4645, 3020, 3165, 3089],
     })
@@ -215,6 +222,12 @@ class Participant {
         ],
     })
     perks: Array<string>
+
+    @ApiProperty({
+        description: 'Augments used',
+        example: [10, 52, 37, 0],
+    })
+    augments: Array<Augment>
 }
 
 export class GameDetail {

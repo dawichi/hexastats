@@ -40,7 +40,7 @@ global/default/v1/perk-images/styles/${perks[perkId]}.png`
  */
 export function runeUrl(runeId: number, perkId: number): string {
     const exception = runeId === 8008 ? 'temp' : ''
-    const runeGroup = perkId === 8300 ? 'inspiration' : perks[perkId].split('_')[1]
+    const runeGroup = perkId === 8300 ? 'inspiration' : perks[perkId] && perks[perkId].split('_')[1]
 
     return `https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/styles/${runeGroup}/${runes[runeId]}/${runes[runeId]}${exception}.png`
 

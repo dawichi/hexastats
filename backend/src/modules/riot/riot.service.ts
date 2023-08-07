@@ -358,16 +358,18 @@ export class RiotService {
                     pentas: participant.pentaKills,
                 },
                 gold: participant.goldEarned,
+                placement: participant.placement,
                 cs: participant.neutralMinionsKilled + participant.totalMinionsKilled,
                 ward: participant.item6 || 2052,
                 items: [participant.item0, participant.item1, participant.item2, participant.item3, participant.item4, participant.item5],
-                // spells: [participant.summoner1Id, participant.summoner2Id],
-                // perks: [
-                //     perkUrl(participant.perks.styles[0].style),
-                //     runeUrl(participant.perks.styles[0].selections[0].perk, participant.perks.styles[0].style),
-                // ],
-                spells: [],
-                perks: [],
+                spells: [participant.summoner1Id, participant.summoner2Id],
+                perks: [
+                    perkUrl(participant.perks.styles[0].style),
+                    runeUrl(participant.perks.styles[0].selections[0].perk, participant.perks.styles[0].style),
+                ],
+                augments: [participant.playerAugment1, participant.playerAugment2, participant.playerAugment3, participant.playerAugment4]
+                    .filter(augment => augment !== 0)
+                    .map(id => augmentsData[id]),
             })),
         }
     }

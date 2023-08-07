@@ -4,10 +4,10 @@
   used to display a game inside a modal
 -->
 <script lang="ts">
-    import { styles } from '$lib/config'
+    import { rawServer, styles } from '$lib/config'
     import { modalGameContext } from '$lib/context/general'
     import { RiotService } from '$lib/services/Riot.service'
-    import type { GameDetailDto } from '$lib/types'
+    import type { GameArenaDto, GameDetailDto, GameNormalDto } from '$lib/types'
     import { formatDate, kda, parse_k_num, secondsToMin, tooltip } from '$lib/utils'
 
     const riotService = RiotService.getInstance()
@@ -23,7 +23,7 @@
             ;(document?.querySelector('[data-modal-game]') as any).close()
         },
     }
-
+    export let server: string
     // This memo the state to prevent multiple calls
     let isModalOpen = false
     let game: GameDetailDto
@@ -37,6 +37,8 @@
         isModalOpen = val.isModalOpen
         val.isModalOpen ? modal.open() : modal.close()
     })
+
+    // const isGameNormal = (data: GameNormalDto | GameArenaDto): data is GameNormalDto => 'perks' in data
 
     //const bgColor = (idx: number): string => game.teams[idx < 5 ? 0 : 1].win ? 'bg-green-500/20' : 'bg-red-500/20'
 
@@ -88,94 +90,223 @@
                     {secondsToMin(game.gameDuration)}
                 </span>
             </div>
-
             <!-- RIGHT COL - LIST PARTICIPANTS -->
-            <section class="flex flex-col gap-2">
-                {#each game.participants as participant, idx}
-                    <div
-                        class="flex items-center gap-x-1 p-1 {participant.isEarlySurrender
-                            ? participant.win
-                                ? 'bg-zinc-500/40'
-                                : 'bg-zinc-500/20'
-                            : participant.win
-                            ? 'bg-green-500/20'
-                            : 'bg-red-500/20'}"
-                    >
-                        <div class="relative">
-                            <img class="h-12 w-12" src={riotService.champImage(participant.champ.championName)} alt="champ" />
-                            <span class="absolute -bottom-1 -left-1 rounded-tr bg-zinc-800 px-[2px] text-sm">{participant.champ.champLevel}</span>
-                        </div>
+            {#if game.gameMode === 'CHERRY'}
+                <div class="animate__animated animate__fadeIn relative col-span-2 grid grid-cols-2 px-2 text-center">
+                    {#each [0, 2, 4, 6] as teamIndex}
+                        <section class="grid grid-cols-2">
+                            {#each game.participants.slice(teamIndex, teamIndex + 2) as participant}
+                                <div
+                                    class="m-2 grid grid-cols-3 gap-3 {participant.isEarlySurrender
+                                        ? participant.win
+                                            ? 'bg-zinc-500/40'
+                                            : 'bg-zinc-500/20'
+                                        : participant.win
+                                        ? 'bg-green-500/20'
+                                        : 'bg-red-500/20'}"
+                                >
+                                    <div class="relative  grid grid-cols-2">
+                                        <img class="m-1 h-12 w-12" src={riotService.champImage(participant.champ.championName)} alt="champ" />
+                                        <span class="absolute -bottom-1 -left-1 m-1 rounded-tr bg-zinc-800 px-[2px] text-sm"
+                                            >{participant.champ.champLevel}</span
+                                        >
+                                        <!-- AUGMENTS -->
+                                        <div class="mt-1 grid grid-cols-2 items-center">
+                                            {#each participant.augments as augment}
+                                                <img
+                                                    title={augment.tooltip}
+                                                    class="rounded-full bg-black {styles.iconSize.medium} rounded"
+                                                    src={riotService.augmentURL(augment.iconLarge)}
+                                                    alt="item"
+                                                    use:tooltip
+                                                />
+                                            {/each}
+                                        </div>
+                                    </div>
 
-                        <!-- SPELLS, RUNES -->
-                        <div class="grid w-12 grid-cols-2">
-                            {#each [riotService.spellUrl(participant.spells[0]), participant.perks[1], riotService.spellUrl(participant.spells[1]), participant.perks[0]] as src}
-                                <img class="{styles.iconSize.medium} rounded" {src} alt="spell 2" />
+                                    <!-- <p class="relative col-span-2 flex items-center justify-center">{participant.summonerName}</p> -->
+                                    <a
+                                        href={`/summoners/${rawServer(server)}/${participant.summonerName}`}
+                                        class="relative col-span-2 flex items-center justify-center hover:underline {participant.summonerName ===
+                                        game.participants[game.participantNumber].summonerName
+                                            ? 'font-bold'
+                                            : ''}"
+                                        on:click={() =>
+                                            modalGameContext.update(val => ({
+                                                ...val,
+                                                isModalOpen: false,
+                                            }))}
+                                    >
+                                        {participant.summonerName}
+                                    </a>
+
+                                    <!-- KDA -->
+                                    <div class="w-28 text-center">
+                                        <p>{participant.kills} / {participant.deaths} / {participant.assists}</p>
+                                        <p><strong>{kda(participant.kills, participant.deaths, participant.assists)}</strong> KDA</p>
+                                    </div>
+
+                                    <!-- PLACEMENT -->
+                                    <div class="align-center grid text-4xl">
+                                        <p><strong>{participant.placement}º</strong></p>
+                                    </div>
+
+                                    <!-- DAMAGES -->
+                                    <div class="grid grid-rows-2 gap-1">
+                                        <!-- DAMAGE DEALT -->
+                                        <div class="flex flex-col items-center">
+                                            <span class="text-xs">{parse_k_num(participant.champ.damageDealt)}</span>
+                                            <div class="h-2 w-20 rounded-sm bg-zinc-300 dark:bg-zinc-600">
+                                                <div
+                                                    title="Damage dealt: {participant.champ.damageDealt}"
+                                                    class="h-2 rounded-sm bg-red-400"
+                                                    style="width: {(participant.champ.damageDealt /
+                                                        Math.max(...game.participants.map(participant => participant.champ.damageDealt))) *
+                                                        100}%"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <!-- DAMAGE TAKEN -->
+                                        <div class="flex flex-col items-center">
+                                            <div class="h-2 w-20 rounded-sm bg-zinc-300 dark:bg-zinc-600">
+                                                <div
+                                                    title="Damage taken: {participant.champ.damageTaken}"
+                                                    class="h-2 rounded-sm bg-blue-400"
+                                                    style="width: {(participant.champ.damageTaken /
+                                                        Math.max(...game.participants.map(participant => participant.champ.damageTaken))) *
+                                                        100}%"
+                                                />
+                                            </div>
+                                            <span class="text-xs">{parse_k_num(participant.champ.damageTaken)}</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- ITEMS -->
+                                    <div class="col-span-3 m-2 flex items-center">
+                                        <div class="mx-auto grid grid-cols-7 ">
+                                            {#each [0, 1, 2, 3, 4, 5] as itemId}
+                                                <span class="m-0.5">
+                                                    {#if participant.items[itemId]}
+                                                        <img
+                                                            class="{styles.iconSize.large} rounded"
+                                                            src={riotService.itemURL(participant.items[itemId])}
+                                                            alt="item"
+                                                        />
+                                                    {:else}
+                                                        <div class="{styles.iconSize.large} rounded bg-gradient-to-br from-zinc-500 to-zinc-800" />
+                                                    {/if}
+                                                </span>
+                                            {/each}
+                                            <img class="{styles.iconSize.large} rounded" src={riotService.itemURL(participant.ward)} alt="ward" />
+                                        </div>
+                                    </div>
+                                </div>
                             {/each}
-                        </div>
-                        <p class="w-32 {game.gameMode === 'CLASSIC' ? (participant.teamPosition === '' ? 'text-red-600' : 'text-white') : 'text-white'}">
-                            {participant.summonerName}
-                        </p>
+                        </section>
+                    {/each}
+                </div>
+            {:else}
+                <div class="animate__animated animate__fadeIn relative col-span-2 flex items-center justify-between px-2 text-center">
+                    <!-- RIGHT COL - LIST PARTICIPANTS -->
+                    <section class="flex flex-col gap-2">
+                        {#each game.participants as participant, idx}
+                            <div
+                                class="flex items-center gap-x-1 p-1 {participant.isEarlySurrender
+                                    ? participant.win
+                                        ? 'bg-zinc-500/40'
+                                        : 'bg-zinc-500/20'
+                                    : participant.win
+                                    ? 'bg-green-500/20'
+                                    : 'bg-red-500/20'}"
+                            >
+                                <div class="relative">
+                                    <img class="h-12 w-12" src={riotService.champImage(participant.champ.championName)} alt="champ" />
+                                    <span class="absolute -bottom-1 -left-1 rounded-tr bg-zinc-800 px-[2px] text-sm">{participant.champ.champLevel}</span>
+                                </div>
 
-                        <!-- KDA -->
-                        <div class="w-28 text-center">
-                            <p>{participant.kills} / {participant.deaths} / {participant.assists}</p>
-                            <p><strong>{kda(participant.kills, participant.deaths, participant.assists)}</strong> KDA</p>
-                        </div>
+                                <!-- SPELLS, RUNES -->
+                                <div class="grid w-12 grid-cols-2">
+                                    {#each [riotService.spellUrl(participant.spells[0]), participant.perks[1], riotService.spellUrl(participant.spells[1]), participant.perks[0]] as src}
+                                        <img class="{styles.iconSize.medium} rounded" {src} alt="spell 2" />
+                                    {/each}
+                                </div>
+                                <p
+                                    class="w-32 {game.gameMode === 'CLASSIC'
+                                        ? participant.teamPosition === ''
+                                            ? 'text-red-600'
+                                            : 'text-white'
+                                        : 'text-white'}"
+                                >
+                                    {participant.summonerName}
+                                </p>
 
-                        <!-- KDA -->
-                        <div class="grid w-48 grid-cols-3 text-center">
-                            <p><strong>{participant.cs}</strong></p>
-                            <p><strong>{parse_k_num(participant.gold, 1)}</strong></p>
-                            <p><strong>{participant.visionScore}</strong></p>
-                        </div>
+                                <!-- KDA -->
+                                <div class="w-28 text-center">
+                                    <p>{participant.kills} / {participant.deaths} / {participant.assists}</p>
+                                    <p><strong>{kda(participant.kills, participant.deaths, participant.assists)}</strong> KDA</p>
+                                </div>
 
-                        <!-- DAMAGES -->
-                        <div class="grid grid-rows-2 gap-1">
-                            <!-- DAMAGE DEALT -->
-                            <div class="flex flex-col items-center">
-                                <span class="text-xs">{parse_k_num(participant.champ.damageDealt)}</span>
-                                <div class="h-2 w-20 rounded-sm bg-zinc-300 dark:bg-zinc-600">
-                                    <div
-                                        title="Damage dealt: {participant.champ.damageDealt}"
-                                        class="h-2 rounded-sm bg-red-400"
-                                        style="width: {(participant.champ.damageDealt /
-                                            Math.max(...game.participants.map(participant => participant.champ.damageDealt))) *
-                                            100}%"
-                                    />
+                                <!-- KDA -->
+                                <div class="grid w-48 grid-cols-3 text-center">
+                                    <p><strong>{participant.cs}</strong></p>
+                                    <p><strong>{parse_k_num(participant.gold, 1)}</strong></p>
+                                    <p><strong>{participant.visionScore}</strong></p>
+                                </div>
+
+                                <!-- DAMAGES -->
+                                <div class="grid grid-rows-2 gap-1">
+                                    <!-- DAMAGE DEALT -->
+                                    <div class="flex flex-col items-center">
+                                        <span class="text-xs">{parse_k_num(participant.champ.damageDealt)}</span>
+                                        <div class="h-2 w-20 rounded-sm bg-zinc-300 dark:bg-zinc-600">
+                                            <div
+                                                title="Damage dealt: {participant.champ.damageDealt}"
+                                                class="h-2 rounded-sm bg-red-400"
+                                                style="width: {(participant.champ.damageDealt /
+                                                    Math.max(...game.participants.map(participant => participant.champ.damageDealt))) *
+                                                    100}%"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <!-- DAMAGE TAKEN -->
+                                    <div class="flex flex-col items-center">
+                                        <div class="h-2 w-20 rounded-sm bg-zinc-300 dark:bg-zinc-600">
+                                            <div
+                                                title="Damage taken: {participant.champ.damageTaken}"
+                                                class="h-2 rounded-sm bg-blue-400"
+                                                style="width: {(participant.champ.damageTaken /
+                                                    Math.max(...game.participants.map(participant => participant.champ.damageTaken))) *
+                                                    100}%"
+                                            />
+                                        </div>
+                                        <span class="text-xs">{parse_k_num(participant.champ.damageTaken)}</span>
+                                    </div>
+                                </div>
+
+                                <!-- ITEMS -->
+                                <div class="ml-2 grid grid-cols-7">
+                                    {#each [0, 1, 2, 3, 4, 5] as itemId}
+                                        <span>
+                                            {#if participant.items[itemId]}
+                                                <img
+                                                    class="{styles.iconSize.large} ml-1 rounded"
+                                                    src={riotService.itemURL(participant.items[itemId])}
+                                                    alt="item"
+                                                />
+                                            {:else}
+                                                <div class="{styles.iconSize.large} ml-1 rounded bg-gradient-to-br from-zinc-500 to-zinc-800" />
+                                            {/if}
+                                        </span>
+                                    {/each}
+                                    <img class="{styles.iconSize.large} ml-1 rounded" src={riotService.itemURL(participant.ward)} alt="guard" />
                                 </div>
                             </div>
-
-                            <!-- DAMAGE TAKEN -->
-                            <div class="flex flex-col items-center">
-                                <div class="h-2 w-20 rounded-sm bg-zinc-300 dark:bg-zinc-600">
-                                    <div
-                                        title="Damage taken: {participant.champ.damageTaken}"
-                                        class="h-2 rounded-sm bg-blue-400"
-                                        style="width: {(participant.champ.damageTaken /
-                                            Math.max(...game.participants.map(participant => participant.champ.damageTaken))) *
-                                            100}%"
-                                    />
-                                </div>
-                                <span class="text-xs">{parse_k_num(participant.champ.damageTaken)}</span>
-                            </div>
-                        </div>
-
-                        <!-- ITEMS -->
-                        <div class="ml-2 grid grid-cols-7">
-                            {#each [0, 1, 2, 3, 4, 5] as itemId}
-                                <span>
-                                    {#if participant.items[itemId]}
-                                        <img class="{styles.iconSize.large} ml-1 rounded" src={riotService.itemURL(participant.items[itemId])} alt="item" />
-                                    {:else}
-                                        <div class="{styles.iconSize.large} ml-1 rounded bg-gradient-to-br from-zinc-500 to-zinc-800" />
-                                    {/if}
-                                </span>
-                            {/each}
-                            <img class="{styles.iconSize.large} ml-1 rounded" src={riotService.itemURL(participant.ward)} alt="guard" />
-                        </div>
-                    </div>
-                {/each}
-            </section>
+                        {/each}
+                    </section>
+                </div>
+            {/if}
         </div>
     {/if}
 </dialog>
