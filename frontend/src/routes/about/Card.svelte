@@ -22,7 +22,7 @@
     <!-- Image -->
     <section class="relative top-0 left-0 mx-auto h-32 w-32 pt-8">
         <div class="absolute h-32 w-32 overflow-hidden rounded-full shadow">
-            <Image image={contributor.image} />
+            <Image src={contributor.image} />
         </div>
     </section>
 

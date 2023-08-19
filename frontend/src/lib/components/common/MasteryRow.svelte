@@ -22,12 +22,12 @@
                     <div class="t-0 r-0 absolute">
                         <div class="relative h-24 w-12 rounded">
                             {#if [5, 6, 7].includes(mastery.level)}
-                                <Image image={'/images/mastery/mastery_' + mastery.level + '.png'} />
+                                <Image src={'/images/mastery/mastery_' + mastery.level + '.png'} />
                             {/if}
 
                             {#if mastery.chestGranted}
                                 <span class="absolute -top-1 sm:-right-3 z-20 h-6 w-6 rounded-full">
-                                    <Image image="/images/mastery/chest.png" />
+                                    <Image src="/images/mastery/chest.png" />
                                 </span>
                             {/if}
                         </div>
@@ -35,7 +35,7 @@
 
                     <div class="t-0 r-0 absolute">
                         <div class="relative h-12 w-12 rounded">
-                            <Image image={mastery.image} />
+                            <Image src={mastery.image} />
                         </div>
                     </div>
                 </div>

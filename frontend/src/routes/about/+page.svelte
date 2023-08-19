@@ -24,7 +24,7 @@
             <p class="mb-5">Right now we keep working on it to improve it, adding new cool sections and new ways to interact with the data.</p>
         </div>
         <div class="relative mx-auto h-48 w-80">
-            <Image image="/images/gifs/coding.gif" />
+            <Image src="/images/gifs/coding.gif" />
         </div>
     </div>
 
@@ -68,6 +68,6 @@
     </div>
 
     <div class="relative mx-auto mt-10 h-80 w-80">
-        <Image image="/images/gifs/peter.gif" />
+        <Image src="/images/gifs/peter.gif" />
     </div>
 </Container>

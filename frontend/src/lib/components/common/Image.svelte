@@ -5,12 +5,10 @@
   @param image - the URL to the image
 -->
 <script lang="ts">
-    export let image: string
-
-    const style = 'background-image: url(' + image + ');'
+    export let src: string
 </script>
 
-<div class="rounded bgimage h-full w-full" {style} />
+<div class="rounded bgimage h-full w-full" style="background-image: url({src});" />
 
 <style>
     .bgimage {
