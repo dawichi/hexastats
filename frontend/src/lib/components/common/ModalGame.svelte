@@ -231,15 +231,20 @@
                                         <img class="{styles.iconSize.medium} rounded" {src} alt="spell 2" />
                                     {/each}
                                 </div>
-                                <p
-                                    class="w-32 {game.gameMode === 'CLASSIC'
-                                        ? participant.teamPosition === ''
-                                            ? 'text-red-600'
-                                            : 'text-white'
-                                        : 'text-white'}"
+                                <a
+                                    href={`/summoners/${rawServer(server)}/${participant.summonerName}`}
+                                    class="w-32 hover:underline {participant.summonerName === game.participants[game.participantNumber].summonerName
+                                        ? 'font-bold'
+                                        : ''}
+                                        {game.gameMode === 'CLASSIC' ? (participant.teamPosition === '' ? 'text-red-600' : 'text-white') : 'text-white'}"
+                                    on:click={() =>
+                                        modalGameContext.update(val => ({
+                                            ...val,
+                                            isModalOpen: false,
+                                        }))}
                                 >
                                     {participant.summonerName}
-                                </p>
+                                </a>
 
                                 <!-- KDA -->
                                 <div class="w-28 text-center">
