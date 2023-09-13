@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="p-4 {styles.foreground} relative rounded-b">
-                    <h4 class="mb-4 text-xl">{key}</h4>
+                    <h4 class="mb-6 text-xl">{key}</h4>
                     <h5 class="text-xl font-bold">{record.value}</h5>
 
                     <div class="absolute bottom-2 right-2 text-center text-sm">
@@ -71,7 +71,7 @@
                 </div>
 
                 <div class="p-4 {styles.foreground} relative rounded-b">
-                    <h4 class="mb-4 text-xl">{key}</h4>
+                    <h4 class="mb-6 text-xl">{key}</h4>
                     <h5 class="text-xl font-bold">{lowRecord.value}</h5>
 
                     <div class="absolute bottom-2 right-2 text-center text-sm">
