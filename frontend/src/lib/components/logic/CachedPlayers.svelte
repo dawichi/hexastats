@@ -66,7 +66,7 @@
                             <ProfileImg image={player.image} level={player.level} />
                         </span>
                         <span class="w-12">{player.server}</span>
-                        <span>{player.alias}</span>
+                        <span>{decodeURI(player.alias)}</span>
                     </div>
                 </a>
             {/each}
