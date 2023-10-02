@@ -16,18 +16,48 @@ export class DatabaseService {
     }
 
     /**
+     * Base method to get data from redis
+     * Sets a common pattern for all the methods
+     */
+    private async _baseMethod<T>(
+        data: { log_success: string; log_fail: string; empty_responpse: T },
+        method: () => Promise<T>,
+    ): Promise<T> {
+        // Before running any method, check if redis is disabled
+        if (this.REDIS_DISABLED) {
+            this.LOGGER.warn('REDIS: Redis is disabled')
+            return data.empty_responpse
+        }
+
+        // Run the method, if it fails, return an empty response
+        try {
+            const response = await method()
+
+            this.LOGGER.log(data.log_success)
+            return response
+        } catch (err) {
+            this.LOGGER.error(data.log_fail, err)
+            return data.empty_responpse
+        }
+    }
+
+    /**
      * /database/print
      */
     async keys(): Promise<PrintKeysDto> {
-        if (this.REDIS_DISABLED) {
-            this.LOGGER.warn('REDIS: Redis is disabled')
-            return { total: 0, keys: [] }
-        }
+        return this._baseMethod<PrintKeysDto>(
+            {
+                log_success: 'REDIS: Found keys!',
+                log_fail: 'REDIS: Error getting keys',
+                empty_responpse: { total: 0, keys: [] },
+            },
+            async () => {
+                const keys = await this.REDIS.keys('*')
 
-        const keys = await this.REDIS.keys('*')
-
-        this.LOGGER.log(`REDIS: Found ${keys.length} keys!`)
-        return { total: keys.length, keys }
+                this.LOGGER.log(`REDIS: Found ${keys.length} keys!`)
+                return { total: keys.length, keys }
+            },
+        )
     }
 
     /**
