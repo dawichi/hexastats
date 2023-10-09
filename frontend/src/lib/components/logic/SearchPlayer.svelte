@@ -8,6 +8,9 @@
     import { SummonerService } from '$lib/services/Summoner.service'
     import { CachedPlayers } from '..'
 
+    //autofocus <input/> param
+    export let autofocus = true
+
     // Search params
     let username = ''
     let serverIdx = 0
@@ -21,17 +24,20 @@
 
     // Search logic once the button is pressed
     async function handleSearch(): Promise<void> {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
         if (loading) return
         loading = true
         error = false
 
         const playerData = await summonerService.existPlayer(servers[serverIdx], username)
+        loading = false
+        username = ''
+
         if (playerData) {
             return goto(`/summoners/${servers[serverIdx]}/${playerData.alias}`)
         }
 
         error = true
-        loading = false
     }
 
     // Search button by pressing enter
@@ -81,10 +87,10 @@
         <input
             placeholder="Summoner name"
             type="text"
+            {autofocus}
             class="h-12 w-full rounded border-0 bg-white p-2 shadow outline-0 ring-indigo-400 focus:ring-4 dark:bg-zinc-800"
             on:keypress={handleKeyPress}
             bind:value={username}
-            autofocus
         />
 
         <button
