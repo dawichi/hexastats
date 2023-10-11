@@ -50,8 +50,13 @@
     <div class="relative flex justify-between bg-zinc-900 p-1">
         <div>
             {#if game.matchId}
-                <h2 class="text-lg font-bold">{game.participants[game.participantNumber].summonerName}</h2>
-                <span>{game.matchId}</span>
+                <h2 class="text-lg font-bold">{game.participants[game.participantNumber].summonerName} </h2>
+                <span>{game.gameMode} | </span>
+                <span>{formatDate(game.gameCreation, game.gameDuration)} | </span>
+                <span>
+                    {secondsToMin(game.gameDuration)}
+                </span>
+                <h3>{game.matchId}</h3>
             {/if}
         </div>
         <button
@@ -69,7 +74,7 @@
     {#if game.matchId}
         <div class="flex items-center justify-center gap-8">
             <!-- LEFT COL - SPLASHART -->
-            <div class="relative h-64 w-96 text-xs sm:text-base">
+            <div class="hidden lg:block relative h-64 w-96 text-xs sm:text-base">
                 <div />
                 <div
                     class="t-0 l-0 absolute h-full w-full bg-cover bg-top"
@@ -212,7 +217,7 @@
                     <section class="flex flex-col gap-2">
                         {#each game.participants as participant, idx}
                             <div
-                                class="flex items-center gap-x-1 p-1 {participant.isEarlySurrender
+                                class="grid grid-cols-3 md:flex flex-row items-center gap-x-1 p-1 {participant.isEarlySurrender
                                     ? participant.win
                                         ? 'bg-zinc-500/40'
                                         : 'bg-zinc-500/20'
@@ -220,20 +225,25 @@
                                     ? 'bg-green-500/20'
                                     : 'bg-red-500/20'}"
                             >
+                            <!-- IMAGE and Level -->
+                            <div class="relative grid grid-cols-2">
+
                                 <div class="relative">
                                     <img class="h-12 w-12" src={riotService.champImage(participant.champ.championName)} alt="champ" />
                                     <span class="absolute -bottom-1 -left-1 rounded-tr bg-zinc-800 px-[2px] text-sm">{participant.champ.champLevel}</span>
                                 </div>
-
+                                
                                 <!-- SPELLS, RUNES -->
                                 <div class="grid w-12 grid-cols-2">
                                     {#each [riotService.spellUrl(participant.spells[0]), participant.perks[1], riotService.spellUrl(participant.spells[1]), participant.perks[0]] as src}
-                                        <img class="{styles.iconSize.medium} rounded" {src} alt="spell 2" />
+                                    <img class="{styles.iconSize.medium} rounded" {src} alt="spell 2" />
                                     {/each}
                                 </div>
+                            </div>
+
                                 <a
                                     href={`/summoners/${rawServer(server)}/${participant.summonerName}`}
-                                    class="w-32 hover:underline {participant.summonerName === game.participants[game.participantNumber].summonerName
+                                    class="w-32 hover:underline col-span-2 md:truncate md:text-ellipsis{participant.summonerName === game.participants[game.participantNumber].summonerName
                                         ? 'font-bold'
                                         : ''}
                                         {game.gameMode === 'CLASSIC' ? (participant.teamPosition === '' ? 'text-red-600' : 'text-white') : 'text-white'}"
@@ -247,16 +257,16 @@
                                 </a>
 
                                 <!-- KDA -->
-                                <div class="w-28 text-center">
+                                <div class="md:w-28 text-center">
                                     <p>{participant.kills} / {participant.deaths} / {participant.assists}</p>
                                     <p><strong>{kda(participant.kills, participant.deaths, participant.assists)}</strong> KDA</p>
                                 </div>
 
-                                <!-- KDA -->
-                                <div class="grid w-48 grid-cols-3 text-center">
-                                    <p><strong>{participant.cs}</strong></p>
+                                <!-- CS, GOLD, VISION -->
+                                <div class="md:grid md:w-48 grid-cols-3 text-center m-2">
+                                    <p><strong>{participant.cs} cs</strong></p>
                                     <p><strong>{parse_k_num(participant.gold, 1)}</strong></p>
-                                    <p><strong>{participant.visionScore}</strong></p>
+                                    <p><strong>{participant.visionScore} 👁</strong></p>
                                 </div>
 
                                 <!-- DAMAGES -->
@@ -291,7 +301,7 @@
                                 </div>
 
                                 <!-- ITEMS -->
-                                <div class="ml-2 grid grid-cols-7">
+                                <div class="ml-2 grid grid-cols-7 col-span-3">
                                     {#each [0, 1, 2, 3, 4, 5] as itemId}
                                         <span>
                                             {#if participant.items[itemId]}
