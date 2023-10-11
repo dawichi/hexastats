@@ -21,7 +21,7 @@
 
 <div class="animate__animated animate__fadeIn relative col-span-2 flex items-center justify-between px-2 text-center">
     <!-- SPELLS, RUNES -->
-    <article class="grid grid-cols-2 gap-x-1 gap-y-2">
+    <article class="hidden md:grid grid-cols-2 gap-x-1 gap-y-2">
         {#each [riotService.spellUrl(game.spells[0]), game.perks[1], riotService.spellUrl(game.spells[1]), game.perks[0]] as src}
             <img class="{styles.iconSize.large} rounded" {src} alt="spell 2" />
         {/each}
@@ -29,6 +29,7 @@
 
     <!-- KDA, CS, VISION -->
     <article>
+    <p><strong class="md:hidden">{game.kills} / {game.deaths} / {game.assists}</strong></p>
         <p><strong>{kda(game.kills, game.deaths, game.assists)}</strong> KDA</p>
         <p><strong>{game.cs}</strong> CS</p>
         <p><strong>{((game.cs * 60) / game.gameDuration).toFixed(1)}</strong> cs/min</p>
@@ -36,19 +37,21 @@
     </article>
 
     <!-- ITEMS -->
-    <article class="flex flex-col">
-        <p>{game.kills} / {game.deaths} / {game.assists}</p>
-        <ItemsGrid items={game.items} ward={game.ward} />
-    </article>
+        <article class="hidden sm:flex flex-col">
+            <p>{game.kills} / {game.deaths} / {game.assists}</p>
+                <ItemsGrid items={game.items} ward={game.ward} />
+        </article>
 
     <!-- LIST OF SUMMONERS YOU PLAYED WITH -->
     <div class="columns-2 p-1">
         {#each game.participants as participant, idx}
             <span class="flex items-center">
-                <img class="{styles.iconSize.medium} rounded" src={riotService.champImage(participant.championName)} alt="champion" />
-                <span class="ml-1 h-5 w-20 overflow-hidden text-ellipsis whitespace-nowrap text-left text-sm">
+                <a class="hover:scale-125" href={`/summoners/${rawServer(server)}/${participant.summonerName}/1`}>
+                    <img class="{styles.iconSize.medium} rounded" src={riotService.champImage(participant.championName)} alt="champion" />
+                </a>
+                <span class="hidden md:block md:truncate md:ml-1 md:h-5 md:w-20 overflow-hidden md:text-ellipsis whitespace-nowrap text-left text-sm">
                     <a
-                        href={`/summoners/${rawServer(server)}/${participant.summonerName}`}
+                        href={`/summoners/${rawServer(server)}/${participant.summonerName}/1`}
                         class="hover:underline {game.participantNumber === idx ? 'font-bold' : ''}"
                     >
                         {participant.summonerName}

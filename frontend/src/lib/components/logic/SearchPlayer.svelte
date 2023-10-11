@@ -34,7 +34,7 @@
         username = ''
 
         if (playerData) {
-            return goto(`/summoners/${servers[serverIdx]}/${playerData.alias}`)
+            return goto(`/summoners/${servers[serverIdx]}/${playerData.alias}/1`)
         }
 
         error = true

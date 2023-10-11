@@ -66,18 +66,18 @@
             rowStyle(game).row, //row color
         )}
     >
-        <!-- Left part, heaf of the row, containing the champ image and some data -->
+        <!-- Left part, head of the row, containing the champ image and some data -->
         <div>
             <div class="relative text-xs text-white transition sm:text-base {expanded ? 'h-80' : 'h-32'}">
                 <div class="t-0 l-0 absolute h-full w-full bg-cover bg-top" style="background-image: url({riotService.champSplash(game.championName)})" />
                 <div class="t-0 l-0 absolute h-full w-full" style="background-image: linear-gradient(to top right, #000000bd , #ffffff00)" />
-                <div class="absolute top-2 left-3">
-                    <img src={riotService.teamPositionIcon(game.teamPosition)} alt="champ" style="width: 42px; height: 42px;" />
+                <div class="absolute top-1 left-1 md:top-2 md:left-3">
+                    <img src={riotService.teamPositionIcon(game.teamPosition)} alt="champ" class="positionIcon" />
                 </div>
-                <span class="absolute top-3 left-14 text-center text-xl">{game.champLevel}</span>
-                <span class="absolute bottom-4 left-2 sm:text-sm">{formatDate(game.gameCreation, game.gameDuration)}</span>
-                <span class="absolute bottom-8 left-2">{game.gameMode}</span>
-                <span class="absolute bottom-0 left-2 text-xs">{game.matchId}</span>
+                <span class="absolute top-1.5 left-9 md:top-3 md:left-14 text-center text-lg md:text-xl">{game.champLevel}</span>
+                <span class="absolute bottom-9 left-1 md:bottom-8 md:left-2">{game.gameMode}</span>
+                <span class="absolute bottom-5 left-1 md:bottom-4 md:left-2 sm:text-sm">{formatDate(game.gameCreation, game.gameDuration)}</span>
+                <span class="absolute hidden left-1 md:bottom-0 md:left-2 text-xs">{game.matchId}</span>
                 <span class="absolute bottom-1 right-2">
                     {secondsToMin(game.gameDuration)}
                 </span>
@@ -105,4 +105,16 @@
     .transition {
         transition: all 0.3s ease-in-out;
     }
+    .positionIcon{
+        width: 32px;
+        height: 32px;
+    }
+    @media (min-width: 768px) {
+        .positionIcon{
+            width: 42px;
+            height: 42px;
+        }
+    }
+
+
 </style>
