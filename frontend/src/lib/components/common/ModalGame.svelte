@@ -97,9 +97,9 @@
             </div>
             <!-- RIGHT COL - LIST PARTICIPANTS -->
             {#if game.gameMode === 'CHERRY'}
-                <div class="animate__animated animate__fadeIn relative col-span-2 grid grid-cols-2 px-2 text-center">
+                <div class="animate__animated animate__fadeIn relative col-span-2 xl:grid grid-cols-2 px-2 text-center">
                     {#each [0, 2, 4, 6] as teamIndex}
-                        <section class="grid grid-cols-2">
+                        <section class="grid md:grid-cols-2">
                             {#each game.participants.slice(teamIndex, teamIndex + 2) as participant}
                                 <div
                                     class="m-2 grid grid-cols-3 gap-3 {participant.isEarlySurrender
@@ -146,7 +146,7 @@
                                     </a>
 
                                     <!-- KDA -->
-                                    <div class="w-28 text-center">
+                                    <div class="xl:w-28 text-center">
                                         <p>{participant.kills} / {participant.deaths} / {participant.assists}</p>
                                         <p><strong>{kda(participant.kills, participant.deaths, participant.assists)}</strong> KDA</p>
                                     </div>
@@ -161,7 +161,7 @@
                                         <!-- DAMAGE DEALT -->
                                         <div class="flex flex-col items-center">
                                             <span class="text-xs">{parse_k_num(participant.champ.damageDealt)}</span>
-                                            <div class="h-2 w-20 rounded-sm bg-zinc-300 dark:bg-zinc-600">
+                                            <div class="h-2 w-20 xl:w-14 2xl:w-20 rounded-sm bg-zinc-300 dark:bg-zinc-600">
                                                 <div
                                                     title="Damage dealt: {participant.champ.damageDealt}"
                                                     class="h-2 rounded-sm bg-red-400"
@@ -174,7 +174,7 @@
 
                                         <!-- DAMAGE TAKEN -->
                                         <div class="flex flex-col items-center">
-                                            <div class="h-2 w-20 rounded-sm bg-zinc-300 dark:bg-zinc-600">
+                                            <div class="h-2 w-20 xl:w-14 2xl:w-20 rounded-sm bg-zinc-300 dark:bg-zinc-600">
                                                 <div
                                                     title="Damage taken: {participant.champ.damageTaken}"
                                                     class="h-2 rounded-sm bg-blue-400"
