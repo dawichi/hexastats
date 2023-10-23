@@ -29,7 +29,7 @@
 
     <!-- KDA, CS, VISION -->
     <article>
-    <p><strong class="md:hidden">{game.kills} / {game.deaths} / {game.assists}</strong></p>
+    <p><strong class="sm:hidden">{game.kills} / {game.deaths} / {game.assists}</strong></p>
         <p><strong>{kda(game.kills, game.deaths, game.assists)}</strong> KDA</p>
         <p><strong>{game.cs}</strong> CS</p>
         <p><strong>{((game.cs * 60) / game.gameDuration).toFixed(1)}</strong> cs/min</p>

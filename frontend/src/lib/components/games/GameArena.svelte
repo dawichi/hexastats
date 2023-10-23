@@ -28,7 +28,7 @@
 
 <div class="animate__animated animate__fadeIn relative col-span-2 flex items-center justify-between px-2 text-center">
     <!-- AUGMENTS -->
-    <article class="grid grid-cols-2 gap-x-1 gap-y-2">
+    <article class="hidden md:grid grid-cols-2 gap-x-1 gap-y-2">
         {#each game.augments as augment}
             <img title="{augment.tooltip}" class="rounded-full bg-black {styles.iconSize.large} rounded" src={riotService.augmentURL(augment.iconLarge)} alt="item" use:tooltip />
         {/each}
@@ -36,12 +36,13 @@
 
     <!-- KDA, PLACEMENT -->
     <article>
+        <p><strong class="sm:hidden">{game.kills} / {game.deaths} / {game.assists}</strong></p>
         <p><strong>{kda(game.kills, game.deaths, game.assists)}</strong> KDA</p>
         <p class="text-3xl"><strong>{game.placement}</strong>º</p>
     </article>
 
     <!-- ITEMS -->
-    <article class="hidden flex-col sm:flex">
+    <article class="hidden sm:flex flex-col ">
         <p>{game.kills} / {game.deaths} / {game.assists}</p>
         <ItemsGrid items={game.items} ward={game.ward} />
     </article>
@@ -52,10 +53,12 @@
         <div class="py-2">
             {#each group as participant, idx2}
             <div class="flex items-center">
-                <img class="{styles.iconSize.medium} rounded" src={riotService.champImage(participant.championName)} alt="champion" />
-                <span class="ml-1 h-5 w-20 overflow-hidden text-ellipsis whitespace-nowrap text-left text-sm">
+                <a class="hover:scale-125" href={`/summoners/${rawServer(server)}/${participant.summonerName}/1`}>
+                    <img class="{styles.iconSize.medium} rounded" src={riotService.champImage(participant.championName)} alt="champion" />
+                </a>
+                <span class="hidden md:block md:truncate md:ml-1 md:h-5 md:w-20 overflow-hidden md:text-ellipsis whitespace-nowrap text-left text-sm">
                     <a
-                        href={`/summoners/${rawServer(server)}/${participant.summonerName}`}
+                        href={`/summoners/${rawServer(server)}/${participant.summonerName}/1`}
                         class="hover:underline {participant.summonerName === game.participants[game.participantNumber].summonerName ? 'font-bold' : ''}"
                     >
                         {participant.summonerName}
