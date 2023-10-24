@@ -15,7 +15,7 @@
 <nav class="bg-zinc-800 text-white shadow shadow-zinc-700 dark:bg-gray-900 dark:shadow-zinc-700">
     <div class="mx-auto flex h-20 items-center justify-between px-4 lg:container">
         <a href="/" class="hidden items-center lg:flex">
-            <img src="/favicon.ico" class="mr-3 h-9" alt="Logo" />
+            <img src="/favicon.svg" class="mr-3 h-9" alt="Logo" />
             <h1 class="ml-2 justify-between text-2xl tracking-wider">Hexastats</h1>
         </a>
 
@@ -24,7 +24,7 @@
             <i class="bi bi-list" />
         </button>
 
-        <img src="/favicon.ico" class="mr-3 block h-9 lg:hidden" alt="Logo" />
+        <img src="/favicon.svg" class="mr-3 block h-9 lg:hidden" alt="Logo" />
 
         <ul class="hidden flex-row justify-between space-x-4 p-4 lg:flex xl:space-x-8">
             {#each navigation as item}
