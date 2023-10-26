@@ -1,5 +1,5 @@
 import { validateServer } from '$lib/config'
-import type { GameArenaDto, GameDto, GameNormalDto, MasteryDto, RankDataDto, StatsDto, SummonerDto } from '$lib/types'
+import type { GameArenaDto, GameNormalDto, MasteryDto, RankDataDto, StatsDto } from '$lib/types'
 
 import { PUBLIC_IS_DEVELOPMENT } from '$env/static/public'
 

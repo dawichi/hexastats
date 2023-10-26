@@ -61,6 +61,7 @@
             {#if showServerList}
                 <ul class="absolute z-10 mt-2 w-full overflow-auto rounded-md bg-white shadow-xl dark:bg-zinc-800 dark:shadow-zinc-600">
                     <div class="grid grid-cols-2 gap-x-1">
+                        <!-- svelte-ignore a11y-no-static-element-interactions -->
                         {#each servers as server, idx}
                             <!-- svelte-ignore a11y-click-events-have-key-events -->
                             <div
