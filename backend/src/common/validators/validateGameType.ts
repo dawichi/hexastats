@@ -24,6 +24,7 @@ export const validateGameType = (queueId: number): string => {
         1020: 'One for All',
         1090: 'Normal TFT',
         1100: 'Ranked TFT',
+        1300: 'Nexus Blitz',
         1400: 'Spellbook',
         1700: 'Arena',
         1900: 'Pick URF',
