@@ -3,7 +3,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { SummonersService } from './summoners.service'
 import { ApiCustomResponse, ParamServer, ParamSummonerName, QueryLimit, QueryOffset, QueryQueueType } from '../../common/decorators'
 import { GameArenaDto, GameDetailDto, GameDto, GameNormalDto, MasteryDto, PlayerDto, RankDataDto, StatsDto } from '../../common/types'
-import { LimitPipe, OffsetPipe, QueueTypePipe } from '../../common/pipes'
+import { LimitPipe, OffsetPipe, QueueTypePipe, ServerPipe } from '../../common/pipes'
 import { queueTypeDto } from '../riot/riot.service'
 
 @ApiTags('summoners')
@@ -12,44 +12,36 @@ export class SummonersController {
     constructor(private readonly summonersService: SummonersService) {}
 
     @Get('/:server/:summonerName')
-    @ApiOperation({
-        summary: 'Get basic data & ranking info',
-    })
+    @ApiOperation({ summary: 'Get basic data & ranking info' })
     @ApiCustomResponse(RankDataDto)
     @ParamServer()
     @ParamSummonerName()
-    async getSummoner(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<RankDataDto> {
+    async getSummoner(@Param('server', ServerPipe) server: string, @Param('summonerName') summonerName: string): Promise<RankDataDto> {
         return this.summonersService.getSummoner(server, encodeURI(summonerName.trim()))
     }
 
     @Get('/:server/:summonerName/level-image')
-    @ApiOperation({
-        summary: 'Get only basic data (skip ranking info)',
-    })
+    @ApiOperation({ summary: 'Get only basic data (skip ranking info)' })
     @ApiCustomResponse(PlayerDto)
     @ParamServer()
     @ParamSummonerName()
-    async getLevelImage(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<PlayerDto> {
+    async getLevelImage(@Param('server', ServerPipe) server: string, @Param('summonerName') summonerName: string): Promise<PlayerDto> {
         return this.summonersService.getLevelImage(server, encodeURI(summonerName.trim()))
     }
 
     @Get('/:server/:summonerName/masteries')
-    @ApiOperation({
-        summary: 'Get masteries',
-    })
+    @ApiOperation({ summary: 'Get masteries' })
     @ApiCustomResponse([MasteryDto])
     @ParamServer()
     @ParamSummonerName()
-    async getMasteries(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<MasteryDto[]> {
+    async getMasteries(@Param('server', ServerPipe) server: string, @Param('summonerName') summonerName: string): Promise<MasteryDto[]> {
         const masteries_limit = 12
 
         return this.summonersService.getMasteries(server, encodeURI(summonerName.trim()), masteries_limit)
     }
 
     @Get('/:server/:summonerName/games')
-    @ApiOperation({
-        summary: 'Get games',
-    })
+    @ApiOperation({ summary: 'Get games' })
     @ApiCustomResponse([GameDto]) // TODO: Change to GameNormalDto | GameArenaDto
     @ParamServer()
     @ParamSummonerName()
@@ -57,7 +49,7 @@ export class SummonersController {
     @QueryOffset()
     @QueryQueueType()
     async getGames(
-        @Param('server') server: string,
+        @Param('server', ServerPipe) server: string,
         @Param('summonerName') summonerName: string,
         @Query('limit', LimitPipe) limit: number,
         @Query('offset', OffsetPipe) offset: number,
@@ -67,14 +59,12 @@ export class SummonersController {
     }
 
     @Get('/:server/:summonerName/games/:matchId')
-    @ApiOperation({
-        summary: 'Get game detail',
-    })
+    @ApiOperation({ summary: 'Get game detail' })
     @ApiCustomResponse(GameDetailDto)
     @ParamServer()
     @ParamSummonerName()
     async getGameDetail(
-        @Param('server') server: string,
+        @Param('server', ServerPipe) server: string,
         @Param('summonerName') summonerName: string,
         @Param('matchId') matchId: string,
     ): Promise<GameDetailDto> {
@@ -82,24 +72,20 @@ export class SummonersController {
     }
 
     @Get('/:server/:summonerName/stats')
-    @ApiOperation({
-        summary: 'Get stats',
-    })
+    @ApiOperation({ summary: 'Get stats' })
     @ApiCustomResponse([StatsDto])
     @ParamServer()
     @ParamSummonerName()
-    async getStats(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<StatsDto> {
+    async getStats(@Param('server', ServerPipe) server: string, @Param('summonerName') summonerName: string): Promise<StatsDto> {
         return this.summonersService.getStats(server, encodeURI(summonerName.trim()))
     }
 
     @Get('/:server/:summonerName/stats/add')
-    @ApiOperation({
-        summary: 'Generate new stats with + 10 extra games',
-    })
+    @ApiOperation({ summary: 'Generate new stats with + 10 extra games' })
     @ApiCustomResponse([StatsDto])
     @ParamServer()
     @ParamSummonerName()
-    async addStats(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<StatsDto> {
+    async addStats(@Param('server', ServerPipe) server: string, @Param('summonerName') summonerName: string): Promise<StatsDto> {
         return this.summonersService.addStats(server, encodeURI(summonerName.trim()))
     }
 }
