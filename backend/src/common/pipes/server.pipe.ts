@@ -1,6 +1,9 @@
 import { PipeTransform, Injectable, BadRequestException } from '@nestjs/common'
 import { ServerSchema, ServerType } from '../schemas'
 
+/**
+ * server must be one of the expected values
+ */
 @Injectable()
 export class ServerPipe implements PipeTransform {
     transform(value: string): ServerType {
