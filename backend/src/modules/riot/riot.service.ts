@@ -14,9 +14,9 @@ import { perkUrl, runeUrl } from '../../common/utils/runeUrl'
 import { serverRegion, winrate } from '../../common/utils'
 import { validateGameType } from '../../common/validators'
 import { GameArenaDto, GameDetailDto, GameDto, GameNormalDto, MasteryDto, RankDto } from '../../common/types'
-import { RiotChampionsDto, RiotGameDto, RiotRankDto, RiotSummonerDto } from './types'
+import { RiotChampionsDto, RiotGameDto, RiotSummonerDto } from './types'
 import { augmentsData } from '../../common/data/augments'
-import { RiotMasterySchema, RiotMasteryType } from 'src/common/schemas'
+import { RiotMasterySchema, RiotMasteryType, RiotRankSchema, RiotRankType } from 'src/common/schemas'
 
 export type queueTypeDto = 'ranked' | 'normal' | 'all'
 
@@ -168,7 +168,16 @@ export class RiotService {
         this.LOGGER.log('Getting classification data in ranked queues')
 
         // This can be: [], [solo], [flex], [arena], [solo, flex], ...
-        const rank_data = await this.httpGet<RiotRankDto[]>(this.URLS.rank(server, summoner_id))
+        const rank_data = await this.httpGet<RiotRankType[]>(this.URLS.rank(server, summoner_id))
+
+        for (const rank of rank_data) {
+            const result = RiotRankSchema.safeParse(rank)
+
+            if (!result.success) {
+                this.LOGGER.error('Error parsing rank', rank)
+                throw new InternalServerErrorException('Problem with Riot Games rank endpoint')
+            }
+        }
 
         // Default object in case of unranked in any queue
         const league_default: RankDto = {
@@ -181,7 +190,7 @@ export class RiotService {
             promos: 'NNN',
         }
 
-        const formatRankData = (data: RiotRankDto): RankDto => {
+        const formatRankData = (data: RiotRankType): RankDto => {
             const rank = data.queueType === 'CHERRY' ? 'Unranked' : data.tier ? `${data.tier} ${data.rank}` : 'Unranked'
             const image = data.queueType === 'CHERRY' ? 'unranked.png' : data.tier ? `${data.tier.toLowerCase()}.png` : 'unranked.png'
 
@@ -189,9 +198,9 @@ export class RiotService {
                 rank,
                 image,
                 lp: data.leaguePoints,
-                win: data.wins,
+                win: data.winss,
                 lose: data.losses,
-                winrate: winrate(data['wins'], data['losses']),
+                winrate: winrate(data['winss'], data['losses']),
                 promos: data?.miniSeries?.progress ?? '',
             }
         }
