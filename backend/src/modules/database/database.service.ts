@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Redis } from '@upstash/redis'
 import { ConfigService } from '@nestjs/config'
-
 import { StatsDto } from '../../common/types'
 import { PrintKeysDto } from './types/responses.dto'
 

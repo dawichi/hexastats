@@ -16,7 +16,7 @@ import { validateGameType } from '../../common/validators'
 import { GameArenaDto, GameDetailDto, GameDto, GameNormalDto, MasteryDto, RankDto } from '../../common/types'
 import { RiotChampionsDto, RiotGameDto, RiotSummonerDto } from './types'
 import { augmentsData } from '../../common/data/augments'
-import { RiotMasterySchema, RiotMasteryType, RiotRankSchema, RiotRankType } from 'src/common/schemas'
+import { RiotMasterySchema, RiotMasteryType, RiotRankSchema, RiotRankType } from '../../common/schemas'
 
 export type queueTypeDto = 'ranked' | 'normal' | 'all'
 
