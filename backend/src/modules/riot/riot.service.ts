@@ -1,13 +1,22 @@
 import { HttpService } from '@nestjs/axios'
-import { BadRequestException, HttpException, HttpStatus, Injectable, Logger, NotFoundException } from '@nestjs/common'
+import {
+    BadRequestException,
+    HttpException,
+    HttpStatus,
+    Injectable,
+    InternalServerErrorException,
+    Logger,
+    NotFoundException,
+} from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
 import { perkUrl, runeUrl } from '../../common/utils/runeUrl'
 import { serverRegion, winrate } from '../../common/utils'
 import { validateGameType } from '../../common/validators'
 import { GameArenaDto, GameDetailDto, GameDto, GameNormalDto, MasteryDto, RankDto } from '../../common/types'
-import { RiotChampionsDto, RiotGameDto, RiotMasteryDto, RiotRankDto, RiotSummonerDto } from './types'
+import { RiotChampionsDto, RiotGameDto, RiotRankDto, RiotSummonerDto } from './types'
 import { augmentsData } from '../../common/data/augments'
+import { RiotMasterySchema, RiotMasteryType } from 'src/common/schemas'
 
 export type queueTypeDto = 'ranked' | 'normal' | 'all'
 
@@ -26,10 +35,13 @@ export class RiotService {
     }
 
     // These properties doesnt usually change, so they are generated in the constructor and stored instead of fetching them every time
-    version: string // current version of the game
+    version = '13.23.1' // current version of the game
     private champions: Record<string, string> = {} // {champ_id => champ_name}
 
-    constructor(private readonly configService: ConfigService, private readonly httpService: HttpService) {
+    constructor(
+        private readonly configService: ConfigService,
+        private readonly httpService: HttpService,
+    ) {
         this.init()
     }
 
@@ -69,7 +81,7 @@ export class RiotService {
         try {
             this.LOGGER.debug(`Fetching ${url}`)
             return (await lastValueFrom(this.httpService.get(url, this.HEADERS))).data
-        } catch (error) {
+        } catch (error: any) {
             this.LOGGER.error(`Fetching ${url}`, error)
 
             if (error.response.status === 429)
@@ -109,7 +121,7 @@ export class RiotService {
      */
     async getMasteries(summonerName: string, server: string, masteriesLimit: number): Promise<MasteryDto[]> {
         const summoner_id = (await this.getBasicInfo(server, summonerName)).id
-        const allMasteries = await this.httpGet<RiotMasteryDto[]>(this.URLS.masteries(server, summoner_id))
+        const allMasteries = await this.httpGet<RiotMasteryType[]>(this.URLS.masteries(server, summoner_id))
 
         // This response cointains all (+140) champions, so we take the {masteriesLimit} first ones
         this.LOGGER.log(`Found ${allMasteries.length} masteries, returning ${masteriesLimit}`)
@@ -117,6 +129,15 @@ export class RiotService {
         // Slice result if exceeds the limit
         if ((masteriesLimit ?? 0) < allMasteries.length) {
             allMasteries.length = masteriesLimit
+        }
+
+        for (const mastery of allMasteries) {
+            const result = RiotMasterySchema.safeParse(mastery)
+
+            if (!result.success) {
+                this.LOGGER.error('Error parsing mastery', mastery)
+                throw new InternalServerErrorException('Problem with Riot Games masteries endpoint')
+            }
         }
 
         return allMasteries.map(mastery => ({
