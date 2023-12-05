@@ -14,9 +14,6 @@ export const RiotRankSchema = z.object({
     inactive: z.boolean(),
     freshBlood: z.boolean(),
     hotStreak: z.boolean(),
-    miniSeries: z.object({
-        progress: z.string(),
-    }),
 })
 
 export type RiotRankType = z.infer<typeof RiotRankSchema>

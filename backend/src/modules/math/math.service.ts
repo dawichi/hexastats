@@ -36,30 +36,31 @@ export class MathService {
                     continue
                 }
 
-                if (!indexByName[player.summonerName]) {
+                const element = indexByName[player.summonerName]
+
+                if (!element) {
                     indexByName[player.summonerName] = {
                         wins: game.win ? 1 : 0,
                         games: 1,
                     }
                 } else {
-                    indexByName[player.summonerName].wins += game.win ? 1 : 0
-                    indexByName[player.summonerName].games += 1
+                    element.wins += game.win ? 1 : 0
+                    element.games += 1
                 }
             }
         }
 
         // Remove your own name from the list
-        delete indexByName[games[0].participants[games[0].participantNumber].summonerName]
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        delete indexByName[games[0]!.participants[games[0]!.participantNumber]!.summonerName]
 
-        const result = Object.keys(indexByName)
-            .map(key => ({
+        return Object.entries(indexByName)
+            .map(([key, data]) => ({
                 name: key,
-                games: indexByName[key].games,
-                wins: indexByName[key].wins,
+                games: data.games,
+                wins: data.wins,
             }))
             .sort((a, b) => b.games - a.games)
-
-        return result
     }
 
     /**
@@ -80,9 +81,10 @@ export class MathService {
         for (const game of games) {
             const key = game.championName
             const perMin = (x: number) => Number(((x * 60) / game.gameDuration).toFixed(1))
+            const champ = indexByName[key]
 
             // 1. Champ not indexed yet -> create it
-            if (!indexByName[key]) {
+            if (!champ) {
                 indexByName[key] = {
                     championName: key,
                     games: 1,
@@ -99,25 +101,23 @@ export class MathService {
             }
 
             // 2. Champ already indexed -> update it
-            indexByName[key].kda = avg(indexByName[key].kda, kda(game.kills, game.deaths, game.assists), indexByName[key].games)
-            indexByName[key].wins += game.win ? 1 : 0
-            indexByName[key].goldMin = avg(indexByName[key].goldMin, perMin(game.gold), indexByName[key].games)
-            indexByName[key].csMin = avg(indexByName[key].csMin, perMin(game.cs), indexByName[key].games)
-            indexByName[key].visionMin = avg(indexByName[key].visionMin, perMin(game.visionScore), indexByName[key].games)
-            indexByName[key].killParticipation = avg(indexByName[key].killParticipation, game.killParticipation, indexByName[key].games)
-            indexByName[key].damageDealt = avg(indexByName[key].damageDealt, game.damageDealt, indexByName[key].games)
-            indexByName[key].damageTaken = avg(indexByName[key].damageTaken, game.damageTaken, indexByName[key].games)
+            champ.kda = avg(champ.kda, kda(game.kills, game.deaths, game.assists), champ.games)
+            champ.wins += game.win ? 1 : 0
+            champ.goldMin = avg(champ.goldMin, perMin(game.gold), champ.games)
+            champ.csMin = avg(champ.csMin, perMin(game.cs), champ.games)
+            champ.visionMin = avg(champ.visionMin, perMin(game.visionScore), champ.games)
+            champ.killParticipation = avg(champ.killParticipation, game.killParticipation, champ.games)
+            champ.damageDealt = avg(champ.damageDealt, game.damageDealt, champ.games)
+            champ.damageTaken = avg(champ.damageTaken, game.damageTaken, champ.games)
 
             // This needs to be done after the kda calculation, because it depends on it
-            indexByName[key].games += 1
+            champ.games += 1
         }
 
         // Then, convert the index to an array
-        const champs: ChampStatsDto[] = Object.keys(indexByName)
-            .map(key => indexByName[key])
+        return Object.entries(indexByName)
+            .map(([key, stats]) => stats)
             .sort((a, b) => b.games - a.games)
-
-        return champs
     }
 
     /**
@@ -141,10 +141,15 @@ export class MathService {
             // Don't use ?? as it comes as '' instead of null or undefined
             const key = game.teamPosition || 'MIDDLE'
 
-            indexByPosition[key].games++
-            indexByPosition[key].wins += game.win ? 1 : 0
+            const champ = indexByPosition[key]
+
+            if (champ) {
+                champ.games++
+                champ.wins += game.win ? 1 : 0
+            }
         }
-        return Object.keys(indexByPosition).map(key => indexByPosition[key])
+
+        return Object.entries(indexByPosition).map(([key, stats]) => stats)
     }
 
     /**
@@ -241,8 +246,12 @@ export class MathService {
 
         // POSITIONS
         for (const [idx, position_B] of statsB.statsByPosition.entries()) {
-            statsA.statsByPosition[idx].games += position_B.games
-            statsA.statsByPosition[idx].wins += position_B.wins
+            const indexed = statsA.statsByPosition[idx]
+
+            if (indexed) {
+                indexed.games += position_B.games
+                indexed.wins += position_B.wins
+            }
         }
 
         // FRIENDS

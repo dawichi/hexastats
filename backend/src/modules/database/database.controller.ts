@@ -46,7 +46,7 @@ export class DatabaseController {
     })
     @ParamServer()
     @ParamSummonerName()
-    async getStats(@Param('server', ServerPipe) server: string, @Param('summonerName') summonerName: string): Promise<StatsDto> {
+    async getStats(@Param('server', ServerPipe) server: string, @Param('summonerName') summonerName: string): Promise<StatsDto | null> {
         return this.databaseService.getStats(server, summonerName)
     }
 

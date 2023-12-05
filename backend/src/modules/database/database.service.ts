@@ -5,6 +5,8 @@ import { ConfigService } from '@nestjs/config'
 import { StatsDto } from '../../common/types'
 import { PrintKeysDto } from './types/responses.dto'
 
+let is_redis_disabled = false
+
 /**
  * This decorator wraps all the methods providing:
  * - A default response in case of redis being disabled in .env
@@ -15,11 +17,12 @@ import { PrintKeysDto } from './types/responses.dto'
 function Wrapper(response_on_error: any = null) {
     return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
         const originalMethod = descriptor.value
+        const LOGGER = new Logger(target.constructor.name)
 
         descriptor.value = async function (...args: any[]) {
             // Before running any method, check if redis is disabled
-            if (this.REDIS_DISABLED) {
-                this.LOGGER.warn('REDIS: Redis is disabled')
+            if (is_redis_disabled) {
+                LOGGER.warn('REDIS: Redis is disabled')
                 return response_on_error
             }
 
@@ -27,7 +30,7 @@ function Wrapper(response_on_error: any = null) {
             try {
                 return originalMethod.apply(this, args)
             } catch (err) {
-                this.LOGGER.error('Error with Redis!', err)
+                LOGGER.error('Error with Redis!', err)
                 return response_on_error
             }
         }
@@ -42,6 +45,7 @@ export class DatabaseService {
 
     constructor(private readonly configService: ConfigService) {
         this.REDIS_DISABLED = configService.get<string>('UPSTASH_REDIS_REST_DISABLE') === 'true'
+        is_redis_disabled = this.REDIS_DISABLED
     }
 
     /**
@@ -70,7 +74,7 @@ export class DatabaseService {
     @Wrapper()
     async getStats(server: string, summonerName: string): Promise<StatsDto | null> {
         const key = `${server}:${summonerName}:stats`
-        const data: StatsDto = await this.REDIS.get(key)
+        const data: StatsDto | null = await this.REDIS.get(key)
 
         if (!data) {
             this.LOGGER.warn(`REDIS: Stats not found! Key: ${key}`)

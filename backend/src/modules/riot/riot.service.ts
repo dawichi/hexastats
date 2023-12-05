@@ -23,8 +23,8 @@ export type queueTypeDto = 'ranked' | 'normal' | 'all'
 @Injectable()
 export class RiotService {
     // Constants
-    private readonly API_KEY = this.configService.get<string>('RIOT_API_KEY')
-    private readonly HEADERS = { headers: { 'X-Riot-Token': this.API_KEY } }
+    private readonly API_KEY: string
+    private readonly HEADERS: { headers: { 'X-Riot-Token': string } }
     private readonly LOGGER = new Logger(this.constructor.name)
     private readonly URLS = {
         summoner: (server: string, name: string) => `https://${server}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${name}`,
@@ -38,10 +38,9 @@ export class RiotService {
     version = '13.23.1' // current version of the game
     private champions: Record<string, string> = {} // {champ_id => champ_name}
 
-    constructor(
-        private readonly configService: ConfigService,
-        private readonly httpService: HttpService,
-    ) {
+    constructor(private readonly configService: ConfigService, private readonly httpService: HttpService) {
+        this.API_KEY = String(this.configService.get<string>('RIOT_API_KEY'))
+        this.HEADERS = { headers: { 'X-Riot-Token': this.API_KEY } }
         this.init()
     }
 
@@ -59,7 +58,7 @@ export class RiotService {
         const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
         const versions = await this.httpGet<string[]>(url)
 
-        this.version = versions[0]
+        this.version = String(versions[0])
 
         /**
          * 2. Generate the table [champ_id => champ_name]
@@ -67,8 +66,8 @@ export class RiotService {
         const url2 = `https://ddragon.leagueoflegends.com/cdn/${this.version}/data/en_US/champion.json`
         const { data } = await this.httpGet<RiotChampionsDto>(url2)
 
-        Object.keys(data).forEach(champion_name => {
-            this.champions[data[champion_name].key] = data[champion_name].id
+        Object.entries(data).forEach(([champion_name, champion_data]) => {
+            this.champions[champion_data.key] = champion_name
         })
     }
 
@@ -141,7 +140,7 @@ export class RiotService {
         }
 
         return allMasteries.map(mastery => ({
-            name: this.champions[mastery.championId],
+            name: String(this.champions[mastery.championId]),
             image: `https://ddragon.leagueoflegends.com/cdn/${this.version}/img/champion/${this.champions[mastery.championId]}.png`,
             level: mastery.championLevel,
             points: mastery.championPoints,
@@ -201,7 +200,7 @@ export class RiotService {
                 win: data.wins,
                 lose: data.losses,
                 winrate: winrate(data.wins, data.losses),
-                promos: data?.miniSeries?.progress ?? '',
+                promos: 'NNN',
             }
         }
 
@@ -248,7 +247,7 @@ export class RiotService {
         this.LOGGER.log(is_last ? 'Yes, it is' : 'No, it is not')
         return {
             is_last,
-            last_game_id: gameIDs_list[0],
+            last_game_id: String(gameIDs_list[0]),
         }
     }
 
@@ -260,7 +259,13 @@ export class RiotService {
      */
     formatGame(rawGame: RiotGameDto, puuid: string): GameNormalDto | GameArenaDto {
         const idx = rawGame.metadata.participants.indexOf(puuid)
+        const participant = rawGame.info.participants[idx]
         const [initialTeamMate, lastTeamMate] = idx > 4 ? [5, 9] : [0, 4]
+
+        if (!participant) {
+            this.LOGGER.error(`Error formatting game: ${rawGame.metadata.matchId}`)
+            throw new InternalServerErrorException('Problem with Riot Games game endpoint')
+        }
 
         const teamKills: number = rawGame.info.participants
             .slice(initialTeamMate, lastTeamMate + 1)
@@ -269,37 +274,30 @@ export class RiotService {
 
         const base_game: GameDto = {
             matchId: rawGame.metadata.matchId,
-            win: rawGame.info.participants[idx].win,
+            win: participant.win,
             participantNumber: idx,
             gameCreation: rawGame.info.gameCreation,
             gameDuration: rawGame.info.gameDuration,
             gameMode: validateGameType(rawGame.info.queueId),
-            teamPosition: rawGame.info.participants[idx].teamPosition,
-            isEarlySurrender: rawGame.info.participants[idx].gameEndedInEarlySurrender,
-            visionScore: rawGame.info.participants[idx].visionScore,
-            champLevel: rawGame.info.participants[idx].champLevel,
-            championName: rawGame.info.participants[idx].championName,
-            kills: rawGame.info.participants[idx].kills,
-            deaths: rawGame.info.participants[idx].deaths,
-            assists: rawGame.info.participants[idx].assists,
-            doubleKills: rawGame.info.participants[idx].doubleKills,
-            tripleKills: rawGame.info.participants[idx].tripleKills,
-            quadraKills: rawGame.info.participants[idx].quadraKills,
-            pentaKills: rawGame.info.participants[idx].pentaKills,
-            cs: rawGame.info.participants[idx].neutralMinionsKilled + rawGame.info.participants[idx].totalMinionsKilled,
-            gold: rawGame.info.participants[idx].goldEarned,
-            ward: rawGame.info.participants[idx].item6 || 2052,
-            killParticipation: (rawGame.info.participants[idx].kills + rawGame.info.participants[idx].assists) / teamKills,
-            damageDealt: rawGame.info.participants[idx].totalDamageDealtToChampions,
-            damageTaken: rawGame.info.participants[idx].totalDamageTaken,
-            items: [
-                rawGame.info.participants[idx].item0,
-                rawGame.info.participants[idx].item1,
-                rawGame.info.participants[idx].item2,
-                rawGame.info.participants[idx].item3,
-                rawGame.info.participants[idx].item4,
-                rawGame.info.participants[idx].item5,
-            ],
+            teamPosition: participant.teamPosition,
+            isEarlySurrender: participant.gameEndedInEarlySurrender,
+            visionScore: participant.visionScore,
+            champLevel: participant.champLevel,
+            championName: participant.championName,
+            kills: participant.kills,
+            deaths: participant.deaths,
+            assists: participant.assists,
+            doubleKills: participant.doubleKills,
+            tripleKills: participant.tripleKills,
+            quadraKills: participant.quadraKills,
+            pentaKills: participant.pentaKills,
+            cs: participant.neutralMinionsKilled + participant.totalMinionsKilled,
+            gold: participant.goldEarned,
+            ward: participant.item6 || 2052,
+            killParticipation: (participant.kills + participant.assists) / teamKills,
+            damageDealt: participant.totalDamageDealtToChampions,
+            damageTaken: participant.totalDamageTaken,
+            items: [participant.item0, participant.item1, participant.item2, participant.item3, participant.item4, participant.item5],
             participants: rawGame.info.participants.map(participant => ({
                 summonerName: participant.summonerName,
                 championName: participant.championName,
@@ -310,29 +308,29 @@ export class RiotService {
             // RETURN ARENA GAME
             return {
                 ...base_game,
-                augments: [
-                    rawGame.info.participants[idx].playerAugment1,
-                    rawGame.info.participants[idx].playerAugment2,
-                    rawGame.info.participants[idx].playerAugment3,
-                    rawGame.info.participants[idx].playerAugment4,
-                ]
+                augments: [participant.playerAugment1, participant.playerAugment2, participant.playerAugment3, participant.playerAugment4]
                     .filter(augment => augment !== 0)
-                    .map(id => augmentsData[id]),
-                placement: rawGame.info.participants[idx].placement,
-                subteamPlacement: rawGame.info.participants[idx].subteamPlacement,
+                    .map(id => {
+                        const augment = augmentsData[id]
+
+                        if (!augment) {
+                            this.LOGGER.error(`Missing AugmentID ${id} in augmentsData`)
+                            throw new InternalServerErrorException('Problem with Riot Games game endpoint')
+                        }
+                        return augment
+                    }),
+                placement: participant.placement,
+                subteamPlacement: participant.subteamPlacement,
             }
         }
 
         // RETURN NORMAL (NO ARENA) GAME
         return {
             ...base_game,
-            spells: [rawGame.info.participants[idx].summoner1Id, rawGame.info.participants[idx].summoner2Id],
+            spells: [participant.summoner1Id, participant.summoner2Id],
             perks: [
-                perkUrl(rawGame.info.participants[idx].perks.styles[0].style),
-                runeUrl(
-                    rawGame.info.participants[idx].perks.styles[0].selections[0].perk,
-                    rawGame.info.participants[idx].perks.styles[0].style,
-                ),
+                perkUrl(participant.perks.styles[0].style),
+                runeUrl(participant.perks.styles[0].selections[0].perk, participant.perks.styles[0].style),
             ],
         }
     }
@@ -399,7 +397,15 @@ export class RiotService {
                 ],
                 augments: [participant.playerAugment1, participant.playerAugment2, participant.playerAugment3, participant.playerAugment4]
                     .filter(augment => augment !== 0)
-                    .map(id => augmentsData[id]),
+                    .map(id => {
+                        const augment = augmentsData[id]
+
+                        if (!augment) {
+                            this.LOGGER.error(`Missing AugmentID ${id} in augmentsData`)
+                            throw new InternalServerErrorException('Problem with Riot Games game endpoint')
+                        }
+                        return augment
+                    }),
             })),
         }
     }

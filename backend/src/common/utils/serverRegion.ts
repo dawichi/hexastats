@@ -5,7 +5,7 @@
  * @returns {string} region name (e.g. 'europe')
  */
 export function serverRegion(server: string): string {
-    const servers: { [key: string]: string } = {
+    const servers: Record<string, string> = {
         oc1: 'americas',
         la1: 'americas',
         la2: 'americas',

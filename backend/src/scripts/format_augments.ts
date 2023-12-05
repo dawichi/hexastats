@@ -36,31 +36,31 @@ import { augmentsData } from '../common/data/raw-augments'
 
     const formatted: typeof augmentsData = {}
 
-    for (const key in augmentsData) {
-        formatted[key] = augmentsData[key]
-        const matches: Array<string | null> = formatted[key].tooltip.match(/@([a-zA-Z0-9*]+)@/g)
+    // for (const key in augmentsData) {
+    //     formatted[key] = augmentsData[key]
+    //     const matches: Array<string | null> = formatted[key].tooltip.match(/@([a-zA-Z0-9*]+)@/g)
 
-        if (matches) {
-            for (const match of matches) {
-                if (match.includes('*')) {
-                    // the expression must be evaluated because it contains a multiplication: @damage*100@
-                    const variable = match.slice(1, -1).split('*')[0]
-                    const var_value = formatted[key].spellDataValues[variable].toFixed(2)
+    //     if (matches) {
+    //         for (const match of matches) {
+    //             if (match.includes('*')) {
+    //                 // the expression must be evaluated because it contains a multiplication: @damage*100@
+    //                 const variable = match.slice(1, -1).split('*')[0]
+    //                 const var_value = formatted[key].spellDataValues[variable].toFixed(2)
 
-                    formatted[key].tooltip = formatted[key].tooltip.replace(match, eval(match.slice(1, -1).replace(variable, var_value)))
-                } else {
-                    // its just a variable like @damage@ so, a simple replace
-                    const spellDataKey = match.replace('@', '').replace('@', '')
-                    const var_value: string = formatted[key].spellDataValues[spellDataKey]
-                        ? String(formatted[key].spellDataValues[spellDataKey])
-                        : ''
+    //                 formatted[key].tooltip = formatted[key].tooltip.replace(match, eval(match.slice(1, -1).replace(variable, var_value)))
+    //             } else {
+    //                 // its just a variable like @damage@ so, a simple replace
+    //                 const spellDataKey = match.replace('@', '').replace('@', '')
+    //                 const var_value: string = formatted[key].spellDataValues[spellDataKey]
+    //                     ? String(formatted[key].spellDataValues[spellDataKey])
+    //                     : ''
 
-                    formatted[key].tooltip = formatted[key].tooltip.replace(match, var_value).replace('  ', ' ')
-                }
-            }
-        }
-        formatted[key].tooltip = formatted[key].tooltip.replace(/<[^>]*>/g, '')
-    }
+    //                 formatted[key].tooltip = formatted[key].tooltip.replace(match, var_value).replace('  ', ' ')
+    //             }
+    //         }
+    //     }
+    //     formatted[key].tooltip = formatted[key].tooltip.replace(/<[^>]*>/g, '')
+    // }
 
     console.log('Writing the Map to augments.ts')
     await writeFile(

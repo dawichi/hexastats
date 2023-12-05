@@ -94,7 +94,7 @@ export class SummonersService {
 
         if (gamesFromDB) {
             const { puuid } = await this.riotService.getBasicInfo(server, summonerName)
-            const { is_last, last_game_id } = await this.riotService.isLastGame(server, puuid, gamesFromDB.gamesUsed[0])
+            const { is_last, last_game_id } = await this.riotService.isLastGame(server, puuid, String(gamesFromDB.gamesUsed[0]))
 
             if (is_last) {
                 this.LOGGER.log(`${last_game_id} is last game -> returning cached data`)
