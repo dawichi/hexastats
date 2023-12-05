@@ -13,7 +13,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-    <img src="./frontend/public/images/logo.png" alt="Logo" width="80" height="80"/>
+    <img src="./frontend/static/favicon.svg" alt="Logo" width="80" height="80"/>
     <h1 align="center">Hexastats</h1>
     <p align="center">Visualize your stats and metrics from League of Legends!</p>
     <p align="center">🎉 Check it on <a href="https://hexastats.vercel.app" target="_blank">hexastats.vercel.app</a> 🎉</p>
@@ -22,7 +22,7 @@
 
 The project is consisted in:
 
-* [`/frontend`](https://github.com/dawichi/hexastats/tree/main/frontend)  SveteKit App
+* [`/frontend`](https://github.com/dawichi/hexastats/tree/main/frontend)  SvelteKit App
 * [`/backend`](https://github.com/dawichi/hexastats/tree/main/backend) API in Nest JS
 <!-- ------------------------------------------------------------------------------------------------------------------------ -->
 
