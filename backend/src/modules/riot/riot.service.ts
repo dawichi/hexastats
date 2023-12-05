@@ -198,9 +198,9 @@ export class RiotService {
                 rank,
                 image,
                 lp: data.leaguePoints,
-                win: data.winss,
+                win: data.wins,
                 lose: data.losses,
-                winrate: winrate(data['winss'], data['losses']),
+                winrate: winrate(data.wins, data.losses),
                 promos: data?.miniSeries?.progress ?? '',
             }
         }

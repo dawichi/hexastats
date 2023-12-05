@@ -8,7 +8,7 @@ export const RiotRankSchema = z.object({
     summonerId: z.string(),
     summonerName: z.string(),
     leaguePoints: z.number(),
-    winss: z.number(),
+    wins: z.number(),
     losses: z.number(),
     veteran: z.boolean(),
     inactive: z.boolean(),

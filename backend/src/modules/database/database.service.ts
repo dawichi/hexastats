@@ -18,7 +18,6 @@ function Wrapper(response_on_error: any = null) {
 
         descriptor.value = async function (...args: any[]) {
             // Before running any method, check if redis is disabled
-            console.log('REDIS_DISABLED', this.REDIS_DISABLED)
             if (this.REDIS_DISABLED) {
                 this.LOGGER.warn('REDIS: Redis is disabled')
                 return response_on_error
