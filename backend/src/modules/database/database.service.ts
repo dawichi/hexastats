@@ -5,6 +5,36 @@ import { ConfigService } from '@nestjs/config'
 import { StatsDto } from '../../common/types'
 import { PrintKeysDto } from './types/responses.dto'
 
+/**
+ * This decorator wraps all the methods providing:
+ * - A default response in case of redis being disabled in .env
+ * - Error catching wrapping the method
+ *
+ * @param response_on_error If not provided, it will return null
+ */
+function Wrapper(response_on_error: any = null) {
+    return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
+        const originalMethod = descriptor.value
+
+        descriptor.value = async function (...args: any[]) {
+            // Before running any method, check if redis is disabled
+            console.log('REDIS_DISABLED', this.REDIS_DISABLED)
+            if (this.REDIS_DISABLED) {
+                this.LOGGER.warn('REDIS: Redis is disabled')
+                return response_on_error
+            }
+
+            // Wraps the method, catching any error
+            try {
+                return originalMethod.apply(this, args)
+            } catch (err) {
+                this.LOGGER.error('Error with Redis!', err)
+                return response_on_error
+            }
+        }
+    }
+}
+
 @Injectable()
 export class DatabaseService {
     private readonly LOGGER: Logger = new Logger(this.constructor.name)
@@ -16,59 +46,30 @@ export class DatabaseService {
     }
 
     /**
-     * Base method to get data from redis
-     * Sets a common pattern for all the methods
-     */
-    private async _baseMethod<T>(
-        data: { log_success: string; log_fail: string; empty_responpse: T },
-        method: () => Promise<T>,
-    ): Promise<T> {
-        // Before running any method, check if redis is disabled
-        if (this.REDIS_DISABLED) {
-            this.LOGGER.warn('REDIS: Redis is disabled')
-            return data.empty_responpse
-        }
-
-        // Run the method, if it fails, return an empty response
-        try {
-            const response = await method()
-
-            this.LOGGER.log(data.log_success)
-            return response
-        } catch (err) {
-            this.LOGGER.error(data.log_fail, err)
-            return data.empty_responpse
-        }
-    }
-
-    /**
      * /database/print
      */
+    @Wrapper({ total: 0, keys: [] })
     async keys(): Promise<PrintKeysDto> {
-        return this._baseMethod<PrintKeysDto>(
-            {
-                log_success: 'REDIS: Found keys!',
-                log_fail: 'REDIS: Error getting keys',
-                empty_responpse: { total: 0, keys: [] },
-            },
-            async () => {
-                const keys = await this.REDIS.keys('*')
+        try {
+            const keys = await this.REDIS.keys('*')
 
-                this.LOGGER.log(`REDIS: Found ${keys.length} keys!`)
-                return { total: keys.length, keys }
-            },
-        )
+            this.LOGGER.log(`REDIS: Found ${keys.length} keys!`)
+            return { total: keys.length, keys }
+        } catch (err) {
+            // If keys() fails, probably is because the redis keys exceeded the limit
+            // For now there is no intention to implement scan(), so just delete all keys
+            this.LOGGER.error('REDIS: Error while getting keys', err)
+            this.LOGGER.log('REDIS: Deleting all keys to avoid issues')
+            await this.REDIS.flushdb()
+            return { total: 0, keys: [] }
+        }
     }
 
     /**
      * /database/print/:server/:summonerName/stats
      */
+    @Wrapper()
     async getStats(server: string, summonerName: string): Promise<StatsDto | null> {
-        if (this.REDIS_DISABLED) {
-            this.LOGGER.warn('REDIS: Redis is disabled')
-            return null
-        }
-
         const key = `${server}:${summonerName}:stats`
         const data: StatsDto = await this.REDIS.get(key)
 
@@ -84,12 +85,8 @@ export class DatabaseService {
     /**
      * /database/reset
      */
+    @Wrapper(false)
     async deleteAll(): Promise<boolean> {
-        if (this.REDIS_DISABLED) {
-            this.LOGGER.warn('REDIS: Redis is disabled')
-            return false
-        }
-
         const keys = await this.REDIS.keys('*')
 
         this.LOGGER.log(`REDIS: Deleting all ${keys.length} keys...`)
@@ -100,12 +97,8 @@ export class DatabaseService {
     /**
      * /database/delete/:key
      */
+    @Wrapper(false)
     async deleteOne(key: string): Promise<boolean> {
-        if (this.REDIS_DISABLED) {
-            this.LOGGER.warn('REDIS: Redis is disabled')
-            return false
-        }
-
         this.LOGGER.log(`REDIS: Deleting single key ${key}...`)
         await this.REDIS.del(key)
         return true
@@ -117,12 +110,8 @@ export class DatabaseService {
      * @param key Key to be stored
      * @param summonerData Data to be stored in the key
      */
+    @Wrapper()
     async set(key: string, stats: StatsDto): Promise<void> {
-        if (this.REDIS_DISABLED) {
-            this.LOGGER.warn('REDIS: Redis is disabled')
-            return
-        }
-
         this.LOGGER.log(`REDIS: saving ${key} data -> ${stats.gamesUsed.length} games`)
 
         // to avoid having too many games in cache (limit aprox 800)

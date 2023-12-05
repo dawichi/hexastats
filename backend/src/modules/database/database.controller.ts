@@ -5,6 +5,7 @@ import { ParamServer, ParamSummonerName } from '../../common/decorators'
 import { StatsDto } from '../../common/types'
 import { DatabaseService } from './database.service'
 import { PrintKeysDto } from './types/responses.dto'
+import { ServerPipe } from '../../common/pipes'
 
 @ApiTags('database')
 @Controller('database')
@@ -45,7 +46,7 @@ export class DatabaseController {
     })
     @ParamServer()
     @ParamSummonerName()
-    async getStats(@Param('server') server: string, @Param('summonerName') summonerName: string): Promise<StatsDto> {
+    async getStats(@Param('server', ServerPipe) server: string, @Param('summonerName') summonerName: string): Promise<StatsDto> {
         return this.databaseService.getStats(server, summonerName)
     }
 
