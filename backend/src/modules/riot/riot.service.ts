@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import { HttpService } from '@nestjs/axios'
 import {
     BadRequestException,
@@ -47,10 +48,7 @@ export class RiotService {
     version = '13.23.1' // current version of the game
     private champions: Record<string, string> = {} // {champ_id => champ_name}
 
-    constructor(
-        private readonly configService: ConfigService,
-        private readonly httpService: HttpService,
-    ) {
+    constructor(private readonly configService: ConfigService, private readonly httpService: HttpService) {
         this.API_KEY = String(this.configService.get<string>('RIOT_API_KEY'))
         this.HEADERS = { headers: { 'X-Riot-Token': this.API_KEY } }
         this.init()
@@ -81,7 +79,7 @@ export class RiotService {
         const result = RiotChampionsSchema.safeParse(champResponse)
 
         if (!result.success) {
-            this.LOGGER.error('Error parsing champions', result.error)
+            result.error.errors.forEach(error => this.LOGGER.error(`Error parsing champion: ${JSON.stringify(error)}`))
             throw new InternalServerErrorException('Problem with Riot Games champions endpoint')
         }
 
@@ -156,13 +154,12 @@ export class RiotService {
             allMasteries.length = masteriesLimit
         }
 
-        for (const mastery of allMasteries) {
-            const result = RiotMasterySchema.safeParse(mastery)
+        // Validate the result
+        const result = z.array(RiotMasterySchema).safeParse(allMasteries)
 
-            if (!result.success) {
-                this.LOGGER.error('Error parsing mastery', mastery)
-                throw new InternalServerErrorException('Problem with Riot Games masteries endpoint')
-            }
+        if (!result.success) {
+            result.error.errors.forEach(error => this.LOGGER.error(`Error parsing mastery: ${JSON.stringify(error)}`))
+            throw new InternalServerErrorException('Problem with Riot Games masteries endpoint')
         }
 
         return allMasteries.map(mastery => ({
@@ -195,13 +192,12 @@ export class RiotService {
         // This can be: [], [solo], [flex], [arena], [solo, flex], ...
         const rank_data = await this.httpGet<RiotRankType[]>(this.URLS.rank(server, summoner_id))
 
-        for (const rank of rank_data) {
-            const result = RiotRankSchema.safeParse(rank)
+        // Validate the result
+        const result = z.array(RiotMasterySchema).safeParse(rank_data)
 
-            if (!result.success) {
-                this.LOGGER.error('Error parsing rank', rank)
-                throw new InternalServerErrorException('Problem with Riot Games rank endpoint')
-            }
+        if (!result.success) {
+            result.error.errors.forEach(error => this.LOGGER.error(`Error parsing rank data: ${JSON.stringify(error)}`))
+            throw new InternalServerErrorException('Problem with Riot Games masteries endpoint')
         }
 
         // Default object in case of unranked in any queue
