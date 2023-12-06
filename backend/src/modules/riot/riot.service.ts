@@ -15,11 +15,12 @@ import { perkUrl, runeUrl } from '../../common/utils/runeUrl'
 import { serverRegion, winrate } from '../../common/utils'
 import { validateGameType } from '../../common/validators'
 import { GameArenaDto, GameDetailDto, GameDto, GameNormalDto, MasteryDto, RankDto } from '../../common/types'
-import { RiotGameDto } from './types'
 import { augmentsData } from '../../common/data/augments'
 import {
     RiotChampionsSchema,
     RiotChampionsType,
+    RiotGameSchema,
+    RiotGameType,
     RiotMasterySchema,
     RiotMasteryType,
     RiotRankSchema,
@@ -48,7 +49,11 @@ export class RiotService {
     version = '13.23.1' // current version of the game
     private champions: Record<string, string> = {} // {champ_id => champ_name}
 
-    constructor(private readonly configService: ConfigService, private readonly httpService: HttpService) {
+    // eslint-disable-next-line prettier/prettier
+    constructor(
+        private readonly configService: ConfigService,
+        private readonly httpService: HttpService,
+    ) {
         this.API_KEY = String(this.configService.get<string>('RIOT_API_KEY'))
         this.HEADERS = { headers: { 'X-Riot-Token': this.API_KEY } }
         this.init()
@@ -193,7 +198,7 @@ export class RiotService {
         const rank_data = await this.httpGet<RiotRankType[]>(this.URLS.rank(server, summoner_id))
 
         // Validate the result
-        const result = z.array(RiotMasterySchema).safeParse(rank_data)
+        const result = z.array(RiotRankSchema).safeParse(rank_data)
 
         if (!result.success) {
             result.error.errors.forEach(error => this.LOGGER.error(`Error parsing rank data: ${JSON.stringify(error)}`))
@@ -279,12 +284,13 @@ export class RiotService {
      * @param rawGame The raw data of the game as Riot returns
      * @returns The info parsed
      */
-    formatGame(rawGame: RiotGameDto, puuid: string): GameNormalDto | GameArenaDto {
+    formatGame(rawGame: RiotGameType, puuid: string): GameNormalDto | GameArenaDto {
         const idx = rawGame.metadata.participants.indexOf(puuid)
         const participant = rawGame.info.participants[idx]
         const [initialTeamMate, lastTeamMate] = idx > 4 ? [5, 9] : [0, 4]
+        const perks = participant?.perks.styles[0]
 
-        if (!participant) {
+        if (!participant || !perks) {
             this.LOGGER.error(`Error formatting game: ${rawGame.metadata.matchId}`)
             throw new InternalServerErrorException('Problem with Riot Games game endpoint')
         }
@@ -350,10 +356,7 @@ export class RiotService {
         return {
             ...base_game,
             spells: [participant.summoner1Id, participant.summoner2Id],
-            perks: [
-                perkUrl(participant.perks.styles[0].style),
-                runeUrl(participant.perks.styles[0].selections[0].perk, participant.perks.styles[0].style),
-            ],
+            perks: [perkUrl(perks.style), runeUrl(perks.selections[0]?.perk ?? 0, perks.style)],
         }
     }
 
@@ -363,7 +366,7 @@ export class RiotService {
      * @param rawGame The raw data of the game as Riot returns
      * @returns The info parsed
      */
-    formatGameDetail(rawGame: RiotGameDto, puuid: string): GameDetailDto {
+    formatGameDetail(rawGame: RiotGameType, puuid: string): GameDetailDto {
         const idx = rawGame.metadata.participants.indexOf(puuid)
 
         return {
@@ -385,50 +388,67 @@ export class RiotService {
                 objectives: Object.entries(team.objectives).map(([type, value]) => ({ type, ...value })),
             })),
 
-            participants: rawGame.info.participants.map(participant => ({
-                summonerName: participant.summonerName,
-                teamPosition: participant.teamPosition,
-                isEarlySurrender: participant.gameEndedInEarlySurrender,
-                win: participant.win,
-                visionScore: participant.visionScore,
-                champ: {
-                    champLevel: participant.champLevel,
-                    championName: participant.championName,
-                    largestMultiKill: participant.largestMultiKill,
-                    damageDealt: participant.totalDamageDealtToChampions,
-                    damageTaken: participant.totalDamageTaken,
-                },
-                kills: participant.kills,
-                deaths: participant.deaths,
-                assists: participant.assists,
-                multiKill: {
-                    doubles: participant.doubleKills,
-                    triples: participant.tripleKills,
-                    quadras: participant.quadraKills,
-                    pentas: participant.pentaKills,
-                },
-                gold: participant.goldEarned,
-                placement: participant.placement,
-                cs: participant.neutralMinionsKilled + participant.totalMinionsKilled,
-                ward: participant.item6 || 2052,
-                items: [participant.item0, participant.item1, participant.item2, participant.item3, participant.item4, participant.item5],
-                spells: [participant.summoner1Id, participant.summoner2Id],
-                perks: [
-                    perkUrl(participant.perks.styles[0].style),
-                    runeUrl(participant.perks.styles[0].selections[0].perk, participant.perks.styles[0].style),
-                ],
-                augments: [participant.playerAugment1, participant.playerAugment2, participant.playerAugment3, participant.playerAugment4]
-                    .filter(augment => augment !== 0)
-                    .map(id => {
-                        const augment = augmentsData[id]
+            participants: rawGame.info.participants.map(participant => {
+                const perk = participant.perks.styles[0]
+                const rune = participant.perks.styles[0]?.selections[0]
 
-                        if (!augment) {
-                            this.LOGGER.error(`Missing AugmentID ${id} in augmentsData`)
-                            throw new InternalServerErrorException('Problem with Riot Games game endpoint')
-                        }
-                        return augment
-                    }),
-            })),
+                if (!perk || !rune) {
+                    throw new Error(`Something went wrong with ${JSON.stringify(participant.perks.styles)}`)
+                }
+                return {
+                    summonerName: participant.summonerName,
+                    teamPosition: participant.teamPosition,
+                    isEarlySurrender: participant.gameEndedInEarlySurrender,
+                    win: participant.win,
+                    visionScore: participant.visionScore,
+                    champ: {
+                        champLevel: participant.champLevel,
+                        championName: participant.championName,
+                        largestMultiKill: participant.largestMultiKill,
+                        damageDealt: participant.totalDamageDealtToChampions,
+                        damageTaken: participant.totalDamageTaken,
+                    },
+                    kills: participant.kills,
+                    deaths: participant.deaths,
+                    assists: participant.assists,
+                    multiKill: {
+                        doubles: participant.doubleKills,
+                        triples: participant.tripleKills,
+                        quadras: participant.quadraKills,
+                        pentas: participant.pentaKills,
+                    },
+                    gold: participant.goldEarned,
+                    placement: participant.placement,
+                    cs: participant.neutralMinionsKilled + participant.totalMinionsKilled,
+                    ward: participant.item6 || 2052,
+                    items: [
+                        participant.item0,
+                        participant.item1,
+                        participant.item2,
+                        participant.item3,
+                        participant.item4,
+                        participant.item5,
+                    ],
+                    spells: [participant.summoner1Id, participant.summoner2Id],
+                    perks: [perkUrl(perk.style), runeUrl(rune.perk, perk.style)],
+                    augments: [
+                        participant.playerAugment1,
+                        participant.playerAugment2,
+                        participant.playerAugment3,
+                        participant.playerAugment4,
+                    ]
+                        .filter(augment => augment !== 0)
+                        .map(id => {
+                            const augment = augmentsData[id]
+
+                            if (!augment) {
+                                this.LOGGER.error(`Missing AugmentID ${id} in augmentsData`)
+                                throw new InternalServerErrorException('Problem with Riot Games game endpoint')
+                            }
+                            return augment
+                        }),
+                }
+            }),
         }
     }
 
@@ -466,17 +486,22 @@ export class RiotService {
     async getGamesDetail(puuid: string, server: string, matchIds: string[]): Promise<Array<GameNormalDto | GameArenaDto>> {
         this.LOGGER.log(`Getting data from ${matchIds.length} games`)
         // Accumulate the promises of each game
-        const promises: Promise<RiotGameDto>[] = matchIds.map((game_id: string) => {
+        const promises: Promise<RiotGameType>[] = matchIds.map((game_id: string) => {
             const url = `https://${serverRegion(server)}.api.riotgames.com/lol/match/v5/matches/${game_id}`
 
-            return this.httpGet<RiotGameDto>(url)
+            return this.httpGet<RiotGameType>(url)
         })
 
         // Run all the promises in parallel
         const games = await Promise.all(promises)
-        const result = games.map(game => this.formatGame(game, puuid))
+        const result = z.array(RiotGameSchema).safeParse(games)
 
-        return result
+        if (!result.success) {
+            result.error.errors.forEach(error => this.LOGGER.error(`Error parsing game data: ${JSON.stringify(error)}`))
+            throw new InternalServerErrorException('Problem with Riot Games game endpoint')
+        }
+
+        return games.map(game => this.formatGame(game, puuid))
     }
 
     /**
@@ -490,7 +515,13 @@ export class RiotService {
      */
     async getGameDetail(puuid: string, server: string, matchId: string): Promise<GameDetailDto> {
         const url = `https://${serverRegion(server)}.api.riotgames.com/lol/match/v5/matches/${matchId}`
-        const rawGame = await this.httpGet<RiotGameDto>(url)
+        const rawGame = await this.httpGet<RiotGameType>(url)
+        const result = RiotGameSchema.safeParse(rawGame)
+
+        if (!result.success) {
+            result.error.errors.forEach(error => this.LOGGER.error(`Error parsing game data: ${JSON.stringify(error)}`))
+            throw new InternalServerErrorException('Problem with Riot Games game endpoint')
+        }
 
         return this.formatGameDetail(rawGame, puuid)
     }
