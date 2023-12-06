@@ -337,7 +337,7 @@ export class RiotService {
                 augments: [participant.playerAugment1, participant.playerAugment2, participant.playerAugment3, participant.playerAugment4]
                     .filter(augment => augment !== 0)
                     .map(id => {
-                        const augment = augmentsData[id]
+                        const augment = augmentsData[id ?? 0]
 
                         if (!augment) {
                             this.LOGGER.error(`Missing AugmentID ${id} in augmentsData`)
@@ -345,8 +345,8 @@ export class RiotService {
                         }
                         return augment
                     }),
-                placement: participant.placement,
-                subteamPlacement: participant.subteamPlacement,
+                placement: participant.placement ?? 0,
+                subteamPlacement: participant.subteamPlacement ?? 0,
             }
         }
 
@@ -416,7 +416,7 @@ export class RiotService {
                         pentas: participant.pentaKills,
                     },
                     gold: participant.goldEarned,
-                    placement: participant.placement,
+                    placement: participant.placement ?? 0,
                     cs: participant.neutralMinionsKilled + participant.totalMinionsKilled,
                     ward: participant.item6 || 2052,
                     items: [
@@ -437,7 +437,7 @@ export class RiotService {
                     ]
                         .filter(augment => augment !== 0)
                         .map(id => {
-                            const augment = augmentsData[id]
+                            const augment = augmentsData[id ?? 0]
 
                             if (!augment) {
                                 this.LOGGER.error(`Missing AugmentID ${id} in augmentsData`)
