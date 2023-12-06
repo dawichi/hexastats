@@ -14,7 +14,7 @@ import { perkUrl, runeUrl } from '../../common/utils/runeUrl'
 import { serverRegion, winrate } from '../../common/utils'
 import { validateGameType } from '../../common/validators'
 import { GameArenaDto, GameDetailDto, GameDto, GameNormalDto, MasteryDto, RankDto } from '../../common/types'
-import { RiotGameDto, RiotSummonerDto } from './types'
+import { RiotGameDto } from './types'
 import { augmentsData } from '../../common/data/augments'
 import {
     RiotChampionsSchema,
@@ -23,6 +23,8 @@ import {
     RiotMasteryType,
     RiotRankSchema,
     RiotRankType,
+    RiotSummonerSchema,
+    RiotSummonerType,
 } from '../../common/schemas'
 
 export type queueTypeDto = 'ranked' | 'normal' | 'all'
@@ -124,8 +126,15 @@ export class RiotService {
      * ## Get the basic summoner info (by name)
      * To use other methods, you need to get the summoner id first
      */
-    async getBasicInfo(server: string, summonerName: string): Promise<RiotSummonerDto> {
-        return this.httpGet<RiotSummonerDto>(this.URLS.summoner(server, summonerName))
+    async getBasicInfo(server: string, summonerName: string): Promise<RiotSummonerType> {
+        const summoner = await this.httpGet<RiotSummonerType>(this.URLS.summoner(server, summonerName))
+        const result = RiotSummonerSchema.safeParse(summoner)
+
+        if (!result.success) {
+            result.error.errors.forEach(error => this.LOGGER.error(`Error parsing summoner: ${JSON.stringify(error)}`))
+            throw new InternalServerErrorException('Problem with Riot Games summoner endpoint')
+        }
+        return result.data
     }
 
     /**
