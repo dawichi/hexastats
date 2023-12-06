@@ -213,7 +213,6 @@ export class RiotService {
             win: 0,
             lose: 0,
             winrate: 0,
-            promos: 'NNN',
         }
 
         const formatRankData = (data: RiotRankType): RankDto => {
@@ -227,7 +226,6 @@ export class RiotService {
                 win: data.wins,
                 lose: data.losses,
                 winrate: winrate(data.wins, data.losses),
-                promos: 'NNN',
             }
         }
 

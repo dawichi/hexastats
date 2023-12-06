@@ -5,7 +5,6 @@ export interface Rank {
     win: number
     lose: number
     winrate: number
-    promos: string
 }
 
 export interface RankStructure {
