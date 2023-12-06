@@ -14,9 +14,18 @@ import { perkUrl, runeUrl } from '../../common/utils/runeUrl'
 import { serverRegion, winrate } from '../../common/utils'
 import { validateGameType } from '../../common/validators'
 import { GameArenaDto, GameDetailDto, GameDto, GameNormalDto, MasteryDto, RankDto } from '../../common/types'
-import { RiotChampionsDto, RiotGameDto, RiotSummonerDto } from './types'
+import { RiotGameDto } from './types'
 import { augmentsData } from '../../common/data/augments'
-import { RiotMasterySchema, RiotMasteryType, RiotRankSchema, RiotRankType } from '../../common/schemas'
+import {
+    RiotChampionsSchema,
+    RiotChampionsType,
+    RiotMasterySchema,
+    RiotMasteryType,
+    RiotRankSchema,
+    RiotRankType,
+    RiotSummonerSchema,
+    RiotSummonerType,
+} from '../../common/schemas'
 
 export type queueTypeDto = 'ranked' | 'normal' | 'all'
 
@@ -38,7 +47,10 @@ export class RiotService {
     version = '13.23.1' // current version of the game
     private champions: Record<string, string> = {} // {champ_id => champ_name}
 
-    constructor(private readonly configService: ConfigService, private readonly httpService: HttpService) {
+    constructor(
+        private readonly configService: ConfigService,
+        private readonly httpService: HttpService,
+    ) {
         this.API_KEY = String(this.configService.get<string>('RIOT_API_KEY'))
         this.HEADERS = { headers: { 'X-Riot-Token': this.API_KEY } }
         this.init()
@@ -64,9 +76,16 @@ export class RiotService {
          * 2. Generate the table [champ_id => champ_name]
          */
         const url2 = `https://ddragon.leagueoflegends.com/cdn/${this.version}/data/en_US/champion.json`
-        const { data } = await this.httpGet<RiotChampionsDto>(url2)
+        const champResponse = await this.httpGet<RiotChampionsType>(url2)
 
-        Object.entries(data).forEach(([champion_name, champion_data]) => {
+        const result = RiotChampionsSchema.safeParse(champResponse)
+
+        if (!result.success) {
+            this.LOGGER.error('Error parsing champions', result.error)
+            throw new InternalServerErrorException('Problem with Riot Games champions endpoint')
+        }
+
+        Object.entries(champResponse.data).forEach(([champion_name, champion_data]) => {
             this.champions[champion_data.key] = champion_name
         })
     }
@@ -107,8 +126,15 @@ export class RiotService {
      * ## Get the basic summoner info (by name)
      * To use other methods, you need to get the summoner id first
      */
-    async getBasicInfo(server: string, summonerName: string): Promise<RiotSummonerDto> {
-        return this.httpGet<RiotSummonerDto>(this.URLS.summoner(server, summonerName))
+    async getBasicInfo(server: string, summonerName: string): Promise<RiotSummonerType> {
+        const summoner = await this.httpGet<RiotSummonerType>(this.URLS.summoner(server, summonerName))
+        const result = RiotSummonerSchema.safeParse(summoner)
+
+        if (!result.success) {
+            result.error.errors.forEach(error => this.LOGGER.error(`Error parsing summoner: ${JSON.stringify(error)}`))
+            throw new InternalServerErrorException('Problem with Riot Games summoner endpoint')
+        }
+        return result.data
     }
 
     /**
