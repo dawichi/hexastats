@@ -1,5 +1,6 @@
 import { applyDecorators } from '@nestjs/common'
 import { ApiQuery } from '@nestjs/swagger'
+import { QueueSchema } from '../schemas'
 
 export function QueryLimit() {
     return applyDecorators(
@@ -30,7 +31,7 @@ export function QueryQueueType() {
         ApiQuery({
             name: 'queueType',
             description: 'Specify a queue type to check only a specific type of game.',
-            enum: ['normal', 'ranked', 'all'],
+            enum: Object.values(QueueSchema.Values),
             example: 'ranked',
             required: true,
         }),

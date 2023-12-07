@@ -4,7 +4,7 @@ import { SummonersService } from './summoners.service'
 import { ApiCustomResponse, ParamServer, ParamSummonerName, QueryLimit, QueryOffset, QueryQueueType } from '../../common/decorators'
 import { GameArenaDto, GameDetailDto, GameDto, GameNormalDto, MasteryDto, PlayerDto, RankDataDto, StatsDto } from '../../common/types'
 import { LimitPipe, OffsetPipe, QueueTypePipe, ServerPipe } from '../../common/pipes'
-import { queueTypeDto } from '../riot/riot.service'
+import { QueueType } from 'src/common/schemas'
 
 @ApiTags('summoners')
 @Controller('summoners')
@@ -53,7 +53,7 @@ export class SummonersController {
         @Param('summonerName') summonerName: string,
         @Query('limit', LimitPipe) limit: number,
         @Query('offset', OffsetPipe) offset: number,
-        @Query('queueType', QueueTypePipe) queueType: queueTypeDto,
+        @Query('queueType', QueueTypePipe) queueType: QueueType,
     ): Promise<Array<GameNormalDto | GameArenaDto>> {
         return this.summonersService.getGames(server, encodeURI(summonerName.trim()), limit, offset, queueType)
     }

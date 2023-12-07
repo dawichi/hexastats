@@ -2,9 +2,10 @@ import { Injectable, Logger } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { GameArenaDto, GameDetailDto, GameNormalDto, MasteryDto, PlayerDto, RankDataDto, StatsDto } from '../../common/types'
-import { RiotService, queueTypeDto } from '../../modules/riot/riot.service'
+import { RiotService } from '../../modules/riot/riot.service'
 import { DatabaseService } from '../database/database.service'
 import { MathService } from '../math/math.service'
+import { QueueType } from 'src/common/schemas'
 
 @ApiTags('summoners')
 @Injectable()
@@ -66,7 +67,7 @@ export class SummonersService {
         summonerName: string,
         limit: number,
         offset: number,
-        queueType: queueTypeDto,
+        queueType: QueueType,
     ): Promise<Array<GameNormalDto | GameArenaDto>> {
         const { puuid } = await this.riotService.getBasicInfo(server, summonerName)
 
