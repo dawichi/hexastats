@@ -353,7 +353,10 @@ export class RiotService {
         return {
             ...base_game,
             spells: [participant.summoner1Id, participant.summoner2Id],
-            perks: [perkUrl(perks.style), runeUrl(perks.selections[0]?.perk ?? 0, perks.style)],
+            perks: [
+                perkUrl(participant.perks.styles[1]!.style),
+                runeUrl(participant.perks.styles[0]!.selections[0]!.perk, participant.perks.styles[0]!.style),
+            ],
         }
     }
 
@@ -385,67 +388,50 @@ export class RiotService {
                 objectives: Object.entries(team.objectives).map(([type, value]) => ({ type, ...value })),
             })),
 
-            participants: rawGame.info.participants.map(participant => {
-                const perk = participant.perks.styles[0]
-                const rune = participant.perks.styles[0]?.selections[0]
+            participants: rawGame.info.participants.map(participant => ({
+                summonerName: participant.summonerName,
+                teamPosition: participant.teamPosition,
+                isEarlySurrender: participant.gameEndedInEarlySurrender,
+                win: participant.win,
+                visionScore: participant.visionScore,
+                champ: {
+                    champLevel: participant.champLevel,
+                    championName: participant.championName,
+                    largestMultiKill: participant.largestMultiKill,
+                    damageDealt: participant.totalDamageDealtToChampions,
+                    damageTaken: participant.totalDamageTaken,
+                },
+                kills: participant.kills,
+                deaths: participant.deaths,
+                assists: participant.assists,
+                multiKill: {
+                    doubles: participant.doubleKills,
+                    triples: participant.tripleKills,
+                    quadras: participant.quadraKills,
+                    pentas: participant.pentaKills,
+                },
+                gold: participant.goldEarned,
+                placement: participant.placement ?? 0,
+                cs: participant.neutralMinionsKilled + participant.totalMinionsKilled,
+                ward: participant.item6 || 2052,
+                items: [participant.item0, participant.item1, participant.item2, participant.item3, participant.item4, participant.item5],
+                spells: [participant.summoner1Id, participant.summoner2Id],
+                perks: [
+                    perkUrl(participant.perks.styles[1]!.style),
+                    runeUrl(participant.perks.styles[0]!.selections[0]!.perk, participant.perks.styles[0]!.style),
+                ],
+                augments: [participant.playerAugment1, participant.playerAugment2, participant.playerAugment3, participant.playerAugment4]
+                    .filter(augment => augment !== 0)
+                    .map(id => {
+                        const augment = augmentsData[id ?? 0]
 
-                if (!perk || !rune) {
-                    throw new Error(`Something went wrong with ${JSON.stringify(participant.perks.styles)}`)
-                }
-                return {
-                    summonerName: participant.summonerName,
-                    teamPosition: participant.teamPosition,
-                    isEarlySurrender: participant.gameEndedInEarlySurrender,
-                    win: participant.win,
-                    visionScore: participant.visionScore,
-                    champ: {
-                        champLevel: participant.champLevel,
-                        championName: participant.championName,
-                        largestMultiKill: participant.largestMultiKill,
-                        damageDealt: participant.totalDamageDealtToChampions,
-                        damageTaken: participant.totalDamageTaken,
-                    },
-                    kills: participant.kills,
-                    deaths: participant.deaths,
-                    assists: participant.assists,
-                    multiKill: {
-                        doubles: participant.doubleKills,
-                        triples: participant.tripleKills,
-                        quadras: participant.quadraKills,
-                        pentas: participant.pentaKills,
-                    },
-                    gold: participant.goldEarned,
-                    placement: participant.placement ?? 0,
-                    cs: participant.neutralMinionsKilled + participant.totalMinionsKilled,
-                    ward: participant.item6 || 2052,
-                    items: [
-                        participant.item0,
-                        participant.item1,
-                        participant.item2,
-                        participant.item3,
-                        participant.item4,
-                        participant.item5,
-                    ],
-                    spells: [participant.summoner1Id, participant.summoner2Id],
-                    perks: [perkUrl(perk.style), runeUrl(rune.perk, perk.style)],
-                    augments: [
-                        participant.playerAugment1,
-                        participant.playerAugment2,
-                        participant.playerAugment3,
-                        participant.playerAugment4,
-                    ]
-                        .filter(augment => augment !== 0)
-                        .map(id => {
-                            const augment = augmentsData[id ?? 0]
-
-                            if (!augment) {
-                                this.LOGGER.error(`Missing AugmentID ${id} in augmentsData`)
-                                throw new InternalServerErrorException('Problem with Riot Games game endpoint')
-                            }
-                            return augment
-                        }),
-                }
-            }),
+                        if (!augment) {
+                            this.LOGGER.error(`Missing AugmentID ${id} in augmentsData`)
+                            throw new InternalServerErrorException('Problem with Riot Games game endpoint')
+                        }
+                        return augment
+                    }),
+            })),
         }
     }
 
