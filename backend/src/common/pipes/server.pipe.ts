@@ -10,9 +10,9 @@ export class ServerPipe implements PipeTransform {
         const result = ServerSchema.safeParse(value)
 
         if (!result.success) {
-            throw new BadRequestException(`Validation failed (server is expected as [${Object.values(ServerSchema.Values)}])`)
-        } else {
-            return result.data
+            throw new BadRequestException(`'server' parameter validation: ${result.error.errors[0]?.message}`)
         }
+
+        return result.data
     }
 }
