@@ -17,6 +17,7 @@ import { validateGameType } from '../../common/validators'
 import { GameArenaDto, GameDetailDto, GameDto, GameNormalDto, MasteryDto, RankDto } from '../../common/types'
 import { augmentsData } from '../../common/data/augments'
 import {
+    QueueType,
     RiotChampionsSchema,
     RiotChampionsType,
     RiotGameSchema,
@@ -28,8 +29,6 @@ import {
     RiotSummonerSchema,
     RiotSummonerType,
 } from '../../common/schemas'
-
-export type queueTypeDto = 'ranked' | 'normal' | 'all'
 
 @Injectable()
 export class RiotService {
@@ -460,9 +459,9 @@ export class RiotService {
      * @param offset The number of games to skip
      * @returns The game IDs list
      */
-    async getGameIds(puuid: string, server: string, gamesLimit: number, offset: number, queueType: queueTypeDto): Promise<string[]> {
+    async getGameIds(puuid: string, server: string, gamesLimit: number, offset: number, queueType: QueueType): Promise<string[]> {
         server = serverRegion(server)
-        const queueTypeFilter: Record<string, string> = {
+        const queueTypeFilter: Record<QueueType, string> = {
             ranked: '&type=ranked',
             normal: '&type=normal',
             all: '',
