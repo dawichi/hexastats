@@ -1,17 +1,18 @@
 import { PipeTransform, Injectable, BadRequestException } from '@nestjs/common'
-import { queueTypeDto } from '../../modules/riot/riot.service'
+import { QueueSchema, QueueType } from '../schemas'
 
 /**
  * queueType must be one of the expected values
  */
 @Injectable()
 export class QueueTypePipe implements PipeTransform {
-    transform(value: string): queueTypeDto {
-        const valid_values = ['normal', 'ranked', 'all']
+    transform(value: string): QueueType {
+        const result = QueueSchema.safeParse(value)
 
-        if (valid_values.includes(value)) {
-            return value as queueTypeDto
+        if (!result.success) {
+            throw new BadRequestException(`'queueType' parameter validation: ${result.error.errors[0]?.message}`)
         }
-        throw new BadRequestException('Validation failed (queueType is expected as [normal, ranked, all])')
+
+        return result.data
     }
 }
