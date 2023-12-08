@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Augment } from './Augment.dto'
+import { Perks } from './Perks.dto'
 
 class ParticipantTitle {
     @ApiProperty({
@@ -182,18 +183,10 @@ export class GameNormal extends Game {
     spells: Array<number>
 
     @ApiProperty({
-        description: 'URL to the images of the runes used',
-        example: {
-            primary:
-                'https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/styles/7200_domination.png',
-            secondary:
-                'https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/styles/domination/electrocute/electrocute.png',
-        },
+        description: 'Runes and perks used',
+        type: Perks,
     })
-    perks: {
-        primary: string | null
-        secondary: string | null
-    }
+    perks: Perks
 }
 
 export class GameArena extends Game {
