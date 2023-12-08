@@ -50,7 +50,7 @@
     <div class="relative flex justify-between bg-zinc-900 p-1">
         <div>
             {#if game.matchId}
-                <h2 class="text-lg font-bold">{game.participants[game.participantNumber].summonerName} </h2>
+                <h2 class="text-lg font-bold">{game.participants[game.participantNumber].summonerName}</h2>
                 <span>{game.gameMode} | </span>
                 <span>{formatDate(game.gameCreation, game.gameDuration)} | </span>
                 <span>
@@ -107,10 +107,10 @@
                                             ? 'bg-zinc-500/40'
                                             : 'bg-zinc-500/20'
                                         : participant.win
-                                        ? 'bg-green-500/20'
-                                        : 'bg-red-500/20'}"
+                                          ? 'bg-green-500/20'
+                                          : 'bg-red-500/20'}"
                                 >
-                                    <div class="relative  grid grid-cols-2">
+                                    <div class="relative grid grid-cols-2">
                                         <img class="m-1 h-12 w-12" src={riotService.champImage(participant.champ.championName)} alt="champ" />
                                         <span class="absolute -bottom-1 -left-1 m-1 rounded-tr bg-zinc-800 px-[2px] text-sm"
                                             >{participant.champ.champLevel}</span
@@ -189,7 +189,7 @@
 
                                     <!-- ITEMS -->
                                     <div class="col-span-3 m-2 flex items-center">
-                                        <div class="mx-auto grid grid-cols-7 ">
+                                        <div class="mx-auto grid grid-cols-7">
                                             {#each [0, 1, 2, 3, 4, 5] as itemId}
                                                 <span class="m-0.5">
                                                     {#if participant.items[itemId]}
@@ -222,24 +222,23 @@
                                         ? 'bg-zinc-500/40'
                                         : 'bg-zinc-500/20'
                                     : participant.win
-                                    ? 'bg-green-500/20'
-                                    : 'bg-red-500/20'}"
+                                      ? 'bg-green-500/20'
+                                      : 'bg-red-500/20'}"
                             >
-                            <!-- IMAGE and Level -->
-                            <div class="relative grid grid-cols-2">
+                                <!-- IMAGE and Level -->
+                                <div class="relative grid grid-cols-2">
+                                    <div class="relative">
+                                        <img class="h-12 w-12" src={riotService.champImage(participant.champ.championName)} alt="champ" />
+                                        <span class="absolute -bottom-1 -left-1 rounded-tr bg-zinc-800 px-[2px] text-sm">{participant.champ.champLevel}</span>
+                                    </div>
 
-                                <div class="relative">
-                                    <img class="h-12 w-12" src={riotService.champImage(participant.champ.championName)} alt="champ" />
-                                    <span class="absolute -bottom-1 -left-1 rounded-tr bg-zinc-800 px-[2px] text-sm">{participant.champ.champLevel}</span>
+                                    <!-- SPELLS, RUNES -->
+                                    <div class="grid w-12 grid-cols-2">
+                                        {#each [riotService.spellUrl(participant.spells[0]), participant.perks.primary, riotService.spellUrl(participant.spells[1]), participant.perks.secondary] as src}
+                                            <img class="{styles.iconSize.medium} rounded" {src} alt="spell 2" />
+                                        {/each}
+                                    </div>
                                 </div>
-                                
-                                <!-- SPELLS, RUNES -->
-                                <div class="grid w-12 grid-cols-2">
-                                    {#each [riotService.spellUrl(participant.spells[0]), participant.perks[1], riotService.spellUrl(participant.spells[1]), participant.perks[0]] as src}
-                                    <img class="{styles.iconSize.medium} rounded" {src} alt="spell 2" />
-                                    {/each}
-                                </div>
-                            </div>
 
                                 <a
                                     href={`/summoners/${rawServer(server)}/${participant.summonerName}`}
