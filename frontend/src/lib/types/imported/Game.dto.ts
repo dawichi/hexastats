@@ -1,4 +1,5 @@
 import type { Augment } from './Augment.dto'
+import type { Perks } from './Perks.dto'
 
 interface ParticipantTitle {
     summonerName: string
@@ -36,7 +37,7 @@ export interface Game {
 
 export interface GameNormal extends Game {
     spells: Array<number>
-    perks: Array<string>
+    perks: Perks
 }
 
 export interface GameArena extends Game {

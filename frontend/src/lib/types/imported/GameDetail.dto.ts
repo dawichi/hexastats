@@ -1,4 +1,5 @@
-import type { Augment } from "./Augment.dto"
+import type { Augment } from './Augment.dto'
+import type { Perks } from './Perks.dto'
 
 interface Objective {
     type: string
@@ -45,12 +46,12 @@ interface Participant {
     assists: number
     multiKill: MultiKill
     gold: number
-    placement: number
     cs: number
     ward: number
+    placement: number
     items: Array<number>
     spells: Array<number>
-    perks: Array<string>
+    perks: Perks
     augments: Array<Augment>
 }
 
