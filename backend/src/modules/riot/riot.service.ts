@@ -11,8 +11,7 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
-import { perkUrl, runeUrl } from '../../common/utils/runeUrl'
-import { serverRegion, winrate } from '../../common/utils'
+import { runeGroupUrl, runePerkUrl, serverRegion, winrate } from '../../common/utils'
 import { validateGameType } from '../../common/validators'
 import { GameArenaDto, GameDetailDto, GameDto, GameNormalDto, MasteryDto, RankDto } from '../../common/types'
 import { augmentsData } from '../../common/data/augments'
@@ -353,10 +352,10 @@ export class RiotService {
         return {
             ...base_game,
             spells: [participant.summoner1Id, participant.summoner2Id],
-            perks: [
-                perkUrl(participant.perks.styles[1]!.style),
-                runeUrl(participant.perks.styles[0]!.selections[0]!.perk, participant.perks.styles[0]!.style),
-            ],
+            perks: {
+                primary: runePerkUrl(participant.perks.styles[0]!.style, participant.perks.styles[0]!.selections[0]!.perk),
+                secondary: runeGroupUrl(participant.perks.styles[1]!.style),
+            },
         }
     }
 
@@ -416,10 +415,10 @@ export class RiotService {
                 ward: participant.item6 || 2052,
                 items: [participant.item0, participant.item1, participant.item2, participant.item3, participant.item4, participant.item5],
                 spells: [participant.summoner1Id, participant.summoner2Id],
-                perks: [
-                    perkUrl(participant.perks.styles[1]!.style),
-                    runeUrl(participant.perks.styles[0]!.selections[0]!.perk, participant.perks.styles[0]!.style),
-                ],
+                perks: {
+                    primary: runePerkUrl(participant.perks.styles[0]!.style, participant.perks.styles[0]!.selections[0]!.perk),
+                    secondary: runeGroupUrl(participant.perks.styles[1]!.style),
+                },
                 augments: [participant.playerAugment1, participant.playerAugment2, participant.playerAugment3, participant.playerAugment4]
                     .filter(augment => augment !== 0)
                     .map(id => {
