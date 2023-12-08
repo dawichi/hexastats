@@ -216,16 +216,21 @@ class Participant {
 
     @ApiProperty({
         description: 'URL to the images of the runes used',
-        example: [
-            'https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/styles/7200_domination.png',
-            'https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/styles/domination/electrocute/electrocute.png',
-        ],
+        example: {
+            primary:
+                'https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/styles/7200_domination.png',
+            secondary:
+                'https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/styles/domination/electrocute/electrocute.png',
+        },
     })
-    perks: Array<string>
+    perks: {
+        primary: string | null
+        secondary: string | null
+    }
 
     @ApiProperty({
         description: 'Augments used',
-        example: [10, 52, 37, 0],
+        type: [Augment],
     })
     augments: Array<Augment>
 }
