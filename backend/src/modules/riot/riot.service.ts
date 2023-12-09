@@ -333,7 +333,7 @@ export class RiotService {
             return {
                 ...base_game,
                 augments: [participant.playerAugment1, participant.playerAugment2, participant.playerAugment3, participant.playerAugment4]
-                    .filter(augment => augment !== 0)
+                    .filter(Boolean) //Remove 0s
                     .map(id => {
                         const augment = augmentsData[id ?? 0]
 
@@ -420,7 +420,7 @@ export class RiotService {
                     secondary: runeGroupUrl(participant.perks.styles[1]!.style),
                 },
                 augments: [participant.playerAugment1, participant.playerAugment2, participant.playerAugment3, participant.playerAugment4]
-                    .filter(augment => augment !== 0)
+                    .filter(Boolean) // Remove 0s
                     .map(id => {
                         const augment = augmentsData[id ?? 0]
 
