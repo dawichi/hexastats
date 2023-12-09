@@ -7,8 +7,6 @@
     import SearchPlayer from '../logic/SearchPlayer.svelte'
 
     export let stats: StatsDto
-
-    let shouldAutofocus = false
 </script>
 
 <div class="{styles.foreground} {styles.card} relative p-4 md:m-2">
@@ -25,5 +23,5 @@
 </div>
 
 <div>
-    <SearchPlayer autofocus={shouldAutofocus} />
+    <SearchPlayer autofocus={false} />
 </div>
