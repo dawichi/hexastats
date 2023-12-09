@@ -25,33 +25,22 @@ export class MathService {
 
         // Iterate all games
         for (const game of games) {
-            // Iterate over your teammates only
-            const [initialTeamMate, lastTeamMate] = game.participantNumber > 4 ? [5, 9] : [0, 4]
+            for (const participant of game.participants) {
+                const record = indexByName[participant.summonerName]
 
-            for (let i = initialTeamMate; i < lastTeamMate; i++) {
-                const player = game.participants[i]
-
-                if (!player) {
-                    this.LOGGER.warn(`No player found for index ${i} in game ${game.matchId} -> must be a personal game`)
-                    continue
-                }
-
-                const element = indexByName[player.summonerName]
-
-                if (!element) {
-                    indexByName[player.summonerName] = {
+                if (!record) {
+                    indexByName[participant.summonerName] = {
                         wins: game.win ? 1 : 0,
                         games: 1,
                     }
                 } else {
-                    element.wins += game.win ? 1 : 0
-                    element.games += 1
+                    record.wins += game.win ? 1 : 0
+                    record.games += 1
                 }
             }
         }
 
         // Remove your own name from the list
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         delete indexByName[games[0]!.participants[games[0]!.participantNumber]!.summonerName]
 
         return Object.entries(indexByName)
