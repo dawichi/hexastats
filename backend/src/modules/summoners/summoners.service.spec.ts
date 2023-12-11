@@ -20,15 +20,16 @@ describe('SummonersService', () => {
     })
 
     it('should return the basic summoner data', async () => {
-        const summoner = await service.getBasicInfo('test', 'euw1')
+        const summoner = await service.getSummoner('euw1', 'test')
 
         expect(summoner).toHaveProperty('accountId')
     })
 
-    it('should return the latest version of the game', async () => {
-        const version = await service.getLatestVersion()
-        const versionNumber = version.split('.')
+    // riot.service
+    // it('should return the latest version of the game', async () => {
+    //     const version = await service.getLatestVersion()
+    //     const versionNumber = version.split('.')
 
-        expect(versionNumber).toHaveLength(3)
-    })
+    //     expect(versionNumber).toHaveLength(3)
+    // })
 })
