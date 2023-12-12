@@ -101,9 +101,31 @@ export class SummonersService {
                 this.LOGGER.log(`${last_game_id} is last game -> returning cached data`)
                 return gamesFromDB
             }
+            // Option 2
+            const games_list = await this.riotService.getGameIds(puuid, server, 10, 0, 'all')
+            const result = games_list.filter(match_id => !gamesFromDB.gamesUsed.includes(match_id))
+
+            if (result.length <= 10) {
+                const extraGames = await this.getGames(server, summonerName, result.length, 0, 'all')
+
+                const extraOutput: StatsDto = {
+                    gamesUsed: extraGames.map(game => game.matchId),
+                    friends: this.mathService.getFriends(extraGames),
+                    statsByChamp: this.mathService.getStatsByChamp(extraGames),
+                    statsByPosition: this.mathService.getStatsByPosition(extraGames),
+                    records: this.mathService.getRecords(extraGames),
+                    lowRecords: this.mathService.getRecords(extraGames, true),
+                }
+
+                const mergedStats = this.mathService.mergeStats(extraOutput, gamesFromDB)
+
+                await this.databaseService.set(`${server}:${summonerName}:stats`, mergedStats)
+
+                return mergedStats
+            }
             this.LOGGER.log(`${last_game_id} is NOT last game -> updating cached data with new games`)
         }
-
+        // Option 3
         const games = await this.getGames(server, summonerName, 10, 0, 'all')
 
         const output: StatsDto = {

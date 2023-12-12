@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable, Logger } from '@nestjs/common'
 import { ChampStatsDto, FriendDto, GameDto, PositionStatsDto, RecordsDto, StatsDto } from '../../common/types'
 import { kda } from '../../common/utils'
