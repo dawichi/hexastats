@@ -24,7 +24,9 @@
             <i class="bi bi-list" />
         </button>
 
-        <img src="/favicon.ico" class="mr-3 block h-9 lg:hidden" alt="Logo" />
+        <a href="/">
+            <img src="/favicon.ico" class="mr-3 block h-9 lg:hidden" alt="Logo" />
+        </a>
 
         <ul class="hidden flex-row justify-between space-x-4 p-4 lg:flex xl:space-x-8">
             {#each navigation as item}

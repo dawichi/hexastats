@@ -265,7 +265,7 @@ const RiotTeamSchema = z.object({
         riftHerald: RiotObjectiveSchema,
         tower: RiotObjectiveSchema,
     }),
-    teamId: z.number(),
+    teamId: z.union([z.literal(100), z.literal(200), z.literal(0)]),
     win: z.boolean(),
 })
 
@@ -289,7 +289,7 @@ export const RiotGameSchema = z.object({
         participants: z.array(RiotParticipantSchema),
         platformId: z.string(),
         queueId: z.number(),
-        teams: z.array(RiotTeamSchema),
+        teams: z.tuple([RiotTeamSchema, RiotTeamSchema]),
     }),
 })
 
