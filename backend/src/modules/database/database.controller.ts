@@ -93,7 +93,7 @@ export class DatabaseController {
      * > useful to delete the last game and test without need to play another game
      * @returns Confirmation that the last item in thea array was deleted
      */
-    @Delete('/deleteLast/:key')
+    @Delete('/deleteLast/:server/:summonerName')
     @ApiOperation({
         summary: 'Delete last value in the data array | Testing only',
         deprecated: true,
