@@ -129,15 +129,20 @@ export class DatabaseService {
     /**
      * ## TEST delete last game played
      */
-    // async deleteLast(key: string): Promise<boolean> {
-    //     this.LOGGER.log(`REDIS: Deleting last game played from ${key}...`)
+    @Wrapper(false)
+    async deleteLast(server: string, summonerName: string): Promise<boolean> {
+        const key = `${server}:${summonerName}:stats`
+        const data: StatsDto | null = await this.REDIS.get(key)
 
-    //     const data: RedisRecordGamesDto | RedisRecordMasteriesDto = await this.REDIS.get(key)
+        if (data && data.gamesUsed.length > 2) {
+            data.gamesUsed.shift()
+            this.LOGGER.log(`REDIS: Deleting last game played from ${key}...`)
 
-    //     if (data) {
-    //         data.data = data.data.slice(1)
-    //         await this.REDIS.set(key, data)
-    //     }
-    //     return true
-    // }
+            await this.REDIS.set(key, data)
+            return true
+        }
+
+        this.LOGGER.warn(`REDIS: No games found for ${key}`)
+        return false
+    }
 }

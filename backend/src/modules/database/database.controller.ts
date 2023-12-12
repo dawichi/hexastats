@@ -102,13 +102,9 @@ export class DatabaseController {
         status: 200,
         type: Boolean,
     })
-    @ApiParam({
-        name: 'key',
-        description: 'Key to get the data from',
-        type: String,
-    })
-    async deleteLast(@Param('key') key: string): Promise<boolean> {
-        // return this.databaseService.deleteLast(key)
-        throw new Error('Not implemented')
+    @ParamServer()
+    @ParamSummonerName()
+    async deleteLast(@Param('server', ServerPipe) server: string, @Param('summonerName') summonerName: string): Promise<boolean> {
+        return this.databaseService.deleteLast(server, summonerName)
     }
 }
