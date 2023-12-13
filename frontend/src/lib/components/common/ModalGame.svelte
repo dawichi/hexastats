@@ -119,7 +119,7 @@
                                         <div class="mt-1 grid grid-cols-2 items-center">
                                             {#each participant.augments as augment}
                                                 <img
-                                                    title={augment.tooltip}
+                                                    title={augment.description}
                                                     class="rounded-full bg-black {styles.iconSize.medium} rounded"
                                                     src={riotService.augmentURL(augment.iconLarge)}
                                                     alt="item"
