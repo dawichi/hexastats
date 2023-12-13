@@ -2,7 +2,7 @@ import { RiotAugmentDto } from '../../modules/riot/types'
 
 export const augmentsData: Record<number, RiotAugmentDto> = {
     '1': {
-        description: 'Using Abilities grant you infinitely stacking <scaleBonus>Ability Haste</scaleBonus>.',
+        description: 'Using Abilities grant you infinitely stacking Ability Haste.',
         displayName: 'Accelerating Sorcery',
         iconLarge: 'AcceleratingSorcery_large.Arena_Augments_V2.png',
         iconSmall: 'AcceleratingSorcery_small.Arena_Augments_V2.png',
@@ -10,11 +10,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'AcceleratingSorcery',
         rarity: 8,
         spellDataValues: { HastePerCast: 9 },
-        tooltip: 'Using an Ability grants 9 Ability Haste, stacking infinitely.',
+        tooltip: 'Using an Ability grants <scaleBonus>@HastePerCast@ Ability Haste</scaleBonus>, stacking infinitely.',
     },
     '2': {
-        description:
-            'Gain <scaleBonus>@ItemHaste@ Item Haste</scaleBonus> (equivalent to @TooltipCDR@% Item CDR).<br><br><rules>Item Haste reduces the cooldown of all Item Abilities.</rules>',
+        description: 'Gain 300 Item Haste (equivalent to 75% Item CDR).Item Haste reduces the cooldown of all Item Abilities.',
         displayName: 'Apex Inventor',
         iconLarge: 'ApexInventor_large.Arena_Augments_V2.png',
         iconSmall: 'ApexInventor_small.Arena_Augments_V2.png',
@@ -22,11 +21,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'ApexInventor',
         rarity: 4,
         spellDataValues: { ItemHaste: 300, TooltipCDR: 75 },
-        tooltip: 'Gain 300 Item Haste (equivalent to 75% Item CDR).Item Haste reduces the cooldown of all Item Abilities.',
+        tooltip:
+            'Gain <scaleBonus>@ItemHaste@ Item Haste</scaleBonus> (equivalent to @TooltipCDR@% Item CDR).<br><br><rules>Item Haste reduces the cooldown of all Item Abilities.</rules>',
     },
     '4': {
-        description:
-            'Gain increased damage, <scaleLevel>Damage</scaleLevel>, <healing>Healing</healing>, <shield>Shielding</shield>, and <scaleBonus>Ability Haste</scaleBonus>, but you <keywordMajor>cannot use your Ultimate Ability</keywordMajor>.',
+        description: 'Gain increased damage, Damage, Healing, Shielding, and Ability Haste, but you cannot use your Ultimate Ability.',
         displayName: 'Back To Basics',
         iconLarge: 'BackToBasics_large.Arena_Augments_V2.png',
         iconSmall: 'BackToBasics_small.Arena_Augments_V2.png',
@@ -34,11 +33,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'BacktoBasics',
         rarity: 8,
         spellDataValues: { DamageAmp: 0.3499999940395355, Haste: 60, HealingAmp: 0.3499999940395355, ShieldingAmp: 0.3499999940395355 },
-        tooltip: 'Your Ultimate Ability is sealed. Gain 35% Damage, Healing, Shielding, and 60 Ability Haste',
+        tooltip:
+            'Your Ultimate Ability is sealed. Gain @DamageAmp*100@% <scaleLevel>Damage</scaleLevel>, <healing>Healing</healing>, <shield>Shielding</shield>, and <scaleBonus>@Haste@ Ability Haste</scaleBonus>',
     },
     '5': {
-        description:
-            'Gain the <spellName>Banner of Command</spellName> Summoner Spell.<br><br><rules><spellName>Banner of Command</spellName> empowers your ally for a brief duration</rules>.',
+        description: 'Gain the Banner of Command Summoner Spell.Banner of Command empowers your ally for a brief duration.',
         displayName: 'Banner of Command',
         iconLarge: 'BannerOfCommand_large.Arena_Augments_V2.png',
         iconSmall: 'BannerOfCommand_small.Arena_Augments_V2.png',
@@ -46,11 +45,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'BannerofCommand',
         rarity: 4,
         spellDataValues: { BuffDuration: 10, EmpowermentValue: 0.15000000596046448 },
-        tooltip: 'Your Partner gains a bonus 15% Health, Attack Damage, Ability Power, and Attack Speed for 10 seconds.',
+        tooltip:
+            'Your Partner gains a bonus @EmpowermentValue*100@% <scaleHealth>Health</scaleHealth>, <scaleAD>Attack Damage</scaleAD>, <scaleAP>Ability Power</scaleAP>, and <attackSpeed>Attack Speed</attackSpeed> for 10 seconds.',
     },
     '6': {
-        description:
-            'Gain the <spellName>Blade Waltz</spellName> Summoner Spell.<br><br><rules><spellName>Blade Waltz</spellName> makes you untargetable while you dash at and damage enemies @TotalHits@ times.</rules>',
+        description: 'Gain the Blade Waltz Summoner Spell.Blade Waltz makes you untargetable while you dash at and damage enemies 8 times.',
         displayName: 'Blade Waltz',
         iconLarge: 'BladeWaltz_large.Arena_Augments_V2.png',
         iconSmall: 'BladeWaltz_small.Arena_Augments_V2.png',
@@ -59,10 +58,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 8,
         spellDataValues: { TotalHits: 8 },
         tooltip:
-            'Makes you untargetable while you dash at and deal damage to enemies 8 times (deals 50% on-hit damage).Damage Dealt This Round: Damage Dealt Total: ',
+            '<rules>Makes you untargetable while you dash at and deal @Damage@ damage to enemies @TotalHits@ times (deals 50% on-hit damage).</rules><br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@<br>',
     },
     '7': {
-        description: 'Gain <scaleAD>@ADIncrease*100@% Attack Damage</scaleAD>.',
+        description: 'Gain 15% Attack Damage.',
         displayName: 'Blunt Force',
         iconLarge: 'BluntForce_large.Arena_Augments_V2.png',
         iconSmall: 'BluntForce_small.Arena_Augments_V2.png',
@@ -70,7 +69,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'BluntForce',
         rarity: 0,
         spellDataValues: { ADIncrease: 0.15000000596046448 },
-        tooltip: 'Gain 15% Attack Damage.',
+        tooltip: 'Gain <scaleAD>@ADIncrease*100@% Attack Damage</scaleAD>.',
     },
     '8': {
         description: 'Spawn a Battle Sled at the start of each combat.',
@@ -106,7 +105,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         tooltip: 'You enter combat launching from a cannon.',
     },
     '11': {
-        description: 'Casting your Ultimate also makes you <status>Invulnerable</status> for a short duration.',
+        description: 'Casting your Ultimate also makes you Invulnerable for a short duration.',
         displayName: "Can't Touch This",
         iconLarge: 'CantTouchThis_large.Arena_Augments_V2.png',
         iconSmall: 'CantTouchThis_small.Arena_Augments_V2.png',
@@ -114,11 +113,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'CantTouchThis',
         rarity: 8,
         spellDataValues: { Cooldown: 8, InvulnDuration: 2 },
-        tooltip: 'Casting your Ultimate also makes you Invulnerable for 2s. 8s cooldown.',
+        tooltip: 'Casting your Ultimate also makes you <status>Invulnerable</status> for @InvulnDuration@s. @Cooldown@s cooldown.',
     },
     '12': {
-        description:
-            'Gain the <spellName>Castle</spellName> Summoner Spell<br><br><rules><spellName>Castle</spellName> allows you to swap places with your ally.</rules>',
+        description: 'Gain the Castle Summoner SpellCastle allows you to swap places with your ally.',
         displayName: 'Castle',
         iconLarge: 'Castle_large.Arena_Augments_V2.png',
         iconSmall: 'Castle_small.Arena_Augments_V2.png',
@@ -126,10 +124,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'Castle',
         rarity: 0,
         spellDataValues: { MSBuffAmount: 0.5, MSBuffDuration: 2 },
-        tooltip: 'Gain the Castle Summoner SpellAllows you to swap places with your ally. You then gain 50% Move Speed for 2 seconds.',
+        tooltip:
+            'Gain the <spellName>Castle</spellName> Summoner Spell<br><br><rules>Allows you to swap places with your ally. You then gain @MSBuffAmount*100@% Move Speed for @MSBuffDuration@ seconds.</rules>',
     },
     '13': {
-        description: 'Gain <health>@Health@ Health</health>, but you deal @DamageReduction*100@% less damage.',
+        description: 'Gain 1250 Health, but you deal 10% less damage.',
         displayName: 'Celestial Body',
         iconLarge: 'CelestialBody_large.Arena_Augments_V2.png',
         iconSmall: 'CelestialBody_small.Arena_Augments_V2.png',
@@ -137,11 +136,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'CelestialBody',
         rarity: 4,
         spellDataValues: { DamageReduction: 0.10000000149011612, Health: 1250 },
-        tooltip: 'Gain 1250 Health, but you deal 10% less damage.',
+        tooltip: 'Gain <health>@Health@ Health</health>, but you deal @DamageReduction*100@% less damage.',
     },
     '14': {
         description:
-            "You are attached to your ally and can't move on your own. Your bonus movespeed is also granted to your ally, and you gain <scaleLevel>Ability Haste</scaleLevel> and <attackSpeed>Attack Speed</attackSpeed>.",
+            "You are attached to your ally and can't move on your own. Your bonus movespeed is also granted to your ally, and you gain Ability Haste and Attack Speed.",
         displayName: 'Chauffeur',
         iconLarge: 'Chauffeur_large.Arena_Augments_V2.png',
         iconSmall: 'Chauffeur_small.Arena_Augments_V2.png',
@@ -150,11 +149,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 8,
         spellDataValues: { AttackSpeed: 0.5, Haste: 100 },
         tooltip:
-            'You are attached to your ally. Your bonus movespeed is also granted to your ally and you gain 100 Ability Haste and 50% Attack Speed. Using a Dash or Blink ability removes the tether for 1.5s before snapping back to your ally.',
+            'You are attached to your ally. Your bonus movespeed is also granted to your ally and you gain <scaleLevel>@Haste@ Ability Haste</scaleLevel> and <attackSpeed>@AttackSpeed*100@% Attack Speed</attackSpeed>. <br><br>Using a Dash or Blink ability removes the tether for 1.5s before snapping back to your ally.',
     },
     '15': {
-        description:
-            '<health>Healing</health> and Regen you do deals a portion of the value in <scaleAP>Magic Damage</scaleAP> to the nearest enemy champion.',
+        description: 'Healing and Regen you do deals a portion of the value in Magic Damage to the nearest enemy champion.',
         displayName: 'Circle of Death',
         iconLarge: 'CircleOfDeath_large.Arena_Augments_V2.png',
         iconSmall: 'CircleOfDeath_small.Arena_Augments_V2.png',
@@ -163,10 +161,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 8,
         spellDataValues: { DamageRange: 1000, HealToDamageConversion: 0.699999988079071 },
         tooltip:
-            'Healing and Regen you do deals 70% of that value in magic damage to the nearest enemy champion.Damage Dealt This Round: Damage Dealt Total: ',
+            '<health>Healing</health> and Regen you do deals <magicDamage>@HealToDamageConversion*100@% of that value in magic damage</magicDamage> to the nearest enemy champion.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '16': {
-        description: 'Gain the <spellName>Electrocute</spellName> and <spellName>Phase Rush</spellName> Keystone Runes.',
+        description: 'Gain the Electrocute and Phase Rush Keystone Runes.',
         displayName: 'Combo Master',
         iconLarge: 'ComboMaster_large.Arena_Augments_V2.png',
         iconSmall: 'ComboMaster_small.Arena_Augments_V2.png',
@@ -184,10 +182,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             SlowResist: 0.75,
             WindowDuration: 4,
         },
-        tooltip: 'Gain the Electrocute and Phase Rush Keystone Runes.Electrocute Damage This Round: Electrocute Damage Total: ',
+        tooltip:
+            'Gain the <spellName>Electrocute</spellName> and <spellName>Phase Rush</spellName> Keystone Runes.<br><br>Electrocute Damage This Round: @f1@<br>Electrocute Damage Total: @f2@',
     },
     '17': {
-        description: 'Each round, mark an opponent to take @DamageAmp*100@% more damage and grant an extra @Gold@ gold on death.',
+        description: 'Each round, mark an opponent to take 20% more damage and grant an extra 350 gold on death.',
         displayName: 'Contract Killer',
         iconLarge: 'ContractKiller_large.Arena_Augments_V2.png',
         iconSmall: 'ContractKiller_small.Arena_Augments_V2.png',
@@ -196,10 +195,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 0,
         spellDataValues: { DamageAmp: 0.20000000298023224, Gold: 350 },
         tooltip:
-            'Each round, mark an opposing champion. That champion takes 20% extra damage and grants an 350 gold to you and your teammate when killed.Bonus Damage This Round: Bonus Damage Total: Total Gold Gained per Teammate: ',
+            'Each round, mark an opposing champion. That champion takes @DamageAmp*100@% extra damage and grants an @Gold@ gold to you and your teammate when killed.<br><br>Bonus Damage This Round: @f1@<br>Bonus Damage Total: @f2@<br>Total Gold Gained per Teammate: @f3@',
     },
     '18': {
-        description: 'Gain a <shield>@TotalShield@ Shield</shield> after <status>Immobilizing</status> an enemy champion.<br>',
+        description: 'Gain a  Shield after Immobilizing an enemy champion.',
         displayName: 'Courage of the Colossus',
         iconLarge: 'CourageOfTheColossus_large.Arena_Augments_V2.png',
         iconSmall: 'CourageOfTheColossus_small.Arena_Augments_V2.png',
@@ -207,10 +206,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'CourageoftheColossus',
         rarity: 8,
         spellDataValues: { HealthScalar: 0.05999999865889549 },
-        tooltip: 'Gain a  Shield after Immobilizing an enemy champion.Shields Generated This Round: Shields Generated Total: ',
+        tooltip:
+            'Gain a <shield>@TotalShield@ Shield</shield> after <status>Immobilizing</status> an enemy champion.<br><br>Shields Generated This Round: @f1@<br>Shields Generated Total: @f2@',
     },
     '19': {
-        description: 'Your dash, leap, blink, or teleport Abilities gain <scaleLevel>@Haste@ Ability Haste</scaleLevel>.',
+        description: 'Your dash, leap, blink, or teleport Abilities gain 200 Ability Haste.',
         displayName: 'Dashing',
         iconLarge: 'Dashing_large.Arena_Augments_V2.png',
         iconSmall: 'Dashing_small.Arena_Augments_V2.png',
@@ -218,10 +218,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'Dashing',
         rarity: 8,
         spellDataValues: { Haste: 200 },
-        tooltip: 'Your dash, leap, blink, or teleport Abilities gain 200 Ability Haste.',
+        tooltip: 'Your dash, leap, blink, or teleport Abilities gain <scaleLevel>@Haste@ Ability Haste</scaleLevel>.',
     },
     '20': {
-        description: 'Upon dropping below @HealthThreshold*100@% Health, heal for @HealAmount*100@% max Health over 3 seconds.<br>',
+        description: 'Upon dropping below 50% Health, heal for 30% max Health over 3 seconds.',
         displayName: "Dawnbringer's Resolve",
         iconLarge: 'DawnbringersResolve_large.Arena_Augments_V2.png',
         iconSmall: 'DawnbringersResolve_small.Arena_Augments_V2.png',
@@ -229,11 +229,12 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'DawnbringersResolve',
         rarity: 4,
         spellDataValues: { Duration: 3, HealAmount: 0.30000001192092896, HealthThreshold: 0.5 },
-        tooltip: 'Upon dropping below 50% Health, heal for 30% max Health over 3 seconds.Healing Done This Round: Healing Done Total: ',
+        tooltip:
+            'Upon dropping below @HealthThreshold*100@% Health, heal for @HealAmount*100@% max Health over 3 seconds.<br><br>Healing Done This Round: @f1@<br>Healing Done Total: @f2@',
     },
     '21': {
         description:
-            'Gain the <spellName>Defensive Maneuvers</spellName> Summoner Spell<br><br><rules><spellName>Defensive Maneuvers</spellName> Casts both Summoner <spellName>Barrier</spellName> and <spellName>Heal</spellName> on you and your teammate.</rules>',
+            'Gain the Defensive Maneuvers Summoner SpellDefensive Maneuvers Casts both Summoner Barrier and Heal on you and your teammate.',
         displayName: 'Defensive Maneuvers',
         iconLarge: 'DefensiveManeuvers_large.Arena_Augments_V2.png',
         iconSmall: 'DefensiveManeuvers_small.Arena_Augments_V2.png',
@@ -242,10 +243,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 4,
         spellDataValues: {},
         tooltip:
-            'Cast Summoner Barrier and Heal on you and your ally. Grants  Shield, restores  Health, and gives 30% Move Speed for 1 second.Healing Done Total: Shields Created Total: ',
+            'Cast Summoner <abilityName>Barrier</abilityName> and <abilityName>Heal</abilityName> on you and your ally. Grants <shield>@BarrierAmount@ Shield</shield>, restores <healing>@HealAmount@ Health</healing>, and gives <speed>30% Move Speed</speed> for 1 second.<br><br>Healing Done Total: @f1@<br>Shields Created Total: @f2@',
     },
     '22': {
-        description: 'Gain @AttackSpeed*100@% Attack Speed.',
+        description: 'Gain 60% Attack Speed.',
         displayName: 'Deft',
         iconLarge: 'Deft_large.Arena_Augments_V2.png',
         iconSmall: 'Deft_small.Arena_Augments_V2.png',
@@ -253,10 +254,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'Deft',
         rarity: 0,
         spellDataValues: { AttackSpeed: 0.6000000238418579 },
-        tooltip: 'Gain 60% Attack Speed.',
+        tooltip: 'Gain @AttackSpeed*100@% Attack Speed.',
     },
     '23': {
-        description: 'Gain the <spellName>Fleet Footwork</spellName> and <spellName>Grasp of the Undying</spellName> Keystone Runes.<br>',
+        description: 'Gain the Fleet Footwork and Grasp of the Undying Keystone Runes.',
         displayName: "Demon's Dance",
         iconLarge: 'DemonsDance_large.Arena_Augments_V2.png',
         iconSmall: 'DemonsDance_small.Arena_Augments_V2.png',
@@ -281,11 +282,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             GRWindow: 5,
         },
         tooltip:
-            'Gain the Fleet Footwork and Grasp of the Undying Keystone Runes.Healing Done This Round: Healing Done Total: Max Health Gained: ',
+            'Gain the <spellName>Fleet Footwork</spellName> and <spellName>Grasp of the Undying</spellName> Keystone Runes.<br><br>Healing Done This Round: @f1@<br>Healing Done Total: @f2@<br>Max Health Gained: @f3@',
     },
     '24': {
-        description:
-            'Gain the <spellName>Die Another Day</spellName> Summoner Spell<br><br><rules><spellName>Die Another Day</spellName> creates a zone where no unit can die for 4 seconds.</rules>',
+        description: 'Gain the Die Another Day Summoner SpellDie Another Day creates a zone where no unit can die for 4 seconds.',
         displayName: 'Die Another Day',
         iconLarge: 'DieAnotherDay_large.Arena_Augments_V2.png',
         iconSmall: 'DieAnotherDay_small.Arena_Augments_V2.png',
@@ -294,7 +294,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 4,
         spellDataValues: { HealFlatTooltip: 250 },
         tooltip:
-            'Bless the ground under you for 4s, preventing any unit inside from falling below 10% of their max Health. At the end, units inside are healed for 250 Health. ',
+            'Bless the ground under you for 4s, preventing any unit inside from falling below 10% of their max Health. At the end, units inside are healed for <healing>@HealFlatTooltip@ Health</healing>. ',
     },
     '25': {
         description: "Your team's first death each round explodes, dealing massive damage.",
@@ -306,7 +306,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 4,
         spellDataValues: { ExplosionRadius: 500, PercentMaxHPDamage: 0.20000000298023224 },
         tooltip:
-            "Your team's first death each round explodes, dealing 20% of the targets max health as true damage to nearby enemies.Damage Dealt This Round: Damage Dealt Total: ",
+            "Your team's first death each round explodes, dealing <trueDamage>@PercentMaxHPDamage*100@% of the targets max health as true damage</trueDamage> to nearby enemies.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@",
     },
     '26': {
         description: 'Deal more damage to enemies the faster you are than them.',
@@ -317,7 +317,8 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'DontBlink',
         rarity: 0,
         spellDataValues: { BonusDamagePerMSDifference: 0.0010000000474974513 },
-        tooltip: 'Gain 0% bonus damage per 10 Move Speed you have more than the target.Bonus Damage This Round: Bonus Damage Total: ',
+        tooltip:
+            'Gain @BonusDamagePerMSDifference*1000@% bonus damage per <moveSpeed>10 Move Speed</moveSpeed> you have more than the target.<br><br>Bonus Damage This Round: @f1@<br>Bonus Damage Total: @f2@',
     },
     '27': {
         description: 'Your dash, leap, blink, or teleport Abilities leave behind a trail that detonates after 1 second.',
@@ -329,11 +330,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 8,
         spellDataValues: { ExplosionDelayTime: 0.75, ExplosionRadius: 300 },
         tooltip:
-            'Your dash, leap, blink, or teleport Abilities leave behind a trail that detonates after 1 second, dealing physical damage.Damage Dealt This Round: Damage Dealt Total: ',
+            'Your dash, leap, blink, or teleport Abilities leave behind a trail that detonates after 1 second, dealing @Damage@ physical damage.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '28': {
-        description:
-            'Damaging enemies adds a stacking <scaleArmor>Armor</scaleArmor> and <scaleMR>Magic Resist</scaleMR> shred for @ShredDuration@s. ',
+        description: 'Damaging enemies adds a stacking Armor and Magic Resist shred for 4s. ',
         displayName: 'Erosion',
         iconLarge: 'Erosion_large.Arena_Augments_V2.png',
         iconSmall: 'Erosion_small.Arena_Augments_V2.png',
@@ -341,7 +341,8 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'Erosion',
         rarity: 0,
         spellDataValues: { MaxStacks: 20, Shred: 0.014999999664723873, ShredDuration: 4 },
-        tooltip: 'Damaging enemies shreds 1% Armor and Magic Resist for 4s. Stacks up to 20 times.',
+        tooltip:
+            'Damaging enemies shreds @Shred*100@% <scaleArmor>Armor</scaleArmor> and <scaleMR>Magic Resist</scaleMR> for @ShredDuration@s. <br><br>Stacks up to @MaxStacks@ times.',
     },
     '29': {
         description: 'Your Abilities apply on-hit effects. 1 second cooldown per target.',
@@ -352,10 +353,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'EtherealWeapon',
         rarity: 4,
         spellDataValues: {},
-        tooltip: 'Your Abilities apply on-hit effects. 1 second cooldown per target.Times Triggered This Round: Times Triggered Total: ',
+        tooltip:
+            'Your Abilities apply on-hit effects. 1 second cooldown per target.<br><br>Times Triggered This Round: @f1@<br>Times Triggered Total: @f2@',
     },
     '30': {
-        description: 'Gain Ability Haste equal to <scaleAP>@APToHasteConversion*100@% of your Ability Power</scaleAP>',
+        description: 'Gain Ability Haste equal to 25% of your Ability Power',
         displayName: 'Eureka',
         iconLarge: 'Eureka_large.Arena_Augments_V2.png',
         iconSmall: 'Eureka_small.Arena_Augments_V2.png',
@@ -363,11 +365,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'Eureka',
         rarity: 8,
         spellDataValues: { APToHasteConversion: 0.25 },
-        tooltip: 'Gain Ability Haste equal to 25% of your Ability Power',
+        tooltip: 'Gain Ability Haste equal to <scaleAP>@APToHasteConversion*100@% of your Ability Power</scaleAP>',
     },
     '31': {
-        description:
-            'Gain the <spellName>Evocation</spellName> Summoner Spell<br><br><rules><spellName>Evocation</spellName> lets you channel to restore <healing>Health</healing> and <scaleMana>Mana</scaleMana>.</rules>',
+        description: 'Gain the Evocation Summoner SpellEvocation lets you channel to restore Health and Mana.',
         displayName: 'Evocation',
         iconLarge: 'Evocation_large.Arena_Augments_V2.png',
         iconSmall: 'Evocation_small.Arena_Augments_V2.png',
@@ -376,11 +377,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 0,
         spellDataValues: { Duration: 4, MSBuffAmount: 0.5, MSBuffDuration: 2, TotalHealAmount: 0.6000000238418579 },
         tooltip:
-            ' Lets you channel to restore Health and Mana. You then gain 50% Move Speed for 2 seconds.Healing Done This Round: Healing Done Total: ',
+            '<rules> Lets you channel to restore <healing>Health</healing> and <scaleMana>Mana</scaleMana>. You then gain @MSBuffAmount*100@% Move Speed for @MSBuffDuration@ seconds.</rules><br><br>Healing Done This Round: @f1@<br>Healing Done Total: @f2@',
     },
     '32': {
-        description:
-            'Deal @BonusDamage*100@% more damage to enemies below @HealthThreshold*100@% health. Reset your basic abilities on takedown.',
+        description: 'Deal 15% more damage to enemies below 50% health. Reset your basic abilities on takedown.',
         displayName: 'Executioner',
         iconLarge: 'Executioner_large.Arena_Augments_V2.png',
         iconSmall: 'Executioner_small.Arena_Augments_V2.png',
@@ -389,10 +389,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 0,
         spellDataValues: { BonusDamage: 0.15000000596046448, HealthThreshold: 0.5 },
         tooltip:
-            'Deal 15% more damage to enemies below 50% health. Reset your basic abilities on takedown.Bonus Damage This Round: Bonus Damage Total: ',
+            'Deal @BonusDamage*100@% more damage to enemies below @HealthThreshold*100@% health. Reset your basic abilities on takedown.<br><br>Bonus Damage This Round: @f1@<br>Bonus Damage Total: @f2@',
     },
     '33': {
-        description: '<keywordMajor>Automatically</keywordMajor> fire a Blitzcrank hook every 12 seconds at a nearby enemy champion.',
+        description: 'Automatically fire a Blitzcrank hook every 12 seconds at a nearby enemy champion.',
         displayName: 'Extendo-Arm',
         iconLarge: 'ExtendoArm_large.Arena_Augments_V2.png',
         iconSmall: 'ExtendoArm_small.Arena_Augments_V2.png',
@@ -400,11 +400,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'ExtendoArm',
         rarity: 4,
         spellDataValues: { Cooldown: 12 },
-        tooltip: 'Automatically fire a Blitzcrank hook every 12 seconds at a nearby enemy champion.Hooks Landed: ',
+        tooltip:
+            '<keywordMajor>Automatically</keywordMajor> fire a Blitzcrank hook every 12 seconds at a nearby enemy champion.<br><br>Hooks Landed: @f1@',
     },
     '34': {
-        description:
-            'Start combat with a <abilityName>Black Shield</abilityName> for @ShieldDuration@s.<br><br><rules><abilityName>Black Shield</abilityName> blocks Magic Damage and <status>Immobilizing</status> effects.</rules>',
+        description: 'Start combat with a Black Shield for 12s.Black Shield blocks Magic Damage and Immobilizing effects.',
         displayName: 'Fallen Aegis',
         iconLarge: 'FallenAegis_large.Arena_Augments_V2.png',
         iconSmall: 'FallenAegis_small.Arena_Augments_V2.png',
@@ -413,11 +413,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 0,
         spellDataValues: { ShieldDuration: 12 },
         tooltip:
-            'Start combat with a Black Shield that blocks magic damage for 12s.Black Shield blocks Magic Damage and Immobilizing effects.Shields Generated Total: Immobilizing Spells Blocked Total: ',
+            'Start combat with a <abilityName>Black Shield</abilityName> that blocks @ShieldAmount@ magic damage for @ShieldDuration@s.<br><br><rules><abilityName>Black Shield</abilityName> blocks Magic Damage and <status>Immobilizing</status> effects.</rules><br><br>Shields Generated Total: @f1@<br>Immobilizing Spells Blocked Total: @f2@',
     },
     '35': {
-        description:
-            'Gain the <spellName>Feel the Burn</spellName> Summoner Spell.<br><br><rules><spellName>Feel the Burn</spellName> casts <spellName>Ignite</spellName> and <spellName>Exhaust</spellName> on all nearby enemy champions.</rules>',
+        description: 'Gain the Feel the Burn Summoner Spell.Feel the Burn casts Ignite and Exhaust on all nearby enemy champions.',
         displayName: 'Feel the Burn',
         iconLarge: 'FeelTheBurn_large.Arena_Augments_V2.png',
         iconSmall: 'FeelTheBurn_small.Arena_Augments_V2.png',
@@ -425,10 +424,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'FeeltheBurn',
         rarity: 8,
         spellDataValues: { DamageReductionTOOLTIPONLY: 0.3499999940395355, ExhaustDuration: 3, Range: 1000, SlowAmount: 0.5 },
-        tooltip: 'Casts Ignite and Exhaust on all nearby enemy champions.',
+        tooltip: '<rules>Casts <spellName>Ignite</spellName> and <spellName>Exhaust</spellName> on all nearby enemy champions.</rules>',
     },
     '36': {
-        description: 'Your Attacks apply an infinitely stacking <keywordMajor>Burn</keywordMajor>, dealing damage over time.',
+        description: 'Your Attacks apply an infinitely stacking Burn, dealing damage over time.',
         displayName: 'Firebrand',
         iconLarge: 'Firebrand_large.Arena_Augments_V2.png',
         iconSmall: 'Firebrand_small.Arena_Augments_V2.png',
@@ -437,10 +436,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 4,
         spellDataValues: { BleedDuration: 5, PercentMaxHPDamagePer5Seconds: 0.029999999329447746 },
         tooltip:
-            'Your Attacks also Burn enemies, dealing 0.6% max Health Magic Damage damage per second over 5 seconds. The Burn stacks infinitely.Damage Dealt This Round: Damage Dealt Total: ',
+            'Your Attacks also <keywordMajor>Burn</keywordMajor> enemies, dealing <scaleAP>@PercentMaxHPDamagePer5Seconds*20@% max Health Magic Damage</scaleAP> damage per second over @BleedDuration@ seconds. The <keywordMajor>Burn</keywordMajor> stacks infinitely.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '37': {
-        description: 'Gain <healing>@HealShieldAmp*100@% Heal and Shield Power</healing>.',
+        description: 'Gain 25% Heal and Shield Power.',
         displayName: 'First-Aid Kit',
         iconLarge: 'FirstAidKit_large.Arena_Augments_V2.png',
         iconSmall: 'FirstAidKit_small.Arena_Augments_V2.png',
@@ -448,10 +447,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'FirstAidKit',
         rarity: 0,
         spellDataValues: { HealShieldAmp: 0.25 },
-        tooltip: 'Gain 25% Heal and Shield Power.',
+        tooltip: 'Gain <healing>@HealShieldAmp*100@% Heal and Shield Power</healing>.',
     },
     '38': {
-        description: 'Gain the <spellName>First Strike</spellName> and <spellName>Dark Harvest</spellName> Keystone Runes.',
+        description: 'Gain the First Strike and Dark Harvest Keystone Runes.',
         displayName: 'From Beginning to End',
         iconLarge: 'FromBeginningToEnd_large.Arena_Augments_V2.png',
         iconSmall: 'FromBeginningToEnd_small.Arena_Augments_V2.png',
@@ -478,11 +477,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             ModesCooldownReduction: 1,
             OOCTimer: 10,
         },
-        tooltip: 'Gain the First Strike and Dark Harvest Keystone Runes.Damage Dealt This Round: Damage Dealt Total: Gold Gained Total: ',
+        tooltip:
+            'Gain the <spellName>First Strike</spellName> and <spellName>Dark Harvest</spellName> Keystone Runes.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@<br>Gold Gained Total: @f3@',
     },
     '39': {
-        description:
-            'Every @Cooldown@ seconds, <keywordMajor>Automatically</keywordMajor> <status>Root</status> nearby enemies for @RootDuration@ second.<br>',
+        description: 'Every 7 seconds, Automatically Root nearby enemies for 1 second.',
         displayName: 'Frost Wraith',
         iconLarge: 'FrostWraith_large.Arena_Augments_V2.png',
         iconSmall: 'FrostWraith_small.Arena_Augments_V2.png',
@@ -490,11 +489,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'FrostWraith',
         rarity: 0,
         spellDataValues: { Cooldown: 7, Radius: 450, RootDuration: 1 },
-        tooltip: 'Every 7 seconds, Automatically Root nearby enemies for 1 second.Enemies Rooted This Round: Enemies Rooted Total: ',
+        tooltip:
+            'Every @Cooldown@ seconds, <keywordMajor>Automatically</keywordMajor> <status>Root</status> nearby enemies for @RootDuration@ second.<br><br>Enemies Rooted This Round: @f1@<br>Enemies Rooted Total: @f2@',
     },
     '40': {
-        description:
-            'Gain the <spellName>Frozen Foundations</spellName> Summoner Spell<br><br><rules><spellName>Frozen Foundations</spellName> summons a wall of ice at a location.</rules>',
+        description: 'Gain the Frozen Foundations Summoner SpellFrozen Foundations summons a wall of ice at a location.',
         displayName: 'Frozen Foundations',
         iconLarge: 'FrozenFoundations_large.Arena_Augments_V2.png',
         iconSmall: 'FrozenFoundations_small.Arena_Augments_V2.png',
@@ -502,11 +501,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'FrozenFoundations',
         rarity: 0,
         spellDataValues: { ChampPushDistance: 120, NonChampPushDistance: 250, WallDuration: 5, WallWidth: 400 },
-        tooltip: 'Summon a wall of ice at target location.',
+        tooltip: '<rules>Summon a wall of ice at target location.</rules>',
     },
     '41': {
-        description:
-            'Become large, gaining @HealthAmp*100@% <scaleHealth>Health</scaleHealth> and @ADAmp*100@% <scaleAP>Adaptive Force</scaleAP>.',
+        description: 'Become large, gaining 35% Health and 15% Adaptive Force.',
         displayName: 'Goliath',
         iconLarge: 'Goliath_large.Arena_Augments_V2.png',
         iconSmall: 'Goliath_small.Arena_Augments_V2.png',
@@ -514,10 +512,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'Goliath',
         rarity: 8,
         spellDataValues: { ADAmp: 0.15000000596046448, APAmp: 0.15000000596046448, HealthAmp: 0.3499999940395355, SizeAmp: 0.5 },
-        tooltip: 'Become large, gaining 35% Health and 15% Adaptive Force.',
+        tooltip:
+            'Become large, gaining @HealthAmp*100@% <scaleHealth>Health</scaleHealth> and @ADAmp*100@% <scaleAP>Adaptive Force</scaleAP>.',
     },
     '42': {
-        description: '<status>Immobilizing</status> enemy champions <healing>restores @TotalHeal@ Health</healing>.',
+        description: 'Immobilizing enemy champions restores Health.',
         displayName: 'Guilty Pleasure',
         iconLarge: 'GuiltyPleasure_large.Arena_Augments_V2.png',
         iconSmall: 'GuiltyPleasure_small.Arena_Augments_V2.png',
@@ -525,11 +524,12 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'GuiltyPleasure',
         rarity: 0,
         spellDataValues: { HealPercentage: 0.019999999552965164 },
-        tooltip: 'Immobilizing enemy champions restores Health.Healing Done This Round: Healing Done Total: ',
+        tooltip:
+            '<status>Immobilizing</status> enemy champions <healing>restores @TotalHeal@ Health</healing>.<br><br>Healing Done This Round: @f1@<br>Healing Done Total: @f2@',
     },
     '43': {
         description:
-            'Gain the <spellName>Now You See Me</spellName> Summoner Spell<br><br><rules><spellName>Now You See Me</spellName> teleports you back to the starting position of your last Movement Ability.</rules>',
+            'Gain the Now You See Me Summoner SpellNow You See Me teleports you back to the starting position of your last Movement Ability.',
         displayName: 'Now You See Me',
         iconLarge: 'NowYouSeeMe_large.Arena_Augments_V2.png',
         iconSmall: 'NowYouSeeMe_small.Arena_Augments_V2.png',
@@ -538,10 +538,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 0,
         spellDataValues: { MSBuffAmount: 0.5, MSBuffDuration: 2 },
         tooltip:
-            'Passive: Leave a mark behind whenever you use a Movement Ability.Active: Return to the last mark you left. You then gain 50% Move Speed for 2 seconds.',
+            '<passive>Passive:</passive> Leave a mark behind whenever you use a Movement Ability.<br><br><active>Active:</active> Return to the last mark you left. You then gain @MSBuffAmount*100@% Move Speed for @MSBuffDuration@ seconds.',
     },
     '44': {
-        description: 'Your <status>Slowing</status> effects reduce Move Speed by an extra 100.',
+        description: 'Your Slowing effects reduce Move Speed by an extra 100.',
         displayName: 'Ice Cold',
         iconLarge: 'IceCold_large.Arena_Augments_V2.png',
         iconSmall: 'IceCold_small.Arena_Augments_V2.png',
@@ -549,11 +549,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'IceCold',
         rarity: 0,
         spellDataValues: { ExtraSlowAmount: 100 },
-        tooltip: 'Your Slowing effects reduce Move Speed by an extra 100.',
+        tooltip: 'Your <status>Slowing</status> effects reduce Move Speed by an extra 100.',
     },
     '45': {
         description:
-            'Your Abilities apply a stacking <keywordMajor>Burn</keywordMajor>, dealing <scaleAP>Magic Damage</scaleAP> over time.<br><br>Your <keywordMajor>Burn</keywordMajor> effects reduce your basic Ability cooldowns.',
+            'Your Abilities apply a stacking Burn, dealing Magic Damage over time.Your Burn effects reduce your basic Ability cooldowns.',
         displayName: 'Infernal Conduit',
         iconLarge: 'InfernalConduit_large.Arena_Augments_V2.png',
         iconSmall: 'InfernalConduit_small.Arena_Augments_V2.png',
@@ -562,7 +562,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 8,
         spellDataValues: { BleedDuration: 5, FlatCooldownRefundPerTick: 0.07999999821186066, ProcCooldown: 1 },
         tooltip:
-            'Your Abilities apply a stacking Burn, dealing  Magic Damage per second for 5 seconds. The Burn stacks infinitely.All your Burn effects lower your remaining Basic Ability Cooldowns by 0.07999999821186066s when they damage enemies.Damage Dealt This Round: Damage Dealt Total: ',
+            'Your Abilities apply a stacking <keywordMajor>Burn</keywordMajor>, dealing <scaleAP>@BleedDamageTooltip@ Magic Damage</scaleAP> per second for @BleedDuration@ seconds. The <keywordMajor>Burn</keywordMajor> stacks infinitely.<br><br>All your <keywordMajor>Burn</keywordMajor> effects lower your remaining Basic Ability Cooldowns by @FlatCooldownRefundPerTick@s when they damage enemies.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@<br>',
     },
     '46': {
         description: 'You gain the Infernal Soul, dealing bonus damage when you hit enemies with Abilities or Attacks.',
@@ -574,10 +574,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 0,
         spellDataValues: {},
         tooltip:
-            'You gain the Infernal Soul, dealing bonus damage when you hit enemies with Abilities or Attacks.Damage Dealt This Round: Damage Dealt Total: ',
+            'You gain the Infernal Soul, dealing bonus damage when you hit enemies with Abilities or Attacks.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '47': {
-        description: 'Gain <crit>@CritChance*100@% Crit Chance</crit>.',
+        description: 'Gain 40% Crit Chance.',
         displayName: "It's Critical",
         iconLarge: 'ItsCritical_large.Arena_Augments_V2.png',
         iconSmall: 'ItsCritical_small.Arena_Augments_V2.png',
@@ -585,7 +585,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'ItsCritical',
         rarity: 4,
         spellDataValues: { CritChance: 0.4000000059604645 },
-        tooltip: 'Gain 40% Crit Chance.',
+        tooltip: 'Gain <crit>@CritChance*100@% Crit Chance</crit>.',
     },
     '48': {
         description: 'Your Abilities can Critically Strike. Gain 20% Crit Chance.',
@@ -597,7 +597,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 8,
         spellDataValues: { CritChance: 0.20000000298023224, CritDamage: 1.5 },
         tooltip:
-            'Your Abilities can Critically Strike for 140% total damage. Gain 20% Crit Chance. Gain an additional Crit Chance scaling with your AP.Bonus Damage This Round: Bonus Damage Total: ',
+            'Your Abilities can Critically Strike for 140% total damage. Gain 20% Crit Chance. Gain an additional @APToCritConversion@ Crit Chance scaling with your AP.<br><br>Bonus Damage This Round: @f1@<br>Bonus Damage Total: @f2@',
     },
     '49': {
         description: 'Each round, you and your teammate get an additional Juice for free.',
@@ -611,7 +611,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         tooltip: 'Each round, you and your teammate get an additional Juice for free.',
     },
     '50': {
-        description: 'Gain the <spellName>Summon Aery</spellName> and <spellName>Arcane Comet</spellName> Keystone Runes.',
+        description: 'Gain the Summon Aery and Arcane Comet Keystone Runes.',
         displayName: 'Keystone Conjurer',
         iconLarge: 'KeystoneConjurer_large.Arena_Augments_V2.png',
         iconSmall: 'KeystoneConjurer_small.Arena_Augments_V2.png',
@@ -635,10 +635,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             ShieldRatio: 0.22499999403953552,
             ShieldRatioAD: 0.3499999940395355,
         },
-        tooltip: 'Gain the Summon Aery and Arcane Comet Keystone Runes.Damage Dealt Total: Shields Generated Total: ',
+        tooltip:
+            'Gain the <spellName>Summon Aery</spellName> and <spellName>Arcane Comet</spellName> Keystone Runes.<br><br>Damage Dealt Total: @f1@<br>Shields Generated Total: @f2@',
     },
     '51': {
-        description: 'Every 4th Attack deals additional <scaleMagic>magic damage</scaleMagic>.',
+        description: 'Every 4th Attack deals additional magic damage.',
         displayName: "Light 'em Up!",
         iconLarge: 'LightEmUp_large.Arena_Augments_V2.png',
         iconSmall: 'LightEmUp_small.Arena_Augments_V2.png',
@@ -646,10 +647,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'LightemUp',
         rarity: 0,
         spellDataValues: {},
-        tooltip: 'Every 4th Attack deals additional  magic damage.Damage Dealt This Round: Damage Dealt Total: ',
+        tooltip:
+            'Every 4th Attack deals additional <scaleMagic>@TOOLTIPONLYDamage@ magic damage</scaleMagic>.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '52': {
-        description: 'Gain <scaleAD>Attack Damage</scaleAD> scaling with your <attackSpeed>Attack Speed</attackSpeed>.',
+        description: 'Gain Attack Damage scaling with your Attack Speed.',
         displayName: 'Lightning Strikes',
         iconLarge: 'LightningStrikes_large.Arena_Augments_V2.png',
         iconSmall: 'LightningStrikes_small.Arena_Augments_V2.png',
@@ -657,11 +659,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'LightningStrikes',
         rarity: 4,
         spellDataValues: { ASToADConversion: 25 },
-        tooltip: 'Gain @ASToADConversion*.1@ Attack Damage per 0.1 Attack Speed.',
+        tooltip: 'Gain <scaleAD>@ASToADConversion*.1@ Attack Damage</scaleAD> per <attackSpeed>0.1 Attack Speed</attackSpeed>.',
     },
     '53': {
-        description:
-            'On Round start you grow large (<scaleAD>Adaptive Force</scaleAD> and <healing>Health</healing>) or tiny (<scaleLevel>Ability Haste</scaleLevel> and <speed>Move Speed</speed>).',
+        description: 'On Round start you grow large (Adaptive Force and Health) or tiny (Ability Haste and Move Speed).',
         displayName: 'Mad Scientist',
         iconLarge: 'MadScientist_large.Arena_Augments_V2.png',
         iconSmall: 'MadScientist_small.Arena_Augments_V2.png',
@@ -677,11 +678,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             SizeAmp: 0.30000001192092896,
         },
         tooltip:
-            'On Round start you grow large, gaining (30% Adaptive Force and 20% Health) or tiny (70 Ability Haste and 30% Move Speed).',
+            'On Round start you grow large, gaining (<scaleAD>@ADAmp*100@% Adaptive Force</scaleAD> and <healing>@HealthAmp*100@% Health</healing>) or tiny (<scaleLevel>@Haste@ Ability Haste</scaleLevel> and <speed>@MovespeedAmp*100@% Move Speed</speed>).',
     },
     '54': {
-        description:
-            'Your Attacks grant you stacking <scaleAP>Ability Power</scaleAP> and your Abilities grant you <scaleAD>Attack Damage</scaleAD>.',
+        description: 'Your Attacks grant you stacking Ability Power and your Abilities grant you Attack Damage.',
         displayName: 'Master of Duality',
         iconLarge: 'MasterOfDuality_large.Arena_Augments_V2.png',
         iconSmall: 'MasterOfDuality_small.Arena_Augments_V2.png',
@@ -690,11 +690,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 8,
         spellDataValues: {},
         tooltip:
-            'Your Attacks grant you  Ability Power and your Abilities grant you  Attack Damage, stacking infinitely until the end of the round.',
+            'Your Attacks grant you <scaleAP>@APGained@ Ability Power</scaleAP> and your Abilities grant you <scaleAD>@ADGained@ Attack Damage</scaleAD>, stacking infinitely until the end of the round.',
     },
     '55': {
-        description:
-            '<keywordMajor>Autocast</keywordMajor> throw a lantern to your ally every 12 seconds.<br><br><rules>The lantern can be clicked to dash to you</rules>.',
+        description: 'Autocast throw a lantern to your ally every 12 seconds.The lantern can be clicked to dash to you.',
         displayName: 'Midnight Express',
         iconLarge: 'MidnightExpress_large.Arena_Augments_V2.png',
         iconSmall: 'MidnightExpress_small.Arena_Augments_V2.png',
@@ -702,10 +701,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'MidnightExpress',
         rarity: 0,
         spellDataValues: {},
-        tooltip: 'Autocast throw a lantern to your ally every 12 seconds.The lantern can be clicked to dash to you.',
+        tooltip:
+            '<keywordMajor>Autocast</keywordMajor> throw a lantern to your ally every 12 seconds.<br><br><rules>The lantern can be clicked to dash to you</rules>.',
     },
     '56': {
-        description: 'Increase <healing>max Health</healing> by half of your <scaleMana>Mana</scaleMana>.',
+        description: 'Increase max Health by half of your Mana.',
         displayName: 'Mind to Matter',
         iconLarge: 'MindToMatter_large.Arena_Augments_V2.png',
         iconSmall: 'MindToMatter_small.Arena_Augments_V2.png',
@@ -713,10 +713,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'MindtoMatter',
         rarity: 0,
         spellDataValues: { ManaToHealthConversion: 0.5 },
-        tooltip: 'Increase max Health by half of your Mana.',
+        tooltip: 'Increase <healing>max Health</healing> by half of your <scaleMana>Mana</scaleMana>.',
     },
     '57': {
-        description: 'You gain the Mountain Soul, gaining <shield>Shield</shield> after being out of combat for a short time.',
+        description: 'You gain the Mountain Soul, gaining Shield after being out of combat for a short time.',
         displayName: 'Mountain Soul',
         iconLarge: 'MountainSoul_large.Arena_Augments_V2.png',
         iconSmall: 'MountainSoul_small.Arena_Augments_V2.png',
@@ -724,10 +724,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'MountainSoul',
         rarity: 0,
         spellDataValues: {},
-        tooltip: 'You gain the Mountain Soul, gaining Shield after being out of combat for a short time.Shields Generated Total: ',
+        tooltip:
+            'You gain the Mountain Soul, gaining <shield>Shield</shield> after being out of combat for a short time.<br><br>Shields Generated Total: @f1@',
     },
     '58': {
-        description: 'Your Attacks reduce your cooldowns by @CooldownRefund@ seconds.',
+        description: 'Your Attacks reduce your cooldowns by 1.25 seconds.',
         displayName: 'Mystic Punch',
         iconLarge: 'MysticPunch_large.Arena_Augments_V2.png',
         iconSmall: 'MysticPunch_small.Arena_Augments_V2.png',
@@ -735,7 +736,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'MysticPunch',
         rarity: 8,
         spellDataValues: { CooldownRefund: 1.25 },
-        tooltip: 'Your Attacks reduce your cooldowns by 1.25 seconds.',
+        tooltip: 'Your Attacks reduce your cooldowns by @CooldownRefund@ seconds.',
     },
     '59': {
         description: 'You can buy any number of Mythic Items.',
@@ -749,8 +750,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         tooltip: 'You can buy any number of Mythic Items.',
     },
     '60': {
-        description:
-            'Gain the Ocean Soul, granting high <healing>Health</healing> and <scaleMana>Mana</scaleMana> regen after damaging enemies.',
+        description: 'Gain the Ocean Soul, granting high Health and Mana regen after damaging enemies.',
         displayName: 'Ocean Soul',
         iconLarge: 'OceanSoul_large.Arena_Augments_V2.png',
         iconSmall: 'OceanSoul_small.Arena_Augments_V2.png',
@@ -759,10 +759,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 0,
         spellDataValues: {},
         tooltip:
-            'Gain the Ocean Soul, granting high Health and Mana regen after damaging enemies.Healing Done This Round: Healing Done Total: ',
+            'Gain the Ocean Soul, granting high <healing>Health</healing> and <scaleMana>Mana</scaleMana> regen after damaging enemies.<br><br>Healing Done This Round: @f1@<br>Healing Done Total: @f2@',
     },
     '61': {
-        description: '<keywordMajor>Autocast</keywordMajor> a boomerang at a nearby enemy every 7s.',
+        description: 'Autocast a boomerang at a nearby enemy every 7s.',
         displayName: 'OK Boomerang',
         iconLarge: 'OKBoomerang_large.Arena_Augments_V2.png',
         iconSmall: 'OKBoomerang_small.Arena_Augments_V2.png',
@@ -771,7 +771,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 4,
         spellDataValues: {},
         tooltip:
-            'Autocast a boomerang at a nearby enemy every 7s, dealing adaptive damage to enemies hit.Damage Dealt This Round: Damage Dealt Total: ',
+            '<keywordMajor>Autocast</keywordMajor> a boomerang at a nearby enemy every 7s, dealing @Damage@ adaptive damage to enemies hit.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '62': {
         description: 'Gain 3 random Dragon Souls.',
@@ -785,8 +785,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         tooltip: 'Gain 3 random Dragon Souls.',
     },
     '63': {
-        description:
-            'After using a dash, leap, blink, or teleport Ability you gain <scaleArmor>@ResistsPerStack@ Armor</scaleArmor> and <scaleMR>Magic Resist</scaleMR>.<br><br>This stacks up to @MaxStacks@ times.',
+        description: 'After using a dash, leap, blink, or teleport Ability you gain 12 Armor and Magic Resist.This stacks up to 5 times.',
         displayName: "Outlaw's Grit",
         iconLarge: 'OutlawsGrit_large.Arena_Augments_V2.png',
         iconSmall: 'OutlawsGrit_small.Arena_Augments_V2.png',
@@ -794,10 +793,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'OutlawsGrit',
         rarity: 4,
         spellDataValues: { MaxStacks: 5, ResistsPerStack: 12 },
-        tooltip: 'After using a dash, leap, blink, or teleport Ability you gain 12 Armor and Magic Resist.This stacks up to 5 times.',
+        tooltip:
+            'After using a dash, leap, blink, or teleport Ability you gain <scaleArmor>@ResistsPerStack@ Armor</scaleArmor> and <scaleMR>Magic Resist</scaleMR>.<br><br>This stacks up to @MaxStacks@ times.',
     },
     '64': {
-        description: 'Gain hugely increased <healing>Health Regen</healing>, which is further increased while low on Health.',
+        description: 'Gain hugely increased Health Regen, which is further increased while low on Health.',
         displayName: 'Perseverance',
         iconLarge: 'Perseverance_large.Arena_Augments_V2.png',
         iconSmall: 'Perseverance_small.Arena_Augments_V2.png',
@@ -806,10 +806,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 4,
         spellDataValues: { AmpedHPThreshold: 0.25, AmpedRegen: 16, BaseRegen: 8 },
         tooltip:
-            'Gain 800% base Health Regen, increased to 1600% base Health Regen while below 25% Health.Healing Done This Round: Healing Done Total: ',
+            'Gain <healing>@BaseRegen*100@% base Health Regen</healing>, increased to <healing>@AmpedRegen*100@% base Health Regen</healing> while below 25% Health.<br><br>Healing Done This Round: @f1@<br>Healing Done Total: @f2@',
     },
     '65': {
-        description: 'Permanently gain <scaleAP>@APPerProc@ Ability Power</scaleAP> when you hit enemies with Abilities.',
+        description: 'Permanently gain 2 Ability Power when you hit enemies with Abilities.',
         displayName: 'Phenomenal Evil',
         iconLarge: 'PhenomenalEvil_large.Arena_Augments_V2.png',
         iconSmall: 'PhenomenalEvil_small.Arena_Augments_V2.png',
@@ -818,11 +818,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 4,
         spellDataValues: { APPerProc: 2, ProcCooldown: 0.75, StartingAPIfSecondAugment: 60 },
         tooltip:
-            'Permanently gain 2 Ability Power when you hit enemies with Abilities.1 second cooldown.If taken as your second augment, starts with 60 AP.AP Gained: ',
+            'Permanently gain <scaleAP>@APPerProc@ Ability Power</scaleAP> when you hit enemies with Abilities.<br><br>1 second cooldown.<br><br>If taken as your second augment, starts with @StartingAPIfSecondAugment@ AP.<br><br>AP Gained: @f1@',
     },
     '66': {
-        description:
-            '<keywordMajor>Automatically</keywordMajor> slash in a circle around you, dealing bonus damage on the outer edge every @AutoCastCooldown@ seconds.',
+        description: 'Automatically slash in a circle around you, dealing bonus damage on the outer edge every 10 seconds.',
         displayName: 'Quantum Computing',
         iconLarge: 'QuantumComputing_large.Arena_Augments_V2.png',
         iconSmall: 'QuantumComputing_small.Arena_Augments_V2.png',
@@ -831,10 +830,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 8,
         spellDataValues: { AutoCastCooldown: 10 },
         tooltip:
-            'Automatically slash in a circle around you, dealing bonus damage and healing on the outer edge every 15 seconds. Damage Dealt Total: Healing Done Total: ',
+            '<keywordMajor>Automatically</keywordMajor> slash in a circle around you, dealing bonus damage and healing on the outer edge every 15 seconds. <br><br>Damage Dealt Total: @f1@<br>Healing Done Total: @f2@',
     },
     '67': {
-        description: 'Using an Ability heals you for <healing>@HealAmount@ Health</healing>.',
+        description: 'Using an Ability heals you for  Health.',
         displayName: 'Rabble Rousing',
         iconLarge: 'RabbleRousing_large.Arena_Augments_V2.png',
         iconSmall: 'RabbleRousing_small.Arena_Augments_V2.png',
@@ -842,10 +841,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'RabbleRousing',
         rarity: 4,
         spellDataValues: { MaxHealthPercentageHeal: 0.009999999776482582 },
-        tooltip: 'Using an Ability heals you for  Health.Healing Done This Round: Healing Done Total: ',
+        tooltip:
+            'Using an Ability heals you for <healing>@HealAmount@ Health</healing>.<br><br>Healing Done This Round: @f1@<br>Healing Done Total: @f2@',
     },
     '68': {
-        description: 'Gain <scaleLevel>@AbilityHaste@ Ability Haste</scaleLevel>.',
+        description: 'Gain 60 Ability Haste.',
         displayName: 'Recursion',
         iconLarge: 'Recursion_large.Arena_Augments_V2.png',
         iconSmall: 'Recursion_small.Arena_Augments_V2.png',
@@ -853,11 +853,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'Recursion',
         rarity: 4,
         spellDataValues: { AbilityHaste: 60 },
-        tooltip: 'Gain 60 Ability Haste.',
+        tooltip: 'Gain <scaleLevel>@AbilityHaste@ Ability Haste</scaleLevel>.',
     },
     '69': {
-        description:
-            'On dropping below @HealthThreshold1*100@ or @HealthThreshold2*100@% Health, nearby enemies are <status>Knocked Back</status>.',
+        description: 'On dropping below 60 or 30% Health, nearby enemies are Knocked Back.',
         displayName: 'Repulsor',
         iconLarge: 'Repulsor_large.Arena_Augments_V2.png',
         iconSmall: 'Repulsor_small.Arena_Augments_V2.png',
@@ -870,10 +869,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             KnockbackDistance: 750,
             KnockbackRange: 500,
         },
-        tooltip: 'On dropping below 60 or 30% Health, nearby enemies are Knocked Back.',
+        tooltip:
+            'On dropping below @HealthThreshold1*100@ or @HealthThreshold2*100@% Health, nearby enemies are <status>Knocked Back</status>.',
     },
     '70': {
-        description: 'You constantly <healing>heal</healing> while moving, increased by distance travelled.',
+        description: 'You constantly heal while moving, increased by distance travelled.',
         displayName: 'Restless Restoration',
         iconLarge: 'RestlessRestoration_large.Arena_Augments_V2.png',
         iconSmall: 'RestlessRestoration_small.Arena_Augments_V2.png',
@@ -881,10 +881,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'RestlessRestoration',
         rarity: 4,
         spellDataValues: { HealthRatioPer1000Units: 0.019999999552965164 },
-        tooltip: 'You heal for per 1000 distance traveled.Healing Done This Round: Healing Done Total: ',
+        tooltip:
+            'You heal for @HealCalcPer1000Units@ per 1000 distance traveled.<br><br>Healing Done This Round: @f1@<br>Healing Done Total: @f2@',
     },
     '71': {
-        description: 'Gain @MeleeRangeIncrease@ Attack Range, reduced to @RangedRangeIncrease@ if you are Ranged.',
+        description: 'Gain 200 Attack Range, reduced to 100 if you are Ranged.',
         displayName: 'Scopier Weapons',
         iconLarge: 'ScopierWeapons_large.Arena_Augments_V2.png',
         iconSmall: 'ScopierWeapons_small.Arena_Augments_V2.png',
@@ -892,7 +893,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'ScopierWeapons',
         rarity: 4,
         spellDataValues: { MeleeRangeIncrease: 200, RangedRangeIncrease: 100 },
-        tooltip: 'Gain 200 Attack Range, reduced to 100 if you are Ranged.',
+        tooltip: 'Gain @MeleeRangeIncrease@ Attack Range, reduced to @RangedRangeIncrease@ if you are Ranged.',
     },
     '72': {
         description: "Your Abilities mark enemies, causing them to take extra damage from your ally's next effect.",
@@ -904,11 +905,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 4,
         spellDataValues: { ProcCooldown: 0.75 },
         tooltip:
-            "Your Abilities mark enemies, causing them to take an additional  magic damage from your ally's next Attack or Ability.Damage Dealt This Round: Damage Dealt Total: ",
+            "Your Abilities mark enemies, causing them to take an additional <magicDamage>@Damage@ magic damage</magicDamage> from your ally's next Attack or Ability.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@",
     },
     '73': {
-        description:
-            'After using a dash, leap, blink, or teleport Ability or exiting <stealth>Stealth</stealth>, gain @MSAmount@ Move Speed for @BuffDuration@ seconds.',
+        description: 'After using a dash, leap, blink, or teleport Ability or exiting Stealth, gain 300 Move Speed for 2 seconds.',
         displayName: 'Shadow Runner',
         iconLarge: 'ShadowRunner_large.Arena_Augments_V2.png',
         iconSmall: 'ShadowRunner_small.Arena_Augments_V2.png',
@@ -916,10 +916,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'ShadowRunner',
         rarity: 0,
         spellDataValues: { BuffDuration: 2, MSAmount: 300 },
-        tooltip: 'After using a dash, leap, blink, or teleport Ability or exiting Stealth, gain 300 Move Speed for 2 seconds.',
+        tooltip:
+            'After using a dash, leap, blink, or teleport Ability or exiting <stealth>Stealth</stealth>, gain @MSAmount@ Move Speed for @BuffDuration@ seconds.',
     },
     '74': {
-        description: "Your Attacks reduce an enemy's damage by @DamageReduction*100@% for 3 seconds.",
+        description: "Your Attacks reduce an enemy's damage by 15% for 3 seconds.",
         displayName: 'Shrink Ray',
         iconLarge: 'ShrinkRay_large.Arena_Augments_V2.png',
         iconSmall: 'ShrinkRay_small.Arena_Augments_V2.png',
@@ -927,11 +928,12 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'ShrinkRay',
         rarity: 4,
         spellDataValues: { DamageReduction: 0.15000000596046448 },
-        tooltip: "Your Attacks reduce an enemy's damage by 15% for 3 seconds.Damage Reduced This Round: Damage Reduced Total: ",
+        tooltip:
+            "Your Attacks reduce an enemy's damage by @DamageReduction*100@% for 3 seconds.<br><br>Damage Reduced This Round: @f1@<br>Damage Reduced Total: @f2@",
     },
     '75': {
         description:
-            'Every second, apply a stacking <keywordMajor>Burn</keywordMajor> to nearby enemy champions scaling with your <health>Max Health</health>. The <keywordMajor>Burn</keywordMajor> stacks infinitely.',
+            'Every second, apply a stacking Burn to nearby enemy champions scaling with your Max Health. The Burn stacks infinitely.',
         displayName: 'Slow Cooker',
         iconLarge: 'SlowCooker_large.Arena_Augments_V2.png',
         iconSmall: 'SlowCooker_small.Arena_Augments_V2.png',
@@ -940,11 +942,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 8,
         spellDataValues: { BleedDuration: 5, Range: 500 },
         tooltip:
-            'Every second, apply a stacking Burn, dealing  per second as Magic Damage for 5 seconds to enemy champions within 500 range. The Burn stacks infinitely.Damage Dealt This Round: Damage Dealt Total: ',
+            'Every second, apply a stacking <keywordMajor>Burn</keywordMajor>, dealing <health>@BleedDamageTooltip@ per second as <scaleAP>Magic Damage</scaleAP> for @BleedDuration@ seconds</health> to enemy champions within @Range@ range. The <keywordMajor>Burn</keywordMajor> stacks infinitely.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '76': {
-        description:
-            'Buffing, <healing>Healing</healing>, or <shield>Shielding</shield> your ally deals damage and <status>Slows</status> enemies surrounding them.',
+        description: 'Buffing, Healing, or Shielding your ally deals damage and Slows enemies surrounding them.',
         displayName: 'Sonic Boom',
         iconLarge: 'SonicBoom_large.Arena_Augments_V2.png',
         iconSmall: 'SonicBoom_small.Arena_Augments_V2.png',
@@ -953,11 +954,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 0,
         spellDataValues: { ProcCooldown: 2, Radius: 450, SlowAmount: -0.30000001192092896 },
         tooltip:
-            'Buffing, Healing, or Shielding your ally deals  true damage and Slows enemies surrounding them by @SlowAmount*-100@% for 2 seconds.Damage Dealt This Round: Damage Dealt Total: ',
+            'Buffing, <healing>Healing</healing>, or <shield>Shielding</shield> your ally deals <trueDamage>@Damage@ true damage</trueDamage> and <status>Slows</status> enemies surrounding them by @SlowAmount*-100@% for 2 seconds.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '77': {
-        description:
-            'Gain <crit>@CritChance*100@% Crit Chance</crit> and @HealPercentage*100@% Lifesteal on <crit>Critical Strikes</crit>.',
+        description: 'Gain 20% Crit Chance and 20% Lifesteal on Critical Strikes.',
         displayName: 'Soul Siphon',
         iconLarge: 'SoulSiphon_large.Arena_Augments_V2.png',
         iconSmall: 'SoulSiphon_small.Arena_Augments_V2.png',
@@ -965,11 +965,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'SoulSiphon',
         rarity: 4,
         spellDataValues: { CritChance: 0.20000000298023224, HealPercentage: 0.20000000298023224 },
-        tooltip: 'Gain 20% Crit Chance and 20% Lifesteal on Critical Strikes.Healing Done This Round: Healing Done Total: ',
+        tooltip:
+            'Gain <crit>@CritChance*100@% Crit Chance</crit> and @HealPercentage*100@% Lifesteal on <crit>Critical Strikes</crit>.<br><br>Healing Done This Round: @f1@<br>Healing Done Total: @f2@',
     },
     '78': {
-        description:
-            '@DamageRedirectPercentage*100@% of damage dealt to your ally is redirected to you, and @HealCopyPercentage*100@% of <healing>healing</healing> they receive is given to you as well.',
+        description: '15% of damage dealt to your ally is redirected to you, and 50% of healing they receive is given to you as well.',
         displayName: 'Spirit Link',
         iconLarge: 'SpiritLink_large.Arena_Augments_V2.png',
         iconSmall: 'SpiritLink_small.Arena_Augments_V2.png',
@@ -978,10 +978,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 8,
         spellDataValues: { DamageRedirectPercentage: 0.15000000596046448, HealCopyPercentage: 0.5 },
         tooltip:
-            '15% of damage dealt to your ally is redirected to you, and 50% of healing they receive is given to you as well.Damage Redirected Total: Healing Done Total: ',
+            '@DamageRedirectPercentage*100@% of damage dealt to your ally is redirected to you, and @HealCopyPercentage*100@% of <healing>healing</healing> they receive is given to you as well.<br><br>Damage Redirected Total: @f1@<br>Healing Done Total: @f2@<br>',
     },
     '79': {
-        description: 'Gain the <spellName>Lethal Tempo</spellName> and <spellName>Conqueror</spellName> Keystone Runes.',
+        description: 'Gain the Lethal Tempo and Conqueror Keystone Runes.',
         displayName: 'Symphony of War',
         iconLarge: 'SymphonyOfWar_large.Arena_Augments_V2.png',
         iconSmall: 'SymphonyOfWar_small.Arena_Augments_V2.png',
@@ -1002,11 +1002,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             StackCap: 6,
             TimeUntilNextStackFromSameSpell: 5,
         },
-        tooltip: 'Gain the Lethal Tempo and Conqueror Keystone Runes.',
+        tooltip: 'Gain the <spellName>Lethal Tempo</spellName> and <spellName>Conqueror</spellName> Keystone Runes.',
     },
     '80': {
         description:
-            'You can <crit>Critically Defend</crit> using your Crit Chance (max @MaxChance*100@% chance), giving you a chance to reduce damage. Gain @CritChance*100@% Crit Chance.',
+            'You can Critically Defend using your Crit Chance (max 60% chance), giving you a chance to reduce damage. Gain 20% Crit Chance.',
         displayName: 'Tank It Or Leave It',
         iconLarge: 'TankItOrLeaveIt_large.Arena_Augments_V2.png',
         iconSmall: 'TankItOrLeaveIt_small.Arena_Augments_V2.png',
@@ -1015,11 +1015,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 0,
         spellDataValues: { CritChance: 0.20000000298023224, DamageReduction: 0.25, MaxChance: 0.6000000238418579 },
         tooltip:
-            'You can Critically Defend using your Crit Chance (max 60% chance), giving you a chance to reduce damage taken by 25%. Gain 20% Crit Chance.Damage Reduced This Round: Damage Reduced Total: ',
+            'You can <crit>Critically Defend</crit> using your Crit Chance (max @MaxChance*100@% chance), giving you a chance to reduce damage taken by @DamageReduction*100@%. Gain @CritChance*100@% Crit Chance.<br><br>Damage Reduced This Round: @f1@<br>Damage Reduced Total: @f2@',
     },
     '81': {
-        description:
-            'Your Attacks grant you <moveSpeed>@MSPerHit@ Move Speed</moveSpeed>, stacking infinitely. Gain AS equal to @MSToASConversion*10000@% of your MS.',
+        description: 'Your Attacks grant you 10 Move Speed, stacking infinitely. Gain AS equal to 0% of your MS.',
         displayName: 'Tap Dancer',
         iconLarge: 'TapDancer_large.Arena_Augments_V2.png',
         iconSmall: 'TapDancer_small.Arena_Augments_V2.png',
@@ -1027,11 +1026,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'TapDancer',
         rarity: 8,
         spellDataValues: { MSPerHit: 10, MSToASConversion: 0.0010000000474974513 },
-        tooltip: 'Your Attacks grant you 10 Move Speed, stacking infinitely. Gain AS equal to 0% of your MS.',
+        tooltip:
+            'Your Attacks grant you <moveSpeed>@MSPerHit@ Move Speed</moveSpeed>, stacking infinitely. Gain AS equal to @MSToASConversion*10000@% of your MS.',
     },
     '82': {
-        description:
-            'Gain <scaleAD>@AD@ Attack Damage</scaleAD>, <scaleLevel>@AbilityHaste@ Ability Haste</scaleLevel>, and <scaleAD>@Lethality@ Lethality</scaleAD>.',
+        description: 'Gain 25 Attack Damage, 10 Ability Haste, and 10 Lethality.',
         displayName: 'The Brutalizer',
         iconLarge: 'TheBrutalizer_large.Arena_Augments_V2.png',
         iconSmall: 'TheBrutalizer_small.Arena_Augments_V2.png',
@@ -1039,11 +1038,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'TheBrutalizer',
         rarity: 4,
         spellDataValues: { AD: 25, AbilityHaste: 10, Lethality: 10 },
-        tooltip: 'Gain 25 Attack Damage, 10 Ability Haste, and 10 Lethality.',
+        tooltip:
+            'Gain <scaleAD>@AD@ Attack Damage</scaleAD>, <scaleLevel>@AbilityHaste@ Ability Haste</scaleLevel>, and <scaleAD>@Lethality@ Lethality</scaleAD>.',
     },
     '83': {
-        description:
-            'Remove your current items, gain random items each combat instead. Bonus stats and item damage is increased by @ItemStatAmp*100@%.',
+        description: 'Remove your current items, gain random items each combat instead. Bonus stats and item damage is increased by 30%.',
         displayName: "Thief's Gloves",
         iconLarge: 'ThiefsGloves_large.Arena_Augments_V2.png',
         iconSmall: 'ThiefsGloves_small.Arena_Augments_V2.png',
@@ -1051,10 +1050,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'ThiefsGloves',
         rarity: 8,
         spellDataValues: { ItemDamageAmp: 0.30000001192092896, ItemStatAmp: 0.30000001192092896 },
-        tooltip: 'Remove your current items, gain random items each combat instead. Bonus stats and item damage is increased by 30%.',
+        tooltip:
+            'Remove your current items, gain random items each combat instead. Bonus stats and item damage is increased by @ItemStatAmp*100@%.',
     },
     '84': {
-        description: 'Gain @PercentPen*100@% <scaleAD>Armor Penetration</scaleAD> and <scaleAP>Magic Penetration</scaleAP>.',
+        description: 'Gain 25% Armor Penetration and Magic Penetration.',
         displayName: 'Thread the Needle',
         iconLarge: 'ThreadTheNeedle_large.Arena_Augments_V2.png',
         iconSmall: 'ThreadTheNeedle_small.Arena_Augments_V2.png',
@@ -1062,11 +1062,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'ThreadtheNeedle',
         rarity: 4,
         spellDataValues: { PercentPen: 0.25 },
-        tooltip: 'Gain 25% Armor Penetration and Magic Penetration.',
+        tooltip: 'Gain @PercentPen*100@% <scaleAD>Armor Penetration</scaleAD> and <scaleAP>Magic Penetration</scaleAP>.',
     },
     '85': {
-        description:
-            '<status>Immobilizing</status> enemy champions applies a <keywordMajor>Burn</keywordMajor> that deals damage over time, stacking infinitely.',
+        description: 'Immobilizing enemy champions applies a Burn that deals damage over time, stacking infinitely.',
         displayName: 'Tormentor',
         iconLarge: 'Tormentor_large.Arena_Augments_V2.png',
         iconSmall: 'Tormentor_small.Arena_Augments_V2.png',
@@ -1075,11 +1074,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 0,
         spellDataValues: { BleedDuration: 5, PercentMaxHPDamagePer5Seconds: 0.03999999910593033 },
         tooltip:
-            'Immobilizing enemy champions applies a Burn, dealing 0.8% max Health Magic Damage per second for 5 seconds. The Burn stacks infinitely.Damage Dealt This Round: Damage Dealt Total: ',
+            '<status>Immobilizing</status> enemy champions applies a <keywordMajor>Burn</keywordMajor>, dealing <scaleAP>@PercentMaxHPDamagePer5Seconds*20@% max Health Magic Damage</scaleAP> per second for @BleedDuration@ seconds. The <keywordMajor>Burn</keywordMajor> stacks infinitely.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '86': {
-        description:
-            'When you damage a champion from far away, <keywordMajor>Autocast</keywordMajor> a <abilityName>Trueshot Barrage</abilityName> at them.',
+        description: 'When you damage a champion from far away, Autocast a Trueshot Barrage at them.',
         displayName: 'Trueshot Prodigy',
         iconLarge: 'TrueshotProdigy_large.Arena_Augments_V2.png',
         iconSmall: 'TrueshotProdigy_small.Arena_Augments_V2.png',
@@ -1088,7 +1086,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 8,
         spellDataValues: { Cooldown: 5, SnipeDistance: 700 },
         tooltip:
-            'When you damage someone from over 700 units away, Autocast a Trueshot Barrage at them, dealing damage at global range. 5s cooldown.Damage Dealt This Round: Damage Dealt Total: ',
+            'When you damage someone from over @SnipeDistance@ units away, <keywordMajor>Autocast</keywordMajor> a <abilityName>Trueshot Barrage</abilityName> at them, dealing @Damage@ damage at global range. @Cooldown@s cooldown.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '87': {
         description: 'Your Attacks fire a bolt at an additional target dealing reduced damage and applying on-hits.',
@@ -1099,7 +1097,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'Typhoon',
         rarity: 0,
         spellDataValues: { ADRatio: 0.30000001192092896 },
-        tooltip: 'Your Attacks fire a bolt at an additional target dealing 30% damage and applying on-hits.',
+        tooltip: 'Your Attacks fire a bolt at an additional target dealing @ADRatio*100@% damage and applying on-hits.',
     },
     '88': {
         description: 'Once per round, refresh your Ultimate Ability after casting it.',
@@ -1113,8 +1111,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         tooltip: 'Once per round, refresh your Ultimate Ability after casting it.',
     },
     '89': {
-        description:
-            'Gain the <spellName>Vanish</spellName> Summoner Spell<br><br><rules><spellName>Vanish</spellName> turns you <stealth>Invisible</stealth>.</rules>',
+        description: 'Gain the Vanish Summoner SpellVanish turns you Invisible.',
         displayName: 'Vanish',
         iconLarge: 'Vanish_large.Arena_Augments_V2.png',
         iconSmall: 'Vanish_small.Arena_Augments_V2.png',
@@ -1123,7 +1120,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 4,
         spellDataValues: { StealthDuration: 4 },
         tooltip:
-            'Become Invisible for 4 seconds or until you Attack or use an Ability.This stealth cannot be revealed by the Arcane Sweeper trinket.',
+            'Become <stealth>Invisible</stealth> for @StealthDuration@ seconds or until you Attack or use an Ability.<br>This stealth cannot be revealed by the Arcane Sweeper trinket.',
     },
     '90': {
         description: 'After your partner dies, gain massively increased damage and Omnivamp for the remainder of the round.',
@@ -1134,11 +1131,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'Vengeance',
         rarity: 4,
         spellDataValues: { DamageAmp: 0.30000001192092896, Omnivamp: 0.30000001192092896 },
-        tooltip: 'Gain 30% increased damage and 30% Omnivamp after your partner dies.Damage Dealt This Round: Damage Dealt Total: ',
+        tooltip:
+            'Gain @DamageAmp*100@% increased damage and @Omnivamp*100@% Omnivamp after your partner dies.<br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '91': {
-        description:
-            'Your <healing>Heals</healing> grant extra <shield>Shield</shield> and your <shield>Shields</shield> grant extra <healing>Healing</healing>.',
+        description: 'Your Heals grant extra Shield and your Shields grant extra Healing.',
         displayName: 'Virtuous Cycle',
         iconLarge: 'VirtuousCycle_large.Arena_Augments_V2.png',
         iconSmall: 'VirtuousCycle_small.Arena_Augments_V2.png',
@@ -1152,10 +1149,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             ShieldFromHealPercentage: 0.20000000298023224,
         },
         tooltip:
-            'Your Heals grans an extra 20% Shield and your Shields grant an extra 0.20000000298023224% Healing.Healing Done Total: Shields Generated Total: ',
+            'Your <healing>Heals</healing> grans an extra <shield>@ShieldFromHealPercentage*100@% Shield</shield> and your <shield>Shields</shield> grant an extra <healing>@HealFromShieldPercentage@% Healing</healing>.<br><br>Healing Done Total: @f1@<br>Shields Generated Total: @f2@',
     },
     '92': {
-        description: 'Your Item and damage over time effects can Critically Strike. Gain @CritChance*100@% Crit chance.',
+        description: 'Your Item and damage over time effects can Critically Strike. Gain 20% Crit chance.',
         displayName: 'Vulnerability',
         iconLarge: 'Vulnerability_large.Arena_Augments_V2.png',
         iconSmall: 'Vulnerability_small.Arena_Augments_V2.png',
@@ -1164,11 +1161,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 0,
         spellDataValues: { CritChance: 0.20000000298023224, CritDamage: 0.5 },
         tooltip:
-            'Your Item and damage over time effects can Critically Strike for 50% extra damage. Gain 20% Crit chance.Damage Dealt This Round: Damage Dealt Total: ',
+            'Your Item and damage over time effects can Critically Strike for @CritDamage*100@% extra damage. Gain 20% Crit chance.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '93': {
         description:
-            'Gain the <spellName>Warmup Routine</spellName> Summoner Spell<br><br><rules><spellName>Warmup Routine</spellName> allows you to channel to increase your damage for the rest of the round.</rules>',
+            'Gain the Warmup Routine Summoner SpellWarmup Routine allows you to channel to increase your damage for the rest of the round.',
         displayName: 'Warmup Routine',
         iconLarge: 'WarmupRoutine_large.Arena_Augments_V2.png',
         iconSmall: 'WarmupRoutine_small.Arena_Augments_V2.png',
@@ -1176,11 +1173,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'WarmupRoutine',
         rarity: 0,
         spellDataValues: { DamagePerStack: 0.009999999776482582, MaxStacks: 24 },
-        tooltip: 'Channel to increase your damage by 2% per second, up to 24% max.Bonus Damage This Round: Bonus Damage Total: ',
+        tooltip:
+            'Channel to increase your damage by 2% per second, up to 24% max.<br><br>Bonus Damage This Round: @f1@<br>Bonus Damage Total: @f2@',
     },
     '94': {
-        description:
-            'When your ally drops below <health>@AllyHealthThreshold*100@% Health</health>, trade some of your health for a <shield>Shield</shield> on your ally.',
+        description: 'When your ally drops below 30% Health, trade some of your health for a Shield on your ally.',
         displayName: 'Willing Sacrifice',
         iconLarge: 'WillingSacrifice_large.Arena_Augments_V2.png',
         iconSmall: 'WillingSacrifice_small.Arena_Augments_V2.png',
@@ -1189,11 +1186,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 4,
         spellDataValues: { AllyHealthThreshold: 0.30000001192092896, CurrentHealthToDrain: 0.25 },
         tooltip:
-            'When your ally drops below 30% Health, trade 25% of your current Health for that much Shield on your ally.Shields Generated This Round: Shields Generated Total: ',
+            'When your ally drops below <health>@AllyHealthThreshold*100@% Health</health>, trade <health>@CurrentHealthToDrain*100@% of your current Health</health> for that much <shield>Shield</shield> on your ally.<br><br>Shields Generated This Round: @f1@<br>Shields Generated Total: @f2@',
     },
     '95': {
-        description:
-            "Your <healing>Healing</healing> and <shield>Shielding</shield> also increases the target's <scaleArmor>Armor</scaleArmor> and <scaleMR>Magic Resist</scaleMR> for 3 seconds.",
+        description: "Your Healing and Shielding also increases the target's Armor and Magic Resist for 3 seconds.",
         displayName: "Windspeaker's Blessing",
         iconLarge: 'WindspeakersBlessing_large.Arena_Augments_V2.png',
         iconSmall: 'WindspeakersBlessing_small.Arena_Augments_V2.png',
@@ -1201,7 +1197,8 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'WindspeakersBlessing',
         rarity: 8,
         spellDataValues: {},
-        tooltip: "Your Healing and Shielding also increases the target's Armor and Magic Resist by for 3 seconds.",
+        tooltip:
+            "Your <healing>Healing</healing> and <shield>Shielding</shield> also increases the target's <scaleArmor>Armor</scaleArmor> and <scaleMR>Magic Resist</scaleMR> by @Resists@ for 3 seconds.",
     },
     '96': {
         description: 'Gain 1 level now, and 1 bonus level every other round. Your level cap is removed.',
@@ -1215,7 +1212,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         tooltip: 'Gain 1 level now, and 1 bonus level every other round. Your level cap is removed.',
     },
     '97': {
-        description: 'Gain <scaleAP>@AP@ Ability Power</scaleAP>.',
+        description: 'Gain 70 Ability Power.',
         displayName: 'Witchful Thinking',
         iconLarge: 'WitchfulThinking_large.Arena_Augments_V2.png',
         iconSmall: 'WitchfulThinking_small.Arena_Augments_V2.png',
@@ -1223,11 +1220,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'WitchfulThinking',
         rarity: 0,
         spellDataValues: { AP: 70 },
-        tooltip: 'Gain 70 Ability Power.',
+        tooltip: 'Gain <scaleAP>@AP@ Ability Power</scaleAP>.',
     },
     '98': {
-        description:
-            'Gain <moveSpeed>Move Speed</moveSpeed> equal to @AbilityHasteToMSConversion@ times your <scaleLevel>Ability Haste</scaleLevel>.',
+        description: 'Gain Move Speed equal to 1.5 times your Ability Haste.',
         displayName: 'With Haste',
         iconLarge: 'WithHaste_large.Arena_Augments_V2.png',
         iconSmall: 'WithHaste_small.Arena_Augments_V2.png',
@@ -1235,11 +1231,12 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'WithHaste',
         rarity: 4,
         spellDataValues: { AbilityHasteToMSConversion: 1.5 },
-        tooltip: 'Gain Move Speed equal to 1.5 times your Ability Haste.',
+        tooltip:
+            'Gain <moveSpeed>Move Speed</moveSpeed> equal to @AbilityHasteToMSConversion@ times your <scaleLevel>Ability Haste</scaleLevel>.',
     },
     '99': {
         description:
-            "Gain the <spellName>Zhonya's Epiphany</spellName> Summoner Spell.<br><br><spellName>Zhonya's Epiphany</spellName> puts you in Stasis for 3 seconds, rendering you Untargetable and Invulnerable for the duration but also unable to act, and resetting your basic ability cooldowns.",
+            "Gain the Zhonya's Epiphany Summoner Spell.Zhonya's Epiphany puts you in Stasis for 3 seconds, rendering you Untargetable and Invulnerable for the duration but also unable to act, and resetting your basic ability cooldowns.",
         displayName: "Zhonya's Epiphany",
         iconLarge: 'ZhonyasEpiphany_large.Arena_Augments_V2.png',
         iconSmall: 'ZhonyasEpiphany_small.Arena_Augments_V2.png',
@@ -1251,8 +1248,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             'Puts you in Stasis for 3 seconds, rendering you Untargetable and Invulnerable for the duration but also unable to act, and resetting your basic ability cooldowns.',
     },
     '102': {
-        description:
-            'You become Ghosted and leave a trail of poisonous gas behind you, dealing <magicDamage>magic damage</magicDamage> to enemies inside.',
+        description: 'You become Ghosted and leave a trail of poisonous gas behind you, dealing magic damage to enemies inside.',
         displayName: "Don't Chase",
         iconLarge: 'DontChase_large.Arena_Augments_V2.png',
         iconSmall: 'DontChase_small.Arena_Augments_V2.png',
@@ -1267,10 +1263,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             ToggleCooldown: 1,
         },
         tooltip:
-            'You become Ghosted and leave a trail of poisonous gas behind you, dealing  magic damage per second to enemies inside.Damage Dealt This Round: Damage Dealt Total: ',
+            'You become Ghosted and leave a trail of poisonous gas behind you, dealing <magicDamage>@DamagePerSecond@ magic damage</magicDamage> per second to enemies inside.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '103': {
-        description: 'Your Q gains @QAbilityHaste@ Ability Haste.',
+        description: 'Your Q gains 200 Ability Haste.',
         displayName: 'Bread And Butter',
         iconLarge: 'BreadAndButter_large.Arena_Augments_V2.png',
         iconSmall: 'BreadAndButter_small.Arena_Augments_V2.png',
@@ -1278,10 +1274,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'BreadAndButter',
         rarity: 4,
         spellDataValues: { QAbilityHaste: 200, QReducedAbilityHaste: 200 },
-        tooltip: 'Your Q gains 200 Ability Haste.',
+        tooltip: 'Your Q gains @QAbilityHaste@ Ability Haste.',
     },
     '104': {
-        description: 'Your summons gain @MinionSizeIncrease*100@% increased size, health, and damage.',
+        description: 'Your summons gain 60% increased size, health, and damage.',
         displayName: 'Minionmancer',
         iconLarge: 'Minionmancer_large.Arena_Augments_V2.png',
         iconSmall: 'Minionmancer_small.Arena_Augments_V2.png',
@@ -1293,10 +1289,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             MinionHealthIncrease: 0.6000000238418579,
             MinionSizeIncrease: 0.6000000238418579,
         },
-        tooltip: 'Your summons gain 60% increased size, health, and damage.',
+        tooltip: 'Your summons gain @MinionSizeIncrease*100@% increased size, health, and damage.',
     },
     '105': {
-        description: 'Gain <speed>@MovementSpeed*100@% Move Speed</speed>, disabled for @DisableCooldown@ seconds after taking damage.',
+        description: 'Gain 100% Move Speed, disabled for 3 seconds after taking damage.',
         displayName: 'Homeguard',
         iconLarge: 'Homeguard_large.Arena_Augments_V2.png',
         iconSmall: 'Homeguard_small.Arena_Augments_V2.png',
@@ -1304,7 +1300,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'Homeguard',
         rarity: 0,
         spellDataValues: { DisableCooldown: 3, Duration: 10, MovementSpeed: 1 },
-        tooltip: 'Gain 100% Move Speed, disabled for 3 seconds after taking damage.',
+        tooltip: 'Gain <speed>@MovementSpeed*100@% Move Speed</speed>, disabled for @DisableCooldown@ seconds after taking damage.',
     },
     '107': {
         description: 'Every third Attack, your On-Hits trigger a second time.',
@@ -1319,7 +1315,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
     },
     '108': {
         description:
-            'Start each round with a bomb attached to you. After @BombDelay@ seconds, it explodes for <trueDamage>@MaxHealthDamage*100@% max Health true damage</trueDamage> and <status>Knocks Up</status> for @KnockupDuration@ seconds.<br>',
+            'Start each round with a bomb attached to you. After 15 seconds, it explodes for 20% max Health true damage and Knocks Up for 0.75 seconds.',
         displayName: 'Self Destruct',
         iconLarge: 'SelfDestruct_large.Arena_Augments_V2.png',
         iconSmall: 'SelfDestruct_small.Arena_Augments_V2.png',
@@ -1327,11 +1323,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'SelfDestruct',
         rarity: 0,
         spellDataValues: { BombDelay: 15, KnockupDuration: 0.75, MaxHealthDamage: 0.20000000298023224, Radius: 350 },
-        tooltip: '{{ Cherry_SelfDestruct_Summary }}Damage Dealt this round: Damage Dealt total: ',
+        tooltip: '{{ Cherry_SelfDestruct_Summary }}<br><br>Damage Dealt this round: @f1@<br>Damage Dealt total: @f2@',
     },
     '109': {
         description:
-            "Replace Summoner Flee with <spellName>Fate's Call</spellName> <br><br><rules><spellName>Fate's Call</spellName> pulls your partner inside of you for up to 4 seconds, making them Untargetable. The partner can move to launch themself out, <status>Knocking Back</status> the first champion hit and all surrounding enemies.</rules><br>",
+            "Replace Summoner Flee with Fate's Call Fate's Call pulls your partner inside of you for up to 4 seconds, making them Untargetable. The partner can move to launch themself out, Knocking Back the first champion hit and all surrounding enemies.",
         displayName: 'Oathsworn',
         iconLarge: 'Oathsworn_large.Arena_Augments_V2.png',
         iconSmall: 'Oathsworn_small.Arena_Augments_V2.png',
@@ -1340,7 +1336,7 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 4,
         spellDataValues: {},
         tooltip:
-            "Replace Summoner Flee with Fate's Call Fate's Call pulls your partner inside of you for up to 4 seconds, making them Untargetable. The partner can move to launch themself out, Knocking Back the first champion hit and all surrounding enemies.",
+            "Replace Summoner Flee with <spellName>Fate's Call</spellName> <br><br><rules><spellName>Fate's Call</spellName> pulls your partner inside of you for up to 4 seconds, making them Untargetable. The partner can move to launch themself out, <status>Knocking Back</status> the first champion hit and all surrounding enemies.</rules><br>",
     },
     '110': {
         description: 'There is a tether between you and your partner that constantly damages enemies inside.',
@@ -1352,11 +1348,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 0,
         spellDataValues: { RectangleHalfWidth: 50 },
         tooltip:
-            'There is a tether between you and your partner that deals  magic damage per second.Damage Dealt this Round: Damage Dealt Total: ',
+            'There is a tether between you and your partner that deals <magicDamage>@BurnDamageTooltip@ magic damage</magicDamage> per second.<br><br>Damage Dealt this Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '112': {
-        description:
-            'After using your Ultimate, you become immune to crowd control for @UnstoppableDuration@ seconds. (@Cooldown@ second Cooldown).',
+        description: 'After using your Ultimate, you become immune to crowd control for 3 seconds. (8 second Cooldown).',
         displayName: 'Ultimate Unstoppable',
         iconLarge: 'UltimateUnstoppable_large.Arena_Augments_V2.png',
         iconSmall: 'UltimateUnstoppable_small.Arena_Augments_V2.png',
@@ -1364,11 +1359,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'UltimateUnstoppable',
         rarity: 0,
         spellDataValues: { Cooldown: 8, UnstoppableDuration: 3 },
-        tooltip: 'After using your Ultimate, you become immune to crowd control for 3 seconds. (8 second Cooldown).',
+        tooltip:
+            'After using your Ultimate, you become immune to crowd control for @UnstoppableDuration@ seconds. (@Cooldown@ second Cooldown).',
     },
     '113': {
-        description:
-            'Hitting an enemy with a non-Ultimate Ability at over @SnipeDistance@ range reduces its Cooldown to @ReducedCooldown@ seconds.',
+        description: 'Hitting an enemy with a non-Ultimate Ability at over 700 range reduces its Cooldown to 0.5 seconds.',
         displayName: 'Skilled Sniper',
         iconLarge: 'SkilledSniper_large.Arena_Augments_V2.png',
         iconSmall: 'SkilledSniper_small.Arena_Augments_V2.png',
@@ -1376,10 +1371,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'SkilledSniper',
         rarity: 4,
         spellDataValues: { ReducedCooldown: 0.5, SnipeDistance: 700 },
-        tooltip: 'Hitting an enemy with a non-Ultimate Ability at over 700 range reduces its Cooldown to 0.5 seconds.',
+        tooltip:
+            'Hitting an enemy with a non-Ultimate Ability at over @SnipeDistance@ range reduces its Cooldown to @ReducedCooldown@ seconds.',
     },
     '115': {
-        description: 'Gain @MeleeRangeIncrease@ Attack Range, reduced to @RangedRangeIncrease@ if you are Ranged.',
+        description: 'Gain 250 Attack Range, reduced to 150 if you are Ranged.',
         displayName: 'Scopiest Weapons',
         iconLarge: 'ScopiestWeapons_large.Arena_Augments_V2.png',
         iconSmall: 'ScopiestWeapons_small.Arena_Augments_V2.png',
@@ -1387,10 +1383,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'ScopiestWeapons',
         rarity: 8,
         spellDataValues: { MeleeRangeIncrease: 250, RangedRangeIncrease: 150 },
-        tooltip: 'Gain 250 Attack Range, reduced to 150 if you are Ranged.',
+        tooltip: 'Gain @MeleeRangeIncrease@ Attack Range, reduced to @RangedRangeIncrease@ if you are Ranged.',
     },
     '116': {
-        description: 'Your Flash has 3 Ammo and a @FlashCooldown@ second Cooldown.',
+        description: 'Your Flash has 3 Ammo and a 2 second Cooldown.',
         displayName: 'Flashy',
         iconLarge: 'Flashy_large.Arena_Augments_V2.png',
         iconSmall: 'Flashy_small.Arena_Augments_V2.png',
@@ -1398,10 +1394,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'Flashy',
         rarity: 0,
         spellDataValues: { FlashCooldown: 2 },
-        tooltip: 'Your Flash has 3 Ammo and a 2 second Cooldown.',
+        tooltip: 'Your Flash has 3 Ammo and a @FlashCooldown@ second Cooldown.',
     },
     '118': {
-        description: 'Your Heals and Shields can Critically Strike. Gain @CritChance*100@% Crit Chance.',
+        description: 'Your Heals and Shields can Critically Strike. Gain 20% Crit Chance.',
         displayName: 'Critical Healing',
         iconLarge: 'CriticalHealing_large.Arena_Augments_V2.png',
         iconSmall: 'CriticalHealing_small.Arena_Augments_V2.png',
@@ -1410,11 +1406,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 4,
         spellDataValues: { CritChance: 0.20000000298023224, CritHeal: 0.5 },
         tooltip:
-            'Your Heals and Shields can Critically Strike for 50% bonus amount. Gain 20% Crit Chance. Bonus Healing: Bonus Shielding: ',
+            'Your Heals and Shields can Critically Strike for @CritHeal*100@% bonus amount. Gain @CritChance*100@% Crit Chance. <br><br>Bonus Healing: @f1@<br>Bonus Shielding: @f2@',
     },
     '120': {
         description:
-            'The first time you would die each round, instead return to full Health, decaying over @DecayDuration@ seconds. Taking down an enemy champion while your Health is decaying stops the decay and sets your Health to <healing>@TriumphPercent@% max Health</healing>.',
+            'The first time you would die each round, instead return to full Health, decaying over 3 seconds. Taking down an enemy champion while your Health is decaying stops the decay and sets your Health to 20% max Health.',
         displayName: 'Serve Beyond Death',
         iconLarge: 'ServeBeyondDeath_large.Arena_Augments_V2.png',
         iconSmall: 'ServeBeyondDeath_small.Arena_Augments_V2.png',
@@ -1431,11 +1427,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             TriumphPercent: 20,
         },
         tooltip:
-            'The first time you would die each round, instead return to full Health, decaying over 3 seconds. Taking down an enemy champion while your Health is decaying stops the decay and sets your Health to 20% max Health.',
+            'The first time you would die each round, instead return to full Health, decaying over @DecayDuration@ seconds. Taking down an enemy champion while your Health is decaying stops the decay and sets your Health to <healing>@TriumphPercent@% max Health</healing>.',
     },
     '123': {
         description:
-            'Replace your Summoner spells with random ones. When you use a Summoner Spell in combat, replace it with another random one on a @Cooldown@ second Cooldown.',
+            'Replace your Summoner spells with random ones. When you use a Summoner Spell in combat, replace it with another random one on a 6 second Cooldown.',
         displayName: "Summoner's Roulette",
         iconLarge: 'SummonersRoulette_large.Arena_Augments_V2.png',
         iconSmall: 'SummonersRoulette_small.Arena_Augments_V2.png',
@@ -1444,11 +1440,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 8,
         spellDataValues: { Cooldown: 6 },
         tooltip:
-            'Replace your Summoner spells with random ones. When you use a Summoner Spell in combat, replace it with another random one on a 6 second Cooldown.',
+            'Replace your Summoner spells with random ones. When you use a Summoner Spell in combat, replace it with another random one on a @Cooldown@ second Cooldown.',
     },
     '125': {
         description:
-            'You start each round imprisoned in the center of the arena, unable to act. While imprisoned, you have @DamageReductionMax*100@% damage reduction and gain size, <healing>Health</healing>, <physicalDamage>Attack Damage</physicalDamage>, and <magicDamage>Ability Power</magicDamage> over time (max @StatIncrease*100@%). After @ImprisonDuration@ seconds or reaching <healing>@BreakoutHealthThreshold*100@% Health</healing>, you break out, <status>Knocking Back</status> enemies and gaining <shield>@ShieldHealthRatio*100@% max Health Shield</shield>.',
+            'You start each round imprisoned in the center of the arena, unable to act. While imprisoned, you have 85% damage reduction and gain size, Health, Attack Damage, and Ability Power over time (max 60%). After 9 seconds or reaching 50% Health, you break out, Knocking Back enemies and gaining 40% max Health Shield.',
         displayName: 'Raid Boss',
         iconLarge: 'RaidBoss_large.Arena_Augments_V2.png',
         iconSmall: 'RaidBoss_small.Arena_Augments_V2.png',
@@ -1464,11 +1460,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             StatIncrease: 0.6000000238418579,
         },
         tooltip:
-            'You start each round imprisoned in the center of the arena, unable to act. While imprisoned, you have 85% damage reduction and gain size, Health, Attack Damage, and Ability Power over time (max 60%). After 9 seconds or reaching 50% Health, you break out, Knocking Back enemies and gaining 40% max Health Shield.',
+            'You start each round imprisoned in the center of the arena, unable to act. While imprisoned, you have @DamageReductionMax*100@% damage reduction and gain size, <healing>Health</healing>, <physicalDamage>Attack Damage</physicalDamage>, and <magicDamage>Ability Power</magicDamage> over time (max @StatIncrease*100@%). After @ImprisonDuration@ seconds or reaching <healing>@BreakoutHealthThreshold*100@% Health</healing>, you break out, <status>Knocking Back</status> enemies and gaining <shield>@ShieldHealthRatio*100@% max Health Shield</shield>.',
     },
     '129': {
-        description:
-            'Your Attacks deal additional <physicalDamage>physical damage</physicalDamage> equal to <magicDamage>@APRatio*100@% Ability Power</magicDamage>.',
+        description: 'Your Attacks deal additional physical damage equal to 100% Ability Power.',
         displayName: 'Marksmage',
         iconLarge: 'Marksmage_large.Arena_Augments_V2.png',
         iconSmall: 'Marksmage_small.Arena_Augments_V2.png',
@@ -1476,11 +1471,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'Marksmage',
         rarity: 4,
         spellDataValues: { APRatio: 1 },
-        tooltip: '{{Cherry_Marksmage_Summary}}Damage Dealt This Round: Damage Dealt Total: ',
+        tooltip: '{{Cherry_Marksmage_Summary}}<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '133': {
         description:
-            'Dealing damage with an Ability fires @NumberOfMissiles@ magic missiles at each enemy hit, each dealing up to <trueDamage>@MaxHealthDamagePerMissile*300@% max Health true damage</trueDamage> based on distance traveled.',
+            'Dealing damage with an Ability fires 3 magic missiles at each enemy hit, each dealing up to 0% max Health true damage based on distance traveled.',
         displayName: 'Magic Missile',
         iconLarge: 'MagicMissile_large.Arena_Augments_V2.png',
         iconSmall: 'MagicMissile_small.Arena_Augments_V2.png',
@@ -1488,11 +1483,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'MagicMissile',
         rarity: 4,
         spellDataValues: { Cooldown: 2, MaxHealthDamagePerMissile: 0.004999999888241291, MaxRangeThreshold: 1000, NumberOfMissiles: 3 },
-        tooltip: '{{ Cherry_MagicMissile_Summary }}Damage Dealt This Round:Damage Dealt Total: ',
+        tooltip: '{{ Cherry_MagicMissile_Summary }}<br><br>Damage Dealt This Round:@f1@<br>Damage Dealt Total: @f2@',
     },
     '134': {
         description:
-            'You are now melee. Gain <physicalDamage>@BonusAD*100@% Attack Damage</physicalDamage>, <healing>@BonusHP*100@% Health</healing>, <attackSpeed>@BonusAS*100@% Attack Speed</attackSpeed>, <lifesteal>@BonusLifesteal*100@% Lifesteal</lifesteal>, and <speed>@BonusMS*100@% Move Speed</speed> (each further increased based on Attack Range lost).',
+            'You are now melee. Gain 35% Attack Damage, 35% Health, 25% Attack Speed, 25% Lifesteal, and 25% Move Speed (each further increased based on Attack Range lost).',
         displayName: 'Draw Your Sword',
         iconLarge: 'DrawYourSword_large.Arena_Augments_V2.png',
         iconSmall: 'DrawYourSword_small.Arena_Augments_V2.png',
@@ -1511,11 +1506,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             MeleeAttackRange: 200,
         },
         tooltip:
-            'You are now melee. Gain 35% Attack Damage, 35% Health, 25% Attack Speed, 25% Lifesteal, and 25% Move Speed (each further increased based on Attack Range lost).',
+            'You are now melee. Gain <physicalDamage>@BonusAD*100@% Attack Damage</physicalDamage>, <healing>@BonusHP*100@% Health</healing>, <attackSpeed>@BonusAS*100@% Attack Speed</attackSpeed>, <lifesteal>@BonusLifesteal*100@% Lifesteal</lifesteal>, and <speed>@BonusMS*100@% Move Speed</speed> (each further increased based on Attack Range lost).',
     },
     '135': {
-        description:
-            'Hitting enemies with Abilities creates a blast that deals <magicDamage>magic damage</magicDamage> from you to the location you hit them.',
+        description: 'Hitting enemies with Abilities creates a blast that deals magic damage from you to the location you hit them.',
         displayName: 'Spellwake',
         iconLarge: 'SpellWake_large.Arena_Augments_V2.png',
         iconSmall: 'SpellWake_small.Arena_Augments_V2.png',
@@ -1524,11 +1518,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 8,
         spellDataValues: { Cooldown: 1.5, ExplosionDelayTime: 0.75, ExplosionRadius: 100 },
         tooltip:
-            'Hitting enemies with Abilities creates a blast that deals  magic damage from you to the location you hit them.Damage Dealt This Round: Damage Dealt Total: ',
+            'Hitting enemies with Abilities creates a blast that deals <magicDamage>@Damage@ magic damage</magicDamage> from you to the location you hit them.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '136': {
-        description:
-            'Each time you <status>Immobilize</status> an enemy, gain @AdaptiveForce@ Adaptive Force for the round, stacking infinitely.',
+        description: 'Each time you Immobilize an enemy, gain 30 Adaptive Force for the round, stacking infinitely.',
         displayName: 'Slap Around',
         iconLarge: 'SlapAround_large.Arena_Augments_V2.png',
         iconSmall: 'SlapAround_small.Arena_Augments_V2.png',
@@ -1536,10 +1529,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'SlapAround',
         rarity: 0,
         spellDataValues: { AdaptiveForce: 30 },
-        tooltip: 'Each time you Immobilize an enemy, gain 30 Adaptive Force for the round, stacking infinitely.',
+        tooltip:
+            'Each time you <status>Immobilize</status> an enemy, gain @AdaptiveForce@ Adaptive Force for the round, stacking infinitely.',
     },
     '138': {
-        description: 'Gain @Omnivamp*100@% Omnivamp',
+        description: 'Gain 20% Omnivamp',
         displayName: 'Goredrink',
         iconLarge: 'GoreDrink_large.Arena_Augments_V2.png',
         iconSmall: 'GoreDrink_small.Arena_Augments_V2.png',
@@ -1547,10 +1541,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'Goredrink',
         rarity: 0,
         spellDataValues: { Omnivamp: 0.20000000298023224 },
-        tooltip: 'Gain 20% Omnivamp',
+        tooltip: 'Gain @Omnivamp*100@% Omnivamp',
     },
     '141': {
-        description: 'Your Heals/Shields are @HealShieldAmp*100@% stronger when used on your partner.',
+        description: 'Your Heals/Shields are 40% stronger when used on your partner.',
         displayName: 'All For You',
         iconLarge: 'AllForYou_large.Arena_Augments_V2.png',
         iconSmall: 'AllForYou_small.Arena_Augments_V2.png',
@@ -1558,10 +1552,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'AllForYou',
         rarity: 4,
         spellDataValues: { HealShieldAmp: 0.4000000059604645 },
-        tooltip: '{{ Cherry_AllForYou_Summary }}Bonus Healing: Bonus Shielding: ',
+        tooltip: '{{ Cherry_AllForYou_Summary }}<br><br>Bonus Healing: @f1@<br>Bonus Shielding: @f2@',
     },
     '149': {
-        description: 'Gain the <keywordMajor>Aftershock</keywordMajor> and <keywordMajor>Glacial Augment</keywordMajor> Keystone Runes.',
+        description: 'Gain the Aftershock and Glacial Augment Keystone Runes.',
         displayName: 'Impassable',
         iconLarge: 'Impassable_large.Arena_Augments_V2.png',
         iconSmall: 'Impassable_small.Arena_Augments_V2.png',
@@ -1595,10 +1589,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             SlowZoneWidth: 80,
             StartingBaseDamage: 25,
         },
-        tooltip: 'Gain the Aftershock and Glacial Augment Keystone Runes.',
+        tooltip: 'Gain the <keywordMajor>Aftershock</keywordMajor> and <keywordMajor>Glacial Augment</keywordMajor> Keystone Runes.',
     },
     '150': {
-        description: 'Your W gains @WAbilityHaste@ Ability Haste.',
+        description: 'Your W gains 200 Ability Haste.',
         displayName: 'Bread And Jam',
         iconLarge: 'BreadAndJam_large.Arena_Augments_V2.png',
         iconSmall: 'BreadAndJam_small.Arena_Augments_V2.png',
@@ -1606,10 +1600,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'BreadAndJam',
         rarity: 4,
         spellDataValues: { WAbilityHaste: 200 },
-        tooltip: 'Your W gains 200 Ability Haste.',
+        tooltip: 'Your W gains @WAbilityHaste@ Ability Haste.',
     },
     '151': {
-        description: 'Your E gains @EAbilityHaste@ Ability Haste.',
+        description: 'Your E gains 200 Ability Haste.',
         displayName: 'Bread And Cheese',
         iconLarge: 'BreadAndCheese_large.Arena_Augments_V2.png',
         iconSmall: 'BreadAndCheese_small.Arena_Augments_V2.png',
@@ -1617,11 +1611,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'BreadAndCheese',
         rarity: 4,
         spellDataValues: { EAbilityHaste: 200 },
-        tooltip: 'Your E gains 200 Ability Haste.',
+        tooltip: 'Your E gains @EAbilityHaste@ Ability Haste.',
     },
     '152': {
         description:
-            'Requirement: Possess Heartsteel with @StackThreshold@+ stacks.<br><br>Reward: Multiply your Heartsteel stacks by @StackMultiplication@. Increase your <healing>Health Regeneration</healing> by @StacktoRegenConversion*100@% of your Heartsteel stacks.',
+            'Requirement: Possess Heartsteel with 400+ stacks.Reward: Multiply your Heartsteel stacks by 4. Increase your Health Regeneration by 10% of your Heartsteel stacks.',
         displayName: 'Quest: Steel Your Heart',
         iconLarge: 'Quest_SteelYourHeart_large.Arena_Augments_V2.png',
         iconSmall: 'Quest_SteelYourHeart_small.Arena_Augments_V2.png',
@@ -1630,10 +1624,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 4,
         spellDataValues: { StackMultiplication: 4, StackThreshold: 400, StacktoRegenConversion: 0.10000000149011612 },
         tooltip:
-            'Requirement: Possess Heartsteel with 400+ stacks.Reward: Multiply your Heartsteel stacks by 4. Increase your Health Regeneration by 10% of your Heartsteel stacks.',
+            'Requirement: Possess Heartsteel with @StackThreshold@+ stacks.<br><br>Reward: Multiply your Heartsteel stacks by @StackMultiplication@. Increase your <healing>Health Regeneration</healing> by @StacktoRegenConversion*100@% of your Heartsteel stacks.',
     },
     '154': {
-        description: 'Requirement: Score @TakedownsNeeded@ takedowns.<br><br>Reward: Golden Spatula',
+        description: 'Requirement: Score 10 takedowns.Reward: Golden Spatula',
         displayName: "Quest: Urf's Champion",
         iconLarge: 'Quest_UrfsChampion_large.Arena_Augments_V2.png',
         iconSmall: 'Quest_UrfsChampion_small.Arena_Augments_V2.png',
@@ -1641,11 +1635,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'Quest_UrfsChampion',
         rarity: 4,
         spellDataValues: { TakedownsNeeded: 10 },
-        tooltip: 'Requirement: Score 10 takedowns.Reward: Golden Spatula',
+        tooltip: 'Requirement: Score @TakedownsNeeded@ takedowns.<br><br>Reward: Golden Spatula',
     },
     '156': {
         description:
-            "Immediate: Gain Needlessly Large Rod.<br><br>Requirement: Possess Needlessly Large Rod, Rabadon's Deathcap, and Zhonya's Hourglass.<br><br>Reward: Gain Wooglet's Witchcap",
+            "Immediate: Gain Needlessly Large Rod.Requirement: Possess Needlessly Large Rod, Rabadon's Deathcap, and Zhonya's Hourglass.Reward: Gain Wooglet's Witchcap",
         displayName: "Quest: Wooglet's Witchcap",
         iconLarge: 'Quest_WoogletsWitchcap_large.Arena_Augments_V2.png',
         iconSmall: 'Quest_WoogletsWitchcap_small.Arena_Augments_V2.png',
@@ -1654,10 +1648,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 8,
         spellDataValues: {},
         tooltip:
-            "Immediate: Gain Needlessly Large Rod.Requirement: Possess Needlessly Large Rod, Rabadon's Deathcap, and Zhonya's Hourglass.Reward: Gain Wooglet's Witchcap",
+            "Immediate: Gain Needlessly Large Rod.<br><br>Requirement: Possess Needlessly Large Rod, Rabadon's Deathcap, and Zhonya's Hourglass.<br><br>Reward: Gain Wooglet's Witchcap",
     },
     '165': {
-        description: 'Your non-Ultimate Abilities <keywordMajor>Automatically</keywordMajor> refresh every @CoolDown@ seconds.',
+        description: 'Your non-Ultimate Abilities Automatically refresh every 10 seconds.',
         displayName: 'Restart',
         iconLarge: 'Restart_large.Arena_Augments_V2.png',
         iconSmall: 'Restart_small.Arena_Augments_V2.png',
@@ -1665,11 +1659,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'Restart',
         rarity: 4,
         spellDataValues: { CoolDown: 10 },
-        tooltip: 'Your non-Ultimate Abilities Automatically refresh every 10 seconds.',
+        tooltip: 'Your non-Ultimate Abilities <keywordMajor>Automatically</keywordMajor> refresh every @CoolDown@ seconds.',
     },
     '166': {
-        description:
-            "Dealing damage to an enemy also damages their partner for <trueDamage>@DamageMod*100@% true damage</trueDamage> if they're nearby.",
+        description: "Dealing damage to an enemy also damages their partner for 50% true damage if they're nearby.",
         displayName: 'Chain Lightning',
         iconLarge: 'ChainLightning_large.Arena_Augments_V2.png',
         iconSmall: 'ChainLightning_small.Arena_Augments_V2.png',
@@ -1677,10 +1670,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'ChainLightning',
         rarity: 8,
         spellDataValues: { DamageMod: 0.5, Range: 1000 },
-        tooltip: '{{Cherry_ChainLightning_Summary}}Damage Dealt this round: Damage Dealt total: ',
+        tooltip: '{{Cherry_ChainLightning_Summary}}<br><br>Damage Dealt this round: @f1@<br>Damage Dealt total: @f2@',
     },
     '170': {
-        description: 'Gain @MeleeRangeIncrease@ Attack Range, reduced to @RangedRangeIncrease@ if you are Ranged.',
+        description: 'Gain 75 Attack Range, reduced to 50 if you are Ranged.',
         displayName: 'Scoped Weapons',
         iconLarge: 'ScopedWeapons_large.Arena_Augments_V2.png',
         iconSmall: 'ScopedWeapons_small.Arena_Augments_V2.png',
@@ -1688,10 +1681,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'ScopedWeapons',
         rarity: 0,
         spellDataValues: { MeleeRangeIncrease: 75, RangedRangeIncrease: 50 },
-        tooltip: 'Gain 75 Attack Range, reduced to 50 if you are Ranged.',
+        tooltip: 'Gain @MeleeRangeIncrease@ Attack Range, reduced to @RangedRangeIncrease@ if you are Ranged.',
     },
     '171': {
-        description: 'Gain @AdaptiveForce@ Adaptive Force on takedown, once per champion per round.',
+        description: 'Gain 20 Adaptive Force on takedown, once per champion per round.',
         displayName: 'Dematerialize',
         iconLarge: 'Dematerialize_large.Arena_Augments_V2.png',
         iconSmall: 'Dematerialize_small.Arena_Augments_V2.png',
@@ -1699,11 +1692,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'Dematerialize',
         rarity: 0,
         spellDataValues: { AdaptiveForce: 20 },
-        tooltip: '{{Cherry_Dematerialize_Summary}}Adaptive Force gained: ',
+        tooltip: '{{Cherry_Dematerialize_Summary}}<br><br>Adaptive Force gained: @f1@',
     },
     '172': {
-        description:
-            'When you drop below @HealthThreshold*100@% Health, briefly become <keywordStealth>Invisible</keywordStealth> and create a clone of yourself.',
+        description: 'When you drop below 30% Health, briefly become Invisible and create a clone of yourself.',
         displayName: 'Mirror Image',
         iconLarge: 'MirrorImage_large.Arena_Augments_V2.png',
         iconSmall: 'MirrorImage_small.Arena_Augments_V2.png',
@@ -1711,10 +1703,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'MirrorImage',
         rarity: 0,
         spellDataValues: { AugmentCooldown: 60, CloneDuration: 8, HealthThreshold: 0.30000001192092896, StealthDuration: 1.25 },
-        tooltip: 'When you drop below 30% Health, briefly become Invisible and create a clone of yourself.',
+        tooltip:
+            'When you drop below @HealthThreshold*100@% Health, briefly become <keywordStealth>Invisible</keywordStealth> and create a clone of yourself.',
     },
     '174': {
-        description: 'There is a laser in the direction you are facing that deals continuous <magicDamage>magic damage</magicDamage>.',
+        description: 'There is a laser in the direction you are facing that deals continuous magic damage.',
         displayName: 'Laser Eyes',
         iconLarge: 'LaserEyes_large.Arena_Augments_V2.png',
         iconSmall: 'LaserEyes_small.Arena_Augments_V2.png',
@@ -1730,10 +1723,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             RectHalfWidth: 60,
         },
         tooltip:
-            'There is a laser in the direction you are facing that deals  magic damage per second.Damage Dealt This Round: Damage Dealt Total: ',
+            'There is a laser in the direction you are facing that deals <magicDamage>@LaserEyesTooltip@ magic damage</magicDamage> per second.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '175': {
-        description: 'You heal for @HealPercent*100@% of the damage dealt by your partner.',
+        description: 'You heal for 15% of the damage dealt by your partner.',
         displayName: 'Parasitic Relationship',
         iconLarge: 'ParasiticRelationship_large.Arena_Augments_V2.png',
         iconSmall: 'ParasiticRelationship_small.Arena_Augments_V2.png',
@@ -1741,11 +1734,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'ParasiticRelationship',
         rarity: 4,
         spellDataValues: { HealPercent: 0.15000000596046448 },
-        tooltip: '{{ Cherry_ParasiticRelationship_Summary }}Healing this round: Healing total: ',
+        tooltip: '{{ Cherry_ParasiticRelationship_Summary }}<br><br>Healing this round: @f1@<br>Healing total: @f2@',
     },
     '176': {
         description:
-            'Replace Summoner Flee with Mark.<br><br><rules>Mark throws a snowball that marks the first enemy hit and deals damage. <recast>Recast</recast> to dash to the marked enemy.</rules>',
+            'Replace Summoner Flee with Mark.Mark throws a snowball that marks the first enemy hit and deals damage. Recast to dash to the marked enemy.',
         displayName: 'Snowball Fight!',
         iconLarge: 'SnowballFight_large.Arena_Augments_V2.png',
         iconSmall: 'SnowballFight_small.Arena_Augments_V2.png',
@@ -1754,11 +1747,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 0,
         spellDataValues: { Cooldown: 15 },
         tooltip:
-            'Replace Summoner Flee with Mark.Mark throws a snowball that marks the first enemy hit and deals damage. Recast to dash to the marked enemy.',
+            'Replace Summoner Flee with Mark.<br><br><rules>Mark throws a snowball that marks the first enemy hit and deals damage. <recast>Recast</recast> to dash to the marked enemy.</rules>',
     },
     '177': {
         description:
-            'When you die for the first time, revive as a smaller version of yourself with @ReviveMod*100@% max Health and deal @ReviveMod*100@% damage. If you die again, revive as an even smaller version of yourself with @SecondReviveMod*100@% max Health and deal @SecondReviveMod*100@% damage.<br><br>When you revive, <status>Knockback</status> enemies around you.',
+            'When you die for the first time, revive as a smaller version of yourself with 65% max Health and deal 65% damage. If you die again, revive as an even smaller version of yourself with 35% max Health and deal 35% damage.When you revive, Knockback enemies around you.',
         displayName: 'Nesting Doll',
         iconLarge: 'NestingDoll_large.Arena_Augments_V2.png',
         iconSmall: 'NestingDoll_small.Arena_Augments_V2.png',
@@ -1773,11 +1766,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             SizeMod: -0.20000000298023224,
         },
         tooltip:
-            'When you die for the first time, revive as a smaller version of yourself with 65% max Health and deal 65% damage. If you die again, revive as an even smaller version of yourself with 35% max Health and deal 35% damage.When you revive, Knockback enemies around you.',
+            'When you die for the first time, revive as a smaller version of yourself with @ReviveMod*100@% max Health and deal @ReviveMod*100@% damage. If you die again, revive as an even smaller version of yourself with @SecondReviveMod*100@% max Health and deal @SecondReviveMod*100@% damage.<br><br>When you revive, <status>Knockback</status> enemies around you.',
     },
     '180': {
-        description:
-            'At the start of each round, gain<shield> @ShieldBase@ Shield </shield>for every <attention>%i:scaleAP% @AP@</attention> Ability Power.',
+        description: 'At the start of each round, gain 3 Shield for every %i:scaleAP% 1 Ability Power.',
         displayName: 'Big Brain',
         iconLarge: 'BigBrain_large.Arena_Augments_V2.png',
         iconSmall: 'BigBrain_small.Arena_Augments_V2.png',
@@ -1785,11 +1777,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'BigBrain',
         rarity: 4,
         spellDataValues: { AP: 1, ShieldBase: 3 },
-        tooltip: 'At the start of each round, gain 3 Shield for every %i:scaleAP% 1 Ability Power.',
+        tooltip:
+            'At the start of each round, gain<shield> @ShieldBase@ Shield </shield>for every <attention>%i:scaleAP% @AP@</attention> Ability Power.',
     },
     '181': {
-        description:
-            'Your Attacks deal additional <physicalDamage>physical damage</physicalDamage> equal to @HealthPercent*100@% of your <healing>max Health.</healing>',
+        description: 'Your Attacks deal additional physical damage equal to 5% of your max Health.',
         displayName: 'Heavy Hitter',
         iconLarge: 'HeavyHitter_large.Arena_Augments_V2.png',
         iconSmall: 'HeavyHitter_small.Arena_Augments_V2.png',
@@ -1797,11 +1789,12 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'HeavyHitter',
         rarity: 0,
         spellDataValues: { HealthPercent: 0.05000000074505806 },
-        tooltip: 'Your Attacks deal additional physical damage equal to 5% of your max Health.',
+        tooltip:
+            'Your Attacks deal additional <physicalDamage>physical damage</physicalDamage> equal to @HealthPercent*100@% of your <healing>max Health.</healing>',
     },
     '187': {
         description:
-            'When you Flash, there is an explosion around you dealing <MagicalDamage>magic damage </MagicalDamage> and <status>Slowing</status> enemies hit. Additionally, Flash resets every round.',
+            'When you Flash, there is an explosion around you dealing magic damage  and Slowing enemies hit. Additionally, Flash resets every round.',
         displayName: 'Flashbang',
         iconLarge: 'Flashbang_large.Arena_Augments_V2.png',
         iconSmall: 'Flashbang_small.Arena_Augments_V2.png',
@@ -1810,11 +1803,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 0,
         spellDataValues: { SlowAmount: 0.3499999940395355, SlowDuration: 1.25 },
         tooltip:
-            'When you Flash, there is an explosion around you dealing  magic damage  and Slowing by 35% for 1.25 seconds. Additionally, Flash resets every round.Damage Dealt This Round: Damage Dealt Total: ',
+            'When you Flash, there is an explosion around you dealing <MagicalDamage>@ExplosiveDamage@ magic damage </MagicalDamage> and <status>Slowing</status> by @SlowAmount*100@% for @SlowDuration@ seconds. Additionally, Flash resets every round.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '192': {
         description:
-            'Requirement: Restore or prevent @RequirementAmount@ damage to allies.<br><br>Reward: Gain <attackspeed>@AttackSpeed*100@% Attack Speed</attackspeed>, and your Attacks deal additional <magicdamage>magic damage</magicdamage> equal to <healing>@HealPowerToDamageConversion*100@% Heal/Shield Power</healing>.',
+            'Requirement: Restore or prevent 2500 damage to allies.Reward: Gain 100% Attack Speed, and your Attacks deal additional magic damage equal to 300% Heal/Shield Power.',
         displayName: 'Quest: Angel of Retribution',
         iconLarge: 'Quest_AngelOfRetribution_large.Arena_Augments_V2.png',
         iconSmall: 'Quest_AngelOfRetribution_small.Arena_Augments_V2.png',
@@ -1822,10 +1815,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'Quest_AngelofRetribution',
         rarity: 4,
         spellDataValues: { AttackSpeed: 1, HealPowerToDamageConversion: 3, RequirementAmount: 2500 },
-        tooltip: '{{Cherry_QuestAngelofRetribution_Summary}}Damage Healed or Blocked: Damage Dealt: ',
+        tooltip: '{{Cherry_QuestAngelofRetribution_Summary}}<br><br>Damage Healed or Blocked: @f1@<br>Damage Dealt: @f2@',
     },
     '193': {
-        description: 'Stars orbit you at your Attack Range, dealing <magicDamage>magic damage</magicDamage> to enemies they pass through.',
+        description: 'Stars orbit you at your Attack Range, dealing magic damage to enemies they pass through.',
         displayName: 'Center of the Universe',
         iconLarge: 'CenterOfTheUniverse_large.Arena_Augments_V2.png',
         iconSmall: 'CenterOfTheUniverse_small.Arena_Augments_V2.png',
@@ -1834,11 +1827,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 8,
         spellDataValues: { MissileWidth: 50 },
         tooltip:
-            'Stars orbit you at your Attack Range, dealing  magic damage to enemies they pass through.Damage Dealt This Round: Damage Dealt Total: ',
+            'Stars orbit you at your Attack Range, dealing <magicDamage>@StarDamage@ magic damage</magicDamage> to enemies they pass through.<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '194': {
-        description:
-            'Damaging with your Ultimate <status>Polymorphs</status> enemies for @PolyDuration@ seconds (@PolyCooldown@ second Cooldown).',
+        description: 'Damaging with your Ultimate Polymorphs enemies for 2 seconds (15 second Cooldown).',
         displayName: 'Fey Magic',
         iconLarge: 'FeyMagic_large.Arena_Augments_V2.png',
         iconSmall: 'FeyMagic_small.Arena_Augments_V2.png',
@@ -1846,11 +1838,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'FeyMagic',
         rarity: 8,
         spellDataValues: { PolyCooldown: 15, PolyDuration: 2, WEnemySlow: 60 },
-        tooltip: 'Damaging with your Ultimate Polymorphs enemies for 2 seconds (15 second Cooldown).',
+        tooltip:
+            'Damaging with your Ultimate <status>Polymorphs</status> enemies for @PolyDuration@ seconds (@PolyCooldown@ second Cooldown).',
     },
     '195': {
-        description:
-            'Become tiny, gain <speed>Move Speed</speed>, and bonus damage to champions based on how much larger they are than you.',
+        description: 'Become tiny, gain Move Speed, and bonus damage to champions based on how much larger they are than you.',
         displayName: 'Giant Slayer',
         iconLarge: 'GiantSlayer_large.Arena_Augments_V2.png',
         iconSmall: 'GiantSlayer_small.Arena_Augments_V2.png',
@@ -1866,11 +1858,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             XLargeBonusDamage: 0.30000001192092896,
         },
         tooltip:
-            'Become tiny, gain 30% Move Speed, and deal between 10% and 30% bonus damage to champions based on how much larger they are than you.Damage this Round: Damage this Game: ',
+            'Become tiny, gain <speed>@MovespeedMod*100@% Move Speed</speed>, and deal between @SmallBonusDamage*100@% and @XLargeBonusDamage*100@% bonus damage to champions based on how much larger they are than you.<br><br>Damage this Round: @f1@<br>Damage this Game: @f2@',
     },
     '198': {
-        description:
-            'Your <healing>Healing</healing> and <shield>Shielding</shield> apply an infinitely stacking <keywordMajor>Burn</keywordMajor> to a nearby enemy, dealing damage over time.',
+        description: 'Your Healing and Shielding apply an infinitely stacking Burn to a nearby enemy, dealing damage over time.',
         displayName: 'Holy Fire',
         iconLarge: 'HolyFire_large.Arena_Augments_V2.png',
         iconSmall: 'HolyFire_small.Arena_Augments_V2.png',
@@ -1878,11 +1869,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'HolyFire',
         rarity: 4,
         spellDataValues: { BurnDuration: 5, BurnPercent: 0.05000000074505806, Cooldown: 1.5, Radius: 650 },
-        tooltip: '{{Cherry_HolyFire_Summary}}Damage Dealt This Round: Damage Dealt Total: ',
+        tooltip: '{{Cherry_HolyFire_Summary}}<br><br>Damage Dealt This Round: @f1@<br>Damage Dealt Total: @f2@',
     },
     '200': {
         description:
-            "Gain Darius's Passive <spellName>Hemorrhage</spellName>.<br><br><rules>Attacks and damaging Abilities cause the target to <keywordMajor>Hemorrhage</keywordMajor>, dealing <physicalDamage>@BleedDamagePerStack@ physical damage</physicalDamage> over @BleedDuration@ seconds, stacking up to @MaxStacks@ times.<br><br>Draven gains  <scaleAD>@NoxianMightBonusAD@ Attack Damage</scaleAD> at @MaxStacks@ <keywordMajor>Hemorrhage</keywordMajor> stacks.</rules><br><br>",
+            "Gain Darius's Passive Hemorrhage.Attacks and damaging Abilities cause the target to Hemorrhage, dealing  physical damage over 5 seconds, stacking up to 5 times.Draven gains  Attack Damage at 5 Hemorrhage stacks.",
         displayName: 'Blood Brother',
         iconLarge: 'BloodBrother_large.Arena_Augments_V2.png',
         iconSmall: 'BloodBrother_small.Arena_Augments_V2.png',
@@ -1891,10 +1882,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 4,
         spellDataValues: { BleedDuration: 5, MaxStacks: 5, SecondsPerTick: 1.2599999904632568 },
         tooltip:
-            "Gain Darius's Passive Hemorrhage.Attacks and damaging Abilities cause the target to Hemorrhage, dealing  physical damage over 5 seconds, stacking up to 5 times.Draven gains  Attack Damage at 5 Hemorrhage stacks.",
+            "Gain Darius's Passive <spellName>Hemorrhage</spellName>.<br><br><rules>Attacks and damaging Abilities cause the target to <keywordMajor>Hemorrhage</keywordMajor>, dealing <physicalDamage>@BleedDamagePerStack@ physical damage</physicalDamage> over @BleedDuration@ seconds, stacking up to @MaxStacks@ times.<br><br>Draven gains  <scaleAD>@NoxianMightBonusAD@ Attack Damage</scaleAD> at @MaxStacks@ <keywordMajor>Hemorrhage</keywordMajor> stacks.</rules><br><br>",
     },
     '204': {
-        description: 'When you gain permanent <keywordMajor>Stacks</keywordMajor> of an Ability, gain @StackModifier*100@% more!',
+        description: 'When you gain permanent Stacks of an Ability, gain 50% more!',
         displayName: 'Stackosaurus Rex',
         iconLarge: 'StackosaurusRex_large.Arena_Augments_V2.png',
         iconSmall: 'StackosaurusRex_small.Arena_Augments_V2.png',
@@ -1902,11 +1893,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'StackosaurusRex',
         rarity: 0,
         spellDataValues: { StackModifier: 0.5 },
-        tooltip: 'When you gain permanent Stacks of an Ability, gain 50% more!',
+        tooltip: 'When you gain permanent <keywordMajor>Stacks</keywordMajor> of an Ability, gain @StackModifier*100@% more!',
     },
     '205': {
-        description:
-            'Convert <physicalDamage>Bonus Attack Damage</physicalDamage> to <magicDamage>Ability Power</magicDamage>. Gain <magicDamage>@APAmp*100@% Ability Power</magicDamage>.',
+        description: 'Convert Bonus Attack Damage to Ability Power. Gain 10% Ability Power.',
         displayName: 'ADAPt',
         iconLarge: 'ADAPt_large.Arena_Augments_V2.png',
         iconSmall: 'ADAPt_small.Arena_Augments_V2.png',
@@ -1914,11 +1904,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'ADAPt',
         rarity: 0,
         spellDataValues: { APAmp: 0.10000000149011612, ConversionRate: 1.666659951210022, InverseRate: 0.6000000238418579 },
-        tooltip: 'Convert Bonus Attack Damage to Ability Power. Gain 10% Ability Power.',
+        tooltip:
+            'Convert <physicalDamage>Bonus Attack Damage</physicalDamage> to <magicDamage>Ability Power</magicDamage>. Gain <magicDamage>@APAmp*100@% Ability Power</magicDamage>.',
     },
     '206': {
-        description:
-            'Convert <magicDamage>Ability Power</magicDamage> to <physicalDamage>Bonus Attack Damage</physicalDamage>. Gain <physicalDamage>@ADAmp*100@% Attack Damage</physicalDamage>.',
+        description: 'Convert Ability Power to Bonus Attack Damage. Gain 10% Attack Damage.',
         displayName: 'escAPADe',
         iconLarge: 'Escapade_large.Arena_Augments_V2.png',
         iconSmall: 'Escapade_small.Arena_Augments_V2.png',
@@ -1926,11 +1916,12 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'escAPADe',
         rarity: 0,
         spellDataValues: { ADAmp: 0.10000000149011612, ConversionRate: 0.6000000238418579, InverseRate: 1.666659951210022 },
-        tooltip: 'Convert Ability Power to Bonus Attack Damage. Gain 10% Attack Damage.',
+        tooltip:
+            'Convert <magicDamage>Ability Power</magicDamage> to <physicalDamage>Bonus Attack Damage</physicalDamage>. Gain <physicalDamage>@ADAmp*100@% Attack Damage</physicalDamage>.',
     },
     '207': {
         description:
-            'Gain <spellName>Guerrilla Warfare</spellName><br><br><rules>After not moving for @HoldStillDuration@ seconds, turn <keywordStealth>Invisibile</keywordStealth> until you move. When you exit this <keywordStealth>Invisibility</keywordStealth>, gain <attackSpeed>@BonusAS@ Attack Speed</attackSpeed>.</rules>',
+            'Gain Guerrilla WarfareAfter not moving for 1.5 seconds, turn Invisibile until you move. When you exit this Invisibility, gain  Attack Speed.',
         displayName: 'Hold Very Still',
         iconLarge: 'HoldVeryStill_large.Arena_Augments_V2.png',
         iconSmall: 'HoldVeryStill_small.Arena_Augments_V2.png',
@@ -1939,11 +1930,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 0,
         spellDataValues: { ASDuration: 5, BonusDamage: 0.10000000149011612, BonusMS: 0.20000000298023224, HoldStillDuration: 1.5 },
         tooltip:
-            'Gain Guerrilla WarfareAfter not moving for 1.5 seconds, turn Invisibile until you move. When you exit this Invisibility, gain  Attack Speed.',
+            'Gain <spellName>Guerrilla Warfare</spellName><br><br><rules>After not moving for @HoldStillDuration@ seconds, turn <keywordStealth>Invisibile</keywordStealth> until you move. When you exit this <keywordStealth>Invisibility</keywordStealth>, gain <attackSpeed>@BonusAS@ Attack Speed</attackSpeed>.</rules>',
     },
     '208': {
         description:
-            'Replace Summoner Flee with <spellName>Orbital Laser</spellName>.<br><br><rules>After a delay, call down an orbital laser that deals <trueDamage>@DamagetoChampions*100@% max Health true damage</trueDamage> plus <magicDamage>@TotalDamageOverTimeTooltip@ magic damage</magicDamage> over @GroundDuration@ seconds.</rules>',
+            'Replace Summoner Flee with Orbital Laser.After a delay, call down an orbital laser that deals 20% max Health true damage plus  magic damage over 3 seconds.',
         displayName: 'Orbital Laser',
         iconLarge: 'OrbitalLaser_large.Arena_Augments_V2.png',
         iconSmall: 'OrbitalLaser_small.Arena_Augments_V2.png',
@@ -1959,10 +1950,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             LaserDelay: 2.5,
             TickRate: 0.5,
         },
-        tooltip: '{{Cherry_OrbitalLaser_Summary}}Damage Dealt This Round:Damage Dealt Total:',
+        tooltip: '{{Cherry_OrbitalLaser_Summary}}<br><br>Damage Dealt This Round:@f1@<br>Damage Dealt Total:@f2@',
     },
     '210': {
-        description: 'You gain @DamageAmp*100@% bonus damage and Omnivamp when hitting an enemy from behind.',
+        description: 'You gain 30% bonus damage and Omnivamp when hitting an enemy from behind.',
         displayName: 'Backstab',
         iconLarge: 'Mythical_large.Arena_Augments_V2.png',
         iconSmall: 'Mythical_small.Arena_Augments_V2.png',
@@ -1970,11 +1961,12 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'Backstab',
         rarity: 4,
         spellDataValues: { DamageAmp: 0.30000001192092896, Omnivamp: 0.30000001192092896 },
-        tooltip: 'You gain 30% bonus damage and Omnivamp when hitting an enemy from behind.Damage Dealt: Healing Done: ',
+        tooltip:
+            'You gain @DamageAmp*100@% bonus damage and Omnivamp when hitting an enemy from behind.<br><br>Damage Dealt: @f1@<br>Healing Done: @f2@',
     },
     '211': {
         description:
-            'After casting your Ultimate, mark all enemy champions for death. The mark stores @DamageStorePercentage*100@% of damage dealt to them, then detonates for the stored damage after @MarkDuration@ seconds. (@Cooldown@ second Cooldown).',
+            'After casting your Ultimate, mark all enemy champions for death. The mark stores 40% of damage dealt to them, then detonates for the stored damage after 5 seconds. (8 second Cooldown).',
         displayName: "It's Killing Time",
         iconLarge: 'ItsKillingTime_large.Arena_Augments_V2.png',
         iconSmall: 'ItsKillingTime_small.Arena_Augments_V2.png',
@@ -1982,11 +1974,10 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'ItsKillingTime',
         rarity: 4,
         spellDataValues: { Cooldown: 8, DamageStorePercentage: 0.4000000059604645, MarkDuration: 5, VFXHighDamageThreshold: 500 },
-        tooltip: '{{Cherry_ItsKillingTime_Summary}}Damage Dealt This Round:Damage Dealt Total:',
+        tooltip: '{{Cherry_ItsKillingTime_Summary}}<br><br>Damage Dealt This Round:@f1@<br>Damage Dealt Total:@f2@',
     },
     '213': {
-        description:
-            'Your <keywordMajor>Autocast</keywordMajor> Cooldowns are reduced by @AutocastFlatCDR@ seconds and benefit from your Ability Haste.',
+        description: 'Your Autocast Cooldowns are reduced by 2 seconds and benefit from your Ability Haste.',
         displayName: 'Fully Automated',
         iconLarge: 'FullyAutomated_large.Arena_Augments_V2.png',
         iconSmall: 'FullyAutomated_small.Arena_Augments_V2.png',
@@ -1994,10 +1985,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'FullyAutomated',
         rarity: 0,
         spellDataValues: { AutocastFlatCDR: 2 },
-        tooltip: 'Your Autocast Cooldowns are reduced by 2 seconds and benefit from your Ability Haste.',
+        tooltip:
+            'Your <keywordMajor>Autocast</keywordMajor> Cooldowns are reduced by @AutocastFlatCDR@ seconds and benefit from your Ability Haste.',
     },
     '214': {
-        description: 'Your spin Abilities gain @SpinHaste@ Ability Haste and deal @SpinDamageAmp*100@% more damage!',
+        description: 'Your spin Abilities gain 30 Ability Haste and deal 30% more damage!',
         displayName: 'Spin To Win',
         iconLarge: 'SpinToWin_large.Arena_Augments_V2.png',
         iconSmall: 'SpinToWin_small.Arena_Augments_V2.png',
@@ -2005,11 +1997,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         name: 'SpinToWin',
         rarity: 0,
         spellDataValues: { SpinDamageAmp: 0.30000001192092896, SpinHaste: 30 },
-        tooltip: '{{ Cherry_SpinToWin_Summary }}Damage this round: Damage this game: ',
+        tooltip: '{{ Cherry_SpinToWin_Summary }}<br><br>Damage this round: @f1@<br>Damage this game: @f2@',
     },
     '215': {
         description:
-            'When you Heal/Shield, apply @CurseCounter@ stack of <keywordMajor>Curse</keywordMajor> to a nearby enemy enemy champion for @BleedDuration@ seconds, stacking infinitely.<br><br>Gain permanent Ability Haste each second enemies are <keywordMajor>Cursed</keywordMajor>, increasing with number of stacks.',
+            'When you Heal/Shield, apply 1 stack of Curse to a nearby enemy enemy champion for 5 seconds, stacking infinitely.Gain permanent Ability Haste each second enemies are Cursed, increasing with number of stacks.',
         displayName: 'Dark Blessing',
         iconLarge: 'DarkBlessing_large.Arena_Augments_V2.png',
         iconSmall: 'DarkBlessing_small.Arena_Augments_V2.png',
@@ -2018,11 +2010,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 4,
         spellDataValues: { AbilityHasteRatio: 0.11999999731779099, BleedDuration: 5, Cooldown: 1.5, CurseCounter: 1, Radius: 450 },
         tooltip:
-            'When you Heal/Shield, apply 1 stack of Curse to a nearby enemy champion for 5 seconds, stacking infinitely.{{ Cherry_Curse }}Gain Ability Haste 12% of your Cursed Power.Ability Haste Gained: ',
+            'When you Heal/Shield, apply @CurseCounter@ stack of <keywordMajor>Curse</keywordMajor> to a nearby enemy champion for @BleedDuration@ seconds, stacking infinitely.<br><br>{{ Cherry_Curse }}<br><br>Gain Ability Haste @AbilityHasteRatio*100@% of your <keywordMajor>Cursed Power</keywordMajor>.<br><br>Ability Haste Gained: @f1@',
     },
     '216': {
         description:
-            'You apply @CurseStacksPerTick@ stacks of <keywordMajor>Curse</keywordMajor> per second to nearby enemy champions for @BleedDuration@ seconds, stacking infinitely.<br><br>Gain permanent <healing>max Health</healing> each second enemies are <keywordMajor>Cursed</keywordMajor>, increasing with number of stacks.',
+            'You apply 1 stacks of Curse per second to nearby enemy champions for 5 seconds, stacking infinitely.Gain permanent max Health each second enemies are Cursed, increasing with number of stacks.',
         displayName: 'Plaguebearer',
         iconLarge: 'Plaguebearer_large.Arena_Augments_V2.png',
         iconSmall: 'Plaguebearer_small.Arena_Augments_V2.png',
@@ -2031,11 +2023,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
         rarity: 8,
         spellDataValues: { BleedDuration: 5, CurseStacksPerTick: 1, MaxHealthRatio: 1, Range: 500, TickCadence: 1 },
         tooltip:
-            'You apply 1 stacks of Curse per second to nearby enemy champions for 5 seconds, stacking infinitely.{{ Cherry_Curse }}Gain Max Health equal to 100% of Cursed Power.Max Health Gained: ',
+            'You apply @CurseStacksPerTick@ stacks of <keywordMajor>Curse</keywordMajor> per second to nearby enemy champions for @BleedDuration@ seconds, stacking infinitely.<br><br>{{ Cherry_Curse }}<br><br>Gain <healing>Max Health</healing> equal to @MaxHealthRatio*100@% of <keywordMajor>Cursed Power</keywordMajor>.<br><br>Max Health Gained: @f1@',
     },
     '217': {
         description:
-            'Your Attacks apply @CurseCounter@ stack of <keywordMajor>Curse</keywordMajor> for @BleedDuration@ seconds, stacking infinitely.<br><br>Your Attacks permanently deal additional <magicDamage>magic damage</magicDamage> each second enemies are <keywordMajor>Cursed</keywordMajor>, increasing with number of stacks.',
+            'Your Attacks apply 1 stack of Curse for 5 seconds, stacking infinitely.Your Attacks permanently deal additional magic damage each second enemies are Cursed, increasing with number of stacks.',
         displayName: 'Deathtouch',
         iconLarge: 'Deathtouch_large.Arena_Augments_V2.png',
         iconSmall: 'Deathtouch_small.Arena_Augments_V2.png',
@@ -2050,11 +2042,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             PercentMaxHPDamagePer5Seconds: 0.029999999329447746,
         },
         tooltip:
-            'Your Attacks apply 1 stack of Curse for 5 seconds, stacking infinitely.{{ Cherry_Curse }}Your Attacks deal additional magic damage equal to @OnHitDamageRatio*100%@% of your Cursed Power.On-Hit Damage: ',
+            'Your Attacks apply @CurseCounter@ stack of <keywordMajor>Curse</keywordMajor> for @BleedDuration@ seconds, stacking infinitely.<br><br>{{ Cherry_Curse }}<br><br>Your Attacks deal additional <magicDamage>magic damage</magicDamage> equal to @OnHitDamageRatio*100%@% of your <keywordMajor>Cursed Power</keywordMajor>.<br><br>On-Hit Damage: @f1@',
     },
     '218': {
         description:
-            '<status>Immobilizing</status> enemy champions applies @CurseCounter@ stacks of <keywordMajor>Curse</keywordMajor> for @BleedDuration@ seconds, stacking infinitely.<br><br>Gain permanent <armor>Armor</armor> and <magicresistance>Magic Resistance</magicresistance> each second enemies are <keywordMajor>Cursed</keywordMajor>, increasing with number of stacks.',
+            'Immobilizing enemy champions applies 2 stacks of Curse for 5 seconds, stacking infinitely.Gain permanent Armor and Magic Resistance each second enemies are Cursed, increasing with number of stacks.',
         displayName: 'Desecrator',
         iconLarge: 'Desecrator_large.Arena_Augments_V2.png',
         iconSmall: 'Desecrator_small.Arena_Augments_V2.png',
@@ -2068,11 +2060,11 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             PercentMaxHPDamagePer5Seconds: 0.05000000074505806,
         },
         tooltip:
-            'Immobilizing enemy champions applies 2 stacks of Curse for 5 seconds, stacking infinitely.{{ Cherry_Curse }}Gain Armor and Magic Resistance equal to 10% Cursed Power.Armor and Magic Resistance Gained: ',
+            '<status>Immobilizing</status> enemy champions applies @CurseCounter@ stacks of <keywordMajor>Curse</keywordMajor> for @BleedDuration@ seconds, stacking infinitely.<br><br>{{ Cherry_Curse }}<br><br>Gain <armor>Armor</armor> and <magicresistance>Magic Resistance</magicresistance> equal to @ArmorMRRatio*100@% <keywordMajor>Cursed Power</keywordMajor>.<br><br>Armor and Magic Resistance Gained: @f1@',
     },
     '219': {
         description:
-            'Your Abilities apply @CurseCounter@ stack of <keywordMajor>Curse</keywordMajor> to enemy champions they hit for @BleedDuration@ seconds, stacking infinitely.<br><br>Gain permanent Adaptive Force each second enemies are <keywordMajor>Cursed</keywordMajor>, increasing with number of stacks.',
+            'Your Abilities apply 1 stack of Curse to enemy champions they hit for 5 seconds, stacking infinitely.Gain permanent Adaptive Force each second enemies are Cursed, increasing with number of stacks.',
         displayName: 'Doomsayer',
         iconLarge: 'Doomsayer_large.Arena_Augments_V2.png',
         iconSmall: 'Doomsayer_small.Arena_Augments_V2.png',
@@ -2087,6 +2079,6 @@ export const augmentsData: Record<number, RiotAugmentDto> = {
             PercentMaxHPDamagePer5Seconds: 0.029999999329447746,
         },
         tooltip:
-            'Your Abilities apply 1 stack of Curse to enemy champions they hit for 5 seconds, stacking infinitely.{{ Cherry_Curse }}Gain Adaptive Force equal to 35% of Cursed Power.Adaptive Force Gained: ',
+            'Your Abilities apply @CurseCounter@ stack of <keywordMajor>Curse</keywordMajor> to enemy champions they hit for @BleedDuration@ seconds, stacking infinitely.<br><br>{{ Cherry_Curse }}<br><br>Gain Adaptive Force equal to @AdaptiveForceRatio*100@% of <keywordMajor>Cursed Power</keywordMajor>.<br><br>Adaptive Force Gained: @f1@',
     },
 }
