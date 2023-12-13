@@ -38,7 +38,7 @@ import { augmentsData } from '../common/data/raw-augments'
 
     for (const key in augmentsData) {
         formatted[key] = augmentsData[key]!
-        const matches = formatted[key]!.tooltip.match(/@([a-zA-Z0-9*]+)@/g)
+        const matches = formatted[key]!.description.match(/@([a-zA-Z0-9*]+)@/g)
 
         if (matches) {
             for (const match of matches) {
@@ -47,7 +47,7 @@ import { augmentsData } from '../common/data/raw-augments'
                     const variable = match.slice(1, -1).split('*')[0]
                     const var_value = formatted[key]!.spellDataValues[String(variable)]!.toFixed(2)
 
-                    formatted[key]!.tooltip = formatted[key]!.tooltip.replace(
+                    formatted[key]!.description = formatted[key]!.description.replace(
                         match,
                         eval(match.slice(1, -1).replace(String(variable), var_value)),
                     )
@@ -58,11 +58,11 @@ import { augmentsData } from '../common/data/raw-augments'
                         ? String(formatted[key]!.spellDataValues[spellDataKey])
                         : ''
 
-                    formatted[key]!.tooltip = formatted[key]!.tooltip.replace(match, var_value).replace('  ', ' ')
+                    formatted[key]!.description = formatted[key]!.description.replace(match, var_value).replace('  ', ' ')
                 }
             }
         }
-        formatted[key]!.tooltip = formatted[key]!.tooltip.replace(/<[^>]*>/g, '')
+        formatted[key]!.description = formatted[key]!.description.replace(/<[^>]*>/g, '')
     }
 
     console.log('Writing the Map to augments.ts')
