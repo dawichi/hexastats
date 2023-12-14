@@ -16,6 +16,10 @@ export class MathService {
      * @returns The list stats
      */
     getFriends(games: GameDto[]): Array<FriendDto> {
+        if (games.length === 0) {
+            return []
+        }
+
         const indexByName: Record<
             string,
             {
