@@ -35,11 +35,18 @@
 
 <Container title="" description="" disableHeader>
     <!-- HEADER BLOCK: RANK & MASTERIES -->
-    <section class="relative rounded-lg bg-contain shadow" style="background-image: url({riotService.champSplash(data.masteries[0].name)})">
+    <section class="relative rounded-lg bg-contain" style="background-image: url({riotService.champSplash(data.masteries[0]?.name)})">
         <div class="bg-orange-50/80 dark:bg-zinc-900/80 md:px-4">
             <header class="flex flex-col items-center justify-around gap-y-4 py-5 lg:flex-row">
                 <RankStructure player={data.player} />
-                <MasteryRow masteries={data.masteries} />
+                {#if data.masteries.length}
+                    <MasteryRow masteries={data.masteries} />
+                {:else}
+                    <div class="border-l-4 border-red-600 bg-red-400/30 p-4">
+                        <h2><i class="bi bi-exclamation-triangle-fill"></i> Riot is having problems providing us the masteries!</h2>
+                        <a class="text-blue-400" href="https://developer.riotgames.com/api-status/" target="_blank">Riot API Status</a>
+                    </div>
+                {/if}
             </header>
         </div>
     </section>
