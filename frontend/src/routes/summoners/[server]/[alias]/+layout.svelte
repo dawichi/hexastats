@@ -31,7 +31,7 @@
     }
 </script>
 
-<ModalGame />
+<ModalGame server={data.player.server} />
 
 <Container title="" description="" disableHeader>
     <!-- HEADER BLOCK: RANK & MASTERIES -->
