@@ -96,13 +96,17 @@ export class RiotService {
      * @param url URL to fetch from
      * @returns Data from the Riot API
      */
-    private async httpGet<T>(url: string): Promise<T> {
+    private async httpGet<T>(url: string, default_response: any = null): Promise<T> {
         try {
             this.LOGGER.debug(`Fetching ${url}`)
             return (await lastValueFrom(this.httpService.get(url, this.HEADERS))).data
         } catch (error: any) {
             this.LOGGER.error(`Fetching ${url}`, error)
 
+            // Sometimes we don't care about the data, if it breaks, return default_response
+            if (default_response) return default_response
+
+            // Handle specific errors
             if (error.response.status === 429)
                 throw new HttpException(
                     {
@@ -147,7 +151,7 @@ export class RiotService {
      */
     async getMasteries(summonerName: string, server: string, masteriesLimit: number): Promise<MasteryDto[]> {
         const summoner_id = (await this.getBasicInfo(server, summonerName)).id
-        const allMasteries = await this.httpGet<RiotMasteryType[]>(this.URLS.masteries(server, summoner_id))
+        const allMasteries = await this.httpGet<RiotMasteryType[]>(this.URLS.masteries(server, summoner_id), [])
 
         // This response cointains all (+140) champions, so we take the {masteriesLimit} first ones
         this.LOGGER.log(`Found ${allMasteries.length} masteries, returning ${masteriesLimit}`)
