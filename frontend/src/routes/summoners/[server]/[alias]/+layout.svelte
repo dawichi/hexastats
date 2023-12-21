@@ -29,13 +29,18 @@
         data.stats = await summonerService.addStats(data.player.server, `${data.player.alias}`)
         loading = false
     }
+
+    // Champion Splashart to display as header
+    const champTopMastery: string | undefined = data.masteries[0]?.name
+    const champTopPlayed = data.stats.statsByChamp.sort((a, b) => b.games - a.games)[0].championName
+    const champSplash = riotService.champSplash(champTopMastery ?? champTopPlayed)
 </script>
 
 <ModalGame server={data.player.server} />
 
 <Container title="" description="" disableHeader>
     <!-- HEADER BLOCK: RANK & MASTERIES -->
-    <section class="relative rounded-lg bg-contain" style="background-image: url({riotService.champSplash(data.masteries[0]?.name)})">
+    <section class="relative rounded-lg bg-contain" style="background-image: url({champSplash})">
         <div class="bg-orange-50/80 dark:bg-zinc-900/80 md:px-4">
             <header class="flex flex-col items-center justify-around gap-y-4 py-5 lg:flex-row">
                 <RankStructure player={data.player} />
