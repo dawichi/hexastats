@@ -96,7 +96,7 @@ export const RiotParticipantSchema = z.object({
     allInPings: z.number(),
     assistMePings: z.number(),
     assists: z.number(),
-    baitPings: z.number(),
+    baitPings: z.number().optional(),
     baronKills: z.number(),
     basicPings: z.number(),
     bountyLevel: z.number(),
