@@ -1,11 +1,11 @@
 import { Controller, Delete, Get, Logger, Param } from '@nestjs/common'
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger'
 
-import { ParamServer, ParamSummonerName } from '../../common/decorators'
-import { StatsDto } from '../../common/types'
+import { ParamServer, ParamRiotId } from '../../common/decorators'
+import { RiotIdDto, StatsDto } from '../../common/types'
 import { DatabaseService } from './database.service'
 import { PrintKeysDto } from './types/responses.dto'
-import { ServerPipe } from '../../common/pipes'
+import { RiotIdPipe, ServerPipe } from '../../common/pipes'
 
 @ApiTags('database')
 @Controller('database')
@@ -36,7 +36,7 @@ export class DatabaseController {
      * ## Get masteries
      * @returns Confirmation that the database was deleted
      */
-    @Get('/print/:server/:summonerName/stats')
+    @Get('/print/:server/:riotId/stats')
     @ApiOperation({
         summary: 'Get saved stats',
     })
@@ -45,9 +45,9 @@ export class DatabaseController {
         type: StatsDto,
     })
     @ParamServer()
-    @ParamSummonerName()
-    async getStats(@Param('server', ServerPipe) server: string, @Param('summonerName') summonerName: string): Promise<StatsDto | null> {
-        return this.databaseService.getStats(server, summonerName)
+    @ParamRiotId()
+    async getStats(@Param('server', ServerPipe) server: string, @Param('riotId', RiotIdPipe) riotId: RiotIdDto): Promise<StatsDto | null> {
+        return this.databaseService.getStats(server, riotId)
     }
 
     /**
@@ -93,7 +93,7 @@ export class DatabaseController {
      * > useful to delete the last game and test without need to play another game
      * @returns Confirmation that the last item in thea array was deleted
      */
-    @Delete('/deleteLast/:server/:summonerName')
+    @Delete('/deleteLast/:server/:riotId')
     @ApiOperation({
         summary: 'Delete last value in the data array | Testing only',
         deprecated: true,
@@ -103,8 +103,8 @@ export class DatabaseController {
         type: Boolean,
     })
     @ParamServer()
-    @ParamSummonerName()
-    async deleteLast(@Param('server', ServerPipe) server: string, @Param('summonerName') summonerName: string): Promise<boolean> {
-        return this.databaseService.deleteLast(server, summonerName)
+    @ParamRiotId()
+    async deleteLast(@Param('server', ServerPipe) server: string, @Param('riotId', RiotIdPipe) riotId: RiotIdDto): Promise<boolean> {
+        return this.databaseService.deleteLast(server, riotId)
     }
 }

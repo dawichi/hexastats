@@ -177,7 +177,7 @@ export const RiotParticipantSchema = z.object({
     pushPings: z.number(),
     puuid: z.string(),
     quadraKills: z.number(),
-    // riotIdName: z.string(),
+    riotIdGameName: z.string(),
     riotIdTagline: z.string(),
     role: z.string(),
     sightWardsBoughtInGame: z.number(),

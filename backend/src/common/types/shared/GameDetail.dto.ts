@@ -128,6 +128,18 @@ class Participant {
     summonerName: string
 
     @ApiProperty({
+        description: 'Name of the player (RIOT ID)',
+        example: 'Dawichii',
+    })
+    riotIdGameName: string
+
+    @ApiProperty({
+        description: 'Player tag',
+        example: 'EUW',
+    })
+    riotIdTagline: string
+
+    @ApiProperty({
         description: 'Team position',
         example: 'TOP',
     })

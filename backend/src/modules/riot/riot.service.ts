@@ -13,7 +13,7 @@ import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
 import { runeGroupUrl, runePerkUrl, serverRegion, winrate } from '../../common/utils'
 import { validateGameType } from '../../common/validators'
-import { GameArenaDto, GameDetailDto, GameDto, GameNormalDto, MasteryDto, RankDto } from '../../common/types'
+import { GameArenaDto, GameDetailDto, GameDto, GameNormalDto, MasteryDto, RankDto, RiotIdDto } from '../../common/types'
 import { augmentsData } from '../../common/data/augments'
 import {
     QueueType,
@@ -25,6 +25,8 @@ import {
     RiotMasteryType,
     RiotRankSchema,
     RiotRankType,
+    RiotRiotIdSchema,
+    RiotRiotIdType,
     RiotSummonerSchema,
     RiotSummonerType,
 } from '../../common/schemas'
@@ -36,7 +38,10 @@ export class RiotService {
     private readonly HEADERS: { headers: { 'X-Riot-Token': string } }
     private readonly LOGGER = new Logger(this.constructor.name)
     private readonly URLS = {
-        summoner: (server: string, name: string) => `https://${server}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${name}`,
+        // summoner: (server: string, name: string) => `https://${server}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${name}`,
+        puuid: (server: string, name: string, tag: string) =>
+            `https://${serverRegion(server)}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${name}/${tag}`,
+        summoner: (server: string, puuid: string) => `https://${server}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}`,
         masteries: (server: string, summoner_id: string) =>
             `https://${server}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/${summoner_id}`,
         rank: (server: string, summoner_id: string) =>
@@ -44,7 +49,7 @@ export class RiotService {
     }
 
     // These properties doesnt usually change, so they are generated in the constructor and stored instead of fetching them every time
-    version = '13.23.1' // current version of the game
+    version = '14.1' // current version of the game
     private champions: Record<string, string> = {} // {champ_id => champ_name}
 
     // eslint-disable-next-line prettier/prettier
@@ -131,26 +136,36 @@ export class RiotService {
      * ## Get the basic summoner info (by name)
      * To use other methods, you need to get the summoner id first
      */
-    async getBasicInfo(server: string, summonerName: string): Promise<RiotSummonerType> {
-        const summoner = await this.httpGet<RiotSummonerType>(this.URLS.summoner(server, summonerName))
-        const result = RiotSummonerSchema.safeParse(summoner)
+    async getBasicInfo(server: string, riotId: RiotIdDto): Promise<RiotSummonerType> {
+        // Step 1: Get puuid
+        const puuid = await this.httpGet<RiotRiotIdType>(this.URLS.puuid(server, riotId.name, riotId.tag))
+        const result1 = RiotRiotIdSchema.safeParse(puuid)
 
-        if (!result.success) {
-            result.error.errors.forEach(error => this.LOGGER.error(`Error parsing summoner: ${JSON.stringify(error)}`))
+        if (!result1.success) {
+            result1.error.errors.forEach(error => this.LOGGER.error(`Error parsing summoner: ${JSON.stringify(error)}`))
             throw new InternalServerErrorException('Problem with Riot Games summoner endpoint')
         }
-        return result.data
+
+        // Step 2: Get the rest of the data
+        const summoner = await this.httpGet<RiotSummonerType>(this.URLS.summoner(server, result1.data.puuid))
+        const result2 = RiotSummonerSchema.safeParse(summoner)
+
+        if (!result2.success) {
+            result2.error.errors.forEach(error => this.LOGGER.error(`Error parsing summoner: ${JSON.stringify(error)}`))
+            throw new InternalServerErrorException('Problem with Riot Games summoner endpoint')
+        }
+        return result2.data
     }
 
     /**
      * ## Get the mastery information
-     * @param summonerName Name of the summoner
+     * @param riotId Name of the summoner
      * @param server Server of the summoner
      * @param masteriesLimit Limit of the masteries to return
      * @returns Array of masteries
      */
-    async getMasteries(summonerName: string, server: string, masteriesLimit: number): Promise<MasteryDto[]> {
-        const summoner_id = (await this.getBasicInfo(server, summonerName)).id
+    async getMasteries(riotId: RiotIdDto, server: string, masteriesLimit: number): Promise<MasteryDto[]> {
+        const summoner_id = (await this.getBasicInfo(server, riotId)).puuid
         const allMasteries = await this.httpGet<RiotMasteryType[]>(this.URLS.masteries(server, summoner_id), [])
 
         // This response cointains all (+140) champions, so we take the {masteriesLimit} first ones
@@ -393,6 +408,8 @@ export class RiotService {
 
             participants: rawGame.info.participants.map(participant => ({
                 summonerName: participant.summonerName,
+                riotIdGameName: participant.riotIdGameName,
+                riotIdTagline: participant.riotIdTagline,
                 teamPosition: participant.teamPosition,
                 isEarlySurrender: participant.gameEndedInEarlySurrender,
                 win: participant.win,

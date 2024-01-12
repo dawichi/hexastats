@@ -12,11 +12,11 @@ export function ParamServer() {
     )
 }
 
-export function ParamSummonerName() {
+export function ParamRiotId() {
     return applyDecorators(
         ApiParam({
-            name: 'summonerName',
-            description: 'Alias of the summoner in game',
+            name: 'riotId',
+            description: 'RiotID with format name#tag',
             type: String,
         }),
     )
