@@ -7,7 +7,7 @@ export async function load({ params }: { params: { server: string; alias: string
     const player = await summonerService.existPlayer(params.server, params.alias)
 
     if (!player) {
-        throw error(404, 'Player not found, double check your summoner name and server.')
+        throw error(404, 'Player not found, double check your summoner name, tag and server.')
     }
 
     const masteries = await summonerService.getMasteries(params.server, params.alias)

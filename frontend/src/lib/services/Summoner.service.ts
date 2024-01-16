@@ -95,7 +95,7 @@ export class SummonerService {
      */
     async existPlayer(server: string, summonerName: string): Promise<null | RankDataDto> {
         const okServer = validateServer(server)
-        const playerData = await this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}`)
+        const playerData = await this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.replace('#', '-').trim())}`)
         return playerData.ok ? playerData.json() : null
     }
 }

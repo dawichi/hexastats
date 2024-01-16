@@ -26,7 +26,7 @@
         if (loading) return
 
         loading = true
-        data.stats = await summonerService.addStats(data.player.server, `${data.player.alias}`)
+        data.stats = await summonerService.addStats(data.player.server, `${data.player.riotIdName}`)
         loading = false
     }
 
@@ -62,7 +62,7 @@
             <aside class="mx-auto grid justify-center 2xl:block pb-16">
                 <div class="justify flex justify-between p-2">
                     <div>
-                        <h2 class="text-2xl">{data.player.alias}'s Stats</h2>
+                        <h2 class="text-2xl">{data.player.riotIdName}'s Stats</h2>
                         <span class="text-sm">based in last {data.stats.gamesUsed.length} games</span>
                     </div>
 
@@ -108,7 +108,7 @@
         </div>
     {:else}
         <div class="border-l-4 border-red-600 bg-red-400/30 p-4 max-w-xl mx-auto">
-            <h2>{data.player.alias} has no games available.</h2>
+            <h2>{data.player.riotIdName} has no games available.</h2>
         </div>
     {/if}
 </Container>

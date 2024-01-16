@@ -26,17 +26,18 @@
         }
 
         for (const player of filteredPlayers) {
-            if (namesSearched.includes(player.alias)) {
+            const riotId = `${player.riotIdName}-${player.riotIdTag}`
+            if (namesSearched.includes(riotId)) {
                 continue
             }
 
-            namesSearched.push(player.alias)
-            fetch(`${backendUrl}summoners/${player.server}/${player.alias}/level-image`)
+            namesSearched.push(riotId)
+            fetch(`${backendUrl}summoners/${player.server}/${riotId}/level-image`)
                 .then(res => res.json())
                 .then(data => {
                     cachedPlayersContext.set(
                         $cachedPlayersContext.map(p => {
-                            if (p.alias === player.alias) {
+                            if (p.alias === riotId) {
                                 p.level = data.level
                                 p.image = data.image
                             }
@@ -58,7 +59,7 @@
         <h2 class="whitespace-nowrap pb-3 text-lg">Searched players:</h2>
         <div class="flex flex-col gap-2 pl-4">
             {#each $cachedPlayersContext.filter(p => p.alias.toLowerCase().includes(textInput.toLowerCase())).slice(0, 3) as player}
-                <a on:click={() => (searching = true)} href={`/summoners/${rawServer(player.server)}/${player.alias}/1`} class="hover:underline">
+                <a on:click={() => (searching = true)} href={`/summoners/${rawServer(player.server)}/${player.riotIdName}-${player.riotIdTag}/1`} class="hover:underline">
                     <div
                         class="flex items-center whitespace-nowrap rounded bg-white shadow transition-transform hover:scale-105 hover:shadow-indigo-400 dark:bg-zinc-800"
                     >
@@ -66,7 +67,7 @@
                             <ProfileImg image={player.image} level={player.level} />
                         </span>
                         <span class="w-12">{player.server}</span>
-                        <span>{decodeURI(player.alias)}</span>
+                        <span>{decodeURI(player.riotIdName)}</span>
                     </div>
                 </a>
             {/each}

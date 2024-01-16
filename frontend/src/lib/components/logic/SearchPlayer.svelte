@@ -34,7 +34,7 @@
         username = ''
 
         if (playerData) {
-            return goto(`/summoners/${servers[serverIdx]}/${playerData.alias}/1`)
+            return goto(`/summoners/${servers[serverIdx]}/${playerData.riotIdName}-${playerData.riotIdTag}/1`)
         }
 
         error = true
@@ -86,7 +86,7 @@
 
         <!-- svelte-ignore a11y-autofocus -->
         <input
-            placeholder="Summoner name"
+            placeholder="username#tag"
             type="text"
             {autofocus}
             class="h-12 w-full rounded border-0 bg-white p-2 shadow outline-0 ring-indigo-400 focus:ring-4 dark:bg-zinc-800"
