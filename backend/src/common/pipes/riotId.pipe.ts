@@ -7,7 +7,7 @@ import { RiotIdDto } from '../types'
 @Injectable()
 export class RiotIdPipe implements PipeTransform {
     transform(value: string): RiotIdDto {
-        const [name, tag] = value.split('#')
+        const [name, tag] = value.split('-')
 
         if (!name || !tag) {
             throw new BadRequestException(`'RiotId' parameter validation: must be name#tag`)

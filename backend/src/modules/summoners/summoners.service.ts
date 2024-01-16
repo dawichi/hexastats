@@ -27,6 +27,8 @@ export class SummonersService {
 
         return {
             alias: data.name,
+            riotIdName: data.riotIdName,
+            riotIdTag: data.riotIdTag,
             server,
             image: `https://ddragon.leagueoflegends.com/cdn/${this.riotService.version}/img/profileicon/${data.profileIconId}.png`,
             level: data.summonerLevel,
@@ -46,6 +48,8 @@ export class SummonersService {
 
         return {
             alias: data.name,
+            riotIdName: data.riotIdName,
+            riotIdTag: data.riotIdTag,
             server,
             image: `https://ddragon.leagueoflegends.com/cdn/${this.riotService.version}/img/profileicon/${data.profileIconId}.png`,
             level: data.summonerLevel,

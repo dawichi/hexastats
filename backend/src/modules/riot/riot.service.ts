@@ -136,7 +136,15 @@ export class RiotService {
      * ## Get the basic summoner info (by name)
      * To use other methods, you need to get the summoner id first
      */
-    async getBasicInfo(server: string, riotId: RiotIdDto): Promise<RiotSummonerType> {
+    async getBasicInfo(
+        server: string,
+        riotId: RiotIdDto,
+    ): Promise<
+        RiotSummonerType & {
+            riotIdName: string
+            riotIdTag: string
+        }
+    > {
         // Step 1: Get puuid
         const puuid = await this.httpGet<RiotRiotIdType>(this.URLS.puuid(server, riotId.name, riotId.tag))
         const result1 = RiotRiotIdSchema.safeParse(puuid)
@@ -154,7 +162,11 @@ export class RiotService {
             result2.error.errors.forEach(error => this.LOGGER.error(`Error parsing summoner: ${JSON.stringify(error)}`))
             throw new InternalServerErrorException('Problem with Riot Games summoner endpoint')
         }
-        return result2.data
+        return {
+            ...result2.data,
+            riotIdName: puuid.gameName,
+            riotIdTag: puuid.tagLine,
+        }
     }
 
     /**

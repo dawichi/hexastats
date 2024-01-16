@@ -25,6 +25,18 @@ export class Player {
         example: '420',
     })
     level: number
+
+    @ApiProperty({
+        description: 'Riot ID summoner name',
+        example: 'Jose',
+    })
+    riotIdName: string
+
+    @ApiProperty({
+        description: 'Riot Summoner #Tag',
+        example: 'EUW',
+    })
+    riotIdTag: string
 }
 
 export class RankData extends Player {
