@@ -356,6 +356,8 @@ export class RiotService {
             participants: rawGame.info.participants.map(participant => ({
                 summonerName: participant.summonerName,
                 championName: participant.championName,
+                riotIdGameName: participant.riotIdGameName,
+                riotIdTagLine: participant.riotIdTagline,
             })),
         }
 
@@ -421,7 +423,7 @@ export class RiotService {
             participants: rawGame.info.participants.map(participant => ({
                 summonerName: participant.summonerName,
                 riotIdGameName: participant.riotIdGameName,
-                riotIdTagline: participant.riotIdTagline,
+                riotIdTagLine: participant.riotIdTagline,
                 teamPosition: participant.teamPosition,
                 isEarlySurrender: participant.gameEndedInEarlySurrender,
                 win: participant.win,

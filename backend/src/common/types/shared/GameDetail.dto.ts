@@ -137,7 +137,7 @@ class Participant {
         description: 'Player tag',
         example: 'EUW',
     })
-    riotIdTagline: string
+    riotIdTagLine: string
 
     @ApiProperty({
         description: 'Team position',
