@@ -46,15 +46,15 @@
     <div class="columns-2 p-1">
         {#each game.participants as participant, idx}
             <span class="flex items-center">
-                <a class="hover:scale-125" href={`/summoners/${rawServer(server)}/${participant.summonerName}/1`}>
+                <a class="hover:scale-125" href={`/summoners/${rawServer(server)}/${participant.riotIdGameName}-${participant.riotIdTagLine}/1`}>
                     <img class="{styles.iconSize.medium} rounded" src={riotService.champImage(participant.championName)} alt="champion" />
                 </a>
                 <span class="hidden md:block md:truncate md:ml-1 md:h-5 md:w-20 overflow-hidden md:text-ellipsis whitespace-nowrap text-left text-sm">
                     <a
-                        href={`/summoners/${rawServer(server)}/${participant.summonerName}/1`}
+                        href={`/summoners/${rawServer(server)}/${participant.riotIdGameName}-${participant.riotIdTagLine}/1`}
                         class="hover:underline {game.participantNumber === idx ? 'font-bold' : ''}"
                     >
-                        {participant.summonerName}
+                        {participant.riotIdGameName}
                     </a>
                 </span>
             </span>

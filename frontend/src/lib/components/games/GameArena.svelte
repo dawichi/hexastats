@@ -53,15 +53,15 @@
         <div class="py-2">
             {#each group as participant, idx2}
             <div class="flex items-center">
-                <a class="hover:scale-125" href={`/summoners/${rawServer(server)}/${participant.summonerName}/1`}>
+                <a class="hover:scale-125" href={`/summoners/${rawServer(server)}/${participant.riotIdGameName}/${participant.riotIdTagLine}/1`}>
                     <img class="{styles.iconSize.medium} rounded" src={riotService.champImage(participant.championName)} alt="champion" />
                 </a>
                 <span class="hidden md:block md:truncate md:ml-1 md:h-5 md:w-20 overflow-hidden md:text-ellipsis whitespace-nowrap text-left text-sm">
                     <a
-                        href={`/summoners/${rawServer(server)}/${participant.summonerName}/1`}
-                        class="hover:underline {participant.summonerName === game.participants[game.participantNumber].summonerName ? 'font-bold' : ''}"
+                        href={`/summoners/${rawServer(server)}/${participant.riotIdGameName}-${participant.riotIdTagLine}/1`}
+                        class="hover:underline {participant.riotIdGameName === game.participants[game.participantNumber].riotIdGameName ? 'font-bold' : ''}"
                     >
-                        {participant.summonerName}
+                        {participant.riotIdGameName}
                     </a>
                 </span>
             </div>

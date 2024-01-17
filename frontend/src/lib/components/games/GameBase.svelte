@@ -43,7 +43,11 @@
     async function openModal(matchId: string) {
         if (loading) return
         loading = true
-        const response = await fetch(`${backendUrl}summoners/${server}/${game.participants[game.participantNumber].summonerName}/games/${matchId}`)
+        const response = await fetch(
+            `${backendUrl}summoners/${server}/${game.participants[game.participantNumber].riotIdGameName}-${
+                game.participants[game.participantNumber].riotIdTagLine
+            }/games/${matchId}`,
+        )
         const data = await response.json()
 
         modalGameContext.set({
@@ -105,16 +109,14 @@
     .transition {
         transition: all 0.3s ease-in-out;
     }
-    .positionIcon{
+    .positionIcon {
         width: 32px;
         height: 32px;
     }
     @media (min-width: 768px) {
-        .positionIcon{
+        .positionIcon {
             width: 42px;
             height: 42px;
         }
     }
-
-
 </style>

@@ -36,6 +36,8 @@ interface MultiKill {
 
 interface Participant {
     summonerName: string
+    riotIdGameName: string
+    riotIdTagLine: string
     teamPosition: string
     isEarlySurrender: boolean
     win: boolean
