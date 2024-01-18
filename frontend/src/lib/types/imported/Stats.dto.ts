@@ -2,6 +2,8 @@ export interface Friend {
     name: string
     games: number
     wins: number
+    riotIdGameName: string
+    riotIdTagLine: string
 }
 
 export interface ChampStats {

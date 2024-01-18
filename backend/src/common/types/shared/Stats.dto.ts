@@ -18,6 +18,18 @@ export class Friend {
         example: '2',
     })
     wins: number
+
+    @ApiProperty({
+        description: 'RiotId summoner Name',
+        example: 'Jose',
+    })
+    riotIdGameName: string
+
+    @ApiProperty({
+        description: 'RiotId summoner #tag',
+        example: '#EUW',
+    })
+    riotIdTagLine: string
 }
 
 export class ChampStats {
