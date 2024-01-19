@@ -15,12 +15,16 @@
     // This is the list of names that have already been searched, so we don't search them again
     const namesSearched: string[] = []
 
-    function getPlayersData(summonerName: string): void {
+    async function getPlayersData(summonerName: string): Promise<void> {
         if (!summonerName) {
             return
         }
 
-        const filteredPlayers = $cachedPlayersContext.filter(p => p.alias.toLowerCase().includes(summonerName.toLowerCase()))
+        const filteredPlayers = $cachedPlayersContext.filter(
+            p =>
+                String(p.riotIdName).toLowerCase().includes(summonerName.toLowerCase()) ||
+                String(p.riotIdTag).toLowerCase().includes(summonerName.toLowerCase()),
+        )
         if (filteredPlayers.length > 3) {
             filteredPlayers.length = 3
         }
@@ -32,19 +36,24 @@
             }
 
             namesSearched.push(riotId)
-            fetch(`${backendUrl}summoners/${player.server}/${riotId}/level-image`)
-                .then(res => res.json())
-                .then(data => {
-                    cachedPlayersContext.set(
-                        $cachedPlayersContext.map(p => {
-                            if (p.alias === riotId) {
-                                p.level = data.level
-                                p.image = data.image
-                            }
-                            return p
-                        }),
-                    )
-                })
+            try {
+                const res = await fetch(`${backendUrl}summoners/${player.server}/${riotId}/level-image`)
+                const data = await res.json()
+
+                cachedPlayersContext.set(
+                    $cachedPlayersContext.map(p => {
+                        if (p.riotIdName + '-' + p.riotIdTag === riotId) {
+                            p.level = data.level
+                            p.image = data.image
+                            p.riotIdName = data.riotIdName
+                            p.riotIdTag = data.riotIdTag
+                        }
+                        return p
+                    }),
+                )
+            } catch (error) {
+                console.error('Error fetching data for ${riotId}', error)
+            }
         }
     }
 
@@ -54,12 +63,22 @@
     $: getPlayersData(textInput)
 </script>
 
-{#if textInput && $cachedPlayersContext.filter(p => p.alias.toLowerCase().includes(textInput.toLowerCase())).length}
+{#if textInput && $cachedPlayersContext.filter(p => String(p.riotIdName).toLowerCase().includes(textInput.toLowerCase()) || String(p.riotIdTag)
+                .toLowerCase()
+                .includes(textInput.toLowerCase())).length}
     <section>
         <h2 class="whitespace-nowrap pb-3 text-lg">Searched players:</h2>
         <div class="flex flex-col gap-2 pl-4">
-            {#each $cachedPlayersContext.filter(p => p.alias.toLowerCase().includes(textInput.toLowerCase())).slice(0, 3) as player}
-                <a on:click={() => (searching = true)} href={`/summoners/${rawServer(player.server)}/${player.riotIdName}-${player.riotIdTag}/1`} class="hover:underline">
+            {#each $cachedPlayersContext
+                .filter(p => String(p.riotIdName).toLowerCase().includes(textInput.toLowerCase()) || String(p.riotIdTag)
+                            .toLowerCase()
+                            .includes(textInput.toLowerCase()))
+                .slice(0, 3) as player}
+                <a
+                    on:click={() => (searching = true)}
+                    href={`/summoners/${rawServer(player.server)}/${player.riotIdName}-${player.riotIdTag}/1`}
+                    class="hover:underline"
+                >
                     <div
                         class="flex items-center whitespace-nowrap rounded bg-white shadow transition-transform hover:scale-105 hover:shadow-indigo-400 dark:bg-zinc-800"
                     >
@@ -67,7 +86,7 @@
                             <ProfileImg image={player.image} level={player.level} />
                         </span>
                         <span class="w-12">{player.server}</span>
-                        <span>{decodeURI(player.riotIdName)}</span>
+                        <span>{decodeURI(player.riotIdName + ' #' + player.riotIdTag)}</span>
                     </div>
                 </a>
             {/each}
