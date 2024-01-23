@@ -22,7 +22,9 @@
         </div>
         <Rank title="Solo/Duo" rankdata={player.rank.solo} />
         <Rank title="Flex" rankdata={player.rank.flex} />
-        <Rank title="Arena" rankdata={player.rank.arena}/>
+        {#if player.rank.arena.win + player.rank.arena.lose > 0}
+            <Rank title="Arena" rankdata={player.rank.arena} />
+        {/if}
     </div>
 {:else}
     <!-- Display a placeholder until data is ready -->
