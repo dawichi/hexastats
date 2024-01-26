@@ -26,7 +26,7 @@
         if (loading) return
 
         loading = true
-        data.stats = await summonerService.addStats(data.player.server, `${data.player.riotIdName}`)
+        data.stats = await summonerService.addStats(data.player.server, `${data.player.riotIdName}`, `${data.player.riotIdTag}`)
         loading = false
     }
 
