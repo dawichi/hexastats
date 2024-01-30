@@ -16,7 +16,7 @@
 
     <div class="grid gap-2">
         {#each data.games as game}
-            <GameBase {game} server={data.server} />
+            <GameBase {game} player={data.player} />
         {/each}
     </div>
 

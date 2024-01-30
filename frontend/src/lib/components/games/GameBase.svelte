@@ -4,7 +4,7 @@
   Display a game row
 -->
 <script lang="ts">
-    import type { GameArenaDto, GameDto, GameNormalDto } from '$lib/types'
+    import type { GameArenaDto, GameDto, GameNormalDto, RankDataDto } from '$lib/types'
 
     import { styles } from '$lib/config'
     import { RiotService } from '$lib/services/Riot.service'
@@ -15,7 +15,7 @@
     import { GameArena, GameNormal } from '$lib/components'
 
     export let game: GameNormalDto | GameArenaDto
-    export let server: string
+    export let player: RankDataDto
 
     const riotService = RiotService.getInstance()
 
@@ -43,11 +43,7 @@
     async function openModal(matchId: string) {
         if (loading) return
         loading = true
-        const response = await fetch(
-            `${backendUrl}summoners/${server}/${game.participants[game.participantNumber].riotIdGameName}-${
-                game.participants[game.participantNumber].riotIdTagLine
-            }/games/${matchId}`,
-        )
+        const response = await fetch(`${backendUrl}summoners/${player.server}/${player.riotIdName}-${player.riotIdTag}/games/${matchId}`)
         const data = await response.json()
 
         modalGameContext.set({
@@ -89,9 +85,9 @@
         </div>
 
         {#if isGameNormal(game)}
-            <GameNormal {game} {server} />
+            <GameNormal {game} server={player.server} />
         {:else}
-            <GameArena {game} {server} />
+            <GameArena {game} server={player.server} />
         {/if}
         <!-- <GameCollapsed {game} {server} /> -->
 
