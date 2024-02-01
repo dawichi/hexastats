@@ -130,21 +130,31 @@
                                     </div>
 
                                     <!-- <p class="relative col-span-2 flex items-center justify-center">{participant.summonerName}</p> -->
-                                    <a
-                                        href={`/summoners/${rawServer(server)}/${participant.riotIdGameName}-${participant.riotIdTagLine}/1`}
-                                        class="relative col-span-2 flex items-center justify-center hover:underline {participant.riotIdGameName ===
-                                        game.participants[game.participantNumber].riotIdGameName
-                                            ? 'font-bold'
-                                            : ''}"
-                                        on:click={() =>
-                                            modalGameContext.update(val => ({
-                                                ...val,
-                                                isModalOpen: false,
-                                            }))}
-                                    >
-                                        {participant.riotIdGameName}
-                                    </a>
-
+                                    {#if participant.riotIdTagLine}
+                                        <a
+                                            href={`/summoners/${rawServer(server)}/${participant.riotIdGameName}-${participant.riotIdTagLine}/1`}
+                                            class="relative col-span-2 flex items-center justify-center hover:underline {participant.riotIdGameName ===
+                                            game.participants[game.participantNumber].riotIdGameName
+                                                ? 'font-bold'
+                                                : ''}"
+                                            on:click={() =>
+                                                modalGameContext.update(val => ({
+                                                    ...val,
+                                                    isModalOpen: false,
+                                                }))}
+                                        >
+                                            {participant.riotIdGameName}
+                                        </a>
+                                    {:else}
+                                        <p
+                                            class="relative col-span-2 flex items-center justify-center {participant.riotIdGameName ===
+                                            game.participants[game.participantNumber].riotIdGameName
+                                                ? 'font-bold'
+                                                : ''}"
+                                        >
+                                            {participant.riotIdGameName}
+                                        </p>
+                                    {/if}
                                     <!-- KDA -->
                                     <div class="xl:w-28 text-center">
                                         <p>{participant.kills} / {participant.deaths} / {participant.assists}</p>
@@ -239,23 +249,33 @@
                                         {/each}
                                     </div>
                                 </div>
-
-                                <a
-                                    href={`/summoners/${rawServer(server)}/${participant.riotIdGameName}-${participant.riotIdTagLine}/1`}
-                                    class="w-32 hover:underline col-span-2 md:truncate md:text-ellipsis {participant.riotIdGameName ===
-                                    game.participants[game.participantNumber].riotIdGameName
-                                        ? 'font-bold'
-                                        : ''}
+                                {#if participant.riotIdTagLine}
+                                    <a
+                                        href={`/summoners/${rawServer(server)}/${participant.riotIdGameName}-${participant.riotIdTagLine}/1`}
+                                        class="w-32 hover:underline col-span-2 md:truncate md:text-ellipsis {participant.riotIdGameName ===
+                                        game.participants[game.participantNumber].riotIdGameName
+                                            ? 'font-bold'
+                                            : ''}
                                         {game.gameMode === 'CLASSIC' ? (participant.teamPosition === '' ? 'text-red-600' : 'text-white') : 'text-white'}"
-                                    on:click={() =>
-                                        modalGameContext.update(val => ({
-                                            ...val,
-                                            isModalOpen: false,
-                                        }))}
-                                >
-                                    {participant.riotIdGameName}
-                                </a>
-
+                                        on:click={() =>
+                                            modalGameContext.update(val => ({
+                                                ...val,
+                                                isModalOpen: false,
+                                            }))}
+                                    >
+                                        {participant.riotIdGameName}
+                                    </a>
+                                {:else}
+                                    <p
+                                        class="w-32 col-span-2 md:truncate md:text-ellipsis {participant.riotIdGameName ===
+                                        game.participants[game.participantNumber].riotIdGameName
+                                            ? 'font-bold'
+                                            : ''}
+                                        {game.gameMode === 'CLASSIC' ? (participant.teamPosition === '' ? 'text-red-600' : 'text-white') : 'text-white'}"
+                                    >
+                                        {participant.riotIdGameName}
+                                    </p>
+                                {/if}
                                 <!-- KDA -->
                                 <div class="md:w-28 text-center">
                                     <p>{participant.kills} / {participant.deaths} / {participant.assists}</p>
