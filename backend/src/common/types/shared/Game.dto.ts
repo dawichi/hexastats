@@ -14,6 +14,18 @@ class ParticipantTitle {
         example: 'Aatrox',
     })
     championName: string
+
+    @ApiProperty({
+        description: 'RiotId summoner Name',
+        example: 'Jose',
+    })
+    riotIdGameName: string
+
+    @ApiProperty({
+        description: 'RiotID summoner #Tag',
+        example: '#EUW',
+    })
+    riotIdTagLine: string
 }
 
 export class Game {

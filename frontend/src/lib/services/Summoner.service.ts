@@ -82,9 +82,9 @@ export class SummonerService {
     /**
      * ## Requests to add new +10 extra stats from the API
      */
-    async addStats(server: string, summonerName: string): Promise<StatsDto> {
+    async addStats(server: string, summonerName: string, tag: string): Promise<StatsDto> {
         const okServer = validateServer(server)
-        const statsData = await this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}/stats/add`)
+        const statsData = await this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}-${encodeURI(tag.trim())}/stats/add`)
         this.handleError(statsData)
         return statsData.json()
     }
@@ -95,7 +95,7 @@ export class SummonerService {
      */
     async existPlayer(server: string, summonerName: string): Promise<null | RankDataDto> {
         const okServer = validateServer(server)
-        const playerData = await this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.trim())}`)
+        const playerData = await this.Sveltefetch(`${backendUrl}summoners/${okServer}/${encodeURI(summonerName.replace('#', '-').trim())}`)
         return playerData.ok ? playerData.json() : null
     }
 }

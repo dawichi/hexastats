@@ -13,6 +13,7 @@ export const validateGameType = (queueId: number): string => {
         430: 'Normal Blind',
         440: 'Ranked Flex',
         450: 'ARAM',
+        490: 'Quickplay',
         700: 'Clash',
         720: 'ARAM Clash',
         830: 'Co-op IA',

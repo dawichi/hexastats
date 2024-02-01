@@ -17,7 +17,7 @@
     async function openModal(matchId: string) {
         if (loading) return
         loading = true
-        const response = await fetch(`${backendUrl}summoners/${player.server}/${player.alias}/games/${matchId}`)
+        const response = await fetch(`${backendUrl}summoners/${player.server}/${player.riotIdName}-${player.riotIdTag}/games/${matchId}`)
         const game = await response.json()
 
         modalGameContext.set({

@@ -50,7 +50,7 @@
     <div class="relative flex justify-between bg-zinc-900 p-1">
         <div>
             {#if game.matchId}
-                <h2 class="text-lg font-bold">{game.participants[game.participantNumber].summonerName}</h2>
+                <h2 class="text-lg font-bold">{game.participants[game.participantNumber].riotIdGameName}</h2>
                 <span>{game.gameMode} | </span>
                 <span>{formatDate(game.gameCreation, game.gameDuration)} | </span>
                 <span>
@@ -107,8 +107,8 @@
                                             ? 'bg-zinc-500/40'
                                             : 'bg-zinc-500/20'
                                         : participant.win
-                                          ? 'bg-green-500/20'
-                                          : 'bg-red-500/20'}"
+                                        ? 'bg-green-500/20'
+                                        : 'bg-red-500/20'}"
                                 >
                                     <div class="relative grid grid-cols-2">
                                         <img class="m-1 h-12 w-12" src={riotService.champImage(participant.champ.championName)} alt="champ" />
@@ -130,21 +130,31 @@
                                     </div>
 
                                     <!-- <p class="relative col-span-2 flex items-center justify-center">{participant.summonerName}</p> -->
-                                    <a
-                                        href={`/summoners/${rawServer(server)}/${participant.summonerName}`}
-                                        class="relative col-span-2 flex items-center justify-center hover:underline {participant.summonerName ===
-                                        game.participants[game.participantNumber].summonerName
-                                            ? 'font-bold'
-                                            : ''}"
-                                        on:click={() =>
-                                            modalGameContext.update(val => ({
-                                                ...val,
-                                                isModalOpen: false,
-                                            }))}
-                                    >
-                                        {participant.summonerName}
-                                    </a>
-
+                                    {#if participant.riotIdTagLine}
+                                        <a
+                                            href={`/summoners/${rawServer(server)}/${participant.riotIdGameName}-${participant.riotIdTagLine}/1`}
+                                            class="relative col-span-2 flex items-center justify-center hover:underline {participant.riotIdGameName ===
+                                            game.participants[game.participantNumber].riotIdGameName
+                                                ? 'font-bold'
+                                                : ''}"
+                                            on:click={() =>
+                                                modalGameContext.update(val => ({
+                                                    ...val,
+                                                    isModalOpen: false,
+                                                }))}
+                                        >
+                                            {participant.riotIdGameName}
+                                        </a>
+                                    {:else}
+                                        <p
+                                            class="relative col-span-2 flex items-center justify-center {participant.riotIdGameName ===
+                                            game.participants[game.participantNumber].riotIdGameName
+                                                ? 'font-bold'
+                                                : ''}"
+                                        >
+                                            {participant.riotIdGameName}
+                                        </p>
+                                    {/if}
                                     <!-- KDA -->
                                     <div class="xl:w-28 text-center">
                                         <p>{participant.kills} / {participant.deaths} / {participant.assists}</p>
@@ -222,8 +232,8 @@
                                         ? 'bg-zinc-500/40'
                                         : 'bg-zinc-500/20'
                                     : participant.win
-                                      ? 'bg-green-500/20'
-                                      : 'bg-red-500/20'}"
+                                    ? 'bg-green-500/20'
+                                    : 'bg-red-500/20'}"
                             >
                                 <!-- IMAGE and Level -->
                                 <div class="relative grid grid-cols-2">
@@ -239,22 +249,33 @@
                                         {/each}
                                     </div>
                                 </div>
-
-                                <a
-                                    href={`/summoners/${rawServer(server)}/${participant.summonerName}`}
-                                    class="w-32 hover:underline col-span-2 md:truncate md:text-ellipsis{participant.summonerName === game.participants[game.participantNumber].summonerName
-                                        ? 'font-bold'
-                                        : ''}
+                                {#if participant.riotIdTagLine}
+                                    <a
+                                        href={`/summoners/${rawServer(server)}/${participant.riotIdGameName}-${participant.riotIdTagLine}/1`}
+                                        class="w-32 hover:underline col-span-2 md:truncate md:text-ellipsis {participant.riotIdGameName ===
+                                        game.participants[game.participantNumber].riotIdGameName
+                                            ? 'font-bold'
+                                            : ''}
                                         {game.gameMode === 'CLASSIC' ? (participant.teamPosition === '' ? 'text-red-600' : 'text-white') : 'text-white'}"
-                                    on:click={() =>
-                                        modalGameContext.update(val => ({
-                                            ...val,
-                                            isModalOpen: false,
-                                        }))}
-                                >
-                                    {participant.summonerName}
-                                </a>
-
+                                        on:click={() =>
+                                            modalGameContext.update(val => ({
+                                                ...val,
+                                                isModalOpen: false,
+                                            }))}
+                                    >
+                                        {participant.riotIdGameName}
+                                    </a>
+                                {:else}
+                                    <p
+                                        class="w-32 col-span-2 md:truncate md:text-ellipsis {participant.riotIdGameName ===
+                                        game.participants[game.participantNumber].riotIdGameName
+                                            ? 'font-bold'
+                                            : ''}
+                                        {game.gameMode === 'CLASSIC' ? (participant.teamPosition === '' ? 'text-red-600' : 'text-white') : 'text-white'}"
+                                    >
+                                        {participant.riotIdGameName}
+                                    </p>
+                                {/if}
                                 <!-- KDA -->
                                 <div class="md:w-28 text-center">
                                     <p>{participant.kills} / {participant.deaths} / {participant.assists}</p>

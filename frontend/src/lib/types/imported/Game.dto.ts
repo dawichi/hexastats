@@ -4,6 +4,8 @@ import type { Perks } from './Perks.dto'
 interface ParticipantTitle {
     summonerName: string
     championName: string
+    riotIdGameName: string
+    riotIdTagLine: string
 }
 
 export interface Game {

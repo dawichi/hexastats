@@ -1,11 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
-import { GameArenaDto, GameDetailDto, GameNormalDto, MasteryDto, PlayerDto, RankDataDto, StatsDto } from '../../common/types'
+import { GameArenaDto, GameDetailDto, GameNormalDto, MasteryDto, PlayerDto, RankDataDto, RiotIdDto, StatsDto } from '../../common/types'
 import { RiotService } from '../../modules/riot/riot.service'
 import { DatabaseService } from '../database/database.service'
 import { MathService } from '../math/math.service'
-import { QueueType } from 'src/common/schemas'
+import { QueueType } from '../../common/schemas'
 
 @ApiTags('summoners')
 @Injectable()
@@ -19,14 +19,16 @@ export class SummonersService {
     ) {}
 
     /**
-     * /summoners/:server/:summonerName
+     * /summoners/:server/:riotId
      */
-    async getSummoner(server: string, summonerName: string): Promise<RankDataDto> {
-        const data = await this.riotService.getBasicInfo(server, summonerName)
+    async getSummoner(server: string, riotId: RiotIdDto): Promise<RankDataDto> {
+        const data = await this.riotService.getBasicInfo(server, riotId)
         const { solo, flex, arena } = await this.riotService.getRankData(data.id, server)
 
         return {
             alias: data.name,
+            riotIdName: data.riotIdName,
+            riotIdTag: data.riotIdTag,
             server,
             image: `https://ddragon.leagueoflegends.com/cdn/${this.riotService.version}/img/profileicon/${data.profileIconId}.png`,
             level: data.summonerLevel,
@@ -39,13 +41,15 @@ export class SummonersService {
     }
 
     /**
-     * /summoners/:server/:summonerName/level-image
+     * /summoners/:server/:riotId/level-image
      */
-    async getLevelImage(server: string, summonerName: string): Promise<PlayerDto> {
-        const data = await this.riotService.getBasicInfo(server, summonerName)
+    async getLevelImage(server: string, riotId: RiotIdDto): Promise<PlayerDto> {
+        const data = await this.riotService.getBasicInfo(server, riotId)
 
         return {
             alias: data.name,
+            riotIdName: data.riotIdName,
+            riotIdTag: data.riotIdTag,
             server,
             image: `https://ddragon.leagueoflegends.com/cdn/${this.riotService.version}/img/profileicon/${data.profileIconId}.png`,
             level: data.summonerLevel,
@@ -53,23 +57,23 @@ export class SummonersService {
     }
 
     /**
-     * /summoners/:server/:summonerName/masteries
+     * /summoners/:server/:riotId/masteries
      */
-    async getMasteries(server: string, summonerName: string, limit: number): Promise<MasteryDto[]> {
-        return this.riotService.getMasteries(summonerName, server, limit)
+    async getMasteries(server: string, riotId: RiotIdDto, limit: number): Promise<MasteryDto[]> {
+        return this.riotService.getMasteries(riotId, server, limit)
     }
 
     /**
-     * /summoners/:server/:summonerName/games
+     * /summoners/:server/:riotId/games
      */
     async getGames(
         server: string,
-        summonerName: string,
+        riotId: RiotIdDto,
         limit: number,
         offset: number,
         queueType: QueueType,
     ): Promise<Array<GameNormalDto | GameArenaDto>> {
-        const { puuid } = await this.riotService.getBasicInfo(server, summonerName)
+        const { puuid } = await this.riotService.getBasicInfo(server, riotId)
 
         // Get the list of game IDs
         const games_list = await this.riotService.getGameIds(puuid, server, limit, offset, queueType)
@@ -79,22 +83,22 @@ export class SummonersService {
     }
 
     /**
-     * /summoners/:server/:summonerName/games):matchId
+     * /summoners/:server/:riotId/games):matchId
      */
-    async getGameDetail(server: string, summonerName: string, matchId: string): Promise<GameDetailDto> {
-        const { puuid } = await this.riotService.getBasicInfo(server, summonerName)
+    async getGameDetail(server: string, riotId: RiotIdDto, matchId: string): Promise<GameDetailDto> {
+        const { puuid } = await this.riotService.getBasicInfo(server, riotId)
 
         return this.riotService.getGameDetail(puuid, server, matchId)
     }
 
     /**
-     * /summoners/:server/:summonerName/stats
+     * /summoners/:server/:riotId/stats
      */
-    async getStats(server: string, summonerName: string): Promise<StatsDto> {
-        const gamesFromDB = await this.databaseService.getStats(server, summonerName)
+    async getStats(server: string, riotId: RiotIdDto): Promise<StatsDto> {
+        const gamesFromDB = await this.databaseService.getStats(server, riotId)
 
         if (gamesFromDB) {
-            const { puuid } = await this.riotService.getBasicInfo(server, summonerName)
+            const { puuid } = await this.riotService.getBasicInfo(server, riotId)
             const { is_last, last_game_id } = await this.riotService.isLastGame(server, puuid, String(gamesFromDB.gamesUsed[0]))
 
             if (is_last) {
@@ -106,7 +110,7 @@ export class SummonersService {
             const result = games_list.filter(match_id => !gamesFromDB.gamesUsed.includes(match_id))
 
             if (result.length <= 10) {
-                const extraGames = await this.getGames(server, summonerName, result.length, 0, 'all')
+                const extraGames = await this.getGames(server, riotId, result.length, 0, 'all')
 
                 const extraOutput: StatsDto = {
                     gamesUsed: extraGames.map(game => game.matchId),
@@ -119,14 +123,14 @@ export class SummonersService {
 
                 const mergedStats = this.mathService.mergeStats(extraOutput, gamesFromDB)
 
-                await this.databaseService.set(`${server}:${summonerName}:stats`, mergedStats)
+                await this.databaseService.set(`${server}:${riotId.name}#${riotId.tag}:stats`, mergedStats)
 
                 return mergedStats
             }
             this.LOGGER.log(`${last_game_id} is NOT last game -> updating cached data with new games`)
         }
         // Option 3
-        const games = await this.getGames(server, summonerName, 10, 0, 'all')
+        const games = await this.getGames(server, riotId, 10, 0, 'all')
 
         const output: StatsDto = {
             gamesUsed: games.map(game => game.matchId),
@@ -137,18 +141,18 @@ export class SummonersService {
             lowRecords: this.mathService.getRecords(games, true),
         }
 
-        await this.databaseService.set(`${server}:${summonerName}:stats`, output)
+        await this.databaseService.set(`${server}:${riotId.name}#${riotId.tag}:stats`, output)
 
         return output
     }
 
     /**
-     * /summoners/:server/:summonerName/stats/add
+     * /summoners/:server/:riotId/stats/add
      */
-    async addStats(server: string, summonerName: string): Promise<StatsDto> {
-        const currentStats = await this.getStats(server, summonerName)
+    async addStats(server: string, riotId: RiotIdDto): Promise<StatsDto> {
+        const currentStats = await this.getStats(server, riotId)
 
-        const games = await this.getGames(server, summonerName, 10, currentStats.gamesUsed.length, 'all')
+        const games = await this.getGames(server, riotId, 10, currentStats.gamesUsed.length, 'all')
 
         const newStats: StatsDto = {
             gamesUsed: games.map(game => game.matchId),
@@ -161,7 +165,7 @@ export class SummonersService {
 
         const mergedStats: StatsDto = this.mathService.mergeStats(currentStats, newStats)
 
-        await this.databaseService.set(`${server}:${summonerName}:stats`, mergedStats)
+        await this.databaseService.set(`${server}:${riotId.name}#${riotId.tag}:stats`, mergedStats)
 
         return mergedStats
     }

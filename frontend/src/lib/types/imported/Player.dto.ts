@@ -5,6 +5,8 @@ export interface Player {
     server: string
     image: string
     level: number
+    riotIdName: string
+    riotIdTag: string
 }
 
 export interface RankData extends Player {

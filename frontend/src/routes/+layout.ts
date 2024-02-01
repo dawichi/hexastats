@@ -28,6 +28,8 @@ export async function load({ fetch }: { fetch: typeof window.fetch }): Promise<{
             cachedPlayers: cached.map((key: string) => ({
                 server: key.split(':')[0],
                 alias: key.split(':')[1],
+                riotIdName: key.split(':')[1].split('#')[0],
+                riotIdTag: key.split(':')[1].split('#')[1],
                 image: '',
                 level: 0,
             })),

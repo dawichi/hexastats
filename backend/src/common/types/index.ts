@@ -15,3 +15,5 @@ export { ChampStats as ChampStatsDto } from './shared/Stats.dto'
 export { PositionStats as PositionStatsDto } from './shared/Stats.dto'
 export { Stats as StatsDto } from './shared/Stats.dto'
 export { Records as RecordsDto } from './shared/Stats.dto'
+
+export { RiotId as RiotIdDto } from './RiotId.dto'

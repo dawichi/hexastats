@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Redis } from '@upstash/redis'
 import { ConfigService } from '@nestjs/config'
-import { StatsDto } from '../../common/types'
+import { RiotIdDto, StatsDto } from '../../common/types'
 import { PrintKeysDto } from './types/responses.dto'
 
 let is_redis_disabled = false
@@ -68,11 +68,11 @@ export class DatabaseService {
     }
 
     /**
-     * /database/print/:server/:summonerName/stats
+     * /database/print/:server/:riotId/stats
      */
     @Wrapper()
-    async getStats(server: string, summonerName: string): Promise<StatsDto | null> {
-        const key = `${server}:${summonerName}:stats`
+    async getStats(server: string, riotId: RiotIdDto): Promise<StatsDto | null> {
+        const key = `${server}:${riotId.name}#${riotId.tag}:stats`
         const data: StatsDto | null = await this.REDIS.get(key)
 
         if (!data) {
@@ -80,7 +80,7 @@ export class DatabaseService {
             return null
         }
 
-        this.LOGGER.log(`REDIS: Found data for ${server}:${summonerName} -> ${data.gamesUsed.length} games!`)
+        this.LOGGER.log(`REDIS: Found data for ${server}:${riotId.name}#${riotId.tag} -> ${data.gamesUsed.length} games!`)
         return data
     }
 
@@ -130,8 +130,8 @@ export class DatabaseService {
      * ## TEST delete last game played
      */
     @Wrapper(false)
-    async deleteLast(server: string, summonerName: string): Promise<boolean> {
-        const key = `${server}:${summonerName}:stats`
+    async deleteLast(server: string, riotId: RiotIdDto): Promise<boolean> {
+        const key = `${server}:${riotId.name}#${riotId.tag}:stats`
         const data: StatsDto | null = await this.REDIS.get(key)
 
         if (data && data.gamesUsed.length > 2) {

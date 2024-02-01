@@ -25,18 +25,22 @@ export class MathService {
             {
                 games: number
                 wins: number
+                riotIdGameName: string
+                riotIdTagLine: string
             }
         > = {}
 
         // Iterate all games
         for (const game of games) {
             for (const participant of game.participants) {
-                const record = indexByName[participant.summonerName]
+                const record = indexByName[participant.riotIdGameName]
 
                 if (!record) {
-                    indexByName[participant.summonerName] = {
+                    indexByName[participant.riotIdGameName] = {
                         wins: game.win ? 1 : 0,
                         games: 1,
+                        riotIdGameName: participant.riotIdGameName,
+                        riotIdTagLine: participant.riotIdTagLine,
                     }
                 } else {
                     record.wins += game.win ? 1 : 0
@@ -46,13 +50,15 @@ export class MathService {
         }
 
         // Remove your own name from the list
-        delete indexByName[games[0]!.participants[games[0]!.participantNumber]!.summonerName]
+        delete indexByName[games[0]!.participants[games[0]!.participantNumber]!.riotIdGameName]
 
         return Object.entries(indexByName)
             .map(([key, data]) => ({
                 name: key,
                 games: data.games,
                 wins: data.wins,
+                riotIdGameName: data.riotIdGameName,
+                riotIdTagLine: data.riotIdTagLine,
             }))
             .sort((a, b) => b.games - a.games)
     }

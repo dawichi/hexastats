@@ -17,11 +17,14 @@
     <div class="flex items-center justify-center gap-4">
         <div class="flex flex-col items-center justify-center overflow-hidden">
             <ProfileImg image={player.image} level={player.level} />
-            <h2 class="mt-2 text-xl">{player.alias && player.alias}</h2>
+            <h2 class="mt-1 text-xl">{player.riotIdName}</h2>
+            <h2 class="text-xl opacity-30">#{player.riotIdTag}</h2>
         </div>
         <Rank title="Solo/Duo" rankdata={player.rank.solo} />
         <Rank title="Flex" rankdata={player.rank.flex} />
-        <Rank title="Arena" rankdata={player.rank.arena}/>
+        {#if player.rank.arena.win + player.rank.arena.lose > 0}
+            <Rank title="Arena" rankdata={player.rank.arena} />
+        {/if}
     </div>
 {:else}
     <!-- Display a placeholder until data is ready -->

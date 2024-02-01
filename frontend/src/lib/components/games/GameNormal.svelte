@@ -29,7 +29,7 @@
 
     <!-- KDA, CS, VISION -->
     <article>
-    <p><strong class="sm:hidden">{game.kills} / {game.deaths} / {game.assists}</strong></p>
+        <p><strong class="sm:hidden">{game.kills} / {game.deaths} / {game.assists}</strong></p>
         <p><strong>{kda(game.kills, game.deaths, game.assists)}</strong> KDA</p>
         <p><strong>{game.cs}</strong> CS</p>
         <p><strong>{((game.cs * 60) / game.gameDuration).toFixed(1)}</strong> cs/min</p>
@@ -37,26 +37,35 @@
     </article>
 
     <!-- ITEMS -->
-        <article class="hidden sm:flex flex-col">
-            <p>{game.kills} / {game.deaths} / {game.assists}</p>
-                <ItemsGrid items={game.items} ward={game.ward} />
-        </article>
+    <article class="hidden sm:flex flex-col">
+        <p>{game.kills} / {game.deaths} / {game.assists}</p>
+        <ItemsGrid items={game.items} ward={game.ward} />
+    </article>
 
     <!-- LIST OF SUMMONERS YOU PLAYED WITH -->
     <div class="columns-2 p-1">
         {#each game.participants as participant, idx}
             <span class="flex items-center">
-                <a class="hover:scale-125" href={`/summoners/${rawServer(server)}/${participant.summonerName}/1`}>
-                    <img class="{styles.iconSize.medium} rounded" src={riotService.champImage(participant.championName)} alt="champion" />
-                </a>
-                <span class="hidden md:block md:truncate md:ml-1 md:h-5 md:w-20 overflow-hidden md:text-ellipsis whitespace-nowrap text-left text-sm">
-                    <a
-                        href={`/summoners/${rawServer(server)}/${participant.summonerName}/1`}
-                        class="hover:underline {game.participantNumber === idx ? 'font-bold' : ''}"
-                    >
-                        {participant.summonerName}
+                {#if participant.riotIdTagLine}
+                    <a href={`/summoners/${rawServer(server)}/${participant.riotIdGameName}-${participant.riotIdTagLine}/1`}>
+                        <img class="{styles.iconSize.medium} rounded" src={riotService.champImage(participant.championName)} alt="champion" />
                     </a>
-                </span>
+                    <span class="hidden md:block md:truncate md:ml-1 md:h-5 md:w-20 overflow-hidden md:text-ellipsis whitespace-nowrap text-left text-sm">
+                        <a
+                            href={`/summoners/${rawServer(server)}/${participant.riotIdGameName}-${participant.riotIdTagLine}/1`}
+                            class="hover:underline {game.participantNumber === idx ? 'font-bold' : ''}"
+                        >
+                            {participant.riotIdGameName}
+                        </a>
+                    </span>
+                {:else}
+                    <img class="{styles.iconSize.medium} rounded" src={riotService.champImage(participant.championName)} alt="champion" />
+                    <span class="hidden md:block md:truncate md:ml-1 md:h-5 md:w-20 overflow-hidden md:text-ellipsis whitespace-nowrap text-left text-sm">
+                        <p class={game.participantNumber === idx ? 'font-bold' : ''}>
+                            {participant.riotIdGameName}
+                        </p>
+                    </span>
+                {/if}
             </span>
         {/each}
     </div>

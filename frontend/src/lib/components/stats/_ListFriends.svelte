@@ -10,7 +10,7 @@
 
     export let friends: Array<FriendDto>
 
-    const [x, y, server, summoner, page_num] = $page.url.pathname.split("/")
+    const [x, y, server, summoner, page_num] = $page.url.pathname.split('/')
 
     const maxGames = () => Math.max(...friends.map(friend => friend.games))
 </script>
@@ -25,22 +25,22 @@
                 <h4>Record</h4>
                 <h4 class="col-span-2">Wins / Losses</h4>
             </section>
-    
+
             {#each friends.filter(friend => friend.games > 2).sort((a, b) => b.games - a.games) as friend}
                 <section class="grid grid-cols-5 items-center gap-2 text-sm md:text-base">
                     <div class="col-span-2">
                         <a
-                            href={`/summoners/${rawServer(server)}/${friend.name}`}
-                            class="col-span-2 overflow-hidden text-ellipsis whitespace-nowrap hover:underline "
+                            href={`/summoners/${rawServer(server)}/${friend.riotIdGameName}-${friend.riotIdTagLine}/1`}
+                            class="col-span-2 overflow-hidden text-ellipsis whitespace-nowrap hover:underline"
                         >
-                            {friend.name}
+                            {friend.riotIdGameName}
                         </a>
                     </div>
-    
+
                     <span>
                         {friend.wins} / {friend.games}
                     </span>
-    
+
                     <div class="col-span-2 h-2 overflow-hidden rounded bg-zinc-600">
                         <div class="flex" style="width: {(friend.games / maxGames()) * 100}%">
                             <!-- GREEN BAR: represents number of wins -->
@@ -57,7 +57,7 @@
             <span class="text-2xl">
                 <i class="bi bi-emoji-frown" />
             </span>
-    
+
             <p>There are no games with friends loaded.</p>
         </div>
     {/if}
