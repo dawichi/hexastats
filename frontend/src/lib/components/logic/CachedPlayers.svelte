@@ -75,7 +75,7 @@
                             .includes(textInput.toLowerCase()))
                 .slice(0, 3) as player}
                 <a
-                    on:click={() => (searching = true)}
+                    on:click={() => ((searching = true), (textInput = ''), window.scrollTo({ top: 0, behavior: 'smooth' }))}
                     href={`/summoners/${rawServer(player.server)}/${player.riotIdName}-${player.riotIdTag}/1`}
                     class="hover:underline"
                 >
