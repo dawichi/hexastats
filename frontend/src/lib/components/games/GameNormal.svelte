@@ -17,6 +17,10 @@
     export let server: string
 
     const riotService = RiotService.getInstance()
+    
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
 </script>
 
 <div class="animate__animated animate__fadeIn relative col-span-2 flex items-center justify-between px-2 text-center">
@@ -54,6 +58,7 @@
                         <a
                             href={`/summoners/${rawServer(server)}/${participant.riotIdGameName}-${participant.riotIdTagLine}/1`}
                             class="hover:underline {game.participantNumber === idx ? 'font-bold' : ''}"
+                            on:click={scrollToTop}
                         >
                             {participant.riotIdGameName}
                         </a>
