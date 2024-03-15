@@ -19,6 +19,10 @@
     const riotService = RiotService.getInstance()
 
     const groups = [game.participants.slice(0, 2), game.participants.slice(2, 4), game.participants.slice(4, 6), game.participants.slice(6, 8)]
+
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
 </script>
 
 <div class="animate__animated animate__fadeIn relative col-span-2 flex items-center justify-between px-2 text-center">
@@ -66,6 +70,7 @@
                                     class="hover:underline {participant.riotIdGameName === game.participants[game.participantNumber].riotIdGameName
                                         ? 'font-bold'
                                         : ''}"
+                                        on:click={scrollToTop}
                                 >
                                     {participant.riotIdGameName}
                                 </a>

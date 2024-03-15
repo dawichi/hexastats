@@ -13,6 +13,10 @@
     const [x, y, server, summoner, page_num] = $page.url.pathname.split('/')
 
     const maxGames = () => Math.max(...friends.map(friend => friend.games))
+
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
 </script>
 
 <div>
@@ -33,6 +37,7 @@
                             <a
                                 href={`/summoners/${rawServer(server)}/${friend.riotIdGameName}-${friend.riotIdTagLine}/1`}
                                 class="col-span-2 overflow-hidden text-ellipsis whitespace-nowrap hover:underline"
+                                on:click={scrollToTop}
                             >
                                 {friend.riotIdGameName}
                             </a>
