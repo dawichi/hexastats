@@ -244,8 +244,12 @@
 
                                     <!-- SPELLS, RUNES -->
                                     <div class="grid w-12 grid-cols-2">
-                                        {#each [riotService.spellUrl(participant.spells[0]), participant.perks.primary, riotService.spellUrl(participant.spells[1]), participant.perks.secondary] as src}
-                                            <img class="{styles.iconSize.medium} rounded" {src} alt="spell 2" />
+                                        {#each [riotService.spellUrl(participant.spells[0]), participant.perks.primary, riotService.spellUrl(participant.spells[1]), participant.perks.secondary] as src, i}
+                                            {#if i === 3 && !src}
+                                                <div class="{styles.iconSize.medium} rounded bg-gradient-to-br from-zinc-500 to-zinc-800 ml-0.5" />
+                                            {:else}
+                                                <img class="{styles.iconSize.medium} rounded" {src} alt="spell 2" />
+                                            {/if}
                                         {/each}
                                     </div>
                                 </div>
