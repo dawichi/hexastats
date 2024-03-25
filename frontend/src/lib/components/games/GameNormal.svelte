@@ -17,7 +17,7 @@
     export let server: string
 
     const riotService = RiotService.getInstance()
-    
+
     function scrollToTop() {
         window.scrollTo({ top: 0, behavior: 'smooth' })
     }
@@ -26,8 +26,12 @@
 <div class="animate__animated animate__fadeIn relative col-span-2 flex items-center justify-between px-2 text-center">
     <!-- SPELLS, RUNES -->
     <article class="hidden md:grid grid-cols-2 gap-x-1 gap-y-2">
-        {#each [riotService.spellUrl(game.spells[0]), game.perks.primary, riotService.spellUrl(game.spells[1]), game.perks.secondary] as src}
-            <img class="{styles.iconSize.large} rounded" {src} alt="spell 2" />
+        {#each [riotService.spellUrl(game.spells[0]), game.perks.primary, riotService.spellUrl(game.spells[1]), game.perks.secondary] as src, i}
+            {#if i === 3 && !src}
+                <div class="{styles.iconSize.large} rounded bg-gradient-to-br from-zinc-500 to-zinc-800" />
+            {:else}
+                <img class="{styles.iconSize.large} rounded" {src} alt="spell 2" />
+            {/if}
         {/each}
     </article>
 
