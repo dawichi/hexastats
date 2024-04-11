@@ -26,7 +26,7 @@ export class SummonersService {
         const { solo, flex, arena } = await this.riotService.getRankData(data.id, server)
 
         return {
-            alias: data.name,
+            alias: data.riotIdName,
             riotIdName: data.riotIdName,
             riotIdTag: data.riotIdTag,
             server,
@@ -47,7 +47,7 @@ export class SummonersService {
         const data = await this.riotService.getBasicInfo(server, riotId)
 
         return {
-            alias: data.name,
+            alias: data.riotIdName,
             riotIdName: data.riotIdName,
             riotIdTag: data.riotIdTag,
             server,
