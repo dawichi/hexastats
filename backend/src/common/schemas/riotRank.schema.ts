@@ -3,7 +3,7 @@ import { z } from 'zod'
 const BaseProps = z.object({
     queueType: z.enum(['RANKED_SOLO_5x5', 'RANKED_FLEX_SR', 'CHERRY']),
     summonerId: z.string(),
-    summonerName: z.string(),
+    summonerName: z.string().optional(),
     leaguePoints: z.number(),
     wins: z.number(),
     losses: z.number(),

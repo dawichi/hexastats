@@ -4,7 +4,7 @@ export const RiotSummonerSchema = z.object({
     id: z.string(),
     accountId: z.string(),
     puuid: z.string(),
-    name: z.string(),
+    name: z.string().optional(),
     profileIconId: z.number(),
     revisionDate: z.number(),
     summonerLevel: z.number(),
