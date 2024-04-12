@@ -8,7 +8,7 @@ describe('RiotService', () => {
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            imports: [HttpModule, ConfigModule.forRoot()],
+            imports: [HttpModule, ConfigModule],
             providers: [RiotService],
         }).compile()
 
