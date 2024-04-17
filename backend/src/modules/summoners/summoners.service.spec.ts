@@ -88,6 +88,7 @@ describe('SummonersService', () => {
                 winrate: 75,
             },
         })
+        ;(riotService.getMasteries as jest.Mock).mockResolvedValue([])
     })
 
     it('should be defined', () => {
@@ -153,6 +154,17 @@ describe('SummonersService', () => {
             const result = await service.getLevelImage('euw', riotId)
 
             expect(result).toEqual(expectedLevelImage)
+        })
+    })
+
+    describe('getMasteries', () => {
+        it('should format masteries with expected structure', async () => {
+            const riotId: RiotIdDto = { name: 'example', tag: '1234' }
+            const expectedMasteries: MasteryDto[] = []
+
+            const result = await service.getMasteries('euw', riotId, 10)
+
+            expect(result).toEqual(expectedMasteries)
         })
     })
 })
