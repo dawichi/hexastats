@@ -97,7 +97,7 @@ describe('SummonersService', () => {
     describe('getSummoner', () => {
         it('should format rank data with expected structure', async () => {
             const riotId: RiotIdDto = { name: 'example', tag: '1234' }
-            const expectedResult: RankDataDto = {
+            const expectedSummoner: RankDataDto = {
                 alias: 'SummonerName',
                 riotIdName: 'SummonerName',
                 riotIdTag: '1234',
@@ -134,7 +134,25 @@ describe('SummonersService', () => {
 
             const result = await service.getSummoner('euw', riotId)
 
-            expect(result).toEqual(expectedResult)
+            expect(result).toEqual(expectedSummoner)
+        })
+    })
+
+    describe('getLevelImage', () => {
+        it('should format profile info with expected structure', async () => {
+            const riotId: RiotIdDto = { name: 'example', tag: '1234' }
+            const expectedLevelImage: PlayerDto = {
+                alias: 'SummonerName',
+                riotIdName: 'SummonerName',
+                riotIdTag: '1234',
+                server: 'euw',
+                image: 'https://ddragon.leagueoflegends.com/cdn/11.6.1/img/profileicon/123.png',
+                level: 30,
+            }
+
+            const result = await service.getLevelImage('euw', riotId)
+
+            expect(result).toEqual(expectedLevelImage)
         })
     })
 })
