@@ -89,6 +89,8 @@ describe('SummonersService', () => {
             },
         })
         ;(riotService.getMasteries as jest.Mock).mockResolvedValue([])
+        ;(riotService.getGameIds as jest.Mock).mockResolvedValue([])
+        ;(riotService.getGamesDetail as jest.Mock).mockResolvedValue([])
     })
 
     it('should be defined', () => {
@@ -165,6 +167,18 @@ describe('SummonersService', () => {
             const result = await service.getMasteries('euw', riotId, 10)
 
             expect(result).toEqual(expectedMasteries)
+        })
+    })
+
+    describe('getGames', () => {
+        it('should format game data with expected structure', async () => {
+            const riotId: RiotIdDto = { name: 'example', tag: '1234' }
+            const queueType: QueueType = 'all' //or 'ranked' or 'normal'
+            const expectedGames: Array<GameNormalDto | GameArenaDto> = []
+
+            const result = await service.getGames('euw', riotId, 10, 0, queueType)
+
+            expect(result).toEqual(expectedGames)
         })
     })
 })
