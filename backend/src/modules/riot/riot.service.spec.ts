@@ -57,8 +57,35 @@ describe('RiotService', () => {
             await expect(service.getBasicInfo(server, riotId)).rejects.toThrow(InternalServerErrorException)
         })
 
-        afterEach(() => {
-            jest.restoreAllMocks()
+        describe('getRankData', () => {
+            it('should return rank data when provided valid summoner_id and server', async () => {
+                const summoner_id = 'test_summoner_id'
+                const server = 'test_server'
+                const expectedRankData = {
+                    solo: { rank: 'Gold II', image: 'gold.png', lp: 50, win: 100, lose: 80, winrate: 55 },
+                    flex: { rank: 'Silver III', image: 'silver.png', lp: 30, win: 70, lose: 60, winrate: 53 },
+                    arena: { rank: 'Unranked', image: 'unranked.png', lp: 0, win: 0, lose: 0, winrate: 0 },
+                }
+
+                jest.spyOn(service, 'getRankData').mockResolvedValueOnce(expectedRankData)
+
+                const result = await service.getRankData(summoner_id, server)
+
+                expect(result).toEqual(expectedRankData)
+            })
+
+            it('should throw InternalServerErrorException when unable to parse response for rank data', async () => {
+                const summoner_id = 'test_summoner_id'
+                const server = 'test_server'
+
+                jest.spyOn(service, 'getRankData').mockRejectedValueOnce(new InternalServerErrorException())
+
+                await expect(service.getRankData(summoner_id, server)).rejects.toThrow(InternalServerErrorException)
+            })
+
+            afterEach(() => {
+                jest.restoreAllMocks()
+            })
         })
     })
 })
