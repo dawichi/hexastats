@@ -131,9 +131,9 @@ describe('RiotService', () => {
 
             await expect(service.isLastGame(server, puuid, matchId)).rejects.toThrow(NotFoundException)
         })
+    })
 
-        afterEach(() => {
-            jest.restoreAllMocks()
-        })
+    afterEach(() => {
+        jest.restoreAllMocks()
     })
 })
