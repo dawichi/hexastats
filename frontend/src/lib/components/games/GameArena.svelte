@@ -18,7 +18,20 @@
 
     const riotService = RiotService.getInstance()
 
-    const groups = [game.participants.slice(0, 2), game.participants.slice(2, 4), game.participants.slice(4, 6), game.participants.slice(6, 8)]
+    let groups = [game.participants.slice(0, 2), game.participants.slice(2, 4), game.participants.slice(4, 6), game.participants.slice(6, 8)]
+
+    if (game.participants.length > 8) {
+        groups = [
+            game.participants.slice(0, 2),
+            game.participants.slice(2, 4),
+            game.participants.slice(4, 6),
+            game.participants.slice(6, 8),
+            game.participants.slice(8, 10),
+            game.participants.slice(10, 12),
+            game.participants.slice(12, 14),
+            game.participants.slice(14, 16),
+        ]
+    }
 
     function scrollToTop() {
         window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -53,24 +66,26 @@
     </article>
 
     <!-- LIST OF SUMMONERS YOU PLAYED WITH -->
-    <div class="columns-2 px-1">
+    <div class="{groups.length > 4 ? 'columns-4' : 'columns-2'} px-1">
         {#each groups as group, idx1}
             <div class="py-2">
                 {#each group as participant, idx2}
                     <div class="flex items-center">
                         {#if participant.riotIdTagLine}
-                            <a href={`/summoners/${rawServer(server)}/${participant.riotIdGameName}/${participant.riotIdTagLine}/1`}>
+                            <a href={`/summoners/${rawServer(server)}/${participant.riotIdGameName}-${participant.riotIdTagLine}/1`}>
                                 <img class="{styles.iconSize.medium} rounded" src={riotService.champImage(participant.championName)} alt="champion" />
                             </a>
                             <span
-                                class="hidden md:block md:truncate md:ml-1 md:h-5 md:w-20 overflow-hidden md:text-ellipsis whitespace-nowrap text-left text-sm"
+                                class="{group.length > 4
+                                    ? 'md:block md:truncate md:ml-1 md:h-5 md:w-14 lg:w-10 md:text-ellipsis'
+                                    : 'lg:block lg:truncate lg:ml-1 lg:h-5 lg:w-16 lg:text-ellipsis'} hidden overflow-hidden whitespace-nowrap text-left text-sm"
                             >
                                 <a
                                     href={`/summoners/${rawServer(server)}/${participant.riotIdGameName}-${participant.riotIdTagLine}/1`}
                                     class="hover:underline {participant.riotIdGameName === game.participants[game.participantNumber].riotIdGameName
                                         ? 'font-bold'
                                         : ''}"
-                                        on:click={scrollToTop}
+                                    on:click={scrollToTop}
                                 >
                                     {participant.riotIdGameName}
                                 </a>
