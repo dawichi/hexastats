@@ -4,12 +4,12 @@ import { RiotService } from '../../modules/riot/riot.service'
 import { DatabaseService } from '../database/database.service'
 import { MathService } from '../math/math.service'
 import { QueueType } from '../../common/schemas'
-import { RiotIdDto, RankDataDto, PlayerDto, MasteryDto, StatsDto, GameNormalDto, GameArenaDto, GameDetailDto } from '../../common/types'
+import { RiotIdDto, RankDataDto, PlayerDto, MasteryDto, GameNormalDto, GameArenaDto } from '../../common/types'
 
 describe('SummonersService', () => {
     let service: SummonersService
     let riotService: RiotService
-    let databaseService: DatabaseService
+    // let databaseService: DatabaseService
     let mathService: MathService
 
     beforeEach(async () => {
@@ -51,7 +51,7 @@ describe('SummonersService', () => {
 
         service = module.get<SummonersService>(SummonersService)
         riotService = module.get<RiotService>(RiotService)
-        databaseService = module.get<DatabaseService>(DatabaseService)
+        // databaseService = module.get<DatabaseService>(DatabaseService)
         mathService = module.get<MathService>(MathService)
 
         //Mocked Functions
@@ -91,6 +91,14 @@ describe('SummonersService', () => {
         ;(riotService.getMasteries as jest.Mock).mockResolvedValue([])
         ;(riotService.getGameIds as jest.Mock).mockResolvedValue([])
         ;(riotService.getGamesDetail as jest.Mock).mockResolvedValue([])
+        ;(mathService.getFriends as jest.Mock).mockResolvedValue([])
+        ;(mathService.getRecords as jest.Mock).mockResolvedValue([])
+        ;(mathService.getStatsByChamp as jest.Mock).mockResolvedValue([])
+        ;(mathService.getStatsByPosition as jest.Mock).mockResolvedValue([])
+        ;(mathService.mergeStats as jest.Mock).mockResolvedValue([])
+        // ;(databaseService.getStats as jest.Mock).mockResolvedValue([])
+        // ;(databaseService.set as jest.Mock).mockResolvedValue([])
+        ;(riotService.isLastGame as jest.Mock).mockResolvedValue([])
     })
 
     it('should be defined', () => {
