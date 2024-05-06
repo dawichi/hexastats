@@ -98,7 +98,7 @@
             <!-- RIGHT COL - LIST PARTICIPANTS -->
             {#if game.gameMode === 'CHERRY'}
                 <div class="animate__animated animate__fadeIn relative col-span-2 xl:grid grid-cols-2 px-2 text-center">
-                    {#each [0, 2, 4, 6] as teamIndex}
+                    {#each [0, 2, 4, 6, 8, 10, 12, 14] as teamIndex}
                         <section class="grid md:grid-cols-2">
                             {#each game.participants.slice(teamIndex, teamIndex + 2) as participant}
                                 <div
