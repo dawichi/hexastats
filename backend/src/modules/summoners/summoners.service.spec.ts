@@ -4,7 +4,7 @@ import { RiotService } from '../../modules/riot/riot.service'
 import { DatabaseService } from '../database/database.service'
 import { MathService } from '../math/math.service'
 import { QueueType } from '../../common/schemas'
-import { RiotIdDto, RankDataDto, PlayerDto, MasteryDto, GameNormalDto, GameArenaDto } from '../../common/types'
+import { RiotIdDto, RankDataDto, PlayerDto, MasteryDto, GameNormalDto, GameArenaDto, GameDetailDto } from '../../common/types'
 
 describe('SummonersService', () => {
     let service: SummonersService
@@ -187,6 +187,49 @@ describe('SummonersService', () => {
             const result = await service.getGames('euw', riotId, 10, 0, queueType)
 
             expect(result).toEqual(expectedGames)
+        })
+    })
+
+    describe('getGameDetail', () => {
+        it('should format game detail with expected structure', async () => {
+            const server = 'euw'
+            const riotId: RiotIdDto = { name: 'example', tag: '1234' }
+            const matchId = '123456789'
+            const mockGameDetail: GameDetailDto = {
+                matchId: 'test_matchId',
+                gameCreation: Date.now(),
+                gameDuration: 15000,
+                gameMode: 'ARAM',
+                participantNumber: 4,
+                teams: [],
+                participants: [],
+            }
+
+            ;(riotService.getBasicInfo as jest.Mock).mockResolvedValue({
+                puuid: 'puuid_example',
+            })
+            ;(riotService.getGameDetail as jest.Mock).mockResolvedValue(mockGameDetail)
+
+            const result = await service.getGameDetail(server, riotId, matchId)
+
+            expect(result).toEqual(mockGameDetail)
+        })
+
+        it('should call RiotService with correct parameters', async () => {
+            const server = 'euw'
+            const riotId: RiotIdDto = { name: 'example', tag: '1234' }
+            const matchId = '123456789'
+            const mockPuuid = 'puuid_example'
+
+            ;(riotService.getBasicInfo as jest.Mock).mockResolvedValue({
+                puuid: mockPuuid,
+            })
+            ;(riotService.getGameDetail as jest.Mock).mockResolvedValue({})
+
+            await service.getGameDetail(server, riotId, matchId)
+
+            expect(riotService.getBasicInfo).toHaveBeenCalledWith(server, riotId)
+            expect(riotService.getGameDetail).toHaveBeenCalledWith(mockPuuid, server, matchId)
         })
     })
 })
