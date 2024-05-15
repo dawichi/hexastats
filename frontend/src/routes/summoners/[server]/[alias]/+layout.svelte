@@ -84,25 +84,24 @@
                 </div>
 
                 <!-- TAB 1 -->
-                {#if tabSelected === 'games'}
-                    {#if $navigating}
-                        {#if $navigating?.to?.url.pathname.includes('summoners')}
-                            <Spinner />
-                            <h1 class="text-center text-2xl">Getting games...<br /> {decodeURI($navigating?.to?.url.pathname.split('/')[3])}</h1>
-                        {/if}
-                    {:else}
+                {#if $navigating}
+                    {#if $navigating?.to?.url.pathname.includes('summoners')}
+                        <Spinner />
+                        <h1 class="text-center text-2xl">Getting games...<br /> {decodeURI($navigating?.to?.url.pathname.split('/')[3])}</h1>
+                    {/if}
+                {:else}
+                    <!-- TAB 1 -->
+                    {#if tabSelected === 'games'}
                         <slot />
                     {/if}
-                {/if}
-
-                <!-- TAB 2 -->
-                {#if tabSelected === 'champions'}
-                    <ChampStats stats={data.stats} />
-                {/if}
-
-                <!-- TAB 3 -->
-                {#if tabSelected === 'records'}
-                    <Records player={data.player} stats={data.stats} />
+                    <!-- TAB 2 -->
+                    {#if tabSelected === 'champions'}
+                        <ChampStats stats={data.stats} />
+                    {/if}
+                    <!-- TAB 3 -->
+                    {#if tabSelected === 'records'}
+                        <Records player={data.player} stats={data.stats} />
+                    {/if}
                 {/if}
             </section>
         </div>

@@ -4,13 +4,11 @@ import { RiotService } from '../../modules/riot/riot.service'
 import { DatabaseService } from '../database/database.service'
 import { MathService } from '../math/math.service'
 import { QueueType } from '../../common/schemas'
-import { RiotIdDto, RankDataDto, PlayerDto, MasteryDto, GameNormalDto, GameArenaDto } from '../../common/types'
+import { RiotIdDto, RankDataDto, PlayerDto, MasteryDto, GameNormalDto, GameArenaDto, GameDetailDto } from '../../common/types'
 
 describe('SummonersService', () => {
     let service: SummonersService
     let riotService: RiotService
-    // let databaseService: DatabaseService
-    let mathService: MathService
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -25,36 +23,22 @@ describe('SummonersService', () => {
                         getGameIds: jest.fn(),
                         getGamesDetail: jest.fn(),
                         getGameDetail: jest.fn(),
-                        isLastGame: jest.fn(),
                         version: '11.6.1',
                     },
                 },
                 {
                     provide: DatabaseService,
-                    useValue: {
-                        getStats: jest.fn(),
-                        set: jest.fn(),
-                    },
+                    useValue: {},
                 },
                 {
                     provide: MathService,
-                    useValue: {
-                        getFriends: jest.fn(),
-                        getStatsByChamp: jest.fn(),
-                        getStatsByPosition: jest.fn(),
-                        getRecords: jest.fn(),
-                        mergeStats: jest.fn(),
-                    },
+                    useValue: {},
                 },
             ],
         }).compile()
 
         service = module.get<SummonersService>(SummonersService)
         riotService = module.get<RiotService>(RiotService)
-        // databaseService = module.get<DatabaseService>(DatabaseService)
-        mathService = module.get<MathService>(MathService)
-
-        //Mocked Functions
         ;(riotService.getBasicInfo as jest.Mock).mockResolvedValue({
             id: 'summonerId',
             riotIdName: 'SummonerName',
@@ -91,14 +75,6 @@ describe('SummonersService', () => {
         ;(riotService.getMasteries as jest.Mock).mockResolvedValue([])
         ;(riotService.getGameIds as jest.Mock).mockResolvedValue([])
         ;(riotService.getGamesDetail as jest.Mock).mockResolvedValue([])
-        ;(mathService.getFriends as jest.Mock).mockResolvedValue([])
-        ;(mathService.getRecords as jest.Mock).mockResolvedValue([])
-        ;(mathService.getStatsByChamp as jest.Mock).mockResolvedValue([])
-        ;(mathService.getStatsByPosition as jest.Mock).mockResolvedValue([])
-        ;(mathService.mergeStats as jest.Mock).mockResolvedValue([])
-        // ;(databaseService.getStats as jest.Mock).mockResolvedValue([])
-        // ;(databaseService.set as jest.Mock).mockResolvedValue([])
-        ;(riotService.isLastGame as jest.Mock).mockResolvedValue([])
     })
 
     it('should be defined', () => {
@@ -187,6 +163,49 @@ describe('SummonersService', () => {
             const result = await service.getGames('euw', riotId, 10, 0, queueType)
 
             expect(result).toEqual(expectedGames)
+        })
+    })
+
+    describe('getGameDetail', () => {
+        it('should format game detail with expected structure', async () => {
+            const server = 'euw'
+            const riotId: RiotIdDto = { name: 'example', tag: '1234' }
+            const matchId = '123456789'
+            const mockGameDetail: GameDetailDto = {
+                matchId: 'test_matchId',
+                gameCreation: Date.now(),
+                gameDuration: 15000,
+                gameMode: 'ARAM',
+                participantNumber: 4,
+                teams: [],
+                participants: [],
+            }
+
+            ;(riotService.getBasicInfo as jest.Mock).mockResolvedValue({
+                puuid: 'puuid_example',
+            })
+            ;(riotService.getGameDetail as jest.Mock).mockResolvedValue(mockGameDetail)
+
+            const result = await service.getGameDetail(server, riotId, matchId)
+
+            expect(result).toEqual(mockGameDetail)
+        })
+
+        it('should call RiotService with correct parameters', async () => {
+            const server = 'euw'
+            const riotId: RiotIdDto = { name: 'example', tag: '1234' }
+            const matchId = '123456789'
+            const mockPuuid = 'puuid_example'
+
+            ;(riotService.getBasicInfo as jest.Mock).mockResolvedValue({
+                puuid: mockPuuid,
+            })
+            ;(riotService.getGameDetail as jest.Mock).mockResolvedValue({})
+
+            await service.getGameDetail(server, riotId, matchId)
+
+            expect(riotService.getBasicInfo).toHaveBeenCalledWith(server, riotId)
+            expect(riotService.getGameDetail).toHaveBeenCalledWith(mockPuuid, server, matchId)
         })
     })
 })
