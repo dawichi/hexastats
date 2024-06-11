@@ -21,15 +21,10 @@
                 <div class="relative flex h-24 w-16 justify-center">
                     <div class="t-0 r-0 absolute">
                         <div class="relative h-24 w-12 rounded">
-                            {#if [5, 6, 7].includes(mastery.level)}
+                            <!-- {#if [5, 6, 7].includes(mastery.level)}
                                 <Image src={'/images/mastery/mastery_' + mastery.level + '.png'} />
-                            {/if}
-
-                            {#if mastery.chestGranted}
-                                <span class="absolute -top-1 sm:-right-3 z-20 h-6 w-6 rounded-full">
-                                    <Image src="/images/mastery/chest.png" />
-                                </span>
-                            {/if}
+                            {/if} -->
+    <!-- https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-shared-components/global/default/mastery-{mastery.}.png -->
                         </div>
                     </div>
 

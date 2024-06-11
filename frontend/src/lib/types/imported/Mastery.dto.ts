@@ -3,6 +3,5 @@ export interface Mastery {
     image: string
     level: number
     points: number
-    chestGranted: boolean
 }
 
