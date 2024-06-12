@@ -7,9 +7,9 @@ export const RiotMasterySchema = z.object({
     lastPlayTime: z.number(),
     championPointsSinceLastLevel: z.number(),
     championPointsUntilNextLevel: z.number(),
-    chestGranted: z.boolean(),
+    chestGranted: z.boolean().optional(),
     tokensEarned: z.number(),
-    summonerId: z.string(),
+    summonerId: z.string().optional(),
 })
 
 export type RiotMasteryType = z.infer<typeof RiotMasterySchema>

@@ -42,8 +42,8 @@ export class RiotService {
         puuid: (server: string, name: string, tag: string) =>
             `https://${serverRegion(server)}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${name}/${tag}`,
         summoner: (server: string, puuid: string) => `https://${server}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}`,
-        masteries: (server: string, summoner_id: string) =>
-            `https://${server}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/${summoner_id}`,
+        masteries: (server: string, puuid: string) =>
+            `https://${server}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}`,
         rank: (server: string, summoner_id: string) =>
             `https://${server}.api.riotgames.com/lol/league/v4/entries/by-summoner/${summoner_id}`,
     }
@@ -201,7 +201,6 @@ export class RiotService {
             image: `https://ddragon.leagueoflegends.com/cdn/${this.version}/img/champion/${this.champions[mastery.championId]}.png`,
             level: mastery.championLevel,
             points: mastery.championPoints,
-            chestGranted: mastery.chestGranted,
         }))
     }
 
