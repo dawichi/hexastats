@@ -79,7 +79,7 @@ export class SummonersService {
         const games_list = await this.riotService.getGameIds(puuid, server, limit, offset, queueType)
 
         // Get the game data
-        return this.riotService.getGamesDetail(puuid, server, games_list)
+        return (await this.riotService.getGamesDetail(puuid, server, games_list)).filter(game => game.gameMode !== 'STRAWBERRY') // SWARM
     }
 
     /**
