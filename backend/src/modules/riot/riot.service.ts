@@ -524,14 +524,19 @@ export class RiotService {
 
         // Run all the promises in parallel
         const games = await Promise.all(promises)
-        const result = z.array(RiotGameSchema).safeParse(games)
+
+        // Filter SWARM games
+        console.log(games.map(g => g.info.gameMode))
+        console.log(games.map(g => g.info.queueId))
+        const filteredGames = games.filter(game => game.info.queueId !== 1810 && game.info.queueId !== 1820)
+        const result = z.array(RiotGameSchema).safeParse(filteredGames)
 
         if (!result.success) {
             result.error.errors.forEach(error => this.LOGGER.error(`Error parsing game data: ${JSON.stringify(error)}`))
             throw new InternalServerErrorException('Problem with Riot Games game endpoint')
         }
 
-        return games.map(game => this.formatGame(game, puuid))
+        return result.data.map(game => this.formatGame(game, puuid))
     }
 
     /**

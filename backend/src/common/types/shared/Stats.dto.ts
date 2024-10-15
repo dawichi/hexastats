@@ -97,7 +97,7 @@ export class ChampStats {
 export class PositionStats {
     @ApiProperty({
         description: 'Name of the position',
-        example: "'TOP' | 'JUNGLE' | 'MIDDLE' | 'BOTTOM' | 'UTILITY'",
+        example: "'TOP' | 'JUNGLE' | 'MIDDLE' | 'BOTTOM' | 'UTILITY'| 'UNSELECTED'",
     })
     position: string
 

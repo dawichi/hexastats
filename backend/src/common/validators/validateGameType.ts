@@ -28,6 +28,10 @@ export const validateGameType = (queueId: number): string => {
         1300: 'Nexus Blitz',
         1400: 'Spellbook',
         1700: 'Arena',
+        1810: 'STRAWBERRY', // SWARM
+        1820: 'STRAWBERRY', // SWARM
+        1830: 'STRAWBERRY', // SWARM
+        1840: 'STRAWBERRY', // SWARM
         1900: 'Pick URF',
         2000: 'Tutorial 1',
         2010: 'Tutorial 2',
