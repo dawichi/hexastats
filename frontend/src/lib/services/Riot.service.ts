@@ -90,13 +90,14 @@ export class RiotService {
      */
     teamPositionIcon(position: string): string {
         const positions: Record<string, string> = {
-            TOP: 'position_top.png',
-            MIDDLE: 'position_mid.png',
-            JUNGLE: 'position_jungle.png',
-            BOTTOM: 'position_bottom.png',
-            UTILITY: 'position_support.png',
+            TOP: 'icon-position-top.png',
+            JUNGLE: 'icon-position-jungle.png',
+            MIDDLE: 'icon-position-middle.png',
+            BOTTOM: 'icon-position-bottom.png',
+            UTILITY: 'icon-position-utility.png',
+            UNSELECTED: 'icon-position-unselected.png'
         }
 
-        return `https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-career-stats/global/default/${positions[position] ?? positions.MIDDLE}`
+        return `https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/${positions[position] ?? positions.UNSELECTED}`
     }
 }

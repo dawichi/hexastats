@@ -32,7 +32,7 @@
             <h4 class="col-span-3">Wins / Losses</h4>
         </section>
         {#each positions as position}
-            <section class="grid grid-cols-6 items-center gap-2 text-sm md:text-base">
+            <section class="grid grid-cols-6 items-center gap-2 text-sm md:text-base mt-2">
                 <img src={riotService.teamPositionIcon(position.position)} width={35} height={35} alt="position" />
                 <span>{position.wins} / {position.games}</span>
                 <span class="{position.games ? '' : 'invisible'} {styleWinrate(winrate(position.wins, position.games - position.wins))}">

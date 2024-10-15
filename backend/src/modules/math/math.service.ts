@@ -135,11 +135,12 @@ export class MathService {
             MIDDLE: { games: 0, wins: 0, position: 'MIDDLE' },
             BOTTOM: { games: 0, wins: 0, position: 'BOTTOM' },
             UTILITY: { games: 0, wins: 0, position: 'UTILITY' },
+            UNSELECTED: { games: 0, wins: 0, position: 'UNSELECTED' },
         }
 
         for (const game of games) {
             // Don't use ?? as it comes as '' instead of null or undefined
-            const key = game.teamPosition || 'MIDDLE'
+            const key = game.teamPosition || 'UNSELECTED'
 
             const champ = indexByPosition[key]
 
