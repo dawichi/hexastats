@@ -30,10 +30,16 @@
         loading = false
     }
 
-    // Champion Splashart to display as header
-    const champTopMastery: string | undefined = data.masteries[0]?.name
-    const champTopPlayed = data.stats.statsByChamp.sort((a, b) => b.games - a.games)[0].championName
-    const champSplash = riotService.champSplash(champTopMastery ?? champTopPlayed)
+    // Reactive update the champion Splashart to display as header
+    let champTopMastery: string | undefined 
+    let champTopPlayed: string
+    let champSplash: string
+
+$: {
+    champTopMastery = data.masteries[0]?.name
+    champTopPlayed = data.stats.statsByChamp.sort((a, b) => b.games - a.games)[0].championName
+    champSplash = riotService.champSplash(champTopMastery ?? champTopPlayed)
+}
 </script>
 
 <ModalGame server={data.player.server} />
