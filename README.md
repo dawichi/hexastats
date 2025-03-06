@@ -179,11 +179,21 @@ Or you could disable it by setting `UPSTASH_REDIS_REST_DISABLE = true`
 
 Some images from the project:
 
+![Hexastats][showcase-1]
+
 ![Hexastats][showcase-2]
+
+![Hexastats][stats]
+
+![Hexastats][stats2]
 
 ![Hexastats][showcase-3]
 
 ![Hexastats][showcase-4]
+
+![Hexastats][showcase-5]
+
+![Hexastats][showcase-6]
 
 
 <!-- ------------------------------------------------------------------------------------------------------------------------ -->
@@ -207,9 +217,13 @@ Some images from the project:
 
 <!-- IMAGES -->
 [showcase-1]: showcase.png
-[showcase-2]: frontend/static/images/mastery.png
-[showcase-3]: frontend/static/images/graphs.png
-[showcase-4]: frontend/static/images/compare.png
+[showcase-2]: frontend/static/images/showcase2.png
+[stats]: frontend/static/images/stats.png
+[stats2]: frontend/static/images/stats2.png
+[showcase-3]: frontend/static/images/mastery.png
+[showcase-4]: frontend/static/images/graphs.png
+[showcase-5]: frontend/static/images/compare.png
+[showcase-6]: frontend/static/images/showcase-old.png
 
 <!-- TECH STACK -->
 [TypeScript]: https://img.shields.io/github/languages/top/dawichi/hexastats?logo=typescript&logoColor=fff&style=for-the-badge
